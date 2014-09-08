@@ -1,13 +1,13 @@
 package org.openauthentication.ocra;
 
-import java.lang.reflect.UndeclaredThrowableException;
-import java.security.GeneralSecurityException;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 
 /**
