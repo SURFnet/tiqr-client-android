@@ -1,1 +1,1 @@
-include ':android'
+include ':shared', ':android', ':glass'
