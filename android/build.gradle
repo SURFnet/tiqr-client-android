@@ -20,8 +20,4 @@ android {
 
 dependencies {
     compile project(':shared')
-
-    // Supports Android 2.1 and later (API level 7), but not optimal for later Android versions.
-    // If you only plan on supporting Android 4.0.3 and up, you don't need to include this.
-    compile 'com.embarkmobile:zxing-android-legacy:2.0.0@aar'
 }

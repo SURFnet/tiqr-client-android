@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import org.tiqr.authenticator.R;
+import org.tiqr.R;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.exceptions.UserException;

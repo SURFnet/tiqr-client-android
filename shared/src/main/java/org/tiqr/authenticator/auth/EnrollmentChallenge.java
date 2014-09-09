@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.tiqr.authenticator.R;
+import org.tiqr.R;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.exceptions.UserException;
@@ -122,7 +122,7 @@ public class EnrollmentChallenge extends Challenge
                 ip.setLogoData(logoData);
             }
             catch (Exception ex) {
-                throw new UserException(_getString(R.string.error_enroll_logo_error), ex); 
+                throw new UserException(_getString(R.string.error_enroll_logo_error), ex);
             }
             
             if (ip.getLogoBitmap() == null) {

@@ -6,7 +6,6 @@ import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 
 import com.google.android.c2dm.C2DMessaging;
 
