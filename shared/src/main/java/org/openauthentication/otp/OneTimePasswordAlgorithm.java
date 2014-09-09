@@ -36,7 +36,6 @@
 
    import javax.crypto.Mac;
    import javax.crypto.spec.SecretKeySpec;
-
    /**
     * This class contains static methods that are used to calculate the
     * One-Time Password (OTP) using
@@ -92,10 +91,10 @@
         * @param keyBytes   the bytes to use for the HMAC-SHA-1 key
         * @param text       the message or text to be authenticated.
         *
-        * @throws java.security.NoSuchAlgorithmException if no provider makes
+        * @throws NoSuchAlgorithmException if no provider makes
         *       either HmacSHA1 or HMAC-SHA-1
         *       digest algorithms available.
-        * @throws java.security.InvalidKeyException
+        * @throws InvalidKeyException
         *       The secret provided was not a valid HMAC-SHA-1 key.
         *
         */
@@ -120,7 +119,7 @@
        }
 
        private static final int[] DIGITS_POWER = {1,10,100,1000,10000,100000,1000000,10000000,100000000};
-       // 0 1  2   3    4     5      6       7        8
+       // 0 1  2   3    4     5      6       7        8     
 
        /**
         * This method generates an OTP value for the given
@@ -140,10 +139,10 @@
         *                     Dynamic truncation is when the last 4
         *                     bits of the last byte of the MAC are
         *                     used to determine the start offset.
-        * @throws java.security.NoSuchAlgorithmException if no provider makes
+        * @throws NoSuchAlgorithmException if no provider makes
         *                     either HmacSHA1 or HMAC-SHA-1
         *                     digest algorithms available.
-        * @throws java.security.InvalidKeyException
+        * @throws InvalidKeyException
         *                     The secret provided was not
         *                     a valid HMAC-SHA-1 key.
         *
