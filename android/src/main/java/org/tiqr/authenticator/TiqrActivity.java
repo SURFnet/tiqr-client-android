@@ -11,7 +11,7 @@ import org.tiqr.authenticator.qr.CaptureActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
+//import android.os.StrictMode;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -29,8 +29,8 @@ public class TiqrActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState, int contentView) {
 		super.onCreate(savedInstanceState);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	    setContentView(contentView);

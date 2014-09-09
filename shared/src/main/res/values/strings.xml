@@ -1,3 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
-
+    <string name="error_auth_invalid_qr_code">Invalid authentication QR code.</string>
+    <string name="error_auth_unknown_identity_provider">Unknown identity provider, please enroll first.</string>
+    <string name="error_auth_unknown_identity">Unknown identity for service, please enroll first.</string>
+    <string name="error_auth_no_identities_for_identity_provider">No identities found for identity provider, please enroll first.</string>
+    <string name="error_auth_invalid_key">Unable to login. Invalid key.</string>
+    <string name="error_auth_invalid_challenge">Unable to login. Invalid challenge.</string>
+    <string name="error_auth_unknown_error">An unknown error occurred. Please contact support.</string>
+    <string name="error_auth_invalid_request">Invalid authentication request. Please contact support.</string>
+    <string name="error_auth_invalid_response">Invalid authentication response. Wrong PIN code? Try again.</string>
+    <string name="error_auth_invalid_userid">Unknown or invalid user.</string>
+    <string name="error_auth_invalid_account">Invalid account</string>
+    <string name="error_auth_invalid_account_message">You tried to login with an invalid or unknown account. Please (re-)activate your account first.</string>
+    <string name="error_auth_account_blocked_title">Account blocked</string>
+    <string name="error_auth_account_blocked_message">This account can no longer be used.</string>
+    <string name="error_auth_invalid_challenge_title">Invalid challenge</string>
+    <string name="error_auth_invalid_challenge_message">The scanned QR tag is either invalid or expired. Please try again.</string>
+    <string name="error_auth_invalid_request_title">Invalid request</string>
+    <string name="error_auth_invalid_request_message">The server doesn\'t recognize the login request. Please contact support.</string>
+    <string name="error_auth_wrong_pin">Wrong PIN</string>
+    <string name="error_auth_x_attempts_left">You supplied an incorrect PIN. You have %d attempts left. Please enter your PIN again. Check the verification icon for the last digit.</string>
+    <string name="error_auth_one_attempt_left">You have one last attempt left. If you enter an incorrect PIN again all the accounts on this mobile phone will be blocked.</string>
+    <string name="error_auth_server_incompatible">The server is incompatible with this version of the app.</string>
+    <string name="enrollment_confirmation_header_title">Account activation</string>
+    <string name="enrollment_confirmation_title">Confirm account activation</string>
+    <string name="enrollment_confirmation_description">Do you want to activate\n the following account?</string>
+    <string name="enrollment_success_title">Enrollment successful</string>
+    <string name="enrollment_success_message" formatted="false">You\'ve been successfully enrolled as %s for %s</string>
+    <string name="enrollment_failure_title">Enrollment failed</string>
+    <string name="error_enroll_invalid_qr_code">Invalid enrollment QR code.</string>
+    <string name="error_enroll_connect_error">Cannot connect to enrollment server. Please contact the website administrator.</string>
+    <string name="error_enroll_invalid_response">Invalid enrollment server response. Please contact the website administrator.</string>
+    <string name="error_enroll_logo_error">Cannot download service logo. Please contact the website administrator.</string>
+    <string name="error_enroll_already_enrolled" formatted="false">You already enrolled with the identity %s for the service %s.</string>
+    <string name="error_enroll_failed_to_store_identity_provider">Failed to store identity provider. Please contact support.</string>
+    <string name="error_enroll_failed_to_store_identity">Failed to store identity. Please contact support.</string>
+    <string name="error_enroll_failed_to_generate_secret">Failed to generate identity secret. Please contact support.</string>
+    <string name="error_device_incompatible_with_security_standards">Device is not compatible with required security standards.</string>
+    <string name="unknown">Unknown</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>
