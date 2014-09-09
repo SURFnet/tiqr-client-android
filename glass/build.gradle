@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     compile project(':shared')
+    compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
 }

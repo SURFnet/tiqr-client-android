@@ -80,6 +80,7 @@
     <orderEntry type="jdk" jdkName="Android 4.4.2 Glass Development Kit Preview" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="core-3.0.1" level="project" />
+    <orderEntry type="library" exported="" name="zxing-android-minimal-2.0.0" level="project" />
     <orderEntry type="module" module-name="shared" exported="" />
   </component>
 </module>
