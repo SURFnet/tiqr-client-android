@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import javax.crypto.SecretKey;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -17,6 +18,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.tiqr.authenticator.Config;
 import org.tiqr.authenticator.IncompatibilityDialog;
 import org.tiqr.authenticator.NotificationRegistration;
 import org.tiqr.authenticator.R;
@@ -25,12 +29,13 @@ import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractConfirmationActivity;
+import org.tiqr.authenticator.security.OCRAProtocol;
 import org.tiqr.authenticator.security.OCRAWrapper;
+import org.tiqr.authenticator.security.OCRAWrapper_v1;
 import org.tiqr.authenticator.security.Secret;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -38,58 +43,64 @@ import android.widget.TextView;
  * 
  * TODO: use string resources for title and error messages
  */
-public class AuthenticationConfirmationActivity extends AbstractConfirmationActivity
-{
+public class AuthenticationConfirmationActivity extends AbstractConfirmationActivity {
+
+    private static final int AuthenticationChallengeResponseCodeSuccess = 1;
+    private static final int AuthenticationChallengeResponseCodeFailure = 200;
+    private static final int AuthenticationChallengeResponseCodeInvalidUsernamePasswordPin = 201;
+    private static final int AuthenticationChallengeResponseCodeExpired = 202;
+    private static final int AuthenticationChallengeResponseCodeInvalidChallenge = 203;
+    private static final int AuthenticationChallengeResponseCodeAccountBlocked = 204;
+    private static final int AuthenticationChallengeResponseCodeInvalidRequest = 205;
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitleText(R.string.authentication_confirmation_title);
         setDescriptionText(R.string.authentication_confirmation_description);
         setConfirmButtonText(R.string.authentication_confirm_button);
-        
+
         // TODO: When a service provider identifier is available, switch these 2 around.
         TextView spdn = (TextView)findViewById(R.id.service_provider_display_name);
         spdn.setText(((AuthenticationChallenge)_getChallenge()).getServiceProviderDisplayName());
-        
+
         TextView spi = (TextView)findViewById(R.id.service_provider_identifier);
         spi.setText("");
     }
 
-    /* (non-Javadoc)
-	 * @see org.tiqr.authenticator.general.AbstractConfirmationActivity#_getLayoutResource()
-	 */
-	@Override
-	protected int _getLayoutResource() {
-		return R.layout.confirmation_auth;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.tiqr.authenticator.general.AbstractConfirmationActivity#_getLayoutResource()
+     */
+    @Override
+    protected int _getLayoutResource() {
+        return R.layout.confirmation_auth;
+    }
 
     /**
      * Confirm login.
      */
     @Override
-    protected void _onDialogConfirm()
-    {
-    	AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
-    	Intent authenticationPincodeIntent = new Intent().setClass(this, AuthenticationPincodeActivity.class);
-    	parent.startChildActivity("AuthenticationPincodeActivity", authenticationPincodeIntent);
-    	
-//        try {
-//            _login();
-//        } catch (SecurityFeaturesException e) {
-//            new IncompatibilityDialog().show(this);
-//        }
+    protected void _onDialogConfirm() {
+        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+        Intent authenticationPincodeIntent = new Intent().setClass(this, AuthenticationPincodeActivity.class);
+        parent.startChildActivity("AuthenticationPincodeActivity", authenticationPincodeIntent);
+
+        // try {
+        // _login();
+        // } catch (SecurityFeaturesException e) {
+        // new IncompatibilityDialog().show(this);
+        // }
     }
 
     /**
      * Cancel dialog.
      */
     @Override
-    protected void _onDialogCancel()
-    {
-        AuthenticationActivityGroup group = (AuthenticationActivityGroup) getParent();
+    protected void _onDialogCancel() {
+        AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
         group.goToRoot();
     }
 
@@ -97,8 +108,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
      * Handle finish.
      */
     @Override
-    protected void _onDialogDone(boolean successful, boolean doReturn, boolean doRetry)
-    {
+    protected void _onDialogDone(boolean successful, boolean doReturn, boolean doRetry) {
         if (doReturn && _getChallenge().getReturnURL() != null) {
             AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
             group.goToRoot();
@@ -120,26 +130,22 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
      * @throws SecurityFeaturesException
      * @throws InvalidChallengeException
      */
-    private void _initChallengeResponse() throws InvalidKeyException, SecurityFeaturesException, InvalidChallengeException
-    {
+    private void _initChallengeResponse() throws InvalidKeyException, SecurityFeaturesException, InvalidChallengeException {
         _requestSessionKey();
     }
 
     /**
-     * Parse authentication response from server.
+     * PArse authentication response from server. (string)
      * 
-     * @param response
-     *            authentication response
+     * @param response authentication response
      */
-    private void _parseResponse(String response)
-    {
+    private void _parseResponse(String response) {
         if (response != null && response.equals("OK")) {
             String message = getString(R.string.authentication_success_message, _getChallenge().getIdentity().getDisplayName(), _getChallenge().getIdentityProvider().getDisplayName());
             _showAlertWithMessage(getString(R.string.authentication_success_title), message, true, false);
         } else {
             String message = getString(R.string.error_auth_unknown_error);
             boolean retry = false;
-
             if (response.equals("INVALID_CHALLENGE")) {
                 message = getString(R.string.error_auth_invalid_challenge);
             } else if (response.equals("INVALID_REQUEST")) {
@@ -150,8 +156,38 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
             } else if (response.equals("INVALID_USERID")) {
                 message = getString(R.string.error_auth_invalid_userid);
             }
-
             _showAlertWithMessage(getString(R.string.authentication_failure_title), message, false, retry);
+        }
+
+    }
+
+    /**
+     * Parse authentication response from server.
+     * 
+     * @param response authentication response
+     */
+    private void _parseResponse(JSONObject response) {
+        // Parse JSON response
+        try {
+            int responseCode = response.getInt("responseCode");
+            if (responseCode == AuthenticationChallengeResponseCodeSuccess) {
+                String message = getString(R.string.authentication_success_message, _getChallenge().getIdentity().getDisplayName(), _getChallenge().getIdentityProvider().getDisplayName());
+                _showAlertWithMessage(getString(R.string.authentication_success_title), message, true, false);
+            } else {
+                boolean retry = false;
+                String message = getString(R.string.error_auth_unknown_error);
+                if (responseCode == AuthenticationChallengeResponseCodeInvalidChallenge) {
+                    message = getString(R.string.error_auth_invalid_challenge);
+                } else if (responseCode == AuthenticationChallengeResponseCodeInvalidRequest) {
+                    message = getString(R.string.error_auth_invalid_request);
+                } else if (responseCode == AuthenticationChallengeResponseCodeInvalidUsernamePasswordPin) {
+                    message = getString(R.string.error_auth_invalid_userid);
+                }
+
+                _showAlertWithMessage(getString(R.string.authentication_failure_title), message, false, retry);
+            }
+        } catch (JSONException e) {
+            _showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), false, false);
         }
     }
 
@@ -160,8 +196,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
      * 
      * @throws SecurityFeaturesException
      */
-    private void _login() throws SecurityFeaturesException
-    {
+    private void _login() throws SecurityFeaturesException {
         try {
             _initChallengeResponse();
         } catch (InvalidKeyException e) {
@@ -171,9 +206,8 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
         }
     }
 
-    private void _authenticateAtServer(String response)
-    {
-        AuthenticationChallenge challenge = (AuthenticationChallenge) _getChallenge();
+    private void _authenticateAtServer(String response) {
+        AuthenticationChallenge challenge = (AuthenticationChallenge)_getChallenge();
 
         try {
             DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -190,14 +224,31 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
                 // communicate latest notification type and address
                 nameValuePairs.add(new BasicNameValuePair("notificationType", "C2DM"));
                 nameValuePairs.add(new BasicNameValuePair("notificationAddress", notificationAddress));
-            }            
+            }
+
+            nameValuePairs.add(new BasicNameValuePair("operation", "login"));
+
+            Config config = new Config(this);
 
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
-            // Execute HTTP Post Request
-            HttpResponse httpresponse = httpclient.execute(httppost);
+            httppost.setHeader("ACCEPT", "application/json");
+            httppost.setHeader("X-TIQR-Protocol-Version", config.getTIQRProtocolVersion());
 
-            _parseResponse(EntityUtils.toString(httpresponse.getEntity()));
+            // Execute HTTP Post Request
+            HttpResponse httpResponse = httpclient.execute(httppost);
+            Header versionHeader = httpResponse.getFirstHeader("X-TIQR-Protocol-Version");
+            if (versionHeader != null && versionHeader.getValue().equals("2")) {
+                try {
+                    JSONObject serverResponse = new JSONObject(EntityUtils.toString(httpResponse.getEntity()));
+                    _parseResponse(serverResponse);
+                } catch (Exception e) {
+                    _showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), false, true);
+                }
+            } else { // v1 protocol (ascii)
+                _parseResponse(EntityUtils.toString(httpResponse.getEntity()));
+            }
+
         } catch (ClientProtocolException e) {
             _showFallbackOtp();
         } catch (IOException e) {
@@ -206,19 +257,17 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
 
     }
 
-    protected void _showFallbackOtp()
-    {
+    protected void _showFallbackOtp() {
         // Clear current from the stack so back goes back one deeper.
         finish();
-        AuthenticationActivityGroup group = (AuthenticationActivityGroup) getParent();
+        AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
         Intent fallbackIntent = new Intent(this, AuthenticationFallbackActivity.class);
         group.startChildActivity("AuthenticationFallbackActivity", fallbackIntent);
     }
 
     @Override
-    public void onSessionKeyAvailable(SecretKey sessionKey)
-    {
-        AuthenticationChallenge challenge = (AuthenticationChallenge) _getChallenge();
+    public void onSessionKeyAvailable(SecretKey sessionKey) {
+        AuthenticationChallenge challenge = (AuthenticationChallenge)_getChallenge();
 
         try {
             Secret secret = Secret.secretForIdentity(challenge.getIdentity(), this);
@@ -229,17 +278,19 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
             // the json file.
             // will getSecret().getEncoded give us the same thing? Don't know
             // yet.
-            String otp = OCRAWrapper.generateOCRA(
-                    challenge.getIdentityProvider().getOCRASuite(), 
-                    secretKey.getEncoded(), 
-                    challenge.getChallenge(), 
-                    challenge.getSessionKey());
+            OCRAProtocol ocra;
+            if (challenge.getProtocolVersion().equals("1")) {
+                ocra = new OCRAWrapper_v1();
+            } else {
+                ocra = new OCRAWrapper();
+            }
+            String otp = ocra.generateOCRA(challenge.getIdentityProvider().getOCRASuite(), secretKey.getEncoded(), challenge.getChallenge(), challenge.getSessionKey());
 
             _authenticateAtServer(otp);
         } catch (InvalidChallengeException e) {
-        	_showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), false, false);
+            _showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), false, false);
         } catch (ArrayIndexOutOfBoundsException e) {
-        	_showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_server_incompatible), false, false);
+            _showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_server_incompatible), false, false);
         } catch (InvalidKeyException e) {
             _showAlertWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_key), false, false);
         } catch (NumberFormatException e) {

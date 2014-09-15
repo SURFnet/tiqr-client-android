@@ -6,7 +6,6 @@ import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 
 import com.google.android.c2dm.C2DMessaging;
 
@@ -18,7 +17,7 @@ public class MainActivity extends TiqrActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState, R.layout.main);
-
+        
         DbAdapter db = new DbAdapter(this);
         
         int contentResource = 0;
@@ -52,10 +51,12 @@ public class MainActivity extends TiqrActivity
             if (rawChallenge.startsWith("tiqrauth://")) {
                 Intent authIntent = new Intent(this.getApplicationContext(), AuthenticationActivityGroup.class);
                 authIntent.putExtra("org.tiqr.rawChallenge", rawChallenge);
+                authIntent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(authIntent);                
             } else if (rawChallenge.startsWith("tiqrenroll://")) {
                 Intent enrollIntent = new Intent(this.getApplicationContext(), EnrollmentActivityGroup.class);
                 enrollIntent.putExtra("org.tiqr.rawChallenge", rawChallenge);
+                enrollIntent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(enrollIntent);
             }
         }

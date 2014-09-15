@@ -79,10 +79,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="zxing-android-legacy-2.0.0" level="project" />
-    <orderEntry type="library" exported="" name="zxing-android-integration-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="core-3.0.1" level="project" />
-    <orderEntry type="library" exported="" name="zxing-android-minimal-2.0.0" level="project" />
+    <orderEntry type="module" module-name="shared" exported="" />
   </component>
 </module>
 
