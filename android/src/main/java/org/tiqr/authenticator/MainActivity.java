@@ -3,21 +3,27 @@ package org.tiqr.authenticator;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
+import org.tiqr.data.NotificationService;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.c2dm.C2DMessaging;
 
+import javax.inject.Inject;
+
 public class MainActivity extends TiqrActivity
 {
+    protected @Inject NotificationService _notificationService;
+
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState, R.layout.main);
-        
+        ((Application)getApplication()).inject(this);
+
         DbAdapter db = new DbAdapter(this);
         
         int contentResource = 0;
@@ -38,7 +44,7 @@ public class MainActivity extends TiqrActivity
 
         String deviceToken = C2DMessaging.getRegistrationId(this);
         if (deviceToken != null && !"".equals(deviceToken)) {
-            NotificationRegistration.sendRequestWithDeviceToken(this, deviceToken);
+            _notificationService.sendRequestWithDeviceToken(deviceToken);
         } else {
             C2DMessaging.register(this, C2DMReceiver.SENDER_ID);
         }

@@ -1,4 +1,4 @@
-package org.tiqr.authenticator;
+package org.tiqr.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
