@@ -21,7 +21,7 @@ import android.widget.TextView;
 /**
  * Confirmation activity base class for authentication and enrollment confirmation.
  */
-public abstract class AbstractConfirmationActivity extends Activity implements SessionKeyAvailabilityListener
+public abstract class AbstractConfirmationActivity extends Activity
 {
     /**
      * Returns the challenge.
@@ -32,28 +32,6 @@ public abstract class AbstractConfirmationActivity extends Activity implements S
     {
         AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
         return parent.getChallenge();
-    }
-    
-    /**
-     * Some activities require the session pin code. They should call this method which 
-     * triggers pin retrieval. The pin becomes available through the onSessionKeyAvailable
-     * methods, which is triggered immediately if the pin is still in memory, or after
-     * the user has completed the pin dialog (which is why this is asynchronous)
-     */
-    protected void _requestSessionKey()
-    {
-        LoginDialog.requestSessionKey(getParent(), _getChallenge().getIdentity().getIdentifier(), this);
-    }
-    
-    /**
-     * Some activities require the session pin code. They should call this method which 
-     * triggers pin retrieval. The pin becomes available through the onSessionKeyAvailable
-     * methods, which is triggered immediately if the pin is still in memory, or after
-     * the user has completed the pin dialog (which is why this is asynchronous)
-     */
-    protected void _newSessionKey()
-    {
-        LoginDialog.newSessionKey(getParent(), _getChallenge().getIdentity().getIdentifier(), this);
     }
     
     /**
@@ -157,7 +135,7 @@ public abstract class AbstractConfirmationActivity extends Activity implements S
     {
         String url = _getChallenge().getReturnURL();
         
-        if (url.indexOf("?")>=0) {
+        if (url.indexOf("?") >= 0) {
             url = url + "&succesful=" + successful;
         } else {
             url = url + "?succesful=" + successful;
@@ -169,62 +147,5 @@ public abstract class AbstractConfirmationActivity extends Activity implements S
         } catch (Exception ex) {
             _onDialogCancel();
         }
-    }
-
-    /**
-     * Show alert with the given message. This alert is shown after confirmation
-     * by the user and the operation is successful or not. 
-     * 
-     * @param title      title
-     * @param message    message
-     * @param successful successful?
-     * @param retry      allow retry on failure?
-     */
-    protected void _showAlertWithMessage(String title, String message, final boolean successful, boolean retry) 
-    {
-        setProgressBarVisibility(false);
-       
-        AlertDialog.Builder builder =
-            new AlertDialog.Builder(getParent())
-                .setTitle(title)
-                .setMessage(message);
-        
-        if (retry) {
-            builder.setPositiveButton(getString(R.string.retry_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    _onDialogDone(successful, false, true);
-                }
-            });
-            
-            builder.setNegativeButton(getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    _onDialogDone(successful, false, false);
-                }
-            });                       
-        } else {
-            builder.setPositiveButton(getString(R.string.ok_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    _onDialogDone(successful, false, false);
-                }
-            });
-        }
-            
-        if (_getChallenge().getReturnURL() != null) {
-            builder.setNeutralButton(getString(R.string.return_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    _onDialogDone(successful, true, false);
-                }
-            });      
-        }        
-
-        builder.show();
     }
 }

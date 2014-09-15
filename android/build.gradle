@@ -19,5 +19,9 @@ android {
 }
 
 dependencies {
+    // Dependency injection
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+
     compile project(':shared')
 }
