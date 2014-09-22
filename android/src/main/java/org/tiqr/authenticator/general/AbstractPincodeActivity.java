@@ -338,12 +338,13 @@ abstract public class AbstractPincodeActivity extends Activity
     /**
      * Show a custom error view on top of the pincode activity
      *  
-     * @param details
+     * @param title
+     * @param message
      */
-    protected void _showErrorView(Map<String, Object> details) {
+    protected void _showErrorView(String title, String message) {
     	ErrorView view = (ErrorView)findViewById(R.id.pincodeErrorView);
-    	view.setTitle((String)details.get("title"));
-    	view.setMessage((String)details.get("message"));
+    	view.setTitle(title);
+    	view.setMessage(message);
     	view.setEnabled(true);
     	view.setVisibility(View.VISIBLE);
     }

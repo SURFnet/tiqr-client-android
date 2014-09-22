@@ -12,6 +12,11 @@ import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 
+import org.tiqr.data.NotificationService;
+import org.tiqr.data.Prefs;
+
+import javax.inject.Inject;
+
 /**
  * Android Cloud to Device Messaging receiver.
  */
@@ -19,12 +24,20 @@ public class C2DMReceiver extends C2DMBaseReceiver
 {
     public static final String SENDER_ID = "aai-beheer@surfnet.nl";
 
+    protected @Inject NotificationService _notificationService;
+
     /**
      * Constructor.
      */
     public C2DMReceiver()
     {
         super(SENDER_ID);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((Application)getApplication()).inject(this);
     }
 
     @Override
@@ -37,7 +50,7 @@ public class C2DMReceiver extends C2DMBaseReceiver
         editor.putString("deviceToken", deviceToken);
         editor.commit();
 
-        NotificationRegistration.sendRequestWithDeviceToken(context, deviceToken);
+        _notificationService.sendRequestWithDeviceToken(deviceToken);
     }
 
     @Override

@@ -19,13 +19,13 @@ public class Secret
     private SecretStore _store = null;
     private Context _ctx = null;
     
-    public static Secret secretForIdentity(Identity identity, Activity context)
+    public static Secret secretForIdentity(Identity identity, Context context)
     {
         Secret s = new Secret(identity, context);
         return s;
     }
     
-    private Secret(Identity identity, Activity context)
+    private Secret(Identity identity, Context context)
     {
         _identity = identity;
         _store = new SecretStore(context);

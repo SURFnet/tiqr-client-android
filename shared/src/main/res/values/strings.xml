@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="authentication_failure_title">Login failed</string>
     <string name="error_auth_invalid_qr_code">Invalid authentication QR code.</string>
-    <string name="error_auth_unknown_identity_provider">Unknown identity provider, please enroll first.</string>
+    <string name="error_auth_unknown_identity_provider">Unknown identity provider, please enrol first.</string>
     <string name="error_auth_unknown_identity">Unknown identity for service, please enroll first.</string>
-    <string name="error_auth_no_identities_for_identity_provider">No identities found for identity provider, please enroll first.</string>
-    <string name="error_auth_invalid_key">Unable to login. Invalid key.</string>
-    <string name="error_auth_invalid_challenge">Unable to login. Invalid challenge.</string>
+    <string name="error_auth_no_identities_for_identity_provider">No identities found for identity provider, please enrol first.</string>
+    <string name="error_auth_invalid_key">Unable to log in. Invalid key.</string>
+    <string name="error_auth_invalid_challenge">Unable to log in. Invalid challenge.</string>
     <string name="error_auth_unknown_error">An unknown error occurred. Please contact support.</string>
+    <string name="error_auth_connect_error">Cannot connect to the authentication server.</string>
     <string name="error_auth_invalid_request">Invalid authentication request. Please contact support.</string>
     <string name="error_auth_invalid_response">Invalid authentication response. Wrong PIN code? Try again.</string>
     <string name="error_auth_invalid_userid">Unknown or invalid user.</string>
     <string name="error_auth_invalid_account">Invalid account</string>
-    <string name="error_auth_invalid_account_message">You tried to login with an invalid or unknown account. Please (re-)activate your account first.</string>
+    <string name="error_auth_invalid_account_message">You tried to log in with an invalid or unknown account. Please (re-)activate your account first.</string>
     <string name="error_auth_account_blocked_title">Account blocked</string>
     <string name="error_auth_account_blocked_message">This account can no longer be used.</string>
+    <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+    <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
     <string name="error_auth_invalid_challenge_title">Invalid challenge</string>
-    <string name="error_auth_invalid_challenge_message">The scanned QR tag is either invalid or expired. Please try again.</string>
+    <string name="error_auth_invalid_challenge_message">The scanned QR code is invalid or has expired. Please try again.</string>
     <string name="error_auth_invalid_request_title">Invalid request</string>
     <string name="error_auth_invalid_request_message">The server doesn\'t recognize the login request. Please contact support.</string>
     <string name="error_auth_wrong_pin">Wrong PIN</string>
-    <string name="error_auth_x_attempts_left">You supplied an incorrect PIN. You have %d attempts left. Please enter your PIN again. Check the verification icon for the last digit.</string>
-    <string name="error_auth_one_attempt_left">You have one last attempt left. If you enter an incorrect PIN again all the accounts on this mobile phone will be blocked.</string>
-    <string name="error_auth_server_incompatible">The server is incompatible with this version of the app.</string>
+    <string name="error_auth_infinite_attempts_left">You supplied an incorrect PIN. Please enter your PIN again. Check the verification icon for the last digit.</string>
+    <string name="error_auth_x_attempts_left" formatted="false">You supplied an incorrect PIN. You have %d attempts left. Please enter your PIN again. Check the verification icon for the last digit.</string>
+    <string name="error_auth_one_attempt_left">You have one last attempt left. If you enter an incorrect PIN again all the accounts on this device will be blocked.</string>
+    <string name="error_auth_server_incompatible">The server is incompatible with this version of tiqr.</string>
     <string name="enrollment_confirmation_header_title">Account activation</string>
     <string name="enrollment_confirmation_title">Confirm account activation</string>
     <string name="enrollment_confirmation_description">Do you want to activate\n the following account?</string>
@@ -36,7 +41,10 @@
     <string name="error_enroll_failed_to_store_identity_provider">Failed to store identity provider. Please contact support.</string>
     <string name="error_enroll_failed_to_store_identity">Failed to store identity. Please contact support.</string>
     <string name="error_enroll_failed_to_generate_secret">Failed to generate identity secret. Please contact support.</string>
+    <string name="error_enroll_username_taken">The supplied username is already taken</string>
+    <string name="error_enroll_verification_needed">Your account needs to be verified before you can enroll</string>
     <string name="error_device_incompatible_with_security_standards">Device is not compatible with required security standards.</string>
+    <string name="error_enroll_unknown">An error occurred during enrollment</string>
     <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
 </resources>
