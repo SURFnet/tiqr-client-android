@@ -22,7 +22,9 @@ import dagger.Provides;
                 MainActivity.class,
                 AuthenticationConfirmationActivity.class,
                 AuthenticationPincodeActivity.class,
-                EnrollmentPincodeVerificationActivity.class
+                EnrollmentPincodeVerificationActivity.class,
+                CaptureActivity.class,
+                C2DMReceiver.class
         }
 )
 public class ApplicationModule {

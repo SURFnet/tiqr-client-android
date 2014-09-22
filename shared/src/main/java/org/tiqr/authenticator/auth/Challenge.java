@@ -1,83 +1,78 @@
 package org.tiqr.authenticator.auth;
 
-import org.tiqr.authenticator.datamodel.DbAdapter;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
-import org.tiqr.authenticator.exceptions.UserException;
-
-import android.content.Context;
 
 /**
- * Challenge base class. Provides an interface for parsing challenges 
- * from a QR code (or other source).
- * 
+ * Challenge base class.
  */
-public abstract class Challenge
-{
-    private String _rawChallenge;
-    private Context _context;
-    private DbAdapter _dbAdapter;
+public abstract class Challenge implements Parcelable {
+    private String _protocolVersion;
     private IdentityProvider _identityProvider;
     private Identity _identity;
     private String _returnURL;
-    private String _protocolVersion;
-   
+
     /**
-     * Constructs a new challenge. The given raw challenge will immediately
-     * be parsed. In case of a failure an exception is thrown.
-     * 
-     * @param rawChallenge raw challenge
-     * @param context      Android context
-     * @param String       protocolVersion
-     * @param parse        immediately start parsing?
-     * 
-     * @throws Exception
+     * Constructor.
      */
-    public Challenge(String rawChallenge, Context context, String protocolVersion, boolean parse) throws UserException
-    {
-        _rawChallenge = rawChallenge;
-        _context = context;
-        _setProtocolVersion(protocolVersion);
-        
-        if (parse) {
-            _parseRawChallenge();
-        }
+    public Challenge() {
+
     }
-    
+
     /**
-     * Returns the raw challenge.
-     * 
-     * @return raw challenge
+     * Constructor.
      */
-    protected String _getRawChallenge()
-    {
-        return _rawChallenge;
+    protected Challenge(Parcel source) {
+        _protocolVersion = source.readString();
+        _identityProvider = source.readParcelable(IdentityProvider.class.getClassLoader());
+        _identity = source.readParcelable(Identity.class.getClassLoader());
+        _returnURL = source.readString();
     }
-    
+
     /**
-     * Returns the Android context.
-     * 
-     * @return context
+     * Describe.
      */
-    protected Context _getContext()
-    {
-        return _context;
+    @Override
+    public int describeContents() {
+        return 0;
     }
-    
+
     /**
-     * Sets the identity provider for this challenge.
-     * 
-     * @param IdentityProvider
+     * Export to parcel.
      */
-    protected void _setIdentityProvider(IdentityProvider identityProvider)
-    {
-        _identityProvider = identityProvider;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_protocolVersion);
+        dest.writeParcelable(_identityProvider, flags);
+        dest.writeParcelable(_identity, flags);
+        dest.writeString(_returnURL);
     }
-    
+
+    /**
+     * Returns the protocol version.
+     *
+     * @return Protocol version.
+     */
+    public String getProtocolVersion() {
+        return _protocolVersion;
+    }
+
+    /**
+     * Sets the used protocol version.
+     *
+     * @param protocolVersion Protocol version.
+     */
+    public void setProtocolVersion(String protocolVersion) {
+        _protocolVersion = protocolVersion;
+    }
+
     /**
      * Returns the identity provider for this challenge.
-     * 
-     * @return IdentityProvider
+     *
+     * @return Identity provider
      */
     public IdentityProvider getIdentityProvider()
     {
@@ -85,98 +80,49 @@ public abstract class Challenge
     }
 
     /**
-     * Sets the identity for this challenge.
+     * Sets the identity provider for this challenge.
+     * 
+     * @param identityProvider Identity provider.
      */
-    protected void _setIdentity(Identity identity)
+    public void setIdentityProvider(IdentityProvider identityProvider)
     {
-        _identity = identity;
-    }
-    
-    public String getProtocolVersion() {
-        return _protocolVersion;
-    }
-
-    protected void _setProtocolVersion(String _protocolVersion) {
-        this._protocolVersion = _protocolVersion;
+        _identityProvider = identityProvider;
     }
 
     /**
      * Returns the identity for this challenge, might be null.
-     * 
+     *
      * @return Identity.
      */
     public Identity getIdentity()
     {
         return _identity;
-    }    
-    
-    /**
-     * Sets the return URL for this challenge.
-     */
-    protected void _setReturnURL(String returnURL)
-    {
-        _returnURL = returnURL;
     }
-    
+
+    /**
+     * Sets the identity for this challenge.
+     */
+    public void setIdentity(Identity identity)
+    {
+        _identity = identity;
+    }
+
     /**
      * Return URL, for example if invoked from a website on the device which wants the user to return
      * to the website after successful authentication.
-     * 
+     *
      * @return return URL.
      */
     public String getReturnURL()
     {
         return _returnURL;
-    }    
-    
-    /**
-     * Gets the string resource for the given resource identifier.
-     * 
-     * @param resourceId resource identifier
-     * 
-     * @return string resource
-     */
-    protected String _getString(int resourceId) 
-    {
-        return _context.getString(resourceId);
     }
-    
-    
-    /**
-     * Gets the string resource for the given resource identifier
-     * and uses the given arguments as formatter arguments.
-     * 
-     * @param resourceId resource identifier
-     * @param args       formatter arguments
-     * 
-     * @return string resource
-     */
-    protected String _getString(int resourceId, Object[] args) 
-    {
-        return _context.getString(resourceId, args);
-    }    
 
     /**
-     * Creates and returns the database adapter instance.
-     * 
-     * If an instance has been created, the same instance will be
-     * returned on subsequent calls.
-     * 
-     * @return DbAdapter database adapter
+     * Sets the return URL for this challenge.
      */
-    protected DbAdapter _getDbAdapter()
+    public void setReturnURL(String returnURL)
     {
-        if (_dbAdapter == null) {
-            _dbAdapter = new DbAdapter(_getContext());
-        }
-        
-        return _dbAdapter;
+        _returnURL = returnURL;
     }
-    
-    /**
-     * Parse raw challenge.
-     * 
-     * @throws Exception
-     */
-    protected abstract void _parseRawChallenge() throws UserException;
 }

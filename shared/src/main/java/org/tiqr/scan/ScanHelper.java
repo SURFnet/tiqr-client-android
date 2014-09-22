@@ -1,12 +1,14 @@
 package org.tiqr.scan;
 
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -29,7 +31,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Helper for scanning QR codes.
  */
-public final class ScanHelper implements Camera.PreviewCallback, ResultPointCallback, SurfaceHolder.Callback {
+public final class ScanHelper implements Camera.PreviewCallback, ResultPointCallback, TextureView.SurfaceTextureListener {
     private final static int START  = 1;
     private final static int RESUME = 2;
     private final static int DECODE = 3;
@@ -42,7 +44,7 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
         public boolean onScanResult(ScanHelper helper, ParsedResult result);
     }
 
-    private final SurfaceView _previewView;
+    private final TextureView _previewView;
     private final OnScanListener _listener;
     private Rect _scanArea;
 
@@ -60,11 +62,11 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
      * @param previewView
      * @param resultListener
      */
-    public ScanHelper(SurfaceView previewView, OnScanListener resultListener) {
+    public ScanHelper(TextureView previewView, OnScanListener resultListener) {
         _previewView = previewView;
         _listener = resultListener;
 
-        previewView.getHolder().addCallback(this);
+        previewView.setSurfaceTextureListener(this);
     }
 
     /**
@@ -93,12 +95,6 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
         _start();
     }
 
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        _surfaceCreated = true;
-        _start();
-    }
-
     private void _start() {
         if (!_running || !_surfaceCreated) {
             return;
@@ -107,7 +103,7 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
         try {
             _camera = Camera.open();
             _listener.onScanCameraOpen(this, _camera);
-            _camera.setPreviewDisplay(_previewView.getHolder());
+            _camera.setPreviewTexture(_previewView.getSurfaceTexture());
             _camera.startPreview();
 
             Camera.Parameters params = _camera.getParameters();
@@ -147,12 +143,6 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
         _stop();
     }
 
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        _surfaceCreated = false;
-        _stop();
-    }
-
     private void _stop() {
         if (_camera != null) {
             _camera.stopPreview();
@@ -164,11 +154,6 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
             _getHandler().obtainMessage(STOP).sendToTarget();
             _handler = null;
         }
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        // do nothing
     }
 
     @Override
@@ -208,6 +193,30 @@ public final class ScanHelper implements Camera.PreviewCallback, ResultPointCall
             // Failed to decode a valid result, try again
             _getHandler().obtainMessage(RESUME).sendToTarget();
         }
+    }
+
+
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        _surfaceCreated = true;
+        _start();
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+        // do nothing
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        // do nothing
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        _surfaceCreated = false;
+        _stop();
+        return true;
     }
 
     private final class DecodeHandler extends Handler {

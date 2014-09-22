@@ -51,7 +51,7 @@ public class DbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " + AUTHENTICATION_URL + " TEXT NOT NULL, "
-                    + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT NOT NULL, " + LOGO + " BINARY);");
+                    + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " BINARY);");
 
             db.execSQL("CREATE TABLE " + TABLE_IDENTITY + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BLOCKED + " INTEGER NOT NULL DEFAULT 0, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, "
                     + IDENTITYPROVIDER + " INTEGER NOT NULL, " + SORT_INDEX + " INTEGER NOT NULL);");

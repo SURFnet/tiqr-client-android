@@ -20,12 +20,21 @@ package org.tiqr.authenticator.qr;
 import java.io.IOException;
 
 import org.tiqr.authenticator.ActivityDialog;
+import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.TiqrActivity;
+import org.tiqr.authenticator.auth.AuthenticationChallenge;
+import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 import org.tiqr.authenticator.qr.camera.CameraManager;
+import org.tiqr.service.authentication.AuthenticationService;
+import org.tiqr.service.authentication.ParseAuthenticationChallengeError;
+import org.tiqr.service.enrollment.EnrollmentService;
+import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -41,6 +50,8 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
+import javax.inject.Inject;
+
 /**
  * Capture activity.
  */
@@ -53,6 +64,9 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
     private boolean hasSurface;
     private BeepManager beepManager;
     private ActivityDialog activityDialog;
+
+    protected @Inject AuthenticationService _authenticationService;
+    protected @Inject EnrollmentService _enrollmentService;
 
     public ViewfinderView getViewfinderView()
     {
@@ -68,6 +82,8 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle, R.layout.capture);
+
+        ((Application)getApplication()).inject(this);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -148,25 +164,24 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
      */
     public void handleDecode(final Result rawResult, Bitmap barcode)
     {
-    	// This hardly shows anything, because the following actions are too fast
-    	activityDialog = ActivityDialog.show(this);
-        beepManager.playBeepSoundAndVibrate();
-        new Thread(new Runnable() {
+        activityDialog = ActivityDialog.show(this);
 
-			@Override
-			public void run() {
-				String text = rawResult.getText();
-				Message msg = new Message();
-				msg.obj = rawResult;
-				
-		        if (text.startsWith("tiqrauth")) {
-		        	_handleCaptureResultAsAuthentication.sendMessage(msg);
-		        } else if (text.startsWith("tiqrenroll")) {
-		        	_handleCaptureResultAsEnrollment.sendMessage(msg);
-		        }
-			}
+    	boolean success = false;
+        String rawChallenge = rawResult.getText();
 
-		}).start();
+        if (_authenticationService.isAuthenticationChallenge(rawChallenge)) {
+            success = true;
+            _authenticate(rawChallenge);
+        } else if (_enrollmentService.isEnrollmentChallenge(rawChallenge)) {
+            success = true;
+            _enroll(rawChallenge);
+        }
+
+        if (success) {
+            beepManager.playBeepSoundAndVibrate();
+        } else {
+
+        }
     }
 
     private void initCamera(SurfaceHolder surfaceHolder)
@@ -197,32 +212,69 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
         viewfinderView.drawViewfinder();
     }
 
-    
-    private Handler _handleCaptureResultAsAuthentication = new Handler() {
-    	@Override
-		public void handleMessage(Message msg) {
-    		Intent intent = new Intent(getApplicationContext(), AuthenticationActivityGroup.class);
-        	intent.putExtra("org.tiqr.rawChallenge", ((Result)msg.obj).getText());
-        	intent.putExtra("org.tiqr.protocolVersion", "2");
-        	startActivity(intent);
-        	activityDialog.cancel();
-		}
-    };
-    
-    private Handler _handleCaptureResultAsEnrollment = new Handler() {
-    	@Override
-		public void handleMessage(Message msg) {
-    		Intent intent = new Intent(getApplicationContext(), EnrollmentActivityGroup.class);
-        	intent.putExtra("org.tiqr.rawChallenge", ((Result)msg.obj).getText());
-        	intent.putExtra("org.tiqr.protocolVersion", "2");
-        	startActivity(intent);
-        	activityDialog.cancel();
-    	}
-    };
-
 	public void handleInactivity() {
 		// TODO Auto-generated method stub
 		TextView statusView = (TextView) findViewById(R.id.status_view);
 		statusView.setVisibility(View.VISIBLE);
 	}
+
+    /**
+     * Parse authentication challenge and start authentication process.
+     *
+     * @param challenge
+     */
+    private void _authenticate(String challenge) {
+        _authenticationService.parseAuthenticationChallenge(challenge, new AuthenticationService.OnParseAuthenticationChallengeListener() {
+            @Override
+            public void onParseAuthenticationChallengeSuccess(AuthenticationChallenge challenge) {
+                activityDialog.cancel();
+                Intent intent = new Intent(getApplicationContext(), AuthenticationActivityGroup.class);
+                intent.putExtra("org.tiqr.challenge", challenge);
+                intent.putExtra("org.tiqr.protocolVersion", "2");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onParseAuthenticationChallengeError(ParseAuthenticationChallengeError error) {
+                activityDialog.cancel();
+
+                new AlertDialog.Builder(CaptureActivity.this)
+                        .setTitle(error.getTitle())
+                        .setMessage(error.getMessage())
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok_button, null)
+                        .show();
+            }
+        });
+    }
+
+    /**
+     * Parse enrollment challenge and start enrollment process.
+     *
+     * @param challenge
+     */
+    private void _enroll(String challenge) {
+        _enrollmentService.parseEnrollmentChallenge(challenge, new EnrollmentService.OnParseEnrollmentChallengeListener() {
+            @Override
+            public void onParseEnrollmentChallengeSuccess(EnrollmentChallenge challenge) {
+                activityDialog.cancel();
+                Intent intent = new Intent(getApplicationContext(), EnrollmentActivityGroup.class);
+                intent.putExtra("org.tiqr.challenge", challenge);
+                intent.putExtra("org.tiqr.protocolVersion", "2");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onParseEnrollmentChallengeError(ParseEnrollmentChallengeError error) {
+                activityDialog.cancel();
+
+                new AlertDialog.Builder(CaptureActivity.this)
+                        .setTitle(error.getTitle())
+                        .setMessage(error.getMessage())
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok_button, null)
+                        .show();
+            }
+        });
+    }
 }

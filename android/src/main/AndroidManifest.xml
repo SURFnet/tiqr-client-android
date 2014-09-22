@@ -60,9 +60,6 @@
         <activity android:name=".authentication.AuthenticationFallbackActivity"
             android:screenOrientation="portrait">
         </activity>
-		<activity android:name=".identity.IdentityActivityGroup"
-			android:screenOrientation="portrait">
-		</activity>
 		<activity android:name=".identity.IdentityAdminActivity"
 			android:screenOrientation="portrait"
 			android:label="@string/identity_title">

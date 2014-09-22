@@ -12,8 +12,8 @@ import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 
-import org.tiqr.data.NotificationService;
-import org.tiqr.data.Prefs;
+import org.tiqr.service.notification.NotificationService;
+import org.tiqr.service.notification.Prefs;
 
 import javax.inject.Inject;
 

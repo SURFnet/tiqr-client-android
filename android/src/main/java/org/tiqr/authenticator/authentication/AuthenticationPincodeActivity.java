@@ -10,8 +10,8 @@ import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
-import org.tiqr.data.AuthenticationError;
-import org.tiqr.data.AuthenticationService;
+import org.tiqr.service.authentication.AuthenticationError;
+import org.tiqr.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
 
