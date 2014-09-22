@@ -1,51 +1,59 @@
 package org.tiqr.authenticator.auth;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
-
-import org.tiqr.R;
-import org.tiqr.authenticator.datamodel.Identity;
-import org.tiqr.authenticator.datamodel.IdentityProvider;
-import org.tiqr.authenticator.exceptions.UserException;
-
-import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Represents an authentication challenge.
  */
-public class AuthenticationChallenge extends Challenge
-{
+public class AuthenticationChallenge extends Challenge implements Parcelable {
     private String _sessionKey;
     private String _challenge;
     private String _serviceProviderDisplayName;
     private String _serviceProviderIdentifier;
 
-	/**
-     * Constructs a new authentication challenge with the given raw challenge.
-     * 
-     * The raw challenge is immediately parsed, an exception is thrown when an error occurs.
-     * 
-     * @param rawChallenge raw challenge
-     * @param context      Android context
-     * 
-     * @throws Exception
-     */
-    public AuthenticationChallenge(String rawChallenge, Context context, String protocolVersion) throws UserException
-    {
-        super(rawChallenge, context, protocolVersion, true);
-    }
-    
     /**
-     * Sets the identity (this can be necessary if initially the user needs to choose one
-     * from several identities).
+     * Factory.
      */
-    public void setIdentity(Identity identity)
-    {
-        _setIdentity(identity);
+    public static final Creator<AuthenticationChallenge> CREATOR = new Creator<AuthenticationChallenge>() {
+        public AuthenticationChallenge createFromParcel(Parcel source) {
+            return new AuthenticationChallenge(source);
+        }
+
+        public AuthenticationChallenge[] newArray(int size) {
+            return new AuthenticationChallenge[size];
+        }
+    };
+
+    /**
+     * Constructor.
+     */
+    public AuthenticationChallenge() {
     }
-    
+
+    /**
+     * Constructor.
+     */
+    private AuthenticationChallenge(Parcel source) {
+        super(source);
+        _sessionKey = source.readString();
+        _challenge = source.readString();
+        _serviceProviderDisplayName = source.readString();
+        _serviceProviderIdentifier = source.readString();
+    }
+
+    /**
+     * Export to parcel.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(_sessionKey);
+        dest.writeString(_challenge);
+        dest.writeString(_serviceProviderDisplayName);
+        dest.writeString(_serviceProviderIdentifier);
+    }
+
     /**
      * The session key for this challenge.
      * 
@@ -55,7 +63,17 @@ public class AuthenticationChallenge extends Challenge
     {
         return _sessionKey;
     }
-    
+
+    /**
+     * Sets the session key for this challenge.
+     *
+     * @param sessionKey session key
+     */
+    public void setSessionKey(String sessionKey)
+    {
+        _sessionKey = sessionKey;
+    }
+
     /**
      * The authentication challenge, used to verify the request (not to be confused with the
      * raw challenge!).
@@ -65,6 +83,17 @@ public class AuthenticationChallenge extends Challenge
     public String getChallenge()
     {
         return _challenge;
+    }
+
+    /**
+     * Sets the authentication challenge, used to verify the request (not to be confused with the
+     * raw challenge!).
+     *
+     * @param challenge authentication challenge
+     */
+    public void setChallenge(String challenge)
+    {
+        _challenge = challenge;
     }
     
     /**
@@ -76,8 +105,10 @@ public class AuthenticationChallenge extends Challenge
 		return _serviceProviderDisplayName;
 	}
 
-	/** 
-	 * @param String the service provider display name to set
+	/**
+     * Sets the service provider display name.
+     *
+	 * @param serviceProviderDisplayName the service provider display name to set
 	 */
 	public void setServiceProviderDisplayName(String serviceProviderDisplayName) {
 		_serviceProviderDisplayName = serviceProviderDisplayName;
@@ -93,89 +124,11 @@ public class AuthenticationChallenge extends Challenge
 	}
 
 	/**
-	 * @param String the service provider identifier to set
+     * Sets the service provider identifier.
+     *
+	 * @param serviceProviderIdentifier The service provider identifier to set
 	 */
 	public void setServiceProviderIdentifier(String serviceProviderIdentifier) {
 		_serviceProviderIdentifier = serviceProviderIdentifier;
 	}
-    
-    /**
-     * Parses the raw authentication challenge.
-     * 
-     * @throws Exception
-     */
-    @Override
-    protected void _parseRawChallenge() throws UserException
-    {
-        if (!_getRawChallenge().startsWith("tiqrauth://")) {
-            throw new UserException(_getString(R.string.error_auth_invalid_qr_code));
-        }
-        
-        URL url;
-        
-        try {
-            url = new URL(_getRawChallenge().replaceFirst("tiqrauth://", "http://"));
-        }
-        catch (MalformedURLException ex) {
-            throw new UserException(_getString(R.string.error_auth_invalid_qr_code));
-        }
-        
-        String[] pathComponents = url.getPath().split("/");
-        if (pathComponents.length < 3) {
-            throw new UserException(_getString(R.string.error_auth_invalid_qr_code));
-        }
-        
-        IdentityProvider ip = _getDbAdapter().getIdentityProviderByIdentifierAsObject(url.getHost());
-        if (ip == null) {
-            throw new UserException(_getString(R.string.error_auth_unknown_identity_provider));
-        }
-        
-        _setIdentityProvider(ip);
-        
-        Identity identity = null;
-        
-        if (url.getUserInfo() != null) {
-            identity = _getDbAdapter().getIdentityByIdentifierAndIdentityProviderIdAsObject(url.getUserInfo(), ip.getId());
-            if (identity == null) {
-                throw new UserException(_getString(R.string.error_auth_unknown_identity));
-            }
-            
-        } else {
-            Identity[] identities = _getDbAdapter().findIdentitiesByIdentityProviderIdAsObjects(ip.getId());
-            
-            if (identities == null || identities.length == 0) {
-                throw new UserException(_getString(R.string.error_auth_no_identities_for_identity_provider));
-            }
-            
-            identity = identities.length == 1 ? identities[0] : null;
-        }
-        
-        _setIdentity(identity);
-        
-        _sessionKey = pathComponents[1];
-        _challenge = pathComponents[2];
-        
-        if (pathComponents.length > 3) {
-        	_serviceProviderDisplayName = pathComponents[3];
-        } else {
-        	_serviceProviderDisplayName = _getString(R.string.unknown);
-        }
-        _serviceProviderIdentifier = "";
-        
-        if (pathComponents.length > 4) {
-            _setProtocolVersion(pathComponents[4]);
-        } else {
-            // v1 qr without protocol version identifier
-            _setProtocolVersion("1");
-        }
-        
-        String returnURL = url.getQuery() == null || url.getQuery().length() == 0 ? null : url.getQuery();
-        if (returnURL != null && returnURL.matches("^http(s)?://.*")) {
-            try {
-                _setReturnURL(URLDecoder.decode(returnURL, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                // never happens...
-            }
-        }
-    }
 }
