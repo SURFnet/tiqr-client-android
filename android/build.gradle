@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
-        minSdkVersion 8
-        targetSdkVersion 20
+        minSdkVersion 14
+        targetSdkVersion 19
     }
 
     buildTypes {
@@ -24,4 +24,6 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
 
     compile project(':shared')
+
+    compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
 }

@@ -2,11 +2,13 @@ package org.tiqr.authenticator.datamodel;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Simple wrapper class for services.
  */
-public class IdentityProvider {
+public class IdentityProvider implements Parcelable {
     private long _id = -1;
     private String _identifier;
     private String _displayName;
@@ -19,6 +21,62 @@ public class IdentityProvider {
     // The default version is compatible with old moby dick servers that don't specify a
     // suite. Default is to use an SHA1 hash
     public final static String DEFAULT_OCRA_SUITE = "OCRA-1:HOTP-SHA1-6:QN10";
+
+    /**
+     * Factory.
+     */
+    public static final Parcelable.Creator<IdentityProvider> CREATOR = new Parcelable.Creator<IdentityProvider>() {
+        public IdentityProvider createFromParcel(Parcel source) {
+            return new IdentityProvider(source);
+        }
+
+        public IdentityProvider[] newArray(int size) {
+            return new IdentityProvider[size];
+        }
+    };
+
+    /**
+     * Constructor.
+     */
+    public IdentityProvider() {
+    }
+
+    /**
+     * Constructor.
+     */
+    private IdentityProvider(Parcel source) {
+        _id = source.readLong();
+        _identifier = source.readString();
+        _displayName = source.readString();
+        _logoData = source.createByteArray();
+        _logoBitmap = source.readParcelable(Bitmap.class.getClassLoader());
+        _authenticationURL = source.readString();
+        _infoURL = source.readString();
+        _ocraSuite = source.readString();
+    }
+
+    /**
+     * Describe.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Export to parcel.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(_id);
+        dest.writeString(_identifier);
+        dest.writeString(_displayName);
+        dest.writeByteArray(_logoData);
+        dest.writeParcelable(_logoBitmap, 0);
+        dest.writeString(_authenticationURL);
+        dest.writeString(_infoURL);
+        dest.writeString(_ocraSuite);
+    } 
 
     /**
      * Is this a new service?
@@ -149,7 +207,7 @@ public class IdentityProvider {
      * @param String the info URL for the Identity Provider
      */
     public void setInfoURL(String _infoURL) {
-        this._infoURL = _infoURL;
+        _infoURL = _infoURL;
     }
 
     /**

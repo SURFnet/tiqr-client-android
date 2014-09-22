@@ -21,6 +21,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Dependency injection
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+
     compile project(':shared')
+
     compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
+    compile 'me.dm7.barcodescanner:zbar:1.5'
 }

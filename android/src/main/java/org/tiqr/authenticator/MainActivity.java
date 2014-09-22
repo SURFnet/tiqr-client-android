@@ -3,7 +3,7 @@ package org.tiqr.authenticator;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
-import org.tiqr.data.NotificationService;
+import org.tiqr.service.notification.NotificationService;
 
 import android.content.Intent;
 import android.os.Bundle;

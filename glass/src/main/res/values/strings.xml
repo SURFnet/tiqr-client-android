@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tiqr</string>
+
+    <string name="authentication_confirmation_message">Are you sure you want to login as %1$s for %2$s?</string>
+    <string name="authentication_confirmation_tap">Tap to login</string>
+    <string name="authentication_summary_message">You\'ve been successfully logged in as %1$s for %2$s</string>
+
+    <string name="enrollment_confirmation_message">Are you sure you want to enroll as %1$s for %2$s?</string>
+    <string name="enrollment_confirmation_tap">Tap to enroll</string>
+    <string name="enrollment_summary_message">You\'ve been successfully enrolled as %1$s for %2$s</string>
 </resources>

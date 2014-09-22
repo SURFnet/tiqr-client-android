@@ -9,7 +9,7 @@ import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractConfirmationActivity;
-import org.tiqr.data.AuthenticationService;
+import org.tiqr.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
 

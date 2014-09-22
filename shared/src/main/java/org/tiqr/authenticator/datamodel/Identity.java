@@ -1,16 +1,70 @@
 package org.tiqr.authenticator.datamodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Identity wrapper class for identities.
  */
-public class Identity
-{
+public class Identity implements Parcelable {
     private long _id = -1;
     private String _identifier;
     private String _displayName;
     private int _sortIndex = 0;
     private boolean _blocked = false;
-    
+
+    /**
+     * Factory.
+     */
+    public static final Parcelable.Creator<Identity> CREATOR = new Parcelable.Creator<Identity>() {
+        public Identity createFromParcel(Parcel source) {
+            return new Identity(source);
+        }
+
+        public Identity[] newArray(int size) {
+            return new Identity[size];
+        }
+    };
+
+    /**
+     * Constructor.
+     */
+    public Identity() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param source
+     */
+    private Identity(Parcel source) {
+        _id = source.readLong();
+        _identifier = source.readString();
+        _displayName = source.readString();
+        _sortIndex = source.readInt();
+        _blocked = source.readByte() != 0;
+    }
+
+    /**
+     * Describe.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Export to parcel.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(_id);
+        dest.writeString(_identifier);
+        dest.writeString(_displayName);
+        dest.writeInt(_sortIndex);
+        dest.writeByte(_blocked ? (byte) 1 : (byte) 0);
+    }
+
     /**
      * Is this a new service?
      * 
@@ -106,7 +160,7 @@ public class Identity
 	/**
 	 * Block (or unblock) a user
 	 * 
-	 * @param boolean blocked or not
+	 * @param blocked blocked or not
 	 */
 	public void setBlocked(boolean blocked) {
 		_blocked = blocked;
@@ -119,5 +173,5 @@ public class Identity
 	 */
 	public boolean isBlocked() {
 		return _blocked;
-	}    
+	}
 }

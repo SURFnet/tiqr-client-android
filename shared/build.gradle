@@ -1,24 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 20
+        minSdkVersion 14
+        targetSdkVersion 19
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Dependency injection
     compile 'com.squareup.dagger:dagger:1.2.+'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
-
-    // Version 3.0.x of zxing core contains some code that is not compatible on Android 2.2 and earlier.
-    // This mostly affects encoding, but you should test if you plan to support these versions.
-    // Older versions e.g. 2.2 may also work if you need support for older Android versions.
     compile 'com.google.zxing:core:3.0.1'
 }

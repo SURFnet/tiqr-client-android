@@ -1,6 +1,5 @@
 package org.tiqr.authenticator.enrollment;
 
-import android.app.ActivityGroup;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,14 +9,11 @@ import android.widget.TextView;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
-import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
-import org.tiqr.authenticator.authentication.AuthenticationFallbackActivity;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
-import org.tiqr.data.AuthenticationError;
-import org.tiqr.data.EnrollmentError;
-import org.tiqr.data.EnrollmentService;
+import org.tiqr.service.enrollment.EnrollmentError;
+import org.tiqr.service.enrollment.EnrollmentService;
 
 import javax.inject.Inject;
 
