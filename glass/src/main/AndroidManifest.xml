@@ -30,6 +30,7 @@
 
         <activity android:name=".general.ErrorActivity"></activity>
 
+        <activity android:name=".authentication.AuthenticationIdentitySelectActivity"></activity>
         <activity android:name=".authentication.AuthenticationConfirmationActivity"></activity>
         <activity android:name=".authentication.AuthenticationSummaryActivity"></activity>
 
