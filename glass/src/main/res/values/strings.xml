@@ -4,6 +4,7 @@
 
     <string name="authentication_confirmation_message">Are you sure you want to login as %1$s for %2$s?</string>
     <string name="authentication_confirmation_tap">Tap to login</string>
+    <string name="authentication_identity_select_footnote">Tap to login</string>
     <string name="authentication_summary_message">You\'ve been successfully logged in as %1$s for %2$s</string>
 
     <string name="enrollment_confirmation_message">Are you sure you want to enroll as %1$s for %2$s?</string>
