@@ -165,22 +165,13 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
     public void handleDecode(final Result rawResult, Bitmap barcode)
     {
         activityDialog = ActivityDialog.show(this);
+        beepManager.playBeepSoundAndVibrate();
 
-    	boolean success = false;
         String rawChallenge = rawResult.getText();
-
-        if (_authenticationService.isAuthenticationChallenge(rawChallenge)) {
-            success = true;
-            _authenticate(rawChallenge);
-        } else if (_enrollmentService.isEnrollmentChallenge(rawChallenge)) {
-            success = true;
+        if (_enrollmentService.isEnrollmentChallenge(rawChallenge)) {
             _enroll(rawChallenge);
-        }
-
-        if (success) {
-            beepManager.playBeepSoundAndVibrate();
         } else {
-
+            _authenticate(rawChallenge);
         }
     }
 
