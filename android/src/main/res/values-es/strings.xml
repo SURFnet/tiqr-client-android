@@ -30,7 +30,7 @@
   <string name="identifier_label">Identificador de usuario:</string>
   <string name="fallback_identifier_label">Sus identificadores:</string>
   <string name="note_pin_not_verified_title">Nota: aún no se ha verificado su PIN.</string>
-  <string name="note_pin_not_verified">Si no puede acceder con las credenciales mostradas arriba,⏎vuelva a escanear y entre el PIN correcto.</string>
+  <string name="note_pin_not_verified">Si no puede acceder con las credenciales mostradas arriba,\nvuelva a escanear y entre el PIN correcto.</string>
   <string name="otp_label">Clave de un solo uso:</string>
   <string name="return_button">Volver</string>
   <string name="unknown">Ni idea</string>
@@ -73,7 +73,8 @@
   <string name="powered_by_title">Las \"pilas\" son:</string>
   <string name="interaction_by_title">Interfaz de usuario:</string>
   <string name="acknowledgements_title">Agradecimientos:</string>
-  <string name="acknowledgements"></string>
+  <string name="acknowledgements"> ZXing -&lt;a href="http://code.google.com/p/zxing/"&gt;http://code.google.com/p/zxing/&lt;/a&gt;
+ Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</string>
   <string name="msg_default_status">Enfoque un código QR en el rectángulo para escanearlo.</string>
   <string name="authentication_confirmation_title">¿Está seguro que quiere acceder?</string>
   <string name="authentication_confirmation_description">Accederá como:</string>
@@ -94,17 +95,20 @@
   <string name="error_auth_invalid_account_message">Ha intentado acceder con una cuenta desconocida o errónea. Por favor, (re-)active su cuenta.</string>
   <string name="error_auth_account_blocked_title">Cuenta bloqueada.</string>
   <string name="error_auth_account_blocked_message">Esta cuenta no se puede usar más.</string>
+  <string name="error_auth_account_blocked_temporary_title">Esta cuenta ha sido bloqueada temporalmente.</string>
+  <string name="error_auth_account_blocked_temporary_message">Esta cuenta ha sido bloqueada por %d minutos.</string>
   <string name="error_auth_invalid_challenge_title">Código QR inválido</string>
   <string name="error_auth_invalid_challenge_message">El código QR no es válido o ha expirado. Por favor, vuelva a intentarlo.</string>
   <string name="error_auth_invalid_request_title">Petición errónea.</string>
   <string name="error_auth_invalid_request_message">El servidor no reconoce la petición de acceso. Por favor, busque ayuda.</string>
   <string name="error_auth_wrong_pin">PIN erróneo</string>
+  <string name="error_auth_infinite_attempts_left">Proporcionó un PIN incorrecto. Por favor introduzca su PIN nuevamente. Use el icono de verificación para el último dígito.</string>
   <string name="error_auth_x_attempts_left" formatted="false">Ha proporcionado un PIN incorrecto. Le quedan %d intentos. Por favor, vuelva a introducir su PIN. Compruebe el último dígito del icono de verificación. </string>
   <string name="error_auth_one_attempt_left">Solo le queda un intento. Si vuelve a usar un PIN incorrecto se bloquearán todas las cuentas en este dispositivo.</string>
   <string name="error_auth_server_incompatible">El servidor es incompatible con esta versión de tiqr.</string>
   <string name="enrollment_confirmation_header_title">Acctivación de la cuenta</string>
   <string name="enrollment_confirmation_title">Confirme la activación de la cuenta</string>
-  <string name="enrollment_confirmation_description">¿Quiere activar la cuenta siguiente?</string>
+  <string name="enrollment_confirmation_description">¿Desea activar la siguiente cuenta?</string>
   <string name="enrollment_success_title">Registrado con éxito</string>
   <string name="enrollment_success_message" formatted="false">Se ha registrado con éxito como %s para %s</string>
   <string name="enrollment_failure_title">Registro fallido</string>
@@ -119,7 +123,27 @@
   <string name="error_enroll_failed_to_generate_secret">No se ha podido generar el secreto. Mejor pida ayuda.</string>
   <string name="error_device_incompatible_with_security_standards">El dispositivo no es compatible con los requisitos de seguridad.</string>
   <string name="provided_by">proporcionado por:</string>
-  <string name="main_text_welcome"></string>
-  <string name="main_text_instructions">Vaya al servicio al que quiere acceder y siga estos pasos: <ul> <li>Escanee el código QR en la página de entrada de la web o servicio.</li> <li><i>Si tiene múltiples identidades, seleccione su identidad.</i></li> <li>Confirme su identidad (deberá introducir su PIN).</li> <li>¡Ha accedido!</li> </ul> Pulse <b>Escanear</b> para iniciar el proceso de acceso.</string>
+  <string name="main_text_welcome">
+    <Data><![CDATA[<html><body>Mediante tiqr puede usar su <i>smartphone</i> para acceder de manera fácil y segura⏎
+a distintos sitios web. <br />⏎
+<br />⏎
+La aplicación aún no tiene una cuenta activa. Necesita una ⏎
+cuenta activa para usar tiqr. Puede encontrar una lista de los proveedores de identidad ⏎
+en <a href=\"https://tiqr.org\">tiqr.org</a>. <br />⏎
+<br />⏎
+Tras registrarse, recibirá un código de activación e instrucciones para ⏎
+activar su cuenta. Durante el proceso de activación necesitará escanear ⏎
+un código QR. Pulse <b>Escanear</b> si es requerido.</body></html> ]]> </Data>
+  </string>
+  <string name="main_text_instructions">
+    <Data><![CDATA[<html><body>Vaya al sitio web al que quiere acceder y siga los siguientes pasos: <ul>⏎
+<li>Escanee el código QR en la pantalla de acceso del sitio web o servicio.</li>⏎
+<li>⏎
+<i>Si tiene múltiples identidades, seleccione la que desee utilizar.</i>⏎
+</li>⏎
+<li>Confirme su identidad (se requerirá introducir su PIN).</li>⏎
+<li>¡Ya estará dentro!</li>⏎
+</ul>Pulse <b>Escanear</b> para comenzar el proceso de acceso.</body></html> ]]> </Data>
+  </string>
   <string name="main_text_blocked"><b>¿Y ahora qué?</b><br></br> Pida un nuevo código de activación a su(s) proveedor(es) de identidad. Para localizar su(s) proveedor(es) de identidad, compruebe sus identidades (disponibles en la parte superior derecha). <br></br><br></br> Recibirá instrucciones para reactivar su cuenta junto al nuevo código de activación. Pulse <b>Escanear</b> si se le pide.</string>
 </resources>
