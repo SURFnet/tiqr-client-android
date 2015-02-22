@@ -35,7 +35,9 @@
   <string name="return_button">Inapoi</string>
   <string name="unknown">Necunoscut</string>
   <string name="unknown_error">Eroare necunoscuta</string>
-  <string name="no_identities">Nu aveti date de autentificare inca. \n\nApasati butonul <b>menu</b> pentru a adauga o identitate.</string>
+  <string name="no_identities">Nu aveti date de autentificare inca.
+
+Apasati butonul <b>menu</b> pentru a adauga o identitate.</string>
   <string name="to_service_provider">catre:</string>
   <string name="for_identity_provider">Pentru:</string>
   <string name="confirm_authentication">Sunteti sigur ca vreti sa va autentificati?</string>
@@ -64,7 +66,8 @@
   <string name="choose_password_title">Va rugam sa alegeti un cod PIN</string>
   <string name="choose_password_intro">Va rugam sa alegeti un cod PIN pentru a securiza aceasta identitate.</string>
   <string name="passwords_dont_match_title">Codurile PIN nu sunt aceleasi</string>
-  <string name="passwords_dont_match">Codurile PIN introduse nu sunt aceleasi. Incercati din nou.\nAlegeti un cod PIN pe care vi-l puteti aminti.</string>
+  <string name="passwords_dont_match">Codurile PIN introduse nu sunt aceleasi. Incercati din nou.
+Alegeti un cod PIN pe care vi-l puteti aminti.</string>
   <string name="password_incorrect">Cod PIN incorect.</string>
   <string name="enrolling">Inregistrare</string>
   <string name="authenticating">Autentificare</string>
@@ -73,13 +76,16 @@
   <string name="powered_by_title">Powered by:</string>
   <string name="interaction_by_title">Design-ul interactiunii:</string>
   <string name="acknowledgements_title">Multumiri:</string>
-  <string name="acknowledgements"></string>
+  <string name="acknowledgements">ZXing -&lt;a href="http://code.google.com/p/zxing/"&gt;http://code.google.com/p/zxing/&lt;/a&gt; 
+Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</string>
   <string name="msg_default_status">Plasati un cod QR inauntrul dreptunghiului pentru scanare.</string>
   <string name="authentication_confirmation_title">Sunteti sigur ca vreti sa va autentificati?</string>
   <string name="authentication_confirmation_description">Veti fi autentificat drept:</string>
   <string name="authentication_pincode_title">Autentificare:</string>
   <string name="authentication_fallback_title">Apareti a fi deconectat.</string>
-  <string name="authentication_fallback_description">Nu va faceti griji! Apasati codul QR pe \nsite-ul web. Veti fi rugat sa introduceti \nurmatoarele informatii de acreditare de singura folosinta:</string>
+  <string name="authentication_fallback_description">Nu va faceti griji! Apasati codul QR pe
+site-ul web. Veti fi rugat sa introduceti
+urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="error_auth_invalid_qr_code">Cod QR de autentificare invalid.</string>
   <string name="error_auth_unknown_identity_provider">Furnizor de identitate necunoscuta; va rugam inregistrati-va mai intai.</string>
   <string name="error_auth_unknown_identity">Identitate necunoscuta pt serviciu; va rugam inregistrati-va mai intai.</string>
@@ -94,17 +100,20 @@
   <string name="error_auth_invalid_account_message">Ati incercat sa va autentificati cu un cont invalid sau necunoscut. Va rugam (re)activati contul dumneavoastra mai intai.</string>
   <string name="error_auth_account_blocked_title">Cont blocat</string>
   <string name="error_auth_account_blocked_message">Acest cont nu mai poate fi folosit.</string>
+  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+  <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
   <string name="error_auth_invalid_challenge_title">Provocare invalida.</string>
   <string name="error_auth_invalid_challenge_message">Codul QR scanat este invalid sau a expirat. Va rugam incercati din nou.</string>
   <string name="error_auth_invalid_request_title">Cerere invalida</string>
   <string name="error_auth_invalid_request_message">Serverul nu recunoaste cererea de autentificare. Va rugam contactati echipa de suport.</string>
   <string name="error_auth_wrong_pin">Cod PIN gresit</string>
+  <string name="error_auth_infinite_attempts_left">Ati furnizat un cod PIN incorect. Va rugam introduceti codul dumneavoastra PIN din nou. Controlati icon-ul de verificare pentru ultima cifra.</string>
   <string name="error_auth_x_attempts_left" formatted="false">Ati furnizat un cod PIN incorect. Mai aveti %d incercari. Va rugam introduceti codul dumneavoastra PIN din nou. Controlati icon-ul de verificare pentru ultima cifra.</string>
   <string name="error_auth_one_attempt_left">Mai aveti o singura incercare. Daca introduceti un cod PIN incorect din nou, toate conturile de pe acest dispozitiv vor fi blocate.</string>
   <string name="error_auth_server_incompatible">Serverul este incompatibil cu versiunea de tiqr.</string>
   <string name="enrollment_confirmation_header_title">Activarea contului</string>
   <string name="enrollment_confirmation_title">Confirmati activarea contului</string>
-  <string name="enrollment_confirmation_description">Doriti sa activati ⏎urmatorul cont?</string>
+  <string name="enrollment_confirmation_description">Vrei sa activezi urmatorul cont?</string>
   <string name="enrollment_success_title">Inregistrare reusita.</string>
   <string name="enrollment_success_message" formatted="false">Ati fost inregistrat cu succes drept %s pentru %s</string>
   <string name="enrollment_failure_title">Inregistrare esuata</string>
@@ -119,7 +128,11 @@
   <string name="error_enroll_failed_to_generate_secret">Generarea identitatii secrete a esuat. Va rugam sa contactati echipa de suport.</string>
   <string name="error_device_incompatible_with_security_standards">Dispozitivul nu este compatibil cu standardele de securitate necesare.</string>
   <string name="provided_by">furnizat de catre:</string>
-  <string name="main_text_welcome"></string>
-  <string name="main_text_instructions">Navigati la site-ul web la care vreti sa va autentificati si urmati acesti pasi: <ul> <li>Scanati codul QR de pe ecranul de autentificare al site-ului web ori al serviciului.</li><li><i>Daca aveti mai multe identitati, selectati identitatea dumneavoastra.</i></li><li>Confirmati identitatea dumneavoastra (va trebui sa introduceti codul dumneavoastra PIN).</li><li>Sunteti autentificati!</li></ul> Apasati <b>Scanare</b> pentru a incepe procesul de autentificare.</string>
+  <string name="main_text_welcome">
+    <Data><![CDATA[<html><body>Folosind tiqr, puteti folosi smartphone-ul dumneavoastra pentru a va autentifica usor si in siguranta pe mai multe site-uri web.<br/><br/>Aplicatia nu are inca un cont activ. Aveti nevoie de un cont activ pentru a folosi tiqr. Puteti gasi o lista a furnizorilor de identitate la <a href=\"https://tiqr.org\">tiqr.org</a>. <br/> <br/> Dupa inregistrare, veti primi un cod de activare si instructiuni pentru a va activa contul. In timpul acestui proces, va trebui sa scanati un cod QR. Apasati <b>Scaneaza</b> daca va este cerut.</body></html> ]]> </Data>
+  </string>
+  <string name="main_text_instructions">
+    <Data><![CDATA[<html><body>Navigati la site-ul web la care vreti sa va autentificati si urmati acesti pasi: <ul> <li>Scanati codul QR de pe ecranul de autentificare al site-ului web ori al serviciului.</li><li><i>Daca aveti mai multe identitati, selectati identitatea dumneavoastra.</i></li><li>Confirmati identitatea dumneavoastra (va trebui sa introduceti codul dumneavoastra PIN).</li><li>Sunteti autentificati!</li></ul> Apasati <b>Scanare</b> pentru a incepe procesul de autentificare.</body></html> ]]> </Data>
+  </string>
   <string name="main_text_blocked"><b>Ce urmeaza?</b><br></br>Intrebati providerul(i) dumneavoastra de identitate pentru un nou cod de activare. Pentru un link spre providerul(i) dumneavoastra de identitate varificati identitatile dumneavoastra (accesibile in coltul din dreapta sus).<br></br><br></br>Alaturi de noul cod de activare al dumneavoastra, veti primi instructiuni pentru reactivarea contului. Apasati <b>Scanare</b> daca va este cerut.</string>
 </resources>
