@@ -6,6 +6,8 @@ import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.View;
@@ -62,7 +64,20 @@ public class IdentityDetailActivity extends Activity
 			
 			@Override
 			public void onClick(View v) {
-				_deleteIdentity();
+                new AlertDialog.Builder(IdentityDetailActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.delete_confirm_title)
+                        .setMessage(R.string.delete_confirm)
+                        .setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                _deleteIdentity();
+                            }
+
+                        })
+                        .setNegativeButton(R.string.cancel_button, null)
+                        .show();
 			}
 		});
         

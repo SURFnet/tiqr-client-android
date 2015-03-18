@@ -4,6 +4,8 @@ import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.qr.CaptureActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
@@ -83,11 +85,24 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) 
     {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.delete:
-                _db.deleteIdentity(info.id);
-                getIdentityCursor().requery();
+                new AlertDialog.Builder(IdentityAdminActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.delete_confirm_title)
+                        .setMessage(R.string.delete_confirm)
+                        .setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                _db.deleteIdentity(info.id);
+                                getIdentityCursor().requery();
+                            }
+
+                        })
+                        .setNegativeButton(R.string.cancel_button, null)
+                        .show();
                 return true;
             default:
                 return super.onContextItemSelected(item);

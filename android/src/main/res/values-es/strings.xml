@@ -27,6 +27,8 @@
   <string name="ok_button">OK</string>
   <string name="retry_button">Reintentar</string>
   <string name="delete_button">Borrar</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">Identificador de usuario:</string>
   <string name="fallback_identifier_label">Sus identificadores:</string>
   <string name="note_pin_not_verified_title">Nota: aún no se ha verificado su PIN.</string>

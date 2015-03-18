@@ -28,6 +28,8 @@ en moat op ‘e nij aktiveart wurde.</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Op ‘e nij</string>
   <string name="delete_button">Fuortsmite</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">Brûkers ID:</string>
   <string name="fallback_identifier_label">Jo brûkers ID is:</string>
   <string name="note_pin_not_verified_title">Opmerking: jo PIN is noch net ferifieart.</string>

@@ -27,6 +27,8 @@
   <string name="ok_button">OK</string>
   <string name="retry_button">Forsøk igjen</string>
   <string name="delete_button">Slett</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">Bruker ID:</string>
   <string name="fallback_identifier_label">Din ID er:</string>
   <string name="note_pin_not_verified_title">Merk: pinkoden er ikke verifisert ennå.</string>
