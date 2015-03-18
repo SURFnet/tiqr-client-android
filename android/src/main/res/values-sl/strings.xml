@@ -27,6 +27,8 @@
   <string name="ok_button">OK</string>
   <string name="retry_button">Poskusi znova</string>
   <string name="delete_button">Izbriši</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">Uporabniški ID:</string>
   <string name="fallback_identifier_label">Vaš ID je:</string>
   <string name="note_pin_not_verified_title">Opomba: Vaš PIN še ni bil preverjen.</string>

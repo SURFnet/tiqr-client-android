@@ -27,6 +27,8 @@
   <string name="ok_button">OK</string>
   <string name="retry_button">リトライ</string>
   <string name="delete_button">削除</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">ユーザID：</string>
   <string name="fallback_identifier_label">あなたのIDは：</string>
   <string name="note_pin_not_verified_title">注：あなたのPINはまだ確認されていません</string>

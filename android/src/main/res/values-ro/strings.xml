@@ -27,6 +27,8 @@
   <string name="ok_button">OK</string>
   <string name="retry_button">Reincearca</string>
   <string name="delete_button">Sterge</string>
+  <string name="delete_confirm_title">Are you sure?</string>
+  <string name="delete_confirm">This account can no longer be used when deleted.</string>
   <string name="identifier_label">ID-ul utilizatorului:</string>
   <string name="fallback_identifier_label">ID-ul dumneavoastra ese:</string>
   <string name="note_pin_not_verified_title">Nota: PIN-ul dumneavoastra nu a fost verificat inca.</string>
