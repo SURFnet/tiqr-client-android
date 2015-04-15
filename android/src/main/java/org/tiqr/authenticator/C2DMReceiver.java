@@ -22,7 +22,7 @@ import javax.inject.Inject;
  */
 public class C2DMReceiver extends C2DMBaseReceiver
 {
-    public static final String SENDER_ID = "aai-beheer@surfnet.nl";
+    public static final String SENDER_ID = "70645846943";
 
     protected @Inject NotificationService _notificationService;
 

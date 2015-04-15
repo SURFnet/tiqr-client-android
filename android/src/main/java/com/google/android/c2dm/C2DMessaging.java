@@ -36,6 +36,12 @@ public class C2DMessaging {
     public static final String BACKOFF = "backoff";
     public static final String GSF_PACKAGE = "com.google.android.gsf";
 
+    private static final String PROPERTY_GCM_REGISTRATION_VERSION = "gcm_registration_version";
+    private static final String PROPERTY_GCM_REGISTRATION_ID = "dm_registration";
+
+    // Increase the following number if there's an incompatible messaging API increase
+    // This will lead to the client requesting a new token at the next app start.
+    private static final int GCM_REGISTRATION_VERSION = 0;
 
     // package
     static final String PREFERENCE = "com.google.android.c2dm";
@@ -78,8 +84,15 @@ public class C2DMessaging {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCE,
                 Context.MODE_PRIVATE);
-        String registrationId = prefs.getString("dm_registration", "");
-        return registrationId;
+        Integer gcmVersion = prefs.getInt(PROPERTY_GCM_REGISTRATION_VERSION, -1);
+        if (GCM_REGISTRATION_VERSION != gcmVersion) {
+            // If the versions do not match, we can't use the existing.
+            // Transition at TokenExchange will be smooth this way, because the notificationToken property
+            // is stored separately. If there's a previous notification token, the server will update the device
+            // token for that one, and not create a new one.
+            return "";
+        }
+        return prefs.getString(PROPERTY_GCM_REGISTRATION_ID, "");
     }
 
     public static long getLastRegistrationChange(Context context) {
@@ -112,7 +125,7 @@ public class C2DMessaging {
                 PREFERENCE,
                 Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
-        editor.putString("dm_registration", "");
+        editor.putString(PROPERTY_GCM_REGISTRATION_ID, "");
         editor.putLong(LAST_REGISTRATION_CHANGE, System.currentTimeMillis());
         editor.commit();
 
@@ -124,7 +137,8 @@ public class C2DMessaging {
                 PREFERENCE,
                 Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
-        editor.putString("dm_registration", registrationId);
+        editor.putString(PROPERTY_GCM_REGISTRATION_ID, registrationId);
+        editor.putInt(PROPERTY_GCM_REGISTRATION_VERSION, GCM_REGISTRATION_VERSION);
         editor.commit();
 
     }
