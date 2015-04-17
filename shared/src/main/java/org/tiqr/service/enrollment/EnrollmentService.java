@@ -172,7 +172,7 @@ public class EnrollmentService {
                     nameValuePairs.add(new BasicNameValuePair("language", Locale.getDefault().getLanguage()));
                     String notificationAddress = _notificationService.getNotificationToken();
                     if (notificationAddress != null) {
-                        nameValuePairs.add(new BasicNameValuePair("notificationType", "C2DM"));
+                        nameValuePairs.add(new BasicNameValuePair("notificationType", "GCM"));
                         nameValuePairs.add(new BasicNameValuePair("notificationAddress", notificationAddress));
                     }
 
