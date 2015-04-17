@@ -56,12 +56,12 @@ public class MainActivity extends TiqrActivity
             String rawChallenge = intent.getDataString();
             if (rawChallenge.startsWith("tiqrauth://")) {
                 Intent authIntent = new Intent(this.getApplicationContext(), AuthenticationActivityGroup.class);
-                authIntent.putExtra("org.tiqr.rawChallenge", rawChallenge);
+                authIntent.putExtra("org.tiqr.challenge", rawChallenge);
                 authIntent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(authIntent);                
             } else if (rawChallenge.startsWith("tiqrenroll://")) {
                 Intent enrollIntent = new Intent(this.getApplicationContext(), EnrollmentActivityGroup.class);
-                enrollIntent.putExtra("org.tiqr.rawChallenge", rawChallenge);
+                enrollIntent.putExtra("org.tiqr.challenge", rawChallenge);
                 enrollIntent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(enrollIntent);
             }
