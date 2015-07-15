@@ -4,6 +4,8 @@ import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
+import org.tiqr.authenticator.general.FooterView;
+import org.tiqr.authenticator.general.HeaderView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +15,6 @@ import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class IdentityDetailActivity extends Activity
@@ -31,6 +32,15 @@ public class IdentityDetailActivity extends Activity
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.identity_detail);
+
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
         
         _db = new DbAdapter(this); 
         _setIdentityAndIdentityProvider();
@@ -41,13 +51,11 @@ public class IdentityDetailActivity extends Activity
         	TextView identity_provider_displayName = (TextView)findViewById(R.id.identity_provider_displayName);
         	TextView identity_provider_identifier = (TextView)findViewById(R.id.identity_provider_identifier);
         	TextView identity_provider_info_url = (TextView)findViewById(R.id.identity_provider_infoURL);
-        	ImageView identity_provider_logo = (ImageView)findViewById(R.id.identity_provider_logo);
         	
         	identity_displayName.setText(_identity.getDisplayName());
         	identity_identifier.setText(_identity.getIdentifier());        	
         	identity_provider_displayName.setText(_identityProvider.getDisplayName());
         	identity_provider_identifier.setText(_identityProvider.getIdentifier());
-            identity_provider_logo.setImageBitmap(_identityProvider.getLogoBitmap());
             identity_provider_info_url.setText(_identityProvider.getInfoURL());
             
             if (_identity.isBlocked()) {
@@ -80,7 +88,9 @@ public class IdentityDetailActivity extends Activity
                         .show();
 			}
 		});
-        
+
+        FooterView footerView = (FooterView)findViewById(R.id.fallbackFooterView);
+        footerView.hideInfoIcon();
     }
     
     /**

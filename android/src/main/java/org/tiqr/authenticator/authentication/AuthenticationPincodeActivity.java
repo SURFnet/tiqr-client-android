@@ -28,6 +28,11 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((Application)getApplication()).inject(this);
+
+        // Update the text.
+        title.setText(R.string.login_pin_title);
+        setIntoText(R.string.login_intro);
+        pintHint.setVisibility(View.GONE);
     }
 
     /**

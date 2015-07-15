@@ -1,21 +1,16 @@
 package org.tiqr.authenticator.general;
 
-import org.tiqr.authenticator.LoginDialog;
+import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.Challenge;
-import org.tiqr.authenticator.protection.SessionKeyAvailabilityListener;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -64,32 +59,51 @@ public abstract class AbstractConfirmationActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        requestWindowFeature(Window.FEATURE_PROGRESS);
-        
-        setContentView(_getLayoutResource());        
-      
+
+        setContentView(_getLayoutResource());
+
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
+
         TextView dn = (TextView)findViewById(R.id.display_name);
         dn.setText(_getChallenge().getIdentity().getDisplayName());
         
         TextView ipdn = (TextView)findViewById(R.id.identity_provider_name);
-        ipdn.setText(_getChallenge().getIdentityProvider().getDisplayName());
-        
-        ImageView i = (ImageView)findViewById(R.id.identity_provider_logo);
-        i.setImageBitmap(_getChallenge().getIdentityProvider().getLogoBitmap());
+        ipdn.setText(_getChallenge().getIdentity().getIdentifier());
           
         final Button ok = (Button)findViewById(R.id.confirm_button);
         
         if (ok != null) {
             ok.setOnClickListener(new OnClickListener() {  
-                public void onClick(View v) {  
-                    setProgressBarVisibility(true);
-                    
+                public void onClick(View v) {
                     ok.setEnabled(false);
-                    
                     _onDialogConfirm();
                 }  
             }); 
+        }
+
+        final Button cancel = (Button)findViewById(R.id.cancel_button);
+
+        if(cancel != null) {
+            cancel.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(AbstractConfirmationActivity.this, MainActivity.class));
+                    finish();
+                }
+            });
+        }
+
+        FooterView footer = (FooterView)findViewById(R.id.fallbackFooterView);
+
+        if(footer != null) {
+            footer.hideInfoIcon();
         }
     }
     
@@ -113,8 +127,8 @@ public abstract class AbstractConfirmationActivity extends Activity
     {
        TextView view = (TextView)findViewById(R.id.description);
        view.setText(resourceId);
-    }      
-    
+    }
+
     /**
      * Change the title of the OK button.
      * 
@@ -124,6 +138,17 @@ public abstract class AbstractConfirmationActivity extends Activity
     {
        Button ok = (Button)findViewById(R.id.confirm_button);
        ok.setText(resourceId);
+    }
+
+    /**
+     * Change the title of the CANCEL button.
+     *
+     * @param resourceId resource
+     */
+    public void setCancelButtonText(int resourceId)
+    {
+        Button ok = (Button)findViewById(R.id.cancel_button);
+        ok.setText(resourceId);
     }
         
     /**

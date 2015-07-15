@@ -2,11 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<WebView xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/webview" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+
+    <org.tiqr.authenticator.general.HeaderView
+        android:id="@+id/headerView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview" android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/headerView"
+        android:layout_above="@+id/scan_button"/>
+
+    <Button
+        android:id="@+id/scan_button"
+        style="@style/SurfnetPrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fallbackFooterView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:text="@string/scan_button"/>
+
 	<org.tiqr.authenticator.general.FooterView
 		android:id="@+id/fallbackFooterView" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_weight="1"
+		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"/>
 </RelativeLayout>

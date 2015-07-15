@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.tiqr.authenticator.general.HeaderView;
+
 /**
  * About screen.
  */
@@ -35,6 +37,15 @@ public class AboutActivity extends Activity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.about);
+
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
 
         ImageView logoSurfnet = (ImageView) findViewById(R.id.logo_surfnet);
         logoSurfnet.setOnClickListener(new View.OnClickListener() {

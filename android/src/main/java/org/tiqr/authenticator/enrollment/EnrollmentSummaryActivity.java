@@ -3,6 +3,8 @@ package org.tiqr.authenticator.enrollment;
 import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
+import org.tiqr.authenticator.general.FooterView;
+import org.tiqr.authenticator.general.HeaderView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,18 +22,18 @@ public class EnrollmentSummaryActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.enrollment_summary);
-		
-		
+
+		HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+		headerView.hideLeftButton();
+		headerView.hideRightButton();
+
 		AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
 		
 		TextView dn = (TextView)findViewById(R.id.display_name);
         dn.setText(parent.getChallenge().getIdentity().getDisplayName());
         
         TextView ipdn = (TextView)findViewById(R.id.identity_provider_name);
-        ipdn.setText(parent.getChallenge().getIdentityProvider().getDisplayName());
-        
-        ImageView i = (ImageView)findViewById(R.id.identity_provider_logo);
-        i.setImageBitmap(parent.getChallenge().getIdentityProvider().getLogoBitmap());
+        ipdn.setText(parent.getChallenge().getIdentity().getIdentifier());
         
 		final Button ok = (Button) findViewById(R.id.confirm_button);
 		if (ok != null) {
@@ -40,6 +42,12 @@ public class EnrollmentSummaryActivity extends Activity {
 					_returnToHome();
 				}
 			});
+		}
+
+		FooterView footer = (FooterView)findViewById(R.id.fallbackFooterView);
+
+		if(footer != null) {
+			footer.hideInfoIcon();
 		}
 	}
 

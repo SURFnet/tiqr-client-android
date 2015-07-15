@@ -2,11 +2,13 @@ package org.tiqr.authenticator.identity;
 
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
+import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.security.SecretStore;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 
 public abstract class AbstractIdentityListActivity extends ListActivity 
 {
@@ -19,10 +21,11 @@ public abstract class AbstractIdentityListActivity extends ListActivity
     private Cursor _identitiesCursor;
     
     protected DbAdapter _db;
+	protected int _resourceid = R.layout.identity_listitem;
     
     private void showIdentities() 
     {
-        IdentityCursorAdapter adapter = new IdentityCursorAdapter(this, R.layout.identity_listitem, getIdentityCursor(), FROM, TO);
+        IdentityCursorAdapter adapter = new IdentityCursorAdapter(this, _resourceid, getIdentityCursor(), FROM, TO);
         setListAdapter(adapter);
     }
     
@@ -32,7 +35,7 @@ public abstract class AbstractIdentityListActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.identity);
         
-        _db = new DbAdapter(this); 
+        _db = new DbAdapter(this);
         new SecretStore(this);
                 
         startManagingCursor(getIdentityCursor());
@@ -59,8 +62,6 @@ public abstract class AbstractIdentityListActivity extends ListActivity
      * 
      * @param requestCode
      * @param resultCode
-     * @param data
-     * @param bundle
      */
 	@Override 
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent)

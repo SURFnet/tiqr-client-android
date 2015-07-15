@@ -19,10 +19,10 @@
     <string name="account_ready">Your account is ready to be used</string>
     <string name="account_activated">Account activated!</string>
     <string name="enrollment_confirm_button">OK</string>
-    <string name="remember_pincode_notice">Remember your PIN, it cannot be changed!</string>
+    <string name="enrollment_cancel_button">Cancel</string>
     <string name="enter_the_following">Enter the following info:</string>
     <string name="full_name">Full name</string>
-    <string name="id">ID</string>
+    <string name="tiqr_id">Tiqr account id</string>
     <string name="information">Information</string>
     <string name="cancel_button">Cancel</string>
     <string name="ok_button">OK</string>
@@ -50,6 +50,7 @@
     <string name="main_title_blocked">tiqr is blocked</string>
     <string name="confirm_account_activation">Confirm account activation</string>
     <string name="activate_following_account">Do you want to activate the following account?</string>
+    <string name="enroll_account_details">Account details</string>
     <string name="enroll_following_domain">You will enrol to the following domain:</string>
     <string name="menu_enroll_shortcut">a</string>
     <string name="menu_rearrange_label">Rearrange</string>
@@ -60,8 +61,12 @@
     <string name="password_verify_label">PIN (for verification): </string>
     <string name="verification_label">Verification:</string>
     <string name="login_title">Login</string>
-    <string name="login_intro">Please enter your PIN: </string>
-    <string name="login_verify_intro">Please verify your PIN: </string>
+    <string name="login_pin_title">Enter your PIN for tiqr</string>
+    <string name="entroll_pin_title">Choose a unique PIN for tiqr</string>
+    <string name="entroll_pin_verify_title">Verify the unique PIN</string>
+    <string name="login_intro">Enter the PIN and press <b>OK</b></string>
+    <string name="login_verify_intro">Re-enter the PIN and press <b>OK</b></string>
+    <string name="remember_pincode_notice">Please remember this PIN, it cannot be changed!</string>
     <string name="successfully_logged_in">You have successfully logged in!</string>
     <string name="loggedin_with_account">You logged in with the following account</string>
     <string name="choose_password_title">Please choose a PIN</string>
@@ -111,7 +116,7 @@
     <string name="error_auth_server_incompatible">The server is incompatible with this version of tiqr.</string>
     <string name="enrollment_confirmation_header_title">Account activation</string>
     <string name="enrollment_confirmation_title">Confirm account activation</string>
-    <string name="enrollment_confirmation_description">Do you want to activate\n the following account?</string>
+    <string name="enrollment_confirmation_description">Do you want to activate the following account?</string>
     <string name="enrollment_success_title">Enrolment successful</string>
     <string name="enrollment_success_message" formatted="false">You\'ve been successfully enrolled as %s for %s</string>
     <string name="enrollment_failure_title">Enrolment failed</string>
@@ -126,24 +131,20 @@
     <string name="error_enroll_failed_to_generate_secret">Failed to generate identity secret. Please contact support.</string>
     <string name="error_device_incompatible_with_security_standards">Device is not compatible with required security standards.</string>
     <string name="provided_by">provided by:</string>
-    <string name="main_text_welcome"><Data><![CDATA[<html><body>Using tiqr you can use your smartphone to easily and securely 
-log in to several websites. <br />
+    <string name="main_text_welcome"><Data><![CDATA[<b>Use tiqr on your smartphone to log in to websites easily and secure.</b> <br />
 <br />
-The application does not yet have an active account. You need an 
-active account to use tiqr. You can find a list of identity providers 
-at <a href="https://tiqr.org">tiqr.org</a>. <br />
+Register your new tiqr account and follow the instructions for activation.<br />
 <br />
-After registering, you will receive an activation code and instructions for 
-activating your account. During the activation process you will need to scan 
-a QR code. Press <b>Scan</b> if asked.</body></html> ]]> </Data></string>
-    <string name="main_text_instructions"><Data><![CDATA[<html><body>Go to the website you want to log in to and follow these steps: <ul>
-            <li>Scan the QR code on the login screen of the website or service.</li>
-            <li>
-<i>If you have multiple identities, select your identity.</i>
-            </li>
-            <li>Confirm your identity (you will have to enter your PIN).</li>
-            <li>You are logged in!</li>
-        </ul>Press <b>Scan</b> to start the login process.</body></html> ]]> </Data></string>
+Press <b>Scan</b> when asked.</html> ]]> </Data></string>
+    <string name="main_text_instructions"><Data><![CDATA[<b>Use tiqr on your smartphone to log in</b> <br />
+    <br />
+    1. Press <b>Scan</b> and scan the QR-code on the website. <br />
+    <br />
+    <i>More than one ID? Select the relevant ID.</i> <br />
+    <br />
+    2. Enter your PIN for tiqr and press <b>OK</b> <br />
+    <br />
+    3. You are logged in!]]> </Data></string>
     <string name="main_text_blocked"><b>Now what?</b>
 <br />
 Ask your identity provider(s) for a new activation code. For a link to your 

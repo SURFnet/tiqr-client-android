@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
@@ -23,6 +24,7 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Pin code screen.
@@ -32,7 +34,11 @@ abstract public class AbstractPincodeActivity extends Activity
 	protected Handler timerHandler;
 	protected Runnable timer;
 	protected ProgressDialog progressDialog;
-	
+
+	protected TextView title;
+	protected TextView intro;
+	protected TextView pintHint;
+
 	protected EditText pincode;
 	protected EditText pin1;
 	protected EditText pin2;
@@ -110,13 +116,13 @@ abstract public class AbstractPincodeActivity extends Activity
     }
     
     protected void _initHiddenPincodeField() {
-    	pincode.post(new Runnable() { 
-    		public void run() {
-    			pincode.requestFocusFromTouch();
-    			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-    	        imm.showSoftInput(pincode, InputMethodManager.SHOW_IMPLICIT);
-    		}
-    	});
+    	pincode.post(new Runnable() {
+			public void run() {
+				pincode.requestFocusFromTouch();
+				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(pincode, InputMethodManager.SHOW_IMPLICIT);
+			}
+		});
     }
 
 	protected void _hideSoftKeyboard(View v)
@@ -170,13 +176,17 @@ abstract public class AbstractPincodeActivity extends Activity
      * Set the UI Elements used in this Activity
      */
     private void _setUIElements() {
+        title = (TextView)findViewById(R.id.title);
+        intro = (TextView)findViewById(R.id.intro_label);
+
         pincode = (EditText)findViewById(R.id.pinShadow);
         pin1 = (EditText)findViewById(R.id.pin1Field);
         pin2 = (EditText)findViewById(R.id.pin2Field);
         pin3 = (EditText)findViewById(R.id.pin3Field);
         pin4 = (EditText)findViewById(R.id.pin4Field);
         btn_ok =  (Button)findViewById(R.id.ok_button);
-        
+        pintHint =  (TextView)findViewById(R.id.pinHint);
+
         tf_default = Typeface.defaultFromStyle(Typeface.NORMAL);
         tf_animals = Typeface.createFromAsset(getAssets(), "fonts/animals.ttf");
         
@@ -184,6 +194,10 @@ abstract public class AbstractPincodeActivity extends Activity
         pin2.setTypeface(tf_animals);
         pin3.setTypeface(tf_animals);
         pin4.setTypeface(tf_animals);
+
+		HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+		headerView.hideLeftButton();
+		headerView.hideRightButton();
     }
     
     /**
@@ -348,4 +362,12 @@ abstract public class AbstractPincodeActivity extends Activity
     	view.setEnabled(true);
     	view.setVisibility(View.VISIBLE);
     }
+
+	/**
+	 * Set intro text, html format supported
+	 * @param resourceId string id
+	 */
+	protected void setIntoText(int resourceId) {
+		intro.setText(Html.fromHtml(getString(resourceId)));
+	}
 }

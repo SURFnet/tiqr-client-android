@@ -22,19 +22,19 @@ import java.io.IOException;
 import org.tiqr.authenticator.ActivityDialog;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
-import org.tiqr.authenticator.TiqrActivity;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
+import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.camera.CameraManager;
 import org.tiqr.service.authentication.AuthenticationService;
 import org.tiqr.service.authentication.ParseAuthenticationChallengeError;
 import org.tiqr.service.enrollment.EnrollmentService;
 import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -55,7 +55,7 @@ import javax.inject.Inject;
 /**
  * Capture activity.
  */
-public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callback
+public class CaptureActivity extends Activity implements SurfaceHolder.Callback
 {
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -79,18 +79,24 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
     }
 
     @Override
-    public void onCreate(Bundle icicle)
+    public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(icicle, R.layout.capture);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.capture);
 
         ((Application)getApplication()).inject(this);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        
-        disableIdentityButton();
-        hideLeftButton();
-        setTitle(R.string.scan_button);
+
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
 
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
@@ -223,6 +229,7 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
                 intent.putExtra("org.tiqr.challenge", challenge);
                 intent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -253,6 +260,7 @@ public class CaptureActivity extends TiqrActivity implements SurfaceHolder.Callb
                 intent.putExtra("org.tiqr.challenge", challenge);
                 intent.putExtra("org.tiqr.protocolVersion", "2");
                 startActivity(intent);
+                finish();
             }
 
             @Override

@@ -2,6 +2,8 @@ package org.tiqr.authenticator.identity;
 
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.Identity;
+import org.tiqr.authenticator.general.FooterView;
+import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.CaptureActivity;
 
 import android.app.AlertDialog;
@@ -26,8 +28,25 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity
     {
         super.onCreate(savedInstanceState);
         
-       registerForContextMenu(getListView());
+        registerForContextMenu(getListView());
 
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.setRightIcon(R.drawable.icon_add);
+        headerView.setOnRightClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _enrollNewIdentity();
+            }
+        });
+
+        FooterView footerView = (FooterView)findViewById(R.id.fallbackFooterView);
+        footerView.hideInfoIcon();
     }
     
     /* (non-Javadoc)
@@ -40,29 +59,6 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity
 		Identity i = _db.createIdentityObjectForCurrentCursorPosition(cursor);
 		_showIdentityDetail(i);
 	}
-
-
-
-	@Override 
-    public boolean onCreateOptionsMenu(Menu menu) 
-    {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.identity_menu, menu);        
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) 
-    {
-        switch (item.getItemId()) {
-        case R.id.enroll:
-            _enrollNewIdentity();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
     
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) 
@@ -79,7 +75,6 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.identity_context_menu, menu);
-        
     }
     
     @Override

@@ -6,8 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
@@ -79,19 +81,24 @@ public class C2DMReceiver extends C2DMBaseReceiver
         String challenge = (String)extras.get("challenge");
         String title = context.getString(R.string.app_name);
         String text = (String)extras.get("text");
-        
-        Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(challenge));
-        authIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        
-        int icon = R.drawable.icon_notification;
-        long when = System.currentTimeMillis();
 
-        Notification notification = new Notification(icon, title, when);
-        notification.setLatestEventInfo(context, title, text, PendingIntent.getActivity(context, 0, authIntent, 0));
-        notification.defaults |= Notification.DEFAULT_ALL;
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        
-        NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, notification);
+        if(!TextUtils.isEmpty(challenge)) {
+            Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(challenge));
+            authIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            if(context.getPackageManager().queryIntentActivities(authIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
+
+                int icon = R.drawable.icon_notification;
+                long when = System.currentTimeMillis();
+
+                Notification notification = new Notification(icon, title, when);
+                notification.setLatestEventInfo(context, title, text, PendingIntent.getActivity(context, 0, authIntent, 0));
+                notification.defaults |= Notification.DEFAULT_ALL;
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify(0, notification);
+            }
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
@@ -32,8 +31,8 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
         firstPin = getIntent().getStringExtra("org.tiqr.firstPin");
 
         // Update the text.
-        TextView intro = (TextView)findViewById(R.id.intro_label);
-        intro.setText(R.string.login_verify_intro);
+        title.setText(R.string.entroll_pin_verify_title);
+        setIntoText(R.string.login_verify_intro);
     }
 
     @Override

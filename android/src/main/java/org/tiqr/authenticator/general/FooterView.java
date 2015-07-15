@@ -9,11 +9,12 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FooterView extends LinearLayout {
+public class FooterView extends FrameLayout {
 	public FooterView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
@@ -28,29 +29,19 @@ public class FooterView extends LinearLayout {
 				_showAboutActivity();
 			}
 		});
-		
-		OnClickListener ocl = new OnClickListener() {
+
+		ImageView surfnetImage = (ImageView)findViewById(R.id.footer_surfnet_logo);
+		surfnetImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switch (v.getId()) {
-				case R.id.footer_tiqr_logo:
-				case R.id.footer_tiqr_url:
-					_openWebURL("http://www.tiqr.org");
-					break;
-				case R.id.footer_surfnet_logo:
-					_openWebURL("http://www.surfnet.nl");
-					break;
-				}
+				_openWebURL("http://www.surfnet.nl");
 			}
-		};
-		
-		ImageView tiqrImage = (ImageView)findViewById(R.id.footer_tiqr_logo);
-		ImageView surfnetImage = (ImageView)findViewById(R.id.footer_surfnet_logo);
-		TextView tiqrUrl = (TextView)findViewById(R.id.footer_tiqr_url);
-		
-		tiqrImage.setOnClickListener(ocl);
-		surfnetImage.setOnClickListener(ocl);
-		tiqrUrl.setOnClickListener(ocl);
+		});
+	}
+
+	public void hideInfoIcon() {
+		ImageView infoImage = (ImageView)findViewById(R.id.footer_icon_info);
+		infoImage.setVisibility(GONE);
 	}
 	
 	/**
