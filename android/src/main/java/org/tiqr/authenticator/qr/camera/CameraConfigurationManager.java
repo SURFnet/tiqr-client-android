@@ -16,20 +16,19 @@
 
 package org.tiqr.authenticator.qr.camera;
 
-import java.lang.reflect.Method;
-import java.util.regex.Pattern;
-
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import java.lang.reflect.Method;
+import java.util.regex.Pattern;
+
 /**
  * Camera configuration manager.
  */
-final class CameraConfigurationManager
-{
+final class CameraConfigurationManager {
     private static final String TAG = CameraConfigurationManager.class.getSimpleName();
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
 
@@ -40,14 +39,12 @@ final class CameraConfigurationManager
 
     /**
      * Calculates the optimal preview size
-     * 
+     *
      * @param previewSizeValueString
      * @param surfaceResolution
-     * 
      * @return optimal preview size
      */
-    private static Point _calculateOptimalPreviewSize(CharSequence previewSizeValueString, Point surfaceResolution)
-    {
+    private static Point _calculateOptimalPreviewSize(CharSequence previewSizeValueString, Point surfaceResolution) {
         int bestX = 0;
         int bestY = 0;
         int diff = Integer.MAX_VALUE;
@@ -85,20 +82,19 @@ final class CameraConfigurationManager
         if (bestX > 0 && bestY > 0) {
             return new Point(bestX, bestY);
         }
-        
+
         return null;
-    }       
-    
+    }
+
 
     /**
      * Calculates the optimal camera resolution.
-     * 
+     *
      * @param parameters        camera parameters
      * @param surfaceResolution surface resolution
      * @return
      */
-    private static Point _calculateOptimalCameraResolution(Camera.Parameters parameters, Point surfaceResolution)
-    {
+    private static Point _calculateOptimalCameraResolution(Camera.Parameters parameters, Point surfaceResolution) {
         String previewSizeValueString = parameters.get("preview-size-values");
         if (previewSizeValueString == null) {
             previewSizeValueString = parameters.get("preview-size-value");
@@ -117,13 +113,12 @@ final class CameraConfigurationManager
         }
 
         return cameraResolution;
-    } 
+    }
 
     /**
      * Reads, one time, values from the camera that are needed by the app.
      */
-    void init(Camera camera, SurfaceHolder surfaceHolder)
-    {
+    void init(Camera camera, SurfaceHolder surfaceHolder) {
         Camera.Parameters parameters = camera.getParameters();
         _previewFormat = parameters.getPreviewFormat();
         _previewFormatString = parameters.get("preview-format");
@@ -141,61 +136,56 @@ final class CameraConfigurationManager
      * In the future we may want to force YUV420SP as it's the smallest, and the
      * planar Y can be used for barcode scanning without a copy in some cases.
      */
-    public void setDesiredCameraParameters(Camera camera)
-    {
+    public void setDesiredCameraParameters(Camera camera) {
         // TODO: find a way to do this without falling back to reflection
         boolean usePortraitOrientation = Integer.parseInt(Build.VERSION.SDK) >= 8;
         if (usePortraitOrientation) { // only 2.2
             try {
-                Method method = camera.getClass().getMethod("setDisplayOrientation", new Class[] { int.class });
+                Method method = camera.getClass().getMethod("setDisplayOrientation", new Class[] {int.class});
                 method.invoke(camera, 90);
             } catch (Exception ex) {
 
             }
-        }   
-        
+        }
+
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(_cameraResolution.x, _cameraResolution.y);
         parameters.set("orientation", "portrait");
         parameters.set("rotation", 90);
         camera.setParameters(parameters);
-        
+
         Log.d(TAG, "Set camera preview size: " + parameters.getPreviewSize());
     }
 
     /**
      * Returns the camera resolution used.
-     * 
+     *
      * @return camera resolution
      */
-    public Point getCameraResolution()
-    {
+    public Point getCameraResolution() {
         return _cameraResolution;
     }
 
     /**
      * Returns the surface resolution.
-     * 
+     *
      * @return surface resolution
      */
-    public Point getSurfaceResolution()
-    {
+    public Point getSurfaceResolution() {
         return _surfaceResolution;
     }
 
     /**
      * Returns the preview format.
      */
-    public int getPreviewFormat()
-    {
+    public int getPreviewFormat() {
         return _previewFormat;
     }
 
     /**
      * Returns the preview format string.
      */
-    public String getPreviewFormatString()
-    {
+    public String getPreviewFormatString() {
         return _previewFormatString;
     }
 }

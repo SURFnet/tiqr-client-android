@@ -16,12 +16,12 @@
 
 package org.tiqr.authenticator.qr;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;
-
-import android.os.Handler;
-import android.os.Looper;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -29,11 +29,10 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * This thread does all the heavy lifting of decoding the images.
- * 
+ *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-final class DecodeThread extends Thread
-{
+final class DecodeThread extends Thread {
     public static final String BARCODE_BITMAP = "barcode_bitmap";
 
     private final CaptureActivity _activity;
@@ -41,8 +40,7 @@ final class DecodeThread extends Thread
     private Handler _handler;
     private final CountDownLatch _handlerInitLatch;
 
-    DecodeThread(CaptureActivity activity, ResultPointCallback resultPointCallback)
-    {
+    DecodeThread(CaptureActivity activity, ResultPointCallback resultPointCallback) {
         _activity = activity;
         _handlerInitLatch = new CountDownLatch(1);
 
@@ -53,20 +51,18 @@ final class DecodeThread extends Thread
         _hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
     }
 
-    Handler getHandler()
-    {
+    Handler getHandler() {
         try {
             _handlerInitLatch.await();
         } catch (InterruptedException ie) {
             // continue?
         }
-        
+
         return _handler;
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
         Looper.prepare();
         _handler = new DecodeHandler(_activity, _hints);
         _handlerInitLatch.countDown();

@@ -16,12 +16,6 @@
 
 package org.tiqr.authenticator.qr;
 
-import org.tiqr.authenticator.R;
-
-import com.google.zxing.ResultPoint;
-
-import org.tiqr.authenticator.qr.camera.CameraManager;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -31,6 +25,11 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.google.zxing.ResultPoint;
+
+import org.tiqr.authenticator.R;
+import org.tiqr.authenticator.qr.camera.CameraManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,13 +38,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * This view is overlaid on top of the camera preview. It adds the viewfinder
  * rectangle and partial transparency outside it, as well as the laser scanner
  * animation and result points.
- * 
+ *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class ViewfinderView extends View
-{
+public final class ViewfinderView extends View {
 
-    private static final int[] SCANNER_ALPHA = { 0, 64, 128, 192, 255, 192, 128, 64 };
+    private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private static final long ANIMATION_DELAY = 80L;
     private static final int CURRENT_POINT_OPACITY = 0xA0;
     private static final int MAX_RESULT_POINTS = 20;
@@ -62,8 +60,7 @@ public final class ViewfinderView extends View
     private final AtomicReference<List<ResultPoint>> lastPossibleResultPoints;
 
     // This constructor is used when the class is built from an XML resource.
-    public ViewfinderView(Context context, AttributeSet attrs)
-    {
+    public ViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Initialize these once for performance rather than calling them every
@@ -82,8 +79,7 @@ public final class ViewfinderView extends View
     }
 
     @Override
-    public void onDraw(Canvas canvas)
-    {
+    public void onDraw(Canvas canvas) {
         Rect frame = CameraManager.get().getFramingRect();
         if (frame == null) {
             return;
@@ -120,8 +116,8 @@ public final class ViewfinderView extends View
             canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
 
             Rect previewFrame = CameraManager.get().getFramingRectInPreview();
-            float scaleX = frame.width() / (float) previewFrame.width();
-            float scaleY = frame.height() / (float) previewFrame.height();
+            float scaleX = frame.width() / (float)previewFrame.width();
+            float scaleY = frame.height() / (float)previewFrame.height();
 
             List<ResultPoint> currentPossible = possibleResultPoints.get();
             List<ResultPoint> currentLast = lastPossibleResultPoints.get();
@@ -133,14 +129,14 @@ public final class ViewfinderView extends View
                 paint.setAlpha(CURRENT_POINT_OPACITY);
                 paint.setColor(resultPointColor);
                 for (ResultPoint point : currentPossible) {
-                    canvas.drawCircle(frame.left + (int) (point.getX() * scaleX), frame.top + (int) (point.getY() * scaleY), 6.0f, paint);
+                    canvas.drawCircle(frame.left + (int)(point.getX() * scaleX), frame.top + (int)(point.getY() * scaleY), 6.0f, paint);
                 }
             }
             if (currentLast != null) {
                 paint.setAlpha(CURRENT_POINT_OPACITY / 2);
                 paint.setColor(resultPointColor);
                 for (ResultPoint point : currentLast) {
-                    canvas.drawCircle(frame.left + (int) (point.getX() * scaleX), frame.top + (int) (point.getY() * scaleY), 3.0f, paint);
+                    canvas.drawCircle(frame.left + (int)(point.getX() * scaleX), frame.top + (int)(point.getY() * scaleY), 3.0f, paint);
                 }
             }
 
@@ -151,8 +147,7 @@ public final class ViewfinderView extends View
         }
     }
 
-    public void drawViewfinder()
-    {
+    public void drawViewfinder() {
         resultBitmap = null;
         invalidate();
     }
@@ -160,18 +155,15 @@ public final class ViewfinderView extends View
     /**
      * Draw a bitmap with the result points highlighted instead of the live
      * scanning display.
-     * 
-     * @param barcode
-     *            An image of the decoded barcode.
+     *
+     * @param barcode An image of the decoded barcode.
      */
-    public void drawResultBitmap(Bitmap barcode)
-    {
+    public void drawResultBitmap(Bitmap barcode) {
         resultBitmap = barcode;
         invalidate();
     }
 
-    public void addPossibleResultPoint(ResultPoint point)
-    {
+    public void addPossibleResultPoint(ResultPoint point) {
         List<ResultPoint> points = possibleResultPoints.get();
         points.add(point);
         if (points.size() > MAX_RESULT_POINTS) {

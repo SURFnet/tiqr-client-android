@@ -10,24 +10,23 @@ import android.widget.ImageView;
 
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.identity.IdentityAdminActivity;
-import org.tiqr.authenticator.qr.CaptureActivity;
 
 /**
  * Created by andrei on 14/07/15.
  */
-public class HeaderView extends FrameLayout{
+public class HeaderView extends FrameLayout {
     protected ImageView leftButton;
     protected ImageView rightButton;
 
     public HeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        LayoutInflater layoutInflater = (LayoutInflater) context
+        LayoutInflater layoutInflater = (LayoutInflater)context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.tiqr_titlebar, this);
 
-        leftButton = (ImageView) findViewById(R.id.left_button);
-        rightButton = (ImageView) findViewById(R.id.right_button);
+        leftButton = (ImageView)findViewById(R.id.left_button);
+        rightButton = (ImageView)findViewById(R.id.right_button);
 
         setOnRightClickListener(new OnClickListener() {
             public void onClick(View v) {

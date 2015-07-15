@@ -22,8 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-final class PreviewCallback implements Camera.PreviewCallback
-{
+final class PreviewCallback implements Camera.PreviewCallback {
 
     private static final String TAG = PreviewCallback.class.getSimpleName();
 
@@ -31,19 +30,16 @@ final class PreviewCallback implements Camera.PreviewCallback
     private Handler previewHandler;
     private int previewMessage;
 
-    PreviewCallback(CameraConfigurationManager configManager)
-    {
+    PreviewCallback(CameraConfigurationManager configManager) {
         this.configManager = configManager;
     }
 
-    void setHandler(Handler previewHandler, int previewMessage)
-    {
+    void setHandler(Handler previewHandler, int previewMessage) {
         this.previewHandler = previewHandler;
         this.previewMessage = previewMessage;
     }
 
-    public void onPreviewFrame(byte[] data, Camera camera)
-    {
+    public void onPreviewFrame(byte[] data, Camera camera) {
         Point cameraResolution = configManager.getCameraResolution();
         if (previewHandler != null) {
             Message message = previewHandler.obtainMessage(previewMessage, cameraResolution.x, cameraResolution.y, data);

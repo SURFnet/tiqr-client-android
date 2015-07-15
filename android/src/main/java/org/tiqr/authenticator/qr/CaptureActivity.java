@@ -17,22 +17,6 @@
 
 package org.tiqr.authenticator.qr;
 
-import java.io.IOException;
-
-import org.tiqr.authenticator.ActivityDialog;
-import org.tiqr.authenticator.Application;
-import org.tiqr.authenticator.R;
-import org.tiqr.authenticator.auth.AuthenticationChallenge;
-import org.tiqr.authenticator.auth.EnrollmentChallenge;
-import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
-import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
-import org.tiqr.authenticator.general.HeaderView;
-import org.tiqr.authenticator.qr.camera.CameraManager;
-import org.tiqr.service.authentication.AuthenticationService;
-import org.tiqr.service.authentication.ParseAuthenticationChallengeError;
-import org.tiqr.service.enrollment.EnrollmentService;
-import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -50,13 +34,28 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
+import org.tiqr.authenticator.ActivityDialog;
+import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.R;
+import org.tiqr.authenticator.auth.AuthenticationChallenge;
+import org.tiqr.authenticator.auth.EnrollmentChallenge;
+import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
+import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
+import org.tiqr.authenticator.general.HeaderView;
+import org.tiqr.authenticator.qr.camera.CameraManager;
+import org.tiqr.service.authentication.AuthenticationService;
+import org.tiqr.service.authentication.ParseAuthenticationChallengeError;
+import org.tiqr.service.enrollment.EnrollmentService;
+import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
+
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 /**
  * Capture activity.
  */
-public class CaptureActivity extends Activity implements SurfaceHolder.Callback
-{
+public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
     private CaptureActivityHandler handler;
@@ -65,22 +64,23 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     private BeepManager beepManager;
     private ActivityDialog activityDialog;
 
-    protected @Inject AuthenticationService _authenticationService;
-    protected @Inject EnrollmentService _enrollmentService;
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
+    protected
+    @Inject
+    EnrollmentService _enrollmentService;
 
-    public ViewfinderView getViewfinderView()
-    {
+    public ViewfinderView getViewfinderView() {
         return viewfinderView;
     }
 
-    public Handler getHandler()
-    {
+    public Handler getHandler() {
         return handler;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.capture);
 
@@ -99,18 +99,17 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
         headerView.hideRightButton();
 
         CameraManager.init(getApplication());
-        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        viewfinderView = (ViewfinderView)findViewById(R.id.viewfinder_view);
         handler = null;
         hasSurface = false;
         beepManager = new BeepManager(this);
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
-        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+        SurfaceView surfaceView = (SurfaceView)findViewById(R.id.preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             // The activity was paused but not stopped, so the surface still
@@ -128,8 +127,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         if (handler != null) {
             handler.quitSynchronously();
@@ -139,8 +137,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder)
-    {
+    public void surfaceCreated(SurfaceHolder holder) {
         if (!hasSurface) {
             hasSurface = true;
             initCamera(holder);
@@ -148,28 +145,23 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder)
-    {
+    public void surfaceDestroyed(SurfaceHolder holder) {
         hasSurface = false;
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-    {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
     }
 
     /**
      * A valid barcode has been found, so give an indication of success and show
      * the results.
-     * 
-     * @param rawResult
-     *            The contents of the barcode.
-     * @param barcode
-     *            A greyscale bitmap of the camera data which was decoded.
+     *
+     * @param rawResult The contents of the barcode.
+     * @param barcode   A greyscale bitmap of the camera data which was decoded.
      */
-    public void handleDecode(final Result rawResult, Bitmap barcode)
-    {
+    public void handleDecode(final Result rawResult, Bitmap barcode) {
         activityDialog = ActivityDialog.show(this);
         beepManager.playBeepSoundAndVibrate();
 
@@ -181,8 +173,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
         }
     }
 
-    private void initCamera(SurfaceHolder surfaceHolder)
-    {
+    private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);
         } catch (IOException ioe) {
@@ -194,26 +185,25 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
             Log.w(TAG, "Unexpected error initializating camera", e);
             return;
         }
-        
+
         if (handler == null) {
             handler = new CaptureActivityHandler(this);
-        
+
             Message msg = new Message();
             msg.what = R.id.scan_inactivity;
             handler.sendMessageDelayed(msg, 3000);
         }
     }
 
-    public void drawViewfinder()
-    {
+    public void drawViewfinder() {
         viewfinderView.drawViewfinder();
     }
 
-	public void handleInactivity() {
-		// TODO Auto-generated method stub
-		TextView statusView = (TextView) findViewById(R.id.status_view);
-		statusView.setVisibility(View.VISIBLE);
-	}
+    public void handleInactivity() {
+        // TODO Auto-generated method stub
+        TextView statusView = (TextView)findViewById(R.id.status_view);
+        statusView.setVisibility(View.VISIBLE);
+    }
 
     /**
      * Parse authentication challenge and start authentication process.

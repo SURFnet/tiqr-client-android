@@ -17,9 +17,13 @@ import javax.inject.Inject;
  * Confirmation dialog for authentication challenge.
  */
 public class AuthenticationConfirmationActivity extends AbstractConfirmationActivity {
-    protected @Inject AuthenticationService _authenticationService;
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

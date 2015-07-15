@@ -19,7 +19,9 @@ import javax.inject.Inject;
  * Enter pincode and confirm.
  */
 public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
-    protected @Inject AuthenticationService _authenticationService;
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
 
     /**
      * Create.
@@ -72,7 +74,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
 
     /**
      * Process error.
-     * 
+     *
      * @param error Error details.
      */
     protected void _processError(AuthenticationError error) {
@@ -80,7 +82,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
             case CONNECTION:
             case UNKNOWN:
                 finish(); // Clear current from the stack so back goes back one deeper.
-                AuthenticationActivityGroup group = (AuthenticationActivityGroup) getParent();
+                AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
                 Intent fallbackIntent = new Intent(this, AuthenticationFallbackActivity.class);
                 fallbackIntent.putExtra("org.tiqr.authentication.pincode", pincode.getText().toString());
                 group.startChildActivity("AuthenticationFallbackActivity", fallbackIntent);
@@ -93,7 +95,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
                     break;
                 }
             default:
-                AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
+                AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
                 Intent intent = new Intent().setClass(this, ErrorActivity.class);
                 intent.putExtra("org.tiqr.error.title", error.getTitle());
                 intent.putExtra("org.tiqr.error.message", error.getMessage());

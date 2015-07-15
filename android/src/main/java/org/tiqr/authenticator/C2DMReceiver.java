@@ -22,17 +22,17 @@ import javax.inject.Inject;
 /**
  * Android Cloud to Device Messaging receiver.
  */
-public class C2DMReceiver extends C2DMBaseReceiver
-{
+public class C2DMReceiver extends C2DMBaseReceiver {
     public static final String SENDER_ID = "70645846943";
 
-    protected @Inject NotificationService _notificationService;
+    protected
+    @Inject
+    NotificationService _notificationService;
 
     /**
      * Constructor.
      */
-    public C2DMReceiver()
-    {
+    public C2DMReceiver() {
         super(SENDER_ID);
     }
 
@@ -43,10 +43,9 @@ public class C2DMReceiver extends C2DMBaseReceiver
     }
 
     @Override
-    public void onRegistered(Context context, String deviceToken)
-    {
+    public void onRegistered(Context context, String deviceToken) {
         Log.d(getClass().getSimpleName(), "Registered device for C2DM, token: " + deviceToken);
-        
+
         SharedPreferences settings = Prefs.get(context);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("deviceToken", deviceToken);
@@ -56,8 +55,7 @@ public class C2DMReceiver extends C2DMBaseReceiver
     }
 
     @Override
-    public void onUnregistered(Context context)
-    {
+    public void onUnregistered(Context context) {
         SharedPreferences settings = Prefs.get(context);
         SharedPreferences.Editor editor = settings.edit();
         editor.remove("deviceToken");
@@ -65,28 +63,26 @@ public class C2DMReceiver extends C2DMBaseReceiver
     }
 
     @Override
-    public void onError(Context context, String error)
-    {
+    public void onError(Context context, String error) {
         Log.d(getClass().getSimpleName(), "Error registering device for C2DM, error: " + error);
     }
 
     @Override
-    public void onMessage(Context context, Intent intent)
-    {
+    public void onMessage(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras == null) {
             return;
         }
-        
+
         String challenge = (String)extras.get("challenge");
         String title = context.getString(R.string.app_name);
         String text = (String)extras.get("text");
 
-        if(!TextUtils.isEmpty(challenge)) {
+        if (!TextUtils.isEmpty(challenge)) {
             Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(challenge));
             authIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            if(context.getPackageManager().queryIntentActivities(authIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
+            if (context.getPackageManager().queryIntentActivities(authIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
 
                 int icon = R.drawable.icon_notification;
                 long when = System.currentTimeMillis();

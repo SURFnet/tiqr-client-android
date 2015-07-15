@@ -42,7 +42,9 @@ public class ApplicationModule {
     /**
      * Allow the application context to be injected.
      */
-    @Provides @Singleton Context provideContext() {
+    @Provides
+    @Singleton
+    Context provideContext() {
         return _application.getApplicationContext();
     }
 }

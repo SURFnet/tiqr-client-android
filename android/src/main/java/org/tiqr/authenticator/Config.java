@@ -1,10 +1,10 @@
 package org.tiqr.authenticator;
 
+import android.content.Context;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import android.content.Context;
 
 /**
  * Configuration helper.

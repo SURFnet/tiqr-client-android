@@ -1,5 +1,15 @@
 package org.tiqr.authenticator;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebView;
+
+import com.google.android.c2dm.C2DMessaging;
+
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
@@ -13,34 +23,29 @@ import org.tiqr.service.enrollment.EnrollmentService;
 import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
 import org.tiqr.service.notification.NotificationService;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebView;
-
-import com.google.android.c2dm.C2DMessaging;
-
 import javax.inject.Inject;
 
-public class MainActivity extends Activity
-{
-    protected @Inject NotificationService _notificationService;
+public class MainActivity extends Activity {
+    protected
+    @Inject
+    NotificationService _notificationService;
 
-    protected @Inject EnrollmentService _enrollmentService;
+    protected
+    @Inject
+    EnrollmentService _enrollmentService;
 
-    protected @Inject AuthenticationService _authenticationService;
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
 
     private ActivityDialog activityDialog;
 
 
-
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ((Application)getApplication()).inject(this);
@@ -52,13 +57,13 @@ public class MainActivity extends Activity
 
         int contentResource = 0;
         if (db.identityCount() > 0) {
-        	contentResource = R.string.main_text_instructions;
+            contentResource = R.string.main_text_instructions;
         } else {
             headerView.hideRightButton();
             contentResource = R.string.main_text_welcome;
         }
 
-        loadContentsIntoWebView(contentResource,  R.id.webview);
+        loadContentsIntoWebView(contentResource, R.id.webview);
 
         findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +82,7 @@ public class MainActivity extends Activity
         webView.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         String deviceToken = C2DMessaging.getRegistrationId(this);
@@ -102,8 +106,7 @@ public class MainActivity extends Activity
         }
     }
 
-    public void showIncompatibilityDialog()
-    {
+    public void showIncompatibilityDialog() {
         new IncompatibilityDialog().show(this);
 
     }
