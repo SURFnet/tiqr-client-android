@@ -281,4 +281,7 @@ public final class CameraManager {
         throw new IllegalArgumentException("Unsupported picture format: " + previewFormat + '/' + previewFormatString);
     }
 
+    public Point getCameraResolution() {
+        return _configManager.getCameraResolution();
+    }
 }

@@ -110,15 +110,15 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         super.onResume();
 
         SurfaceView surfaceView = (SurfaceView)findViewById(R.id.preview_view);
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             // The activity was paused but not stopped, so the surface still
             // exists. Therefore
             // surfaceCreated() won't be called, so init the camera here.
-            initCamera(surfaceHolder);
+            initCamera(surfaceView);
         } else {
             // Install the callback and wait for surfaceCreated() to init the
             // camera.
+            SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
@@ -140,7 +140,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     public void surfaceCreated(SurfaceHolder holder) {
         if (!hasSurface) {
             hasSurface = true;
-            initCamera(holder);
+            SurfaceView surfaceView = (SurfaceView)findViewById(R.id.preview_view);
+            initCamera(surfaceView);
         }
     }
 
@@ -151,7 +152,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     /**
@@ -173,9 +173,13 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
     }
 
-    private void initCamera(SurfaceHolder surfaceHolder) {
+    private void initCamera(SurfaceView surfaceView) {
         try {
-            CameraManager.get().openDriver(surfaceHolder);
+            CameraManager.get().openDriver(surfaceView.getHolder());
+            // resize surface to have 1:1 preview
+            surfaceView.getLayoutParams().width = CameraManager.get().getCameraResolution().x;
+            surfaceView.getLayoutParams().height = CameraManager.get().getCameraResolution().y;
+            surfaceView.requestLayout();
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
             return;
