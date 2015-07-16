@@ -69,10 +69,13 @@ abstract public class AbstractPincodeActivity extends Activity {
             }
         };
 
-        // Create an on touch listener that does nothing, to disable the action when touching on the pin fields
+        // Keep keyboard visible and disable the action when touching on the pin fields
         OnTouchListener otl = new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(pincode, InputMethodManager.SHOW_IMPLICIT);
+
                 return true;
             }
         };
