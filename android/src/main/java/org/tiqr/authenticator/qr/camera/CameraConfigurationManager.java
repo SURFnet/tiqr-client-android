@@ -45,9 +45,9 @@ final class CameraConfigurationManager {
      * @return optimal preview size
      */
     private static Point _calculateOptimalPreviewSize(CharSequence previewSizeValueString, Point surfaceResolution) {
-        int bestX = surfaceResolution.x;
-        int bestY = surfaceResolution.y;
-
+        int bestX = 0;
+        int bestY = 0;
+        int diff = Integer.MAX_VALUE;
         for (String previewSize : COMMA_PATTERN.split(previewSizeValueString)) {
             previewSize = previewSize.trim();
             int dimPosition = previewSize.indexOf('x');
@@ -66,11 +66,17 @@ final class CameraConfigurationManager {
                 continue;
             }
 
-            if (newX >= bestX && newY >= bestY) {
+            int newDiff = Math.abs(newX - surfaceResolution.x) + Math.abs(newY - surfaceResolution.y);
+            if (newDiff == 0) {
                 bestX = newX;
                 bestY = newY;
                 break;
+            } else if (newDiff < diff) {
+                bestX = newX;
+                bestY = newY;
+                diff = newDiff;
             }
+
         }
 
         if (bestX > 0 && bestY > 0) {

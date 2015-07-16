@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -88,6 +90,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {
@@ -176,9 +179,19 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private void initCamera(SurfaceView surfaceView) {
         try {
             CameraManager.get().openDriver(surfaceView.getHolder());
-            // resize surface to have 1:1 preview
-            surfaceView.getLayoutParams().width = CameraManager.get().getCameraResolution().x;
-            surfaceView.getLayoutParams().height = CameraManager.get().getCameraResolution().y;
+            // resize surface to preview ratio
+            View parentView = (View)surfaceView.getParent();
+
+            double maxWidth = parentView.getWidth();
+            double maxHeight = parentView.getHeight();
+
+            double scaleX = maxWidth/CameraManager.get().getCameraResolution().y;
+            double scaleY = maxHeight/CameraManager.get().getCameraResolution().x;
+            double scale = Math.min(scaleX, scaleY);
+
+            surfaceView.getLayoutParams().width = (int)(scale*CameraManager.get().getCameraResolution().y);
+            surfaceView.getLayoutParams().height = (int)(scale*CameraManager.get().getCameraResolution().x);
+
             surfaceView.requestLayout();
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
