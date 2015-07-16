@@ -6,14 +6,14 @@
         <item name="android:textSize">20sp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:background">@drawable/button_background_green</item>
+        <item name="android:background">@drawable/button_tiqr_green</item>
     </style>
 
     <style name="SurfnetSecondaryButton">
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@drawable/button_tiqr_white</item>
     </style>
 
 </resources>

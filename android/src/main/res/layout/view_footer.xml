@@ -12,6 +12,7 @@
         android:contentDescription="@android:string/untitled"
         android:scaleType="fitXY"
         android:src="@drawable/icon_info"
+        android:background="@drawable/image_tiqr"
         android:layout_gravity="center_vertical"/>
 
     <ImageView
@@ -20,6 +21,7 @@
         android:layout_height="30dp"
         android:contentDescription="@android:string/untitled"
         android:src="@drawable/ic_surfnet"
+        android:background="@drawable/image_tiqr"
         android:adjustViewBounds="true"
         android:layout_gravity="right"/>
 

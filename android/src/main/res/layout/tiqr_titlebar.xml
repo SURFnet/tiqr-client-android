@@ -11,19 +11,24 @@
         android:id="@+id/left_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_back"/>
+        android:src="@drawable/icon_back"
+        android:background="@drawable/image_tiqr"
+        android:contentDescription="@android:string/untitled"/>
 
     <ImageView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:src="@drawable/tiqr_bw_logo"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@android:string/untitled"/>
 
     <ImageView
         android:id="@+id/right_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_id"/>
+        android:src="@drawable/icon_id"
+        android:background="@drawable/image_tiqr"
+        android:contentDescription="@android:string/untitled"/>
 
 </LinearLayout>
