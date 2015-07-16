@@ -17,6 +17,7 @@ import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.ErrorActivity;
 import org.tiqr.authenticator.general.ErrorView;
+import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.OCRAProtocol;
 import org.tiqr.authenticator.security.OCRAWrapper;
@@ -40,6 +41,15 @@ public class AuthenticationFallbackActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fallback);
 
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
+
         TextView title = (TextView)findViewById(R.id.error_title);
         title.setText(R.string.authentication_fallback_title);
 
@@ -50,7 +60,7 @@ public class AuthenticationFallbackActivity extends Activity {
         identifier.setText(((AuthenticationActivityGroup)getParent()).getChallenge().getIdentity().getIdentifier());
 
         ErrorView ev = (ErrorView)findViewById(R.id.fallbackErrorView);
-        ev.setErrorColor(Color.rgb(25, 0, 165));
+        ev.setErrorColor(getResources().getColor(R.color.tiqr_green));
         ev.setVisibility(View.VISIBLE);
 
         Button ok = (Button)findViewById(R.id.confirm_button);
@@ -59,8 +69,7 @@ public class AuthenticationFallbackActivity extends Activity {
         if (ok != null) {
             ok.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-                    parent.finish();
+                    onBackPressed();
                 }
             });
         }
@@ -124,5 +133,11 @@ public class AuthenticationFallbackActivity extends Activity {
         intent.putExtra("org.tiqr.error.message", message);
 
         parent.startChildActivity("ErrorActivity", intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+        parent.finish();
     }
 }

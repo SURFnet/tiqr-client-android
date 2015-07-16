@@ -33,7 +33,7 @@
     <string name="identifier_label">User ID:</string>
     <string name="fallback_identifier_label">Your ID is:</string>
     <string name="note_pin_not_verified_title">Note: your PIN has not been verified yet.</string>
-    <string name="note_pin_not_verified">If you can\'t login with the credentials above, scan\nagain and enter the correct PIN code.</string>
+    <string name="note_pin_not_verified">If you can\'t login with the credentials above, scan again and enter the correct PIN code.</string>
     <string name="otp_label">One-time password:</string>
     <string name="return_button">Return</string>
     <string name="unknown">Unknown</string>
