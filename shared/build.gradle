@@ -8,6 +8,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
     }
+    
+    // TODO: reset lintOptions to defauls
+    lintOptions {
+        //checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
