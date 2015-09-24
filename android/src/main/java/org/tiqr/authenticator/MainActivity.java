@@ -1,60 +1,88 @@
 package org.tiqr.authenticator;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebView;
+
+import com.google.android.c2dm.C2DMessaging;
+
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
-import org.tiqr.authenticator.auth.Challenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
+import org.tiqr.authenticator.general.HeaderView;
+import org.tiqr.authenticator.qr.CaptureActivity;
 import org.tiqr.service.authentication.AuthenticationService;
 import org.tiqr.service.authentication.ParseAuthenticationChallengeError;
 import org.tiqr.service.enrollment.EnrollmentService;
 import org.tiqr.service.enrollment.ParseEnrollmentChallengeError;
 import org.tiqr.service.notification.NotificationService;
 
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-
-import com.google.android.c2dm.C2DMessaging;
-
 import javax.inject.Inject;
 
-public class MainActivity extends TiqrActivity
-{
-    protected @Inject NotificationService _notificationService;
+public class MainActivity extends Activity {
+    protected
+    @Inject
+    NotificationService _notificationService;
 
-    protected @Inject EnrollmentService _enrollmentService;
+    protected
+    @Inject
+    EnrollmentService _enrollmentService;
 
-    protected @Inject AuthenticationService _authenticationService;
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
 
     private ActivityDialog activityDialog;
 
 
-
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState, R.layout.main);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
         ((Application)getApplication()).inject(this);
 
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.hideLeftButton();
+
         DbAdapter db = new DbAdapter(this);
-        
+
         int contentResource = 0;
         if (db.identityCount() > 0) {
-        	showIdentityButton();
-        	contentResource = R.string.main_text_instructions;
+            contentResource = R.string.main_text_instructions;
         } else {
-        	hideIdentityButton();
+            headerView.hideRightButton();
             contentResource = R.string.main_text_welcome;
         }
 
-        loadContentsIntoWebView(contentResource,  R.id.webview);
+        loadContentsIntoWebView(contentResource, R.id.webview);
+
+        findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent scanIntent = new Intent(MainActivity.this, CaptureActivity.class);
+                startActivity(scanIntent);
+            }
+        });
     }
 
-    public void onStart()
-    {
+    public void loadContentsIntoWebView(int contentResourceId, int webviewResourceId) {
+        WebView webView = (WebView)findViewById(webviewResourceId);
+        String data = getString(contentResourceId);
+        //needed to render chars correctly
+        webView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    public void onStart() {
         super.onStart();
 
         String deviceToken = C2DMessaging.getRegistrationId(this);
@@ -78,8 +106,7 @@ public class MainActivity extends TiqrActivity
         }
     }
 
-    public void showIncompatibilityDialog()
-    {
+    public void showIncompatibilityDialog() {
         new IncompatibilityDialog().show(this);
 
     }

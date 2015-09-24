@@ -9,8 +9,7 @@ import org.tiqr.authenticator.general.AbstractActivityGroup;
 /**
  * Authentication activity group.
  */
-public class AuthenticationActivityGroup extends AbstractActivityGroup
-{
+public class AuthenticationActivityGroup extends AbstractActivityGroup {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

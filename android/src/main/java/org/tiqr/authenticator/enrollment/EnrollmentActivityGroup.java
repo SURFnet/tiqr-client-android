@@ -7,7 +7,7 @@ import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 
 public class EnrollmentActivityGroup extends AbstractActivityGroup {
-	@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

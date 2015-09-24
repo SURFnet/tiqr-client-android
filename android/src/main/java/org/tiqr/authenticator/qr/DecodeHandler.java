@@ -16,52 +16,47 @@
 
 package org.tiqr.authenticator.qr;
 
-import org.tiqr.authenticator.R;
-
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.ReaderException;
-import com.google.zxing.Result;
-
-import org.tiqr.authenticator.qr.camera.CameraManager;
-
-import com.google.zxing.common.HybridBinarizer;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.ReaderException;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+
+import org.tiqr.authenticator.R;
+import org.tiqr.authenticator.qr.camera.CameraManager;
+
 import java.util.Hashtable;
 
-final class DecodeHandler extends Handler
-{
+final class DecodeHandler extends Handler {
 
     private static final String TAG = DecodeHandler.class.getSimpleName();
 
     private final CaptureActivity activity;
     private final MultiFormatReader multiFormatReader;
 
-    DecodeHandler(CaptureActivity activity, Hashtable<DecodeHintType, Object> hints)
-    {
+    DecodeHandler(CaptureActivity activity, Hashtable<DecodeHintType, Object> hints) {
         multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
         this.activity = activity;
     }
 
     @Override
-    public void handleMessage(Message message)
-    {
+    public void handleMessage(Message message) {
         switch (message.what) {
-        case R.id.decode:
-            // Log.d(TAG, "Got decode message");
-            decode((byte[]) message.obj, message.arg1, message.arg2);
-            break;
-        case R.id.quit:
-            Looper.myLooper().quit();
-            break;
+            case R.id.decode:
+                // Log.d(TAG, "Got decode message");
+                decode((byte[])message.obj, message.arg1, message.arg2);
+                break;
+            case R.id.quit:
+                Looper.myLooper().quit();
+                break;
         }
     }
 
@@ -69,19 +64,15 @@ final class DecodeHandler extends Handler
      * Decode the data within the viewfinder rectangle, and time how long it
      * took. For efficiency, reuse the same reader objects from one decode to
      * the next.
-     * 
-     * @param data
-     *            The YUV preview frame.
-     * @param width
-     *            The width of the preview frame.
-     * @param height
-     *            The height of the preview frame.
+     *
+     * @param data   The YUV preview frame.
+     * @param width  The width of the preview frame.
+     * @param height The height of the preview frame.
      */
-    private void decode(byte[] data, int width, int height)
-    {
+    private void decode(byte[] data, int width, int height) {
         long start = System.currentTimeMillis();
         Result rawResult = null;
-        
+
         // HACK: the frame sent by the camera is rotated, we need to rotate it before we continue.
         byte[] rotatedData = new byte[data.length];
         for (int y = 0; y < height; y++) {

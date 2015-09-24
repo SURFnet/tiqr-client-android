@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
@@ -21,7 +20,9 @@ import javax.inject.Inject;
  * Verify enrollment PIN and start enrollment process.
  */
 public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivity {
-    protected @Inject EnrollmentService _enrollmentService;
+    protected
+    @Inject
+    EnrollmentService _enrollmentService;
     protected String firstPin;
 
     @Override
@@ -32,8 +33,8 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
         firstPin = getIntent().getStringExtra("org.tiqr.firstPin");
 
         // Update the text.
-        TextView intro = (TextView)findViewById(R.id.intro_label);
-        intro.setText(R.string.login_verify_intro);
+        title.setText(R.string.entroll_pin_verify_title);
+        setIntoText(R.string.login_verify_intro);
     }
 
     @Override
@@ -53,9 +54,9 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
 
     /**
      * Enroll user
-     * 
+     *
      * We run this in a new thread here because otherwise, the activity dialog wouldn't show
-     * 
+     *
      * @param challenge Challenge.
      * @param pin       PIN code.
      */
@@ -66,7 +67,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
             @Override
             public void onEnrollmentSuccess() {
                 progressDialog.cancel();
-                EnrollmentActivityGroup group = (EnrollmentActivityGroup) getParent();
+                EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
                 Intent summaryIntent = new Intent(EnrollmentPincodeVerificationActivity.this, EnrollmentSummaryActivity.class);
                 group.startChildActivity("EnrollmentSummaryActivity", summaryIntent);
             }
@@ -106,7 +107,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
 
     /**
      * Returns to the challenge return URL.
-     * 
+     *
      * @param successful successful?
      */
     protected void _returnToChallengeUrl(boolean successful) {

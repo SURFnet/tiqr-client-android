@@ -45,14 +45,14 @@ public class C2DMessaging {
 
     // package
     static final String PREFERENCE = "com.google.android.c2dm";
-    
+
     private static final long DEFAULT_BACKOFF = 30000;
 
     /**
      * Initiate c2d messaging registration for the current application
      */
     public static void register(Context context,
-            String senderId) {
+                                String senderId) {
         Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
         registrationIntent.setPackage(GSF_PACKAGE);
         registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT,
@@ -101,14 +101,14 @@ public class C2DMessaging {
                 Context.MODE_PRIVATE);
         return prefs.getLong(LAST_REGISTRATION_CHANGE, 0);
     }
-    
+
     static long getBackoff(Context context) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCE,
                 Context.MODE_PRIVATE);
         return prefs.getLong(BACKOFF, DEFAULT_BACKOFF);
     }
-    
+
     static void setBackoff(Context context, long backoff) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCE,

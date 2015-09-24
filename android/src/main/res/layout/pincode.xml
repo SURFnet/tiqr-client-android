@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content" android:layout_width="fill_parent"
-	android:layout_centerHorizontal="true" android:orientation="vertical"
-	android:id="@+id/pincode_layout">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_centerHorizontal="true"
+              android:orientation="vertical"
+              android:id="@+id/pincode_layout">
+
+	<org.tiqr.authenticator.general.HeaderView
+		android:id="@+id/headerView"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"/>
+
 	<org.tiqr.authenticator.general.ErrorView
 		android:id="@+id/pincodeErrorView" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
@@ -11,16 +20,17 @@
 		android:layout_centerHorizontal="true" android:orientation="vertical"
 		android:paddingTop="1dip" android:paddingBottom="3dip"
 		android:paddingLeft="20dip" android:paddingRight="20dip">
+		<TextView android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="@string/entroll_pin_title" />
 		<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:textColor="#CCCCCC"
 			android:id="@+id/message" android:paddingTop="1dip" />
 		<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:id="@+id/intro_label"
-			android:text="@string/login_intro" />
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:textColor="#CCCCCC"
-			android:id="@+id/password_label" android:text="@string/password_label" />
-
+			tools:text="@string/login_intro" />
 		<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="vertical" android:layout_width="fill_parent"
 			android:layout_height="fill_parent">
@@ -31,9 +41,9 @@
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:orientation="horizontal" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="1">
+			android:layout_height="wrap_content">
 			<EditText android:id="@+id/pin1Field" android:layout_height="80dp"
-				android:layout_width="80dp" 
+				android:layout_width="80dp"
 				android:layout_gravity="center_horizontal" android:gravity="center"
 				android:layout_weight="1" android:singleLine="true"
 				android:clickable="false" android:cursorVisible="false"
@@ -57,11 +67,18 @@
 				android:clickable="false" android:cursorVisible="false"
 				android:textSize="32dp" />
 
-			<Button android:id="@+id/ok_button" android:layout_height="80dp"
+			<Button android:id="@+id/ok_button"
+				android:layout_height="80dp"
 				android:layout_width="80dp" android:layout_gravity="right"
 				android:text="@string/ok_button" android:enabled="false"
 				android:layout_weight="1"
 				android:onClick="process" />
 		</LinearLayout>
+		<TextView android:id="@+id/pinHint"
+				  android:layout_width="wrap_content"
+				  android:layout_height="wrap_content"
+				  android:layout_gravity="center_horizontal"
+                  android:textSize="14sp"
+				  android:text="@string/remember_pincode_notice" />
 	</LinearLayout>
 </LinearLayout>

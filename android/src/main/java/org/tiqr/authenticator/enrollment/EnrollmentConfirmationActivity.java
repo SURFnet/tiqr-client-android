@@ -25,6 +25,7 @@ public class EnrollmentConfirmationActivity extends AbstractConfirmationActivity
         setTitleText(R.string.enrollment_confirmation_title);
         setDescriptionText(R.string.enrollment_confirmation_description);
         setConfirmButtonText(R.string.enrollment_confirm_button);
+        setCancelButtonText(R.string.enrollment_cancel_button);
 
         TextView enrollmentURLDomain = (TextView)findViewById(R.id.enrollment_url_domain);
         try {
