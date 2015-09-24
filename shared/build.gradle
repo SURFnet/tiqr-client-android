@@ -9,13 +9,6 @@ android {
         targetSdkVersion 21
     }
     
-    // TODO: reset lintOptions to defauls
-    lintOptions {
-        //checkReleaseBuilds false
-        abortOnError false
-    }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
