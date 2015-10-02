@@ -40,10 +40,6 @@
 		<activity android:name=".qr.CaptureActivity"
 			android:screenOrientation="portrait">
 		</activity>
-		<activity android:name=".general.AbstractPincodeActivity"
-			android:label="@string/login_title"
-			android:screenOrientation="portrait">
-		</activity>
 		<activity android:name=".authentication.AuthenticationIdentitySelectActivity"
 			android:screenOrientation="portrait">
 		</activity>

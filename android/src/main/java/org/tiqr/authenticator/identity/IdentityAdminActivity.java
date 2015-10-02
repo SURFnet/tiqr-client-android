@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
+import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.general.FooterView;
@@ -83,13 +84,17 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity {
                         .setTitle(R.string.delete_confirm_title)
                         .setMessage(R.string.delete_confirm)
                         .setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                _db.deleteIdentity(info.id);
-                                getIdentityCursor().requery();
+                                if (getListAdapter().getCount() > 1) {
+                                    _db.deleteIdentity(info.id);
+                                    getIdentityCursor().requery();
+                                } else {
+                                    _db.deleteIdentity(info.id);
+                                    startActivity(new Intent(IdentityAdminActivity.this, MainActivity.class));
+                                    finish();
+                                }
                             }
-
                         })
                         .setNegativeButton(R.string.cancel_button, null)
                         .show();

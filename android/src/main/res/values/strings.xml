@@ -38,7 +38,6 @@
     <string name="return_button">Return</string>
     <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="no_identities">You have no identities yet.\n\nPress the <b>+</b> button to add an identity.</string>
     <string name="to_service_provider">to:</string>
     <string name="for_identity_provider">For:</string>
     <string name="confirm_authentication">Are you sure you want to log in?</string>
