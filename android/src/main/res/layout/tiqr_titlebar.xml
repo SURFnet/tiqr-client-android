@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/tiqr_bw_logo"
+        android:src="@drawable/tiqr_logo"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@android:string/untitled"/>
 

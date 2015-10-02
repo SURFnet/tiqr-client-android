@@ -3,6 +3,8 @@ package org.tiqr.authenticator.identity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.datamodel.Identity;
@@ -106,7 +109,22 @@ public class IdentityDetailActivity extends Activity {
      *
      */
     protected void _deleteIdentity() {
+        boolean isLastIdentity = false;
+        Cursor cursor = _db.getAllIdentitiesWithIdentityProviderData();
+
+        if (cursor != null) {
+            if (cursor.getCount() < 2) {
+                isLastIdentity = true;
+            }
+            cursor.close();
+        }
+
         _db.deleteIdentity(_identity.getId());
+
+        if (isLastIdentity) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
         finish();
     }
 }
