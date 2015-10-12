@@ -16,7 +16,6 @@ import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.ErrorActivity;
-import org.tiqr.authenticator.general.ErrorView;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.OCRAProtocol;
@@ -50,18 +49,8 @@ public class AuthenticationFallbackActivity extends Activity {
         });
         headerView.hideRightButton();
 
-        TextView title = (TextView)findViewById(R.id.error_title);
-        title.setText(R.string.authentication_fallback_title);
-
-        TextView message = (TextView)findViewById(R.id.error_message);
-        message.setText(R.string.authentication_fallback_description);
-
         TextView identifier = (TextView)findViewById(R.id.identifier);
         identifier.setText(((AuthenticationActivityGroup)getParent()).getChallenge().getIdentity().getIdentifier());
-
-        ErrorView ev = (ErrorView)findViewById(R.id.fallbackErrorView);
-        ev.setErrorColor(getResources().getColor(R.color.tiqr_green));
-        ev.setVisibility(View.VISIBLE);
 
         Button ok = (Button)findViewById(R.id.confirm_button);
         ok.setText(R.string.authentication_fallback_button);
@@ -126,13 +115,10 @@ public class AuthenticationFallbackActivity extends Activity {
      * @param message
      */
     protected void _showErrorActivityWithMessage(String title, String message) {
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        Intent intent = new Intent().setClass(this, ErrorActivity.class);
-
-        intent.putExtra("org.tiqr.error.title", title);
-        intent.putExtra("org.tiqr.error.message", message);
-
-        parent.startChildActivity("ErrorActivity", intent);
+        new ErrorActivity.ErrorBuilder()
+                .setTitle(title)
+                .setMessage(message)
+                .show(this);
     }
 
     @Override

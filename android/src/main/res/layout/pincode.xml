@@ -12,9 +12,6 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"/>
 
-	<org.tiqr.authenticator.general.ErrorView
-		android:id="@+id/pincodeErrorView" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_centerHorizontal="true" android:orientation="vertical"

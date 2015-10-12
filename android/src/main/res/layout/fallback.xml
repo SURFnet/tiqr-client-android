@@ -9,21 +9,33 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"/>
 
-	<org.tiqr.authenticator.general.ErrorView
-		android:id="@+id/fallbackErrorView"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/headerView"/>
-
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:layout_below="@+id/fallbackErrorView"
+		android:layout_below="@+id/headerView"
 		android:layout_above="@+id/info_layout">
 
 		<LinearLayout android:orientation="vertical"
 					  android:layout_width="fill_parent"
 					  android:layout_height="wrap_content">
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="20dp">
+
+				<TextView
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/authentication_fallback_title"/>
+
+				<TextView
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/authentication_fallback_description"/>
+			</LinearLayout>
 
 			<LinearLayout
 				android:orientation="vertical"

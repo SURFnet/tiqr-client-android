@@ -90,19 +90,18 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
             case INVALID_RESPONSE:
                 if (!error.getExtras().containsKey("attemptsLeft") || error.getExtras().getInt("attemptsLeft") > 0) {
                     _clear();
-                    _showErrorView(error.getTitle(), error.getMessage());
                     _initHiddenPincodeField();
+                    new ErrorActivity.ErrorBuilder()
+                            .setTitle(error.getTitle())
+                            .setMessage(error.getMessage())
+                            .show(this);
                     break;
                 }
             default:
-                AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-                Intent intent = new Intent().setClass(this, ErrorActivity.class);
-                intent.putExtra("org.tiqr.error.title", error.getTitle());
-                intent.putExtra("org.tiqr.error.message", error.getMessage());
-                if (error.getExtras().containsKey("attemptsLeft")) {
-                    intent.putExtra("org.tiqr.error.attemptsLeft", error.getExtras().getInt("attemptsLeft"));
-                }
-                parent.startChildActivity("ErrorActivity", intent);
+                new ErrorActivity.ErrorBuilder()
+                        .setTitle(error.getTitle())
+                        .setMessage(error.getMessage())
+                        .show(this);
                 break;
         }
     }
