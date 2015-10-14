@@ -3,7 +3,6 @@ package org.tiqr.authenticator.general;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -326,37 +325,6 @@ abstract public class AbstractPincodeActivity extends Activity {
     protected Challenge _getChallenge() {
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
         return parent.getChallenge();
-    }
-
-    /**
-     * Shows the error activity if needed, with a title and message
-     *
-     * @param title
-     * @param message
-     */
-    protected void _showErrorActivityWithMessage(String title, String message) {
-        progressDialog.cancel();
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        Intent intent = new Intent().setClass(this, ErrorActivity.class);
-
-        intent.putExtra("org.tiqr.error.title", title);
-        intent.putExtra("org.tiqr.error.message", message);
-
-        parent.startChildActivity("ErrorActivity", intent);
-    }
-
-    /**
-     * Show a custom error view on top of the pincode activity
-     *
-     * @param title
-     * @param message
-     */
-    protected void _showErrorView(String title, String message) {
-        ErrorView view = (ErrorView)findViewById(R.id.pincodeErrorView);
-        view.setTitle(title);
-        view.setMessage(message);
-        view.setEnabled(true);
-        view.setVisibility(View.VISIBLE);
     }
 
     /**

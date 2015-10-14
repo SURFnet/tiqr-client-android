@@ -42,7 +42,10 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
         String secondPin = pincode.getText().toString();
         if (!firstPin.equals(secondPin)) {
             _clear();
-            _showErrorView(getString(R.string.passwords_dont_match_title), getString(R.string.passwords_dont_match));
+            new ErrorActivity.ErrorBuilder()
+                    .setTitle(getString(R.string.passwords_dont_match_title))
+                    .setMessage(getString(R.string.passwords_dont_match))
+                    .show(this);
             return;
         }
 
@@ -75,22 +78,12 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
             @Override
             public void onEnrollmentError(EnrollmentError error) {
                 progressDialog.cancel();
-                _processError(error);
+                new ErrorActivity.ErrorBuilder()
+                        .setTitle(error.getTitle())
+                        .setMessage(error.getMessage())
+                        .show(EnrollmentPincodeVerificationActivity.this);
             }
         });
-    }
-
-    /**
-     * Process error.
-     *
-     * @param error Error details.
-     */
-    protected void _processError(EnrollmentError error) {
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        Intent intent = new Intent().setClass(this, ErrorActivity.class);
-        intent.putExtra("org.tiqr.error.title", error.getTitle());
-        intent.putExtra("org.tiqr.error.message", error.getMessage());
-        parent.startChildActivity("ErrorActivity", intent);
     }
 
     /**

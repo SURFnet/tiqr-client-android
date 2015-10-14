@@ -2,10 +2,12 @@ package org.tiqr.authenticator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.tiqr.authenticator.general.HeaderView;
 
@@ -43,6 +45,14 @@ public class AboutActivity extends Activity {
             }
         });
         headerView.hideRightButton();
+
+        TextView versionTextView = (TextView)findViewById(R.id.versionName);
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            versionTextView.setText(getString(R.string.app_name) + " " + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            versionTextView.setVisibility(View.GONE);
+        }
 
         ImageView logoSurfnet = (ImageView)findViewById(R.id.logo_surfnet);
         logoSurfnet.setOnClickListener(new View.OnClickListener() {

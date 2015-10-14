@@ -1,6 +1,7 @@
 package org.tiqr.authenticator.general;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +11,6 @@ import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 
 public class ErrorActivity extends Activity {
-
-    protected String title;
-    protected String message;
-    protected int attemptsLeft = -1;
-
     /**
      * Called when the activity is first created.
      */
@@ -23,29 +19,53 @@ public class ErrorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.error);
 
-        title = getIntent().getStringExtra("org.tiqr.error.title");
-        message = getIntent().getStringExtra("org.tiqr.error.message");
-        if (getIntent().hasExtra("org.tiqr.error.attemptsLeft")) {
-            attemptsLeft = getIntent().getIntExtra("org.tiqr.error.attemptsLeft", -1);
-        }
+        String title = getIntent().getStringExtra("org.tiqr.error.title");
+        String message = getIntent().getStringExtra("org.tiqr.error.message");
 
-        TextView messageField = (TextView)findViewById(R.id.error_message);
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.hideRightButton();
+
+        FooterView footer = (FooterView)findViewById(R.id.footerView);
+        footer.hideInfoIcon();
+
         TextView titleField = (TextView)findViewById(R.id.error_title);
         titleField.setText(title);
-        messageField.setText(message);
 
-        ErrorView ev = (ErrorView)findViewById(R.id.error_view);
-        ev.setVisibility(View.VISIBLE);
+        TextView messageField = (TextView)findViewById(R.id.error_message);
+        messageField.setText(message);
     }
 
-    /**
-     * Return to the home screen
-     *
-     * @param v
-     */
-    public void onOkClick(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+    public static class ErrorBuilder {
+        private String _title;
+        private String _message;
+
+        public ErrorBuilder setTitle(String title) {
+            _title = title;
+            return this;
+        }
+
+        public ErrorBuilder setMessage(String message) {
+            _message = message;
+            return this;
+        }
+
+        public void show(Context context) {
+            if (context == null) {
+                return;
+            }
+
+            Intent intent = new Intent(context, ErrorActivity.class);
+
+            intent.putExtra("org.tiqr.error.title", _title);
+            intent.putExtra("org.tiqr.error.message", _message);
+
+            context.startActivity(intent);
+        }
     }
 }

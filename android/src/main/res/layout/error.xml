@@ -1,11 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<org.tiqr.authenticator.general.ErrorView
-		android:id="@+id/error_view" android:layout_weight="1"
-		android:layout_width="fill_parent" android:layout_height="fill_parent" />
-	<Button android:id="@+id/ok_button" android:text="@string/ok_button"
-		android:onClick="onOkClick" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <org.tiqr.authenticator.general.HeaderView
+        android:id="@+id/headerView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="#990000"
+        android:layout_below="@+id/headerView"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/footerView"
+        android:layout_below="@+id/headerView"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/error_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="#990000"
+        android:layout_above="@+id/footerView"/>
+
+    <org.tiqr.authenticator.general.FooterView
+        android:id="@+id/footerView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
