@@ -42,8 +42,6 @@ public final class CameraManager {
 
     private static final int MIN_FRAME_WIDTH = 240;
     private static final int MIN_FRAME_HEIGHT = 240;
-    private static final int MAX_FRAME_WIDTH = 360;
-    private static final int MAX_FRAME_HEIGHT = 360;
 
     private static CameraManager cameraManager;
 
@@ -202,16 +200,15 @@ public final class CameraManager {
         int width = surfaceResolution.x * 3 / 4;
         if (width < MIN_FRAME_WIDTH) {
             width = MIN_FRAME_WIDTH;
-        } else if (width > MAX_FRAME_WIDTH) {
-            width = MAX_FRAME_WIDTH;
         }
 
         int height = surfaceResolution.y * 3 / 4;
         if (height < MIN_FRAME_HEIGHT) {
             height = MIN_FRAME_HEIGHT;
-        } else if (height > MAX_FRAME_HEIGHT) {
-            height = MAX_FRAME_HEIGHT;
         }
+
+        width = height = Math.min(width, height);
+
         int leftOffset = (surfaceResolution.x - width) / 2;
         int topOffset = (surfaceResolution.y - height) / 2;
         _framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
