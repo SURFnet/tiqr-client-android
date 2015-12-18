@@ -151,5 +151,8 @@ identity provider(s) check your identities (accessible from the top right). <br 
 <br />
 Together with your new activation code you will receive instructions for 
 reactivating your account. Press <b>Scan</b> if asked.</string>
+    <string name="upgrade_to_touch_id_title">Upgrade account</string>
+    <string name="upgrade_to_touch_id_message">Do you want to upgrade this account to use TouchID instead of a PIN?</string>
+    <string name="upgrade_button">Upgrade</string>
 
 </resources>

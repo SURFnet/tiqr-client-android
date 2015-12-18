@@ -158,4 +158,7 @@ Po registraciji boste prejeli aktivacijsko kodo z navodili o postopku aktivacije
 Zaprosite svojega ponudnika identitete za novo aktivacijsko kodo. Podrobnosti o vašem ponudniku identitete so vedno dostopne preko gumba desno zgoraj.<br></br>
 <br></br>
 Skupaj z novo aktivacijsko kodo boste prejeli tudi navodila za ponovno aktivacijo računa. Pritisnite na gumb <b>Skeniraj</b>, če bo aplikacija to zahtevala od vas.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
 </resources>

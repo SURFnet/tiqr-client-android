@@ -1,10 +1,14 @@
 package org.tiqr.authenticator;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.webkit.WebView;
 
@@ -14,6 +18,7 @@ import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
 import org.tiqr.authenticator.datamodel.DbAdapter;
+import org.tiqr.authenticator.dialog.ActivityDialog;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.CaptureActivity;
@@ -26,7 +31,10 @@ import org.tiqr.service.notification.NotificationService;
 import javax.inject.Inject;
 
 public class MainActivity extends Activity {
-    protected
+
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 42;
+
+
     @Inject
     NotificationService _notificationService;
 
@@ -68,10 +76,29 @@ public class MainActivity extends Activity {
         findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent scanIntent = new Intent(MainActivity.this, CaptureActivity.class);
-                startActivity(scanIntent);
+                if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    _startScanning();
+                } else {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    _startScanning();
+                }
+            }
+        }
+    }
+
+    private void _startScanning() {
+        Intent scanIntent = new Intent(MainActivity.this, CaptureActivity.class);
+        startActivity(scanIntent);
     }
 
     public void loadContentsIntoWebView(int contentResourceId, int webviewResourceId) {
@@ -86,7 +113,7 @@ public class MainActivity extends Activity {
         super.onStart();
 
         String deviceToken = C2DMessaging.getRegistrationId(this);
-        if (deviceToken != null && !"".equals(deviceToken)) {
+        if (deviceToken != null && !"" .equals(deviceToken)) {
             _notificationService.sendRequestWithDeviceToken(deviceToken);
         } else {
             C2DMessaging.register(this, C2DMReceiver.SENDER_ID);
@@ -104,11 +131,6 @@ public class MainActivity extends Activity {
                 _authenticate(rawChallenge);
             }
         }
-    }
-
-    public void showIncompatibilityDialog() {
-        new IncompatibilityDialog().show(this);
-
     }
 
     /**

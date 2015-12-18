@@ -138,4 +138,7 @@ Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</str
     <Data><![CDATA[<html><body>Allez sur le service ou vous voulez vous connecter and suivez ces instructions: <ul><li>Scannez le code QR sur la fenêtre de connexion du site web ou du service.</li><li>Si vous avez plusieurs identités, sélectionnez une identité.</li><li>Confirmez votre identité (vous devrez entrer votre code PIN).</li><li>Vous êtes connecté!</li></ul>Appuyez sur <b>Scan</b> pour démarrer la procédure de connexion.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Et maintenant?</b><br></br>Demandez à votre fournisseur de service un nouveau code d\'activation. Pour trouver le lien vers votre fournisseur de service, consultez vos identités (accessibles en haut à droite).<br></br><br></br>Lorsque vous recevrez votre nouveau code d\'activation, il vous sera aussi fourni les instructions pour ré-activer votre compte. Appuyez sur <b>Scan</b> si demandé.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
 </resources>

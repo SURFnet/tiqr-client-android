@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -87,10 +88,13 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                 int icon = R.drawable.icon_notification;
                 long when = System.currentTimeMillis();
 
-                Notification notification = new Notification(icon, title, when);
-                notification.setLatestEventInfo(context, title, text, PendingIntent.getActivity(context, 0, authIntent, 0));
-                notification.defaults |= Notification.DEFAULT_ALL;
-                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, authIntent, 0);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                Notification notification = builder.setContentIntent(pendingIntent)
+                        .setSmallIcon(icon).setTicker(text).setWhen(when)
+                        .setAutoCancel(true).setContentTitle(title)
+                        .setContentText(text).build();
 
                 NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
                 manager.notify(0, notification);

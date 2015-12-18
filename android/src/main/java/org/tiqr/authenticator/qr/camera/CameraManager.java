@@ -23,7 +23,9 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 
 import org.tiqr.authenticator.qr.PlanarYUVLuminanceSource;
 
@@ -46,6 +48,7 @@ public final class CameraManager {
     private static CameraManager cameraManager;
 
     private final CameraConfigurationManager _configManager;
+    private final Context context;
     private Camera _camera;
     private Rect _framingRect;
     private Rect _framingRectInPreview;
@@ -89,6 +92,7 @@ public final class CameraManager {
         this._configManager = new CameraConfigurationManager();
         previewCallback = new PreviewCallback(_configManager);
         autoFocusCallback = new AutoFocusCallback();
+        this.context = context;
     }
 
     /**
@@ -119,6 +123,45 @@ public final class CameraManager {
     }
 
     /**
+     * For some devices there is a problem with the camera (etc Nexus5X), so we need to set the camera orientation.
+     */
+    private void _setCameraDisplayOrientation() {
+        android.hardware.Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(0, info); // Use the first rear-facing camera
+        int rotation = _getDeviceOrientation();
+
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        _camera.setDisplayOrientation(result);
+    }
+
+    /**
+     * Get the device's current orientation
+     *
+     * @return device orientation
+     */
+    private int _getDeviceOrientation() {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int rotation = windowManager.getDefaultDisplay().getRotation();
+        Log.d(TAG, "Current orientation = " + rotation);
+        return rotation;
+    }
+
+    /**
      * Closes the _camera driver if still in use.
      */
     public void closeDriver() {
@@ -133,6 +176,7 @@ public final class CameraManager {
      */
     public void startPreview() {
         if (_camera != null && !_previewing) {
+            _setCameraDisplayOrientation();
             _camera.startPreview();
             _previewing = true;
         }

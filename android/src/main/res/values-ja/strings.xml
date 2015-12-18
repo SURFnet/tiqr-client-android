@@ -153,4 +153,7 @@ IDプロバイダへのリンクは、右上のIDから確認できます。<br>
 <br></br>
 有効化のためのコードを入力すれば、アカウントを再有効化するための説明が通知されます。
 指示に従って<b>スキャン</b>してください。</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
 </resources>

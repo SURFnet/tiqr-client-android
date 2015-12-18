@@ -3,6 +3,7 @@ package org.tiqr.authenticator;
 import android.content.Context;
 
 import org.tiqr.authenticator.authentication.AuthenticationConfirmationActivity;
+import org.tiqr.authenticator.authentication.AuthenticationFingerprintActivity;
 import org.tiqr.authenticator.authentication.AuthenticationPincodeActivity;
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity;
 import org.tiqr.authenticator.qr.CaptureActivity;
@@ -22,6 +23,7 @@ import dagger.Provides;
                 MainActivity.class,
                 AuthenticationConfirmationActivity.class,
                 AuthenticationPincodeActivity.class,
+                AuthenticationFingerprintActivity.class,
                 EnrollmentPincodeVerificationActivity.class,
                 CaptureActivity.class,
                 C2DMReceiver.class

@@ -152,4 +152,7 @@ nei jo identiteitferstrekker(s) is beskikber út it akkount oersjoch
 <br></br>
 By jo nije aktivaasje koade krije jo ynstruksjes. Druk op <b>Scan</b>
 wannear ’t jo dêrom freege wurd.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
 </resources>

@@ -137,4 +137,7 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
     <Data><![CDATA[<html><body>Navigati la site-ul web la care vreti sa va autentificati si urmati acesti pasi: <ul> <li>Scanati codul QR de pe ecranul de autentificare al site-ului web ori al serviciului.</li><li><i>Daca aveti mai multe identitati, selectati identitatea dumneavoastra.</i></li><li>Confirmati identitatea dumneavoastra (va trebui sa introduceti codul dumneavoastra PIN).</li><li>Sunteti autentificati!</li></ul> Apasati <b>Scanare</b> pentru a incepe procesul de autentificare.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Ce urmeaza?</b><br></br>Intrebati providerul(i) dumneavoastra de identitate pentru un nou cod de activare. Pentru un link spre providerul(i) dumneavoastra de identitate varificati identitatile dumneavoastra (accesibile in coltul din dreapta sus).<br></br><br></br>Alaturi de noul cod de activare al dumneavoastra, veti primi instructiuni pentru reactivarea contului. Apasati <b>Scanare</b> daca va este cerut.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
 </resources>

@@ -159,4 +159,7 @@ naar uw identiteitverstrekker(s) is beschikbaar vanuit het account overzicht
 <br></br>
 Bij uw nieuwe activatiecode ontvangt u instructies. Zodra u daar om gevraagd wordt 
 drukt u op <b>Scan</b>.</string>
+  <string name="upgrade_to_touch_id_title">Account upgraden</string>
+  <string name="upgrade_to_touch_id_message">Wil je dit account upgraden naar TouchID? Hierdoor kun je in het vervolg inloggen met jouw vingerafdruk in plaats van een PIN-code</string>
+  <string name="upgrade_button">Upgrade</string>
 </resources>

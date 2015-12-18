@@ -18,7 +18,6 @@
 package org.tiqr.authenticator.qr;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,7 +36,7 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import org.tiqr.authenticator.ActivityDialog;
+import org.tiqr.authenticator.dialog.ActivityDialog;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
@@ -176,6 +176,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
     }
 
+
     private void initCamera(SurfaceView surfaceView) {
         try {
             CameraManager.get().openDriver(surfaceView.getHolder());
@@ -185,12 +186,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             double maxWidth = parentView.getWidth();
             double maxHeight = parentView.getHeight();
 
-            double scaleX = maxWidth/CameraManager.get().getCameraResolution().y;
-            double scaleY = maxHeight/CameraManager.get().getCameraResolution().x;
+            double scaleX = maxWidth / CameraManager.get().getCameraResolution().y;
+            double scaleY = maxHeight / CameraManager.get().getCameraResolution().x;
             double scale = Math.min(scaleX, scaleY);
 
-            surfaceView.getLayoutParams().width = (int)(scale*CameraManager.get().getCameraResolution().y);
-            surfaceView.getLayoutParams().height = (int)(scale*CameraManager.get().getCameraResolution().x);
+            surfaceView.getLayoutParams().width = (int)(scale * CameraManager.get().getCameraResolution().y);
+            surfaceView.getLayoutParams().height = (int)(scale * CameraManager.get().getCameraResolution().x);
 
             surfaceView.requestLayout();
         } catch (IOException ioe) {
