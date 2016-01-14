@@ -8,7 +8,6 @@ import android.view.View;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
-import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
 import org.tiqr.service.enrollment.EnrollmentError;
@@ -69,7 +68,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
         _enrollmentService.enroll(challenge, pin, new EnrollmentService.OnEnrollmentListener() {
             @Override
             public void onEnrollmentSuccess() {
-                progressDialog.cancel();
+                _cancelProgressDialog();
                 EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
                 Intent summaryIntent = new Intent(EnrollmentPincodeVerificationActivity.this, EnrollmentSummaryActivity.class);
                 group.startChildActivity("EnrollmentSummaryActivity", summaryIntent);
@@ -77,7 +76,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
 
             @Override
             public void onEnrollmentError(EnrollmentError error) {
-                progressDialog.cancel();
+                _cancelProgressDialog();
                 new ErrorActivity.ErrorBuilder()
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())

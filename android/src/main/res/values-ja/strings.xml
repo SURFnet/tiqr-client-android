@@ -156,4 +156,6 @@ IDプロバイダへのリンクは、右上のIDから確認できます。<br>
   <string name="upgrade_to_touch_id_title"/>
   <string name="upgrade_to_touch_id_message"/>
   <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
 </resources>

@@ -158,4 +158,6 @@ for å aktivere din konto. Under aktiveringsprosessen må du skanne
   <string name="upgrade_to_touch_id_title"/>
   <string name="upgrade_to_touch_id_message"/>
   <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
 </resources>

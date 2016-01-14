@@ -1,9 +1,11 @@
 package org.tiqr.authenticator.authentication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
@@ -20,6 +22,10 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     protected
     @Inject
     AuthenticationService _authenticationService;
+
+    protected
+    @Inject
+    SharedPreferences _sharedPreferences;
 
     /**
      * Called when the activity is first created.
@@ -57,8 +63,15 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     @Override
     protected void _onDialogConfirm() {
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        Intent authenticationPincodeIntent = new Intent().setClass(this, AuthenticationPincodeActivity.class);
-        parent.startChildActivity("AuthenticationPincodeActivity", authenticationPincodeIntent);
+
+
+        if (_sharedPreferences.getBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, false)) {
+            Intent authenticationFingerprintIntent = new Intent().setClass(this, AuthenticationFingerprintActivity.class);
+            parent.startChildActivity("AuthenticationFingerprintActivity", authenticationFingerprintIntent);
+        } else {
+            Intent authenticationPincodeIntent = new Intent().setClass(this, AuthenticationPincodeActivity.class);
+            parent.startChildActivity("AuthenticationPincodeActivity", authenticationPincodeIntent);
+        }
     }
 
     /**

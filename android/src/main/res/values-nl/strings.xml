@@ -162,4 +162,7 @@ drukt u op <b>Scan</b>.</string>
   <string name="upgrade_to_touch_id_title">Account upgraden</string>
   <string name="upgrade_to_touch_id_message">Wil je dit account upgraden naar TouchID? Hierdoor kun je in het vervolg inloggen met jouw vingerafdruk in plaats van een PIN-code</string>
   <string name="upgrade_button">Upgrade</string>
+  <string name="fingerprint_intro">Bevestig vingerafdruk om door te gaan</string>
+  <string name="touch_sensor">Raak sensor aan</string>
+
 </resources>

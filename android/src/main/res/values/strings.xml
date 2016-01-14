@@ -154,5 +154,7 @@ reactivating your account. Press <b>Scan</b> if asked.</string>
     <string name="upgrade_to_touch_id_title">Upgrade account</string>
     <string name="upgrade_to_touch_id_message">Do you want to upgrade this account to use TouchID instead of a PIN?</string>
     <string name="upgrade_button">Upgrade</string>
+    <string name="fingerprint_intro">Confirm fingerprint to continue</string>
+    <string name="touch_sensor">Touch sensor</string>
 
 </resources>

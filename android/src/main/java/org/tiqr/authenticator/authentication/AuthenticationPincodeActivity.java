@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
-import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
 import org.tiqr.service.authentication.AuthenticationError;
@@ -58,15 +58,16 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
         _authenticationService.authenticate(challenge, pin, new AuthenticationService.OnAuthenticationListener() {
             @Override
             public void onAuthenticationSuccess() {
-                progressDialog.cancel();
+                _cancelProgressDialog();
                 AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
                 Intent summaryIntent = new Intent(AuthenticationPincodeActivity.this, AuthenticationSummaryActivity.class);
+                summaryIntent.putExtra(AuthenticationSummaryActivity.PIN, pincode.getText().toString());
                 group.startChildActivity("AuthenticationSummaryActivity", summaryIntent);
             }
 
             @Override
             public void onAuthenticationError(AuthenticationError error) {
-                progressDialog.cancel();
+                _cancelProgressDialog();
                 _processError(error);
             }
         });
@@ -84,7 +85,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
                 finish(); // Clear current from the stack so back goes back one deeper.
                 AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
                 Intent fallbackIntent = new Intent(this, AuthenticationFallbackActivity.class);
-                fallbackIntent.putExtra("org.tiqr.authentication.pincode", pincode.getText().toString());
+                fallbackIntent.putExtra(Constants.AUTHENTICATION_PINCODE_KEY, pincode.getText().toString());
                 group.startChildActivity("AuthenticationFallbackActivity", fallbackIntent);
                 break;
             case INVALID_RESPONSE:

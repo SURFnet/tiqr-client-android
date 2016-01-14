@@ -23,7 +23,6 @@ import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
-import org.tiqr.authenticator.exceptions.UserException;
 import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.OCRAProtocol;
 import org.tiqr.authenticator.security.OCRAWrapper;
@@ -49,6 +48,7 @@ import javax.inject.Inject;
  * Authentication data service.
  */
 public class AuthenticationService {
+
     public interface OnParseAuthenticationChallengeListener {
         public void onParseAuthenticationChallengeSuccess(AuthenticationChallenge challenge);
         public void onParseAuthenticationChallengeError(ParseAuthenticationChallengeError error);

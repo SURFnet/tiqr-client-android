@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.tiqr.Constants;
 import org.tiqr.authenticator.dialog.IncompatibilityDialog;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
@@ -61,7 +62,7 @@ public class AuthenticationFallbackActivity extends Activity {
             });
         }
 
-        String pincode = getIntent().getStringExtra("org.tiqr.authentication.pincode");
+        String pincode = getIntent().getStringExtra(Constants.AUTHENTICATION_PINCODE_KEY);
         _fetchOTP(pincode);
     }
 

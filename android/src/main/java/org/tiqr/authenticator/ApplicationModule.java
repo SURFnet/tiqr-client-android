@@ -1,10 +1,13 @@
 package org.tiqr.authenticator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import org.tiqr.authenticator.authentication.AuthenticationConfirmationActivity;
 import org.tiqr.authenticator.authentication.AuthenticationFingerprintActivity;
 import org.tiqr.authenticator.authentication.AuthenticationPincodeActivity;
+import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity;
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity;
 import org.tiqr.authenticator.qr.CaptureActivity;
 
@@ -25,6 +28,7 @@ import dagger.Provides;
                 AuthenticationPincodeActivity.class,
                 AuthenticationFingerprintActivity.class,
                 EnrollmentPincodeVerificationActivity.class,
+                AuthenticationSummaryActivity.class,
                 CaptureActivity.class,
                 C2DMReceiver.class
         }
@@ -49,4 +53,14 @@ public class ApplicationModule {
     Context provideContext() {
         return _application.getApplicationContext();
     }
+
+    /**
+     * Allow the shared preferences to be injected.
+     */
+    @Provides
+    @Singleton
+    public SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(_application.getApplicationContext());
+    }
+
 }
