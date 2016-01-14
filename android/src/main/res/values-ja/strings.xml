@@ -136,7 +136,7 @@ Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</str
 <br />
 登録後に、アカウントを有効化するためのコードとその方法の説明が通知されます。 有効化手続きの中でQRコードのスキャンを行う際には、指示に従って<b>スキャン</b>のボタンを押してください。</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>利用したいサービスにアクセスし、次の手順に従ってください：<ul>
 <li>ログイン画面のQRコードをスキャンします。</li>
 <li>
@@ -158,4 +158,5 @@ IDプロバイダへのリンクは、右上のIDから確認できます。<br>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

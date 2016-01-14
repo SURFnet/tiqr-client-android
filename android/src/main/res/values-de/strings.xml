@@ -134,7 +134,7 @@ nur einmalig gültigen Daten einzugeben:</string>
   <string name="main_text_welcome">
     <Data><![CDATA[<html><body>Mit Hilfe von tiqr können Sie sich mit Ihrem Smartphone einfach und sicher bei Onlinediensten anmelden.<br/><br/>In der Anwendung gibt es noch kein aktives Benutzerkonto. Sie brauchen ein aktives Benutzerkonto um tiqr benutzen zu können. Hier finden Sie eine Liste von Identitätsprovidern: <a href=\"https://tiqr.org\">tiqr.org</a>.<br/><br/>Nach der Registrierung erhalten Sie einen Aktivierungscode und weitere Anweisungen. Während des Aktivierungsvorgangs müssen Sie einen QR Code einscannen. Drücken Sie auf <b>Scannen</b> wenn Sie dazu aufgefordert werden.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>Gehen Sie zu dem Dienst bei dem Sie sich anmelden wollen und folgen Sie diesen Schritten:<ul> <li>Scannen Sie den QR Code auf der Anmeldeseite des Dienstes.</li> <li><i>Wenn Sie mehrere Identitäten haben, wählen Sie die gewünschte aus.</i></li> <li>Bestätigen Sie Ihre Identität (dazu müssen Sie Ihre PIN eingeben).</li> <li>Sie sind angemeldet!</li> </ul> Drücken Sie auf <b>Scannen</b> um den Anmeldevorgang zu starten.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Und nun?</b><br></br> Fragen Sie Ihre(n) Identitätsprovider nach einem neuen Aktivierungscode. Zur Kontaktaufnahme mit Ihrem Identitätsprovider(n) überprüfen Sie bitte ihre Identäten (erreichbar von oben rechts). <br></br><br></br> Zusammen mit dem neuen Aktivierungscode erhalten Sie auch Anweisungen mit denen Sie Ihr Benutzerkonto wieder reaktivieren können. Drücken Sie <b>Scannen</b> wenn Sie dazu aufgefordert werden.</string>
@@ -143,4 +143,5 @@ nur einmalig gültigen Daten einzugeben:</string>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

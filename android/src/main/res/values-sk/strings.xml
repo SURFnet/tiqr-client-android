@@ -143,7 +143,7 @@ Po registrácii obdržíte aktivačný kód spolu s pokynmi,
 ako svoj účet aktivovať. V priebehu aktivácie bude potrebné nasnímať 
 QR kód. Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>Zvoľte želanú službu a postupujte nasledovne: <ul> <li>Nasnímajte QR kód na prihlasovacej stránke služby.</li> <li><i>Ak máte niekoľko identít, zvoľte si tú, s ktorou sa chcete prihlásiť.</i></li> <li>Potvrďte identitu (budete musieť zadať svoj PIN).</li> <li>Ste prihlásený/á!</li> </ul> Potvrdením výzvy <b>Skenovať</b> zahájite proces prihlásenia.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>A čo teraz?</b>⏎ <br></br>⏎ Požiadajte vášho poskytovateľa identity o nový aktivačný kód. Odkaz na váško ⏎ poskytovateľa identity nájdete v menu Identity (hore vľavo).<br></br>⏎ <br></br>⏎ Spolu s aktivačným kódom obdržíte pokyny ako znovu ⏎ aktivovať váš účet. Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.</string>
@@ -152,4 +152,5 @@ QR kód. Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.</body></html>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

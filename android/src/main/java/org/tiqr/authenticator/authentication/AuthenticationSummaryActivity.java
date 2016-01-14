@@ -24,6 +24,7 @@ import org.tiqr.authenticator.general.FooterView;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.Secret;
+import org.tiqr.service.authentication.AuthenticationService;
 
 import java.security.InvalidKeyException;
 
@@ -35,7 +36,11 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
     public static final String PIN = "PIN";
 
     // Logging tag
-    private static final String TAG = "Wiebe";
+    private static final String TAG = AuthenticationSummaryActivity.class.getSimpleName();
+
+    protected
+    @Inject
+    Context _context;
 
     protected
     @Inject
@@ -43,7 +48,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
 
     protected
     @Inject
-    Context _context;
+    AuthenticationService _authenticationService;
 
     /**
      * Called when the activity is first created.
@@ -118,7 +123,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                                 SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
                                 secret.storeInKeyStore(newSessionKey);
                             }
-                            _useFingerPrintAsAuthentication();
+                            _authenticationService.useFingerPrintAsAuthentication(true);
                         } catch (SecurityFeaturesException | InvalidKeyException e) {
                             // No user action required
                             Log.e(TAG, "Not able to save the key to the keystore");
@@ -129,18 +134,6 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                 .create()
                 .show();
     }
-
-    /**
-     * Sets the fingerprint authentication method.
-     */
-    private void _useFingerPrintAsAuthentication() {
-        SharedPreferences.Editor editor = _sharedPreferences.edit();
-        editor.putBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, true);
-        editor.putBoolean(Constants.SHOW_FINGERPRINT_UPGRADE_DIALOG_PREF_KEY, false);
-        editor.commit();
-    }
-
-
 
     /**
      * Return to the home screen

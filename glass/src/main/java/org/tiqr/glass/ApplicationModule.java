@@ -22,7 +22,7 @@ import dagger.Provides;
                 ScanActivity.class,
                 EnrollmentConfirmationActivity.class,
                 AuthenticationIdentitySelectActivity.class,
-                AuthenticationConfirmationActivity.class
+                AuthenticationConfirmationActivity.class,
         }
 )
 public class ApplicationModule {

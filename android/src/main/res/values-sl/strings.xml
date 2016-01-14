@@ -143,7 +143,7 @@ naslovu <a href=\"https://tiqr.org\">tiqr.org</a>. <br/>
 <br/>
 Po registraciji boste prejeli aktivacijsko kodo z navodili o postopku aktivacije. Med postopkom aktivacije boste morali skenirati kodo QR, zato pritisnite na gumb <b>Skeniraj</b>, če bo program od vas to zahteval.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>Pojite na izbrano spletno stran in se prijavite z naslednjimi koraki: <ul>
             <li>Skenirajte kodo QR na prijavni strani spletne storitve.</li>
             <li>
@@ -163,4 +163,5 @@ Skupaj z novo aktivacijsko kodo boste prejeli tudi navodila za ponovno aktivacij
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

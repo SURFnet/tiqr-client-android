@@ -91,6 +91,7 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity {
                                     getIdentityCursor().requery();
                                 } else {
                                     _db.deleteIdentity(info.id);
+
                                     startActivity(new Intent(IdentityAdminActivity.this, MainActivity.class));
                                     finish();
                                 }

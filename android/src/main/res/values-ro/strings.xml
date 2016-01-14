@@ -133,7 +133,7 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="main_text_welcome">
     <Data><![CDATA[<html><body>Folosind tiqr, puteti folosi smartphone-ul dumneavoastra pentru a va autentifica usor si in siguranta pe mai multe site-uri web.<br/><br/>Aplicatia nu are inca un cont activ. Aveti nevoie de un cont activ pentru a folosi tiqr. Puteti gasi o lista a furnizorilor de identitate la <a href=\"https://tiqr.org\">tiqr.org</a>. <br/> <br/> Dupa inregistrare, veti primi un cod de activare si instructiuni pentru a va activa contul. In timpul acestui proces, va trebui sa scanati un cod QR. Apasati <b>Scaneaza</b> daca va este cerut.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>Navigati la site-ul web la care vreti sa va autentificati si urmati acesti pasi: <ul> <li>Scanati codul QR de pe ecranul de autentificare al site-ului web ori al serviciului.</li><li><i>Daca aveti mai multe identitati, selectati identitatea dumneavoastra.</i></li><li>Confirmati identitatea dumneavoastra (va trebui sa introduceti codul dumneavoastra PIN).</li><li>Sunteti autentificati!</li></ul> Apasati <b>Scanare</b> pentru a incepe procesul de autentificare.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Ce urmeaza?</b><br></br>Intrebati providerul(i) dumneavoastra de identitate pentru un nou cod de activare. Pentru un link spre providerul(i) dumneavoastra de identitate varificati identitatile dumneavoastra (accesibile in coltul din dreapta sus).<br></br><br></br>Alaturi de noul cod de activare al dumneavoastra, veti primi instructiuni pentru reactivarea contului. Apasati <b>Scanare</b> daca va este cerut.</string>
@@ -142,4 +142,5 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

@@ -143,7 +143,7 @@ Nakon registracije, primićete aktivacioni kod zajedno sa uputstvima za
 aktivaciju vašeg naloga. Tokom aktivacije potrebno je skenirati
  QR kod. Pritisnite <b>Skeniranje</b> kada bude zatraženo.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions">
+  <string name="main_text_instructions_for_pincode">
     <Data><![CDATA[<html><body>Posetite stranice usluge na koju želite da se prijavite i pratite sledeće korake: 
 <ul>
  <li>Skenirajte QR kod na stranici za prijavu.</li>
@@ -164,4 +164,5 @@ Zajedno sa novim aktivacionim kodom biće poslata i uputstva za ponovnu aktivaci
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
+  <string name="main_text_instructions_for_fingerprint"/>
 </resources>

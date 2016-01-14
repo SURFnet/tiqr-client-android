@@ -1,6 +1,7 @@
 package org.tiqr.service.authentication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -51,23 +52,31 @@ public class AuthenticationService {
 
     public interface OnParseAuthenticationChallengeListener {
         public void onParseAuthenticationChallengeSuccess(AuthenticationChallenge challenge);
+
         public void onParseAuthenticationChallengeError(ParseAuthenticationChallengeError error);
     }
 
     public interface OnAuthenticationListener {
         public void onAuthenticationSuccess();
+
         public void onAuthenticationError(AuthenticationError error);
     }
 
-    protected @Inject
+    protected
+    @Inject
     NotificationService _notificationService;
-    protected @Inject Context _context;
+    protected
+    @Inject
+    Context _context;
+
+    protected
+    @Inject
+    SharedPreferences _sharedPreferences;
 
     /**
      * Contains an authentication challenge?
      *
      * @param rawChallenge Raw challenge.
-     *
      * @return Is authentication challenge?
      */
     public boolean isAuthenticationChallenge(String rawChallenge) {
@@ -94,8 +103,7 @@ public class AuthenticationService {
 
                 try {
                     url = new URL(rawChallenge.replaceFirst("tiqrauth://", "http://"));
-                }
-                catch (MalformedURLException ex) {
+                } catch (MalformedURLException ex) {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_qr_code));
                 }
 
@@ -186,7 +194,6 @@ public class AuthenticationService {
      * @param challenge Challenge.
      * @param password  Password / pin.
      * @param listener  Completion listener.
-     *
      * @return async task
      */
     public AsyncTask<?, ?, ?> authenticate(final AuthenticationChallenge challenge, final String password, final OnAuthenticationListener listener) {
@@ -245,7 +252,7 @@ public class AuthenticationService {
                 } catch (InvalidChallengeException e) {
                     return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
                 } catch (InvalidKeyException e) {
-                    return new AuthenticationError(Type.UNKNOWN,_context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_key));
+                    return new AuthenticationError(Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_key));
                 } catch (SecurityFeaturesException e) {
                     return new AuthenticationError(Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards));
                 } catch (IOException e) {
@@ -281,7 +288,6 @@ public class AuthenticationService {
      * Parse authentication response from server (v1, plain string).
      *
      * @param response authentication response
-     *
      * @return Error or null on success.
      */
     private AuthenticationError _parseV1Response(String response) {
@@ -323,7 +329,6 @@ public class AuthenticationService {
      * Parse authentication response from server (v2, json).
      *
      * @param response authentication response
-     *
      * @return Error or null on success.
      */
     private AuthenticationError _parseV2Response(String response) {
@@ -372,5 +377,20 @@ public class AuthenticationService {
         } catch (Exception e) {
             return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message));
         }
+    }
+
+
+    /**
+     * Sets the fingerprint authentication method.
+     */
+    public void useFingerPrintAsAuthentication(boolean use) {
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, use);
+        editor.putBoolean(Constants.SHOW_FINGERPRINT_UPGRADE_DIALOG_PREF_KEY, !use);
+        editor.commit();
+    }
+
+    public void resetFingerPrintAsAuthentication() {
+        useFingerPrintAsAuthentication(false);
     }
 }

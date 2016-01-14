@@ -2,6 +2,7 @@ package org.tiqr.authenticator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.webkit.WebView;
 
 import com.google.android.c2dm.C2DMessaging;
 
+import org.tiqr.Constants;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
@@ -46,6 +48,10 @@ public class MainActivity extends Activity {
     @Inject
     AuthenticationService _authenticationService;
 
+    protected
+    @Inject
+    SharedPreferences _sharedPreferences;
+
     private ActivityDialog activityDialog;
 
 
@@ -65,7 +71,11 @@ public class MainActivity extends Activity {
 
         int contentResource = 0;
         if (db.identityCount() > 0) {
-            contentResource = R.string.main_text_instructions;
+            if(_sharedPreferences.getBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, false)) {
+                contentResource = R.string.main_text_instructions_for_fingerprint;
+            } else {
+                contentResource = R.string.main_text_instructions_for_pincode;
+            }
         } else {
             headerView.hideRightButton();
             contentResource = R.string.main_text_welcome;

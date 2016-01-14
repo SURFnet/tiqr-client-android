@@ -143,7 +143,7 @@ met identiteitsverstrekkers. &lt;br/&gt;
 Na registratie ontvangt u een activatiecode en instructies voor de 
 activatie. Tijdens het activatieproces moet u een QR code scannen. 
 Druk op &lt;b&gt;Scan&lt;/b&gt; als u hier om gevraagd wordt.</string>
-  <string name="main_text_instructions">Ga naar de website waar u wilt inloggen en doorloop de volgende stappen: <ul>
+  <string name="main_text_instructions_for_pincode">Ga naar de website waar u wilt inloggen en doorloop de volgende stappen: <ul>
             <li>Scan de getoonde QR code op het inlogscherm van de website of dienst waar u wilt inloggen.</li>
             <li>
 <i>Indien u meerdere identiteiten heeft, selecteer uw identiteit.</i>
@@ -151,6 +151,15 @@ Druk op &lt;b&gt;Scan&lt;/b&gt; als u hier om gevraagd wordt.</string>
             <li>Bevestig uw identiteit (hierbij zult u om uw PIN gevraagd worden).</li>
             <li>U bent ingelogd!</li>
         </ul>Druk op <b>Scan</b> om het inloggen te starten.</string>
+  <string name="main_text_instructions_for_fingerprint">Ga naar de website waar u wilt inloggen en doorloop de volgende stappen: <ul>
+            <li>Scan de getoonde QR code op het inlogscherm van de website of dienst waar u wilt inloggen.</li>
+            <li>
+<i>Indien u meerdere identiteiten heeft, selecteer uw identiteit.</i>
+            </li>
+            <li>Bevestig uw identiteit (hierbij zult u om uw vingerafdruk gevraagd worden).</li>
+            <li>U bent ingelogd!</li>
+        </ul>Druk op <b>Scan</b> om het inloggen te starten.</string>
+
   <string name="main_text_blocked"><b>Wat nu?</b>
 <br></br>
 Vraag bij uw identeitverstrekker(s) om een nieuwe activatiecode. Een link 
@@ -163,6 +172,5 @@ drukt u op <b>Scan</b>.</string>
   <string name="upgrade_to_touch_id_message">Wil je dit account upgraden naar TouchID? Hierdoor kun je in het vervolg inloggen met jouw vingerafdruk in plaats van een PIN-code</string>
   <string name="upgrade_button">Upgrade</string>
   <string name="fingerprint_intro">Bevestig vingerafdruk om door te gaan</string>
-  <string name="touch_sensor">Raak sensor aan</string>
-
+  <string name="touch_sensor">Raak vingerafdruk sensor aan</string>
 </resources>
