@@ -19,6 +19,7 @@ package org.tiqr.authenticator.qr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -247,7 +248,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
                         .setCancelable(false)
-                        .setPositiveButton(R.string.ok_button, null)
+                        .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                handler.restartPreviewAndDecode();
+                            }
+                        })
                         .show();
             }
         });
@@ -278,7 +284,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
                         .setCancelable(false)
-                        .setPositiveButton(R.string.ok_button, null)
+                        .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                handler.restartPreviewAndDecode();
+                            }
+                        })
                         .show();
             }
         });
