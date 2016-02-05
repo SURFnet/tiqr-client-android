@@ -23,7 +23,6 @@ import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
-import org.tiqr.authenticator.exceptions.UserException;
 import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.OCRAProtocol;
 import org.tiqr.authenticator.security.OCRAWrapper;
@@ -111,18 +110,16 @@ public class AuthenticationService {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider));
                 }
 
-                challenge.setIdentityProvider(ip);
-
                 Identity identity = null;
 
                 if (url.getUserInfo() != null) {
-                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(url.getUserInfo(), ip.getId());
+                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(url.getUserInfo(), ip.getIdentifier());
                     if (identity == null) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity));
                     }
 
                 } else {
-                    Identity[] identities = dbAdapter.findIdentitiesByIdentityProviderIdAsObjects(ip.getId());
+                    Identity[] identities = dbAdapter.findIdentitiesByIdentityProviderIdentifierAsObjects(ip.getIdentifier());
 
                     if (identities == null || identities.length == 0) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_no_identities_for_identity_provider));
@@ -132,6 +129,7 @@ public class AuthenticationService {
                 }
 
                 challenge.setIdentity(identity);
+                challenge.setIdentityProvider(identity == null ? ip : dbAdapter.getIdentityProviderForIdentityId(identity.getId()));
 
                 challenge.setSessionKey(pathComponents[1]);
                 challenge.setChallenge(pathComponents[2]);

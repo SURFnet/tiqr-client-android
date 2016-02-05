@@ -74,8 +74,8 @@ public class DbAdapter {
      * 
      * The identity object's id is automatically set based on the new database row id.
      * 
-     * @param Identity identity
-     * @param IdentityProvider ip
+     * @param identity Identity
+     * @param ip IdentityProvider
      * 
      * @return insertion successful?
      */
@@ -182,14 +182,16 @@ public class DbAdapter {
     /**
      * Returns the identity with the given identifier and identity provider.
      * 
-     * @param identifier identity identifier
-     * @param identityProviderId identityprovider row-id
-     * 
+     * @param identityIdentifier identity identifier
+     * @param identityProviderIdentifier identityIProvider identifier
+     *
      * @return cursor object
      */
-    public Cursor getIdentityByIdentifierAndIdentityProviderId(String identifier, long identityProviderId) throws SQLException {
-        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] { ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX }, IDENTIFIER + " = ? AND " + IDENTITYPROVIDER + " = ?",
-                new String[] { identifier, String.valueOf(identityProviderId) }, null, null, null);
+    public Cursor getIdentityByIdentifierAndIdentityProviderIdentifier(String identityIdentifier, String identityProviderIdentifier) throws SQLException {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
+
+        Cursor cursor = builder.query(_db, new String[] {TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + IDENTITYPROVIDER, TABLE_IDENTITY + "." + SORT_INDEX}, TABLE_IDENTITY + "." + IDENTIFIER + " = ? AND " + TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] {identityIdentifier, identityProviderIdentifier}, null, null, SORT_INDEX);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -203,7 +205,7 @@ public class DbAdapter {
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
         Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + SORT_INDEX,
-                TABLE_IDENTITYPROVIDER + "." + LOGO, }, TABLE_IDENTITY + "." + ROWID + " = ?", new String[] { String.valueOf(identity_id) }, null, null, SORT_INDEX);
+                TABLE_IDENTITYPROVIDER + "." + LOGO }, TABLE_IDENTITY + "." + ROWID + " = ?", new String[] { String.valueOf(identity_id) }, null, null, SORT_INDEX);
 
         Identity[] identities = _createIdentityObjectsForCursor(cursor);
         if (identities.length > 0) {
@@ -217,12 +219,12 @@ public class DbAdapter {
      * Returns the identity with the given identifier and identity provider identifier as an identity provider object.
      * 
      * @param identifier identity identifier
-     * @param identityProviderId identity provider row-id
+     * @param identityProviderIdentifier identity provider identifier
      * 
      * @return identity provider object or null if identity provider is unknown
      */
-    public Identity getIdentityByIdentifierAndIdentityProviderIdAsObject(String identifier, long identityProviderId) {
-        Identity[] identities = _createIdentityObjectsForCursor(getIdentityByIdentifierAndIdentityProviderId(identifier, identityProviderId));
+    public Identity getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(String identifier, String identityProviderIdentifier) {
+        Identity[] identities = _createIdentityObjectsForCursor(getIdentityByIdentifierAndIdentityProviderIdentifier(identifier, identityProviderIdentifier));
         return identities.length == 1 ? identities[0] : null;
     }
 
@@ -232,7 +234,7 @@ public class DbAdapter {
      * @return cursor object
      */
     public Cursor getAllIdentities() {
-        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] { ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX }, null, null, null, null, SORT_INDEX);
+        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] {ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX}, null, null, null, null, SORT_INDEX);
 
         return cursor;
     }
@@ -255,33 +257,10 @@ public class DbAdapter {
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
         Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + SORT_INDEX,
-                TABLE_IDENTITYPROVIDER + "." + LOGO, }, null, null, null, null, SORT_INDEX);
+                TABLE_IDENTITYPROVIDER + "." + LOGO }, null, null, null, null, SORT_INDEX);
 
         return cursor;
 
-    }
-
-    /**
-     * Returns the identities for the given identity provider ordered by their sort index.
-     * 
-     * Filter out the identities which are blocked, because this is only used for authentication
-     * 
-     * @param identityProviderId Identity provider row-id
-     * 
-     * @return result cursor
-     */
-    public Cursor findIdentitiesByIdentityProviderIdWithIdentityProviderData(long identityProviderId) throws SQLException {
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
-
-        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + SORT_INDEX,
-                TABLE_IDENTITYPROVIDER + "." + LOGO, }, IDENTITYPROVIDER + " = ? AND " + TABLE_IDENTITY + "." + BLOCKED + " <> 1", new String[] { String.valueOf(identityProviderId) }, null, null, SORT_INDEX);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-
-        return cursor;
     }
 
     /**
@@ -300,13 +279,15 @@ public class DbAdapter {
     /**
      * Returns the identities for the given identity provider ordered by their sort index.
      * 
-     * @param identityProviderId identity provider row-id
+     * @param identityProviderIdentifier identity provider identifier
      * 
      * @return result cursor
      */
-    public Cursor findIdentitiesByIdentityProviderId(long identityProviderId) throws SQLException {
-        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] { ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX }, IDENTITYPROVIDER + " = ?", new String[] { String.valueOf(identityProviderId) }, null, null,
-                SORT_INDEX);
+    public Cursor findIdentitiesByIdentityProviderIdentifier(String identityProviderIdentifier) throws SQLException {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
+
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + IDENTITYPROVIDER, TABLE_IDENTITY + "." + SORT_INDEX, TABLE_IDENTITYPROVIDER + "." + LOGO}, TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] { identityProviderIdentifier }, null, null, SORT_INDEX);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -318,13 +299,13 @@ public class DbAdapter {
     /**
      * Returns the identities for the given identity provider ordered by their sort index and returns them as an array of Identity objects.
      * 
-     * @param identityProviderId identity provider identifier
+     * @param identityProviderIdentifier identity provider identifier
      * 
      * @return result array
      */
-    public Identity[] findIdentitiesByIdentityProviderIdAsObjects(long identityProviderId) {
+    public Identity[] findIdentitiesByIdentityProviderIdentifierAsObjects(String identityProviderIdentifier) {
         try {
-            return _createIdentityObjectsForCursor(findIdentitiesByIdentityProviderId(identityProviderId));
+            return _createIdentityObjectsForCursor(findIdentitiesByIdentityProviderIdentifier(identityProviderIdentifier));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new Identity[0];
@@ -382,7 +363,7 @@ public class DbAdapter {
     /**
      * Deletes a particular identity provider.
      * 
-     * @param long identityProviderId The identity provider row-id
+     * @param identityProviderId The identity provider row-id
      * 
      * @return delete successful?
      */
@@ -479,7 +460,7 @@ public class DbAdapter {
     public IdentityProvider getIdentityProviderByIdentifierAsObject(String identifier) {
         try {
             IdentityProvider[] identityproviders = _createIdentityProviderObjectsForCursor(getIdentityProviderByIdentifier(identifier));
-            return identityproviders.length == 1 ? identityproviders[0] : null;
+            return identityproviders.length > 0 ? identityproviders[0] : null;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

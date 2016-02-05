@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 22
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 22
     }
 
     // TODO: reset lintOptions to defauls
@@ -32,5 +32,5 @@ dependencies {
 
     compile project(':shared')
 
-    compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
+    compile 'com.journeyapps:zxing-android-embedded:3.1.0@aar'
 }
