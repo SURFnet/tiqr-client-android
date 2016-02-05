@@ -65,8 +65,8 @@ public class AuthenticationIdentitySelectActivity extends AbstractIdentityListAc
     public Cursor getIdentityCursor() {
         // The default implementation reuses _identitiesCursor but every time we open the select screen
         // we need to get a fresh cursor.
-        long identityProviderId = _getChallenge().getIdentityProvider().getId();
-        return _db.findIdentitiesByIdentityProviderIdWithIdentityProviderData(identityProviderId);
+        String identityProviderIdentifier = _getChallenge().getIdentityProvider().getIdentifier();
+        return _db.findIdentitiesByIdentityProviderIdentifier(identityProviderIdentifier);
     }
 
     private void _doAuthentication() {

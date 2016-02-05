@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.tiqr.Constants;
 import org.tiqr.R;
-import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.datamodel.Identity;
@@ -41,7 +40,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executor;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
@@ -296,11 +294,11 @@ public class EnrollmentService {
     }
 
     /**
-     * Store identity (and identity provider if needed).
+     * Store identity and identity provider.
      */
     private void _storeIdentityAndIdentityProvider(EnrollmentChallenge challenge, SecretKey secret, SecretKey sessionKey) throws UserException {
         DbAdapter db = new DbAdapter(_context);
-        if (challenge.getIdentityProvider().isNew() && !db.insertIdentityProvider(challenge.getIdentityProvider())) {
+        if (!db.insertIdentityProvider(challenge.getIdentityProvider())) {
             throw new UserException(_context.getString(R.string.error_enroll_failed_to_store_identity_provider));
         }
 
@@ -340,8 +338,7 @@ public class EnrollmentService {
     }
 
     /**
-     * Returns a identity provider object based on the given metadata. If the identity provider already exists, the existing identity provider object is
-     * returned, else a new one is created.
+     * Returns a identity provider object based on the given metadata.
      *
      * @param metadata JSON identity provider metadata
      *
@@ -350,28 +347,25 @@ public class EnrollmentService {
      * @throws Exception
      */
     private IdentityProvider _getIdentityProviderForMetadata(JSONObject metadata) throws JSONException, UserException {
-        DbAdapter dbAdapter = new DbAdapter(_context);
-        IdentityProvider ip = dbAdapter.getIdentityProviderByIdentifierAsObject(metadata.getString("identifier"));
-        if (ip == null) {
-            ip = new IdentityProvider();
-            ip.setIdentifier(metadata.getString("identifier"));
-            ip.setDisplayName(metadata.getString("displayName"));
-            ip.setAuthenticationURL(metadata.getString("authenticationUrl"));
-            ip.setInfoURL(metadata.getString("infoUrl"));
-            if (metadata.has("ocraSuite")) {
-                ip.setOCRASuite(metadata.getString("ocraSuite"));
-            }
-            try {
-                URL logoURL = new URL(metadata.getString("logoUrl"));
-                byte[] logoData = _downloadSynchronously(logoURL);
-                ip.setLogoData(logoData);
-            } catch (Exception ex) {
-                throw new UserException(_context.getString(R.string.error_enroll_logo_error), ex);
-            }
+        IdentityProvider ip = new IdentityProvider();
 
-            if (ip.getLogoBitmap() == null) {
-                throw new UserException(_context.getString(R.string.error_enroll_logo_error));
-            }
+        ip.setIdentifier(metadata.getString("identifier"));
+        ip.setDisplayName(metadata.getString("displayName"));
+        ip.setAuthenticationURL(metadata.getString("authenticationUrl"));
+        ip.setInfoURL(metadata.getString("infoUrl"));
+        if (metadata.has("ocraSuite")) {
+            ip.setOCRASuite(metadata.getString("ocraSuite"));
+        }
+        try {
+            URL logoURL = new URL(metadata.getString("logoUrl"));
+            byte[] logoData = _downloadSynchronously(logoURL);
+            ip.setLogoData(logoData);
+        } catch (Exception ex) {
+            throw new UserException(_context.getString(R.string.error_enroll_logo_error), ex);
+        }
+
+        if (ip.getLogoBitmap() == null) {
+            throw new UserException(_context.getString(R.string.error_enroll_logo_error));
         }
 
         return ip;
@@ -388,7 +382,7 @@ public class EnrollmentService {
      */
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
         DbAdapter dbAdapter = new DbAdapter(_context);
-        Identity identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(metadata.getString("identifier"), ip.getId());
+        Identity identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
         if (identity != null) {
             Object[] args = new Object[] { metadata.getString("displayName"), ip.getDisplayName() };
             throw new UserException(_context.getString(R.string.error_enroll_already_enrolled, args));
