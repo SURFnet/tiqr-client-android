@@ -148,11 +148,5 @@
                 <category android:name="org.tiqr.authenticator"/>
             </intent-filter>
         </receiver>
-
-
-    </application>
-
-    <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="8"/>
+	</application>
 </manifest>
