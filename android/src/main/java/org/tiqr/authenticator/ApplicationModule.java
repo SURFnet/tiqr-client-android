@@ -8,7 +8,7 @@ import org.tiqr.authenticator.authentication.AuthenticationConfirmationActivity;
 import org.tiqr.authenticator.authentication.AuthenticationFingerprintActivity;
 import org.tiqr.authenticator.authentication.AuthenticationPincodeActivity;
 import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity;
-import org.tiqr.authenticator.enrollment.EnrollmentConfirmationActivity;
+import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity;
 import org.tiqr.authenticator.qr.CaptureActivity;
 
@@ -29,7 +29,6 @@ import dagger.Provides;
                 AuthenticationPincodeActivity.class,
                 AuthenticationFingerprintActivity.class,
                 EnrollmentPincodeVerificationActivity.class,
-                EnrollmentConfirmationActivity.class,
                 AuthenticationSummaryActivity.class,
                 CaptureActivity.class,
                 C2DMReceiver.class
@@ -63,6 +62,15 @@ public class ApplicationModule {
     @Singleton
     public SharedPreferences provideSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(_application.getApplicationContext());
+    }
+
+    /**
+     * Allow the DBAdapter to be injected.
+     */
+    @Provides
+    @Singleton
+    public DbAdapter provideDbAdapter() {
+        return new DbAdapter(_application.getApplicationContext());
     }
 
 }

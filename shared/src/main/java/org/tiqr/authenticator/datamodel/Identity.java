@@ -12,6 +12,8 @@ public class Identity implements Parcelable {
     private String _displayName;
     private int _sortIndex = 0;
     private boolean _blocked = false;
+    private boolean _showFingerprintUpgrade = true;
+    private boolean _useFingerprint= false;
 
     /**
      * Factory.
@@ -43,6 +45,8 @@ public class Identity implements Parcelable {
         _displayName = source.readString();
         _sortIndex = source.readInt();
         _blocked = source.readByte() != 0;
+        _showFingerprintUpgrade = source.readByte() != 0;
+        _useFingerprint = source.readByte() != 0;
     }
 
     /**
@@ -63,6 +67,8 @@ public class Identity implements Parcelable {
         dest.writeString(_displayName);
         dest.writeInt(_sortIndex);
         dest.writeByte(_blocked ? (byte) 1 : (byte) 0);
+        dest.writeByte(_showFingerprintUpgrade ? (byte)1 : (byte)0);
+        dest.writeByte(_useFingerprint ? (byte)1 : (byte)0);
     }
 
     /**
@@ -174,4 +180,22 @@ public class Identity implements Parcelable {
 	public boolean isBlocked() {
 		return _blocked;
 	}
+
+    public boolean showFingerprintUpgrade() {
+        return _showFingerprintUpgrade;
+    }
+
+    public void setShowFingerprintUpgrade(boolean showFingerprintUpgrade) {
+        _showFingerprintUpgrade = showFingerprintUpgrade;
+    }
+
+    public boolean isUsingFingerprint() {
+        return _useFingerprint;
+    }
+
+    public void setUseFingerprint(boolean useFingerprint) {
+        _useFingerprint = useFingerprint;
+    }
+
+
 }

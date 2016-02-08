@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
@@ -63,9 +62,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     @Override
     protected void _onDialogConfirm() {
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-
-
-        if (_sharedPreferences.getBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, false)) {
+        if (parent.getChallenge().getIdentity().isUsingFingerprint()) {
             Intent authenticationFingerprintIntent = new Intent().setClass(this, AuthenticationFingerprintActivity.class);
             parent.startChildActivity("AuthenticationFingerprintActivity", authenticationFingerprintIntent);
         } else {

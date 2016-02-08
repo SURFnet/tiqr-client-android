@@ -102,7 +102,7 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="error_auth_invalid_account_message">Ati incercat sa va autentificati cu un cont invalid sau necunoscut. Va rugam (re)activati contul dumneavoastra mai intai.</string>
   <string name="error_auth_account_blocked_title">Cont blocat</string>
   <string name="error_auth_account_blocked_message">Acest cont nu mai poate fi folosit.</string>
-  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temporarily.</string>
   <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
   <string name="error_auth_invalid_challenge_title">Provocare invalida.</string>
   <string name="error_auth_invalid_challenge_message">Codul QR scanat este invalid sau a expirat. Va rugam incercati din nou.</string>
@@ -142,5 +142,7 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
-  <string name="main_text_instructions_for_fingerprint"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

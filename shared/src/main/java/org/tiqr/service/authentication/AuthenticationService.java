@@ -1,7 +1,6 @@
 package org.tiqr.service.authentication;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -71,7 +70,8 @@ public class AuthenticationService {
 
     protected
     @Inject
-    SharedPreferences _sharedPreferences;
+    DbAdapter _dbAdapter;
+
 
     /**
      * Contains an authentication challenge?
@@ -112,9 +112,7 @@ public class AuthenticationService {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_qr_code));
                 }
 
-                DbAdapter dbAdapter = new DbAdapter(_context);
-
-                IdentityProvider ip = dbAdapter.getIdentityProviderByIdentifierAsObject(url.getHost());
+                IdentityProvider ip = _dbAdapter.getIdentityProviderByIdentifierAsObject(url.getHost());
                 if (ip == null) {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider));
                 }
@@ -124,13 +122,13 @@ public class AuthenticationService {
                 Identity identity = null;
 
                 if (url.getUserInfo() != null) {
-                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(url.getUserInfo(), ip.getId());
+                    identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(url.getUserInfo(), ip.getId());
                     if (identity == null) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity));
                     }
 
                 } else {
-                    Identity[] identities = dbAdapter.findIdentitiesByIdentityProviderIdAsObjects(ip.getId());
+                    Identity[] identities = _dbAdapter.findIdentitiesByIdentityProviderIdAsObjects(ip.getId());
 
                     if (identities == null || identities.length == 0) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_no_identities_for_identity_provider));
@@ -244,10 +242,10 @@ public class AuthenticationService {
                     Header versionHeader = httpResponse.getFirstHeader("X-TIQR-Protocol-Version");
                     if (versionHeader == null || versionHeader.getValue().equals("1")) {
                         // v1 protocol (ascii)
-                        return _parseV1Response(EntityUtils.toString(httpResponse.getEntity()));
+                        return _parseV1Response(EntityUtils.toString(httpResponse.getEntity()), challenge.getIdentity());
                     } else {
                         // v2 protocol (json)
-                        return _parseV2Response(EntityUtils.toString(httpResponse.getEntity()));
+                        return _parseV2Response(EntityUtils.toString(httpResponse.getEntity()), challenge.getIdentity());
                     }
                 } catch (InvalidChallengeException e) {
                     return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
@@ -265,13 +263,12 @@ public class AuthenticationService {
                 if (error == null) {
                     listener.onAuthenticationSuccess();
                 } else {
-                    DbAdapter db = new DbAdapter(_context); // TODO: inject
                     if (error.getType() == Type.ACCOUNT_BLOCKED) {
                         challenge.getIdentity().setBlocked(true);
-                        db.updateIdentity(challenge.getIdentity());
+                        _dbAdapter.updateIdentity(challenge.getIdentity());
                     } else if (error.getType() == Type.INVALID_RESPONSE) {
                         if (error.getExtras().containsKey("attemptsLeft") && error.getExtras().getInt("attemptsLeft") == 0) {
-                            db.blockAllIdentities();
+                            _dbAdapter.blockAllIdentities();
                         }
                     }
 
@@ -288,9 +285,10 @@ public class AuthenticationService {
      * Parse authentication response from server (v1, plain string).
      *
      * @param response authentication response
+     * @param identity
      * @return Error or null on success.
      */
-    private AuthenticationError _parseV1Response(String response) {
+    private AuthenticationError _parseV1Response(String response, Identity identity) {
         try {
             if (response != null && response.equals("OK")) {
                 return null;
@@ -305,13 +303,22 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                String message;
-                if (attemptsLeft > 1) {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras);
-                } else if (attemptsLeft == 1) {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras);
+                if(identity.isUsingFingerprint()) {
+                    if (attemptsLeft > 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
+                    } else if (attemptsLeft == 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), _context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras);
+                    } else {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    }
                 } else {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    if (attemptsLeft > 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras);
+                    } else if (attemptsLeft == 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras);
+                    } else {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    }
                 }
             } else if (response.equals("INVALID_USERID")) {
                 return new AuthenticationError(Type.INVALID_USER, _context.getString(R.string.error_auth_invalid_account), _context.getString(R.string.error_auth_invalid_account_message));
@@ -329,9 +336,10 @@ public class AuthenticationService {
      * Parse authentication response from server (v2, json).
      *
      * @param response authentication response
+     * @param identity
      * @return Error or null on success.
      */
-    private AuthenticationError _parseV2Response(String response) {
+    private AuthenticationError _parseV2Response(String response, Identity identity) {
         try {
             JSONObject object = new JSONObject(response);
 
@@ -357,13 +365,22 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                String message;
-                if (attemptsLeft > 1) {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras);
-                } else if (attemptsLeft == 1) {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras);
+                if(identity.isUsingFingerprint()) {
+                    if (attemptsLeft > 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
+                    } else if (attemptsLeft == 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), _context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras);
+                    } else {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    }
                 } else {
-                    return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    if (attemptsLeft > 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras);
+                    } else if (attemptsLeft == 1) {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras);
+                    } else {
+                        return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras);
+                    }
                 }
             } else if (responseCode == 205) {
                 return new AuthenticationError(Type.INVALID_USER, _context.getString(R.string.error_auth_invalid_account), _context.getString(R.string.error_auth_invalid_account_message));
@@ -383,14 +400,9 @@ public class AuthenticationService {
     /**
      * Sets the fingerprint authentication method.
      */
-    public void useFingerPrintAsAuthentication(boolean use) {
-        SharedPreferences.Editor editor = _sharedPreferences.edit();
-        editor.putBoolean(Constants.USE_AUTHENTICATION_FINGERPRINT_PREF_KEY, use);
-        editor.putBoolean(Constants.SHOW_FINGERPRINT_UPGRADE_DIALOG_PREF_KEY, !use);
-        editor.commit();
-    }
-
-    public void resetFingerPrintAsAuthentication() {
-        useFingerPrintAsAuthentication(false);
+    public void useFingerPrintAsAuthenticationForIdentity(Identity identity, boolean use) {
+        identity.setUseFingerprint(use);
+        identity.setShowFingerprintUpgrade(!use);
+        _dbAdapter.updateIdentity(identity);
     }
 }

@@ -143,5 +143,7 @@ nur einmalig gültigen Daten einzugeben:</string>
   <string name="upgrade_button"/>
   <string name="fingerprint_intro"/>
   <string name="touch_sensor"/>
-  <string name="main_text_instructions_for_fingerprint"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

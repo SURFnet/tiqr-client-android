@@ -151,15 +151,6 @@ Druk op &lt;b&gt;Scan&lt;/b&gt; als u hier om gevraagd wordt.</string>
             <li>Bevestig uw identiteit (hierbij zult u om uw PIN gevraagd worden).</li>
             <li>U bent ingelogd!</li>
         </ul>Druk op <b>Scan</b> om het inloggen te starten.</string>
-  <string name="main_text_instructions_for_fingerprint">Ga naar de website waar u wilt inloggen en doorloop de volgende stappen: <ul>
-            <li>Scan de getoonde QR code op het inlogscherm van de website of dienst waar u wilt inloggen.</li>
-            <li>
-<i>Indien u meerdere identiteiten heeft, selecteer uw identiteit.</i>
-            </li>
-            <li>Bevestig uw identiteit (hierbij zult u om uw vingerafdruk gevraagd worden).</li>
-            <li>U bent ingelogd!</li>
-        </ul>Druk op <b>Scan</b> om het inloggen te starten.</string>
-
   <string name="main_text_blocked"><b>Wat nu?</b>
 <br></br>
 Vraag bij uw identeitverstrekker(s) om een nieuwe activatiecode. Een link 
@@ -173,4 +164,7 @@ drukt u op <b>Scan</b>.</string>
   <string name="upgrade_button">Upgrade</string>
   <string name="fingerprint_intro">Bevestig vingerafdruk om door te gaan</string>
   <string name="touch_sensor">Raak vingerafdruk sensor aan</string>
+  <string name="error_auth_wrong_fingerprint">Verkeerde Vingerafdruk</string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false">De opgegeven vingerafdruk is onjuist. U heeft nog %d pogingen. Bevestig nogmaals uw vingerafdruk.</string>
+  <string name="error_fingerprint_auth_one_attempt_left">U heeft nog één laatste poging. Als u weer een foute vingerafdruk invoert zullen alle tiqr accounts op dit toestel geblokkeerd worden.</string>
 </resources>

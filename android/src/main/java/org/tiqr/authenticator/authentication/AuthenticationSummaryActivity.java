@@ -94,7 +94,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
             footer.hideInfoIcon();
         }
         FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(this);
-        if(fingerprintManager.hasEnrolledFingerprints() && _sharedPreferences.getBoolean(Constants.SHOW_FINGERPRINT_UPGRADE_DIALOG_PREF_KEY, false)) {
+        if(fingerprintManager.hasEnrolledFingerprints() && parent.getChallenge().getIdentity().showFingerprintUpgrade()) {
             _showFingerPrintUpgradeDialog();
         }
     }
@@ -111,10 +111,10 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
 
                         String pincode = getIntent().getStringExtra(PIN);
                         try {
+                            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+                            AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
                             if (pincode != null) {
                                 SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
-                                AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-                                AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
                                 Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
 
                                 //Check if sessionKey is correct
@@ -123,7 +123,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                                 SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
                                 secret.storeInKeyStore(newSessionKey);
                             }
-                            _authenticationService.useFingerPrintAsAuthentication(true);
+                            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity(), true);
                         } catch (SecurityFeaturesException | InvalidKeyException e) {
                             // No user action required
                             Log.e(TAG, "Not able to save the key to the keystore");
