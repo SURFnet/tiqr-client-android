@@ -162,4 +162,5 @@ for å aktivere din konto. Under aktiveringsprosessen må du skanne
   <string name="touch_sensor"/>
   <string name="error_auth_wrong_fingerprint"></string>
   <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>
