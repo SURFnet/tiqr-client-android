@@ -61,7 +61,6 @@ public class DbAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // WARNING! TODO. Dropping identities is not an acceptable migration path.
             // But since we are at level 4 since first release, and still are, this code isn't used yet.
             Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
             if(oldVersion == DB_VERSION_INITIAL && newVersion == DATABASE_VERSION) {
