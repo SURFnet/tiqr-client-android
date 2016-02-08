@@ -144,7 +144,7 @@ Etter registrering vil du motta en aktiveringskode samt instruksjoner
 for å aktivere din konto. Under aktiveringsprosessen må du skanne
  en QR kode. Trykk <b>Skan</b> når det spørres om dette.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions_for_pincode">
+  <string name="main_text_instructions">
     <Data><![CDATA[<html><body>Gå til siden du ønsker å logge inn på og følge denne anvisningen: <ul>
  <li>Skan QR koden på login siden på nettstedet eller tjenesten.</li>
  <li>

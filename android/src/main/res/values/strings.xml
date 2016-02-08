@@ -135,13 +135,13 @@
 Register your new tiqr account and follow the instructions for activation.<br />
 <br />
 Press <b>Scan</b> when asked.</html> ]]> </Data></string>
-    <string name="main_text_instructions_for_pincode"><Data><![CDATA[<b>Use tiqr on your smartphone to log in</b> <br />
+    <string name="main_text_instructions"><Data><![CDATA[<b>Use tiqr on your smartphone to log in</b> <br />
     <br />
     1. Press <b>Scan</b> and scan the QR-code on the website. <br />
     <br />
     <i>More than one ID? Select the relevant ID.</i> <br />
     <br />
-    2. Enter your PIN for tiqr and press <b>OK</b> <br />
+    2. Scan your fingerprint or enter your PIN for tiqr and press <b>OK</b> <br />
     <br />
     3. You are logged in!]]> </Data></string>
     <string name="main_text_blocked"><b>Now what?</b>

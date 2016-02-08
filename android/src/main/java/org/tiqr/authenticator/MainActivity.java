@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
 
         int contentResource = 0;
         if (_dbAdapter.identityCount() > 0) {
-            contentResource = R.string.main_text_instructions_for_pincode;
+            contentResource = R.string.main_text_instructions;
         } else {
             headerView.hideRightButton();
             contentResource = R.string.main_text_welcome;

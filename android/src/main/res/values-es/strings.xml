@@ -137,7 +137,7 @@ Tras registrarse, recibirá un código de activación e instrucciones para ⏎
 activar su cuenta. Durante el proceso de activación necesitará escanear ⏎
 un código QR. Pulse <b>Escanear</b> si es requerido.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions_for_pincode">
+  <string name="main_text_instructions">
     <Data><![CDATA[<html><body>Vaya al sitio web al que quiere acceder y siga los siguientes pasos: <ul>⏎
 <li>Escanee el código QR en la pantalla de acceso del sitio web o servicio.</li>⏎
 <li>⏎

@@ -134,7 +134,7 @@ ynternetside. Jo wurde dan frege om de folgjende gegevens yn te fiere: </string>
   <string name="main_text_welcome">
     <Data><![CDATA[<html><body>Mei tiqr kinne jo mei jo mobile telefoan maklik en feilich ynloche by ferskillende Ynternetsides. <br/> <br/>De tapassing hat noch net in aktyf akkount. Jo hawwe in aktyf akkount noadich om tiqr brûke te kinne. In list mei identiteit ferstrekkers kinne jo fine  by <a href=\"https://tiqr.org\">tiqr.org</a>. <br/><br/>Nei registraasje krije jo in aktivaasje koade en ynstruksje hoe jo akkount te aktivearje. Ûnder it aktivaasje proses moatte jo in QR koade scanne. Druk op <b>Scan</b> as dêrom frege wurd.</body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions_for_pincode">
+  <string name="main_text_instructions">
     <Data><![CDATA[<html><body>Gie nei de Ynternetside wêr ’t jo ynloche wolle en trochrin de folgjende stappen: <ul>
             <li>Scan de toande QR koade op it ynlochskerm fan de Ynternetside of tsjinst wêr ’t jo ynloche wolle.</li>
             <li>

@@ -134,7 +134,7 @@ Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</str
   <string name="main_text_welcome">
     <Data><![CDATA[<html><body>Grâce à tiqr vous pouvez utilisez votre mobile pour vous connecter simplement et en sécurité à des service en ligne.<br/><br/> L\'application n\'a pas encore de compte activé. Vous devez avoir un compte activé pour utiliser tiqr. Vous pouvez trouver une liste de fournisseurs de services sur <a ref=\"https://tiqr.org\">tiqr.org</a>.<br/><br/>Après l\'enregistrement, vous recevrez un code d\'activation et les instructions pour activer votre compte. Pendant l\'activation, vous devrez scanner un code QR. Pressez <b>Scan</b> si demandé. </body></html> ]]> </Data>
   </string>
-  <string name="main_text_instructions_for_pincode">
+  <string name="main_text_instructions">
     <Data><![CDATA[<html><body>Allez sur le service ou vous voulez vous connecter and suivez ces instructions: <ul><li>Scannez le code QR sur la fenêtre de connexion du site web ou du service.</li><li>Si vous avez plusieurs identités, sélectionnez une identité.</li><li>Confirmez votre identité (vous devrez entrer votre code PIN).</li><li>Vous êtes connecté!</li></ul>Appuyez sur <b>Scan</b> pour démarrer la procédure de connexion.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Et maintenant?</b><br></br>Demandez à votre fournisseur de service un nouveau code d\'activation. Pour trouver le lien vers votre fournisseur de service, consultez vos identités (accessibles en haut à droite).<br></br><br></br>Lorsque vous recevrez votre nouveau code d\'activation, il vous sera aussi fourni les instructions pour ré-activer votre compte. Appuyez sur <b>Scan</b> si demandé.</string>
