@@ -123,7 +123,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                                 SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
                                 secret.storeInKeyStore(newSessionKey);
                             }
-                            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity(), true);
+                            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
                         } catch (SecurityFeaturesException | InvalidKeyException e) {
                             // No user action required
                             Log.e(TAG, "Not able to save the key to the keystore");
