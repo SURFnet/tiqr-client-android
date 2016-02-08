@@ -31,7 +31,8 @@ public class DbAdapter {
 
     private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
+    private static final int DB_VERSION_INITIAL = 4;
 
     private final Context _ctx;
 
@@ -61,12 +62,13 @@ public class DbAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // WARNING! TODO. Dropping identities is not an acceptable migration path. 
+            // WARNING! TODO. Dropping identities is not an acceptable migration path.
             // But since we are at level 4 since first release, and still are, this code isn't used yet.
             Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_IDENTITY);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_IDENTITYPROVIDER);
-            onCreate(db);
+            if(oldVersion == DB_VERSION_INITIAL && newVersion == DATABASE_VERSION) {
+                db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1; ");
+                db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0; ");
+            }
         }
     }
 
