@@ -117,7 +117,7 @@ public class AuthenticationService {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider));
                 }
 
-                Identity identity = null;
+                Identity identity;
 
                 if (url.getUserInfo() != null) {
                     identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(url.getUserInfo(), ip.getIdentifier());
@@ -284,7 +284,7 @@ public class AuthenticationService {
      * Parse authentication response from server (v1, plain string).
      *
      * @param response authentication response
-     * @param identity
+     * @param identity the corresponding identity
      * @return Error or null on success.
      */
     private AuthenticationError _parseV1Response(String response, Identity identity) {
@@ -335,7 +335,7 @@ public class AuthenticationService {
      * Parse authentication response from server (v2, json).
      *
      * @param response authentication response
-     * @param identity
+     * @param identity the corresponding identity
      * @return Error or null on success.
      */
     private AuthenticationError _parseV2Response(String response, Identity identity) {
@@ -398,10 +398,12 @@ public class AuthenticationService {
 
     /**
      * Sets the fingerprint authentication method.
+     *
+     * @param identity the Identity that will be using the fingerprint authentication
      */
-    public void useFingerPrintAsAuthenticationForIdentity(Identity identity, boolean use) {
-        identity.setUseFingerprint(use);
-        identity.setShowFingerprintUpgrade(!use);
+    public void useFingerPrintAsAuthenticationForIdentity(Identity identity) {
+        identity.setUseFingerprint(true);
+        identity.setShowFingerprintUpgrade(false);
         _dbAdapter.updateIdentity(identity);
     }
 }
