@@ -117,18 +117,16 @@ public class AuthenticationService {
                     return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider));
                 }
 
-                challenge.setIdentityProvider(ip);
-
                 Identity identity = null;
 
                 if (url.getUserInfo() != null) {
-                    identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(url.getUserInfo(), ip.getId());
+                    identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(url.getUserInfo(), ip.getIdentifier());
                     if (identity == null) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity));
                     }
 
                 } else {
-                    Identity[] identities = _dbAdapter.findIdentitiesByIdentityProviderIdAsObjects(ip.getId());
+                    Identity[] identities = _dbAdapter.findIdentitiesByIdentityProviderIdentifierAsObjects(ip.getIdentifier());
 
                     if (identities == null || identities.length == 0) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_no_identities_for_identity_provider));
@@ -138,6 +136,7 @@ public class AuthenticationService {
                 }
 
                 challenge.setIdentity(identity);
+                challenge.setIdentityProvider(identity == null ? ip : _dbAdapter.getIdentityProviderForIdentityId(identity.getId()));
 
                 challenge.setSessionKey(pathComponents[1]);
                 challenge.setChallenge(pathComponents[2]);
@@ -303,7 +302,7 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                if(identity.isUsingFingerprint()) {
+                if (identity.isUsingFingerprint()) {
                     if (attemptsLeft > 1) {
                         return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
                     } else if (attemptsLeft == 1) {
@@ -365,7 +364,7 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                if(identity.isUsingFingerprint()) {
+                if (identity.isUsingFingerprint()) {
                     if (attemptsLeft > 1) {
                         return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
                     } else if (attemptsLeft == 1) {

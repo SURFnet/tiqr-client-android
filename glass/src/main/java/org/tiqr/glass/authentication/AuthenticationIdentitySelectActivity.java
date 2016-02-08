@@ -58,7 +58,7 @@ public class AuthenticationIdentitySelectActivity extends Activity {
 
         DbAdapter db = new DbAdapter(this);
         AuthenticationChallenge challenge = getIntent().getParcelableExtra(CHALLENGE);
-        Identity[] identities = db.findIdentitiesByIdentityProviderIdAsObjects(challenge.getIdentityProvider().getId());
+        Identity[] identities = db.findIdentitiesByIdentityProviderIdentifierAsObjects(challenge.getIdentityProvider().getIdentifier());
         scrollAdapter.setIdentities(identities);
 
         CardScrollView scrollView = (CardScrollView)findViewById(R.id.scrollView);

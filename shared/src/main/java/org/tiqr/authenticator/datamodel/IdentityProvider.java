@@ -76,15 +76,6 @@ public class IdentityProvider implements Parcelable {
         dest.writeString(_authenticationURL);
         dest.writeString(_infoURL);
         dest.writeString(_ocraSuite);
-    } 
-
-    /**
-     * Is this a new service?
-     * 
-     * @return boolean is new?
-     */
-    public boolean isNew() {
-        return _id == -1;
     }
 
     /**

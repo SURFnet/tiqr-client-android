@@ -1,6 +1,6 @@
 package org.tiqr.authenticator.identity;
 
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.Identity;
+import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.general.FooterView;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.CaptureActivity;
@@ -86,12 +87,14 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity {
                         .setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                IdentityProvider identityProvider = _db.getIdentityProviderForIdentityId(info.id);
+
+                                _db.deleteIdentityProvider(identityProvider.getId());
+                                _db.deleteIdentity(info.id);
+
                                 if (getListAdapter().getCount() > 1) {
-                                    _db.deleteIdentity(info.id);
                                     getIdentityCursor().requery();
                                 } else {
-                                    _db.deleteIdentity(info.id);
-
                                     startActivity(new Intent(IdentityAdminActivity.this, MainActivity.class));
                                     finish();
                                 }

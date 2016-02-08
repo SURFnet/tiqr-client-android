@@ -18,6 +18,8 @@
 package org.tiqr.authenticator.qr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -25,7 +27,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,12 +37,12 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import org.tiqr.authenticator.dialog.ActivityDialog;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
+import org.tiqr.authenticator.dialog.ActivityDialog;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.camera.CameraManager;
@@ -69,6 +70,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     protected
     @Inject
     AuthenticationService _authenticationService;
+
     protected
     @Inject
     EnrollmentService _enrollmentService;
@@ -176,7 +178,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
     }
 
-
     private void initCamera(SurfaceView surfaceView) {
         try {
             CameraManager.get().openDriver(surfaceView.getHolder());
@@ -248,7 +249,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
                         .setCancelable(false)
-                        .setPositiveButton(R.string.ok_button, null)
+                        .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                handler.restartPreviewAndDecode();
+                            }
+                        })
                         .show();
             }
         });
@@ -279,7 +285,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
                         .setCancelable(false)
-                        .setPositiveButton(R.string.ok_button, null)
+                        .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                handler.restartPreviewAndDecode();
+                            }
+                        })
                         .show();
             }
         });

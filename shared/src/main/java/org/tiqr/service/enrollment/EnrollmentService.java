@@ -301,10 +301,10 @@ public class EnrollmentService {
     }
 
     /**
-     * Store identity (and identity provider if needed).
+     * Store identity and identity provider.
      */
     private void _storeIdentityAndIdentityProvider(EnrollmentChallenge challenge, SecretKey secret, SecretKey sessionKey) throws UserException {
-        if (challenge.getIdentityProvider().isNew() && !_dbAdapter.insertIdentityProvider(challenge.getIdentityProvider())) {
+        if (!_dbAdapter.insertIdentityProvider(challenge.getIdentityProvider())) {
             throw new UserException(_context.getString(R.string.error_enroll_failed_to_store_identity_provider));
         }
 
@@ -343,35 +343,32 @@ public class EnrollmentService {
     }
 
     /**
-     * Returns a identity provider object based on the given metadata. If the identity provider already exists, the existing identity provider object is
-     * returned, else a new one is created.
+     * Returns a identity provider object based on the given metadata.
      *
      * @param metadata JSON identity provider metadata
      * @return IdentityProvider object
      * @throws Exception
      */
     private IdentityProvider _getIdentityProviderForMetadata(JSONObject metadata) throws JSONException, UserException {
-        IdentityProvider ip = _dbAdapter.getIdentityProviderByIdentifierAsObject(metadata.getString("identifier"));
-        if (ip == null) {
-            ip = new IdentityProvider();
-            ip.setIdentifier(metadata.getString("identifier"));
-            ip.setDisplayName(metadata.getString("displayName"));
-            ip.setAuthenticationURL(metadata.getString("authenticationUrl"));
-            ip.setInfoURL(metadata.getString("infoUrl"));
-            if (metadata.has("ocraSuite")) {
-                ip.setOCRASuite(metadata.getString("ocraSuite"));
-            }
-            try {
-                URL logoURL = new URL(metadata.getString("logoUrl"));
-                byte[] logoData = _downloadSynchronously(logoURL);
-                ip.setLogoData(logoData);
-            } catch (Exception ex) {
-                throw new UserException(_context.getString(R.string.error_enroll_logo_error), ex);
-            }
+        IdentityProvider ip = new IdentityProvider();
 
-            if (ip.getLogoBitmap() == null) {
-                throw new UserException(_context.getString(R.string.error_enroll_logo_error));
-            }
+        ip.setIdentifier(metadata.getString("identifier"));
+        ip.setDisplayName(metadata.getString("displayName"));
+        ip.setAuthenticationURL(metadata.getString("authenticationUrl"));
+        ip.setInfoURL(metadata.getString("infoUrl"));
+        if (metadata.has("ocraSuite")) {
+            ip.setOCRASuite(metadata.getString("ocraSuite"));
+        }
+        try {
+            URL logoURL = new URL(metadata.getString("logoUrl"));
+            byte[] logoData = _downloadSynchronously(logoURL);
+            ip.setLogoData(logoData);
+        } catch (Exception ex) {
+            throw new UserException(_context.getString(R.string.error_enroll_logo_error), ex);
+        }
+
+        if (ip.getLogoBitmap() == null) {
+            throw new UserException(_context.getString(R.string.error_enroll_logo_error));
         }
 
         return ip;
@@ -385,7 +382,7 @@ public class EnrollmentService {
      * @throws Exception
      */
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
-        Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdAsObject(metadata.getString("identifier"), ip.getId());
+        Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
         if (identity != null) {
             Object[] args = new Object[]{metadata.getString("displayName"), ip.getDisplayName()};
             throw new UserException(_context.getString(R.string.error_enroll_already_enrolled, args));
@@ -400,16 +397,16 @@ public class EnrollmentService {
 
     private String _keyToHex(SecretKey secret) {
         byte[] buf = secret.getEncoded();
-        StringBuffer stringBuffer = new StringBuffer(buf.length * 2);
+        StringBuffer strbuf = new StringBuffer(buf.length * 2);
         int i;
 
         for (i = 0; i < buf.length; i++) {
             if (((int)buf[i] & 0xff) < 0x10)
-                stringBuffer.append("0");
+                strbuf.append("0");
 
-            stringBuffer.append(Long.toString((int)buf[i] & 0xff, 16));
+            strbuf.append(Long.toString((int)buf[i] & 0xff, 16));
         }
 
-        return stringBuffer.toString();
+        return strbuf.toString();
     }
 }
