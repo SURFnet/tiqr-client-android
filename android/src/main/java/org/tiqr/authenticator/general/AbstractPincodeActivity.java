@@ -1,7 +1,5 @@
 package org.tiqr.authenticator.general;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,16 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.tiqr.authenticator.R;
-import org.tiqr.authenticator.auth.Challenge;
 import org.tiqr.authenticator.security.Verhoeff;
 
 /**
  * Pin code screen.
  */
-abstract public class AbstractPincodeActivity extends Activity {
+abstract public class AbstractPincodeActivity extends AbstractAuthenticationActivity {
     protected Handler timerHandler;
     protected Runnable timer;
-    protected ProgressDialog progressDialog;
 
     protected TextView title;
     protected TextView intro;
@@ -127,16 +123,7 @@ abstract public class AbstractPincodeActivity extends Activity {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    /**
-     * Show the user a progress dialog
-     *
-     * @param title The title that will be shown in the progress dialog
-     */
-    protected void _showProgressDialog(String title) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(title);
-        progressDialog.show();
-    }
+
 
     /**
      * What should happen when the user clicks the ok button
@@ -317,15 +304,7 @@ abstract public class AbstractPincodeActivity extends Activity {
         return false;
     }
 
-    /**
-     * Returns the challenge.
-     *
-     * @return challenge
-     */
-    protected Challenge _getChallenge() {
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        return parent.getChallenge();
-    }
+
 
     /**
      * Set intro text, html format supported

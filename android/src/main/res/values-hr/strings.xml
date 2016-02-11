@@ -138,4 +138,12 @@ Bit ćete upitani da unesete sljedeće jednokratne vjerodajnice:</string>
     <Data><![CDATA[<html><body>Posjetite stranice usluge u koju se želite prijaviti i slijedite korake: <ul> <li>Skenirajte QR kod na stranici za prijavu.</li> <li><i>Ukoliko imate više identiteta, odaberite onaj s kojim se želite prijaviti..</i></li> <li>Potvrdite Vaš identitet (morat ćete unijeti PIN kod).</li> <li>Potvrđen identitet!</li> </ul> Pritisnite <b>Skeniranje</b> kako bi započeli proces prijave.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Što sad?</b><br></br> Zatražite novi aktivacijski kod od Vašeg davatelja identiteta. Poveznicu do traženog davatelja identiteta možete pronaći u listi identiteta (dostupnoj u gornjem desnom kutu). <br></br><br></br> Zajedno sa novim aktivacijskim kodom bit će poslane upute za ponovnu aktivaciju Vašeg korisničkog računa. Pritisnite <b>Skeniranje</b> kada bude zatraženo.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

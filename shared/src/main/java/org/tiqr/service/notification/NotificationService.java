@@ -1,7 +1,8 @@
 package org.tiqr.service.notification;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -12,9 +13,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 

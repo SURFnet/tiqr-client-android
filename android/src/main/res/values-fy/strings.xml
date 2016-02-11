@@ -103,7 +103,7 @@ ynternetside. Jo wurde dan frege om de folgjende gegevens yn te fiere: </string>
   <string name="error_auth_invalid_account_message">Jo besykje yn te loche mei in ûnjildich of ûnbekend akkount. (Re-)aktivear jo akkount earst.</string>
   <string name="error_auth_account_blocked_title">Akkount blokkeart</string>
   <string name="error_auth_account_blocked_message">Dit akkount is net mear jildich.</string>
-  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temporarily.</string>
   <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
   <string name="error_auth_invalid_challenge_title">Ûnjildich fersyk</string>
   <string name="error_auth_invalid_challenge_message">De scande QR koade is ûnjildich of ferrûn. Besykje it op ‘e nij.</string>
@@ -152,4 +152,12 @@ nei jo identiteitferstrekker(s) is beskikber út it akkount oersjoch
 <br></br>
 By jo nije aktivaasje koade krije jo ynstruksjes. Druk op <b>Scan</b>
 wannear ’t jo dêrom freege wurd.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

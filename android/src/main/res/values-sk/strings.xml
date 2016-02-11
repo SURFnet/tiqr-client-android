@@ -103,7 +103,7 @@ tieto jednorázové prístupové údaje:</string>
   <string name="error_auth_invalid_account_message">Pokus o prihlásenie s neplatným alebo neznámym účtom. Prosím, (re-)aktivujte svoj účet.</string>
   <string name="error_auth_account_blocked_title">Účet blokovaný</string>
   <string name="error_auth_account_blocked_message">Tento účet nie je možné naďalej používať.</string>
-  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temporarily.</string>
   <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
   <string name="error_auth_invalid_challenge_title">Neplatná výzva</string>
   <string name="error_auth_invalid_challenge_message">Nasnímaný QR kód nie je platný alebo expiroval. Skúste znova, prosím.</string>
@@ -147,4 +147,12 @@ QR kód. Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.</body></html>
     <Data><![CDATA[<html><body>Zvoľte želanú službu a postupujte nasledovne: <ul> <li>Nasnímajte QR kód na prihlasovacej stránke služby.</li> <li><i>Ak máte niekoľko identít, zvoľte si tú, s ktorou sa chcete prihlásiť.</i></li> <li>Potvrďte identitu (budete musieť zadať svoj PIN).</li> <li>Ste prihlásený/á!</li> </ul> Potvrdením výzvy <b>Skenovať</b> zahájite proces prihlásenia.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>A čo teraz?</b>⏎ <br></br>⏎ Požiadajte vášho poskytovateľa identity o nový aktivačný kód. Odkaz na váško ⏎ poskytovateľa identity nájdete v menu Identity (hore vľavo).<br></br>⏎ <br></br>⏎ Spolu s aktivačným kódom obdržíte pokyny ako znovu ⏎ aktivovať váš účet. Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

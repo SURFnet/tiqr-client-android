@@ -50,22 +50,32 @@ import javax.inject.Inject;
 public class EnrollmentService {
     public interface OnParseEnrollmentChallengeListener {
         public void onParseEnrollmentChallengeSuccess(EnrollmentChallenge challenge);
+
         public void onParseEnrollmentChallengeError(ParseEnrollmentChallengeError error);
     }
+
     public interface OnEnrollmentListener {
         public void onEnrollmentSuccess();
+
         public void onEnrollmentError(EnrollmentError error);
     }
 
-    protected @Inject
+    protected
+    @Inject
     NotificationService _notificationService;
-    protected @Inject Context _context;
+
+    protected
+    @Inject
+    Context _context;
+
+    protected
+    @Inject
+    DbAdapter _dbAdapter;
 
     /**
      * Contains an enrollment challenge?
      *
      * @param rawChallenge Raw challenge.
-     *
      * @return Is enrollment challenge?
      */
     public boolean isEnrollmentChallenge(String rawChallenge) {
@@ -225,7 +235,6 @@ public class EnrollmentService {
      * Parse v1 response format (ascii), return error object when unsuccessful.
      *
      * @param response
-     *
      * @return Error object on failure.
      */
     private EnrollmentError _parseV1Response(String response) {
@@ -240,7 +249,6 @@ public class EnrollmentService {
      * Parse v2 response format (json), return error object when unsuccessful.
      *
      * @param response
-     *
      * @return Error object on failure.
      */
     private EnrollmentError _parseV2Response(String response) {
@@ -273,7 +281,7 @@ public class EnrollmentService {
 
             return new EnrollmentError(type, _context.getString(R.string.enrollment_failure_title), message);
         } catch (JSONException e) {
-            return new EnrollmentError(Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title),  _context.getString(R.string.error_enroll_invalid_response));
+            return new EnrollmentError(Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_response));
         }
 
     }
@@ -282,7 +290,6 @@ public class EnrollmentService {
      * Generate identity secret.
      *
      * @return secret key
-     *
      * @throws UserException
      */
     private SecretKey _generateSecret() throws UserException {
@@ -297,12 +304,11 @@ public class EnrollmentService {
      * Store identity and identity provider.
      */
     private void _storeIdentityAndIdentityProvider(EnrollmentChallenge challenge, SecretKey secret, SecretKey sessionKey) throws UserException {
-        DbAdapter db = new DbAdapter(_context);
-        if (!db.insertIdentityProvider(challenge.getIdentityProvider())) {
+        if (!_dbAdapter.insertIdentityProvider(challenge.getIdentityProvider())) {
             throw new UserException(_context.getString(R.string.error_enroll_failed_to_store_identity_provider));
         }
 
-        if (!db.insertIdentityForIdentityProvider(challenge.getIdentity(), challenge.getIdentityProvider())) {
+        if (!_dbAdapter.insertIdentityForIdentityProvider(challenge.getIdentity(), challenge.getIdentityProvider())) {
             throw new UserException(_context.getString(R.string.error_enroll_failed_to_store_identity));
         }
 
@@ -320,7 +326,6 @@ public class EnrollmentService {
      * Download data from the given URL (synchronously).
      *
      * @param url url
-     *
      * @return data
      */
     private byte[] _downloadSynchronously(URL url) throws IOException {
@@ -341,9 +346,7 @@ public class EnrollmentService {
      * Returns a identity provider object based on the given metadata.
      *
      * @param metadata JSON identity provider metadata
-     *
      * @return IdentityProvider object
-     *
      * @throws Exception
      */
     private IdentityProvider _getIdentityProviderForMetadata(JSONObject metadata) throws JSONException, UserException {
@@ -375,16 +378,13 @@ public class EnrollmentService {
      * Returns an identity object based on the given metadata. If the identity already exists an exception is thrown.
      *
      * @param metadata JSON identity metadata
-     *
      * @return identity object
-     *
      * @throws Exception
      */
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
-        DbAdapter dbAdapter = new DbAdapter(_context);
-        Identity identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
+        Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
         if (identity != null) {
-            Object[] args = new Object[] { metadata.getString("displayName"), ip.getDisplayName() };
+            Object[] args = new Object[]{metadata.getString("displayName"), ip.getDisplayName()};
             throw new UserException(_context.getString(R.string.error_enroll_already_enrolled, args));
         }
 
@@ -393,7 +393,6 @@ public class EnrollmentService {
         identity.setDisplayName(metadata.getString("displayName"));
         return identity;
     }
-
 
 
     private String _keyToHex(SecretKey secret) {

@@ -1,8 +1,10 @@
-package org.tiqr.authenticator;
+package org.tiqr.authenticator.dialog;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+
+import org.tiqr.authenticator.R;
 
 public class IncompatibilityDialog {
     public void show(final Activity activity) {

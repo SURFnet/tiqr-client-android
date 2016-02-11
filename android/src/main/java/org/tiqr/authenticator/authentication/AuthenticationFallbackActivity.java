@@ -1,15 +1,14 @@
 package org.tiqr.authenticator.authentication;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.tiqr.authenticator.IncompatibilityDialog;
+import org.tiqr.Constants;
+import org.tiqr.authenticator.dialog.IncompatibilityDialog;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.exceptions.InvalidChallengeException;
@@ -63,7 +62,7 @@ public class AuthenticationFallbackActivity extends Activity {
             });
         }
 
-        String pincode = getIntent().getStringExtra("org.tiqr.authentication.pincode");
+        String pincode = getIntent().getStringExtra(Constants.AUTHENTICATION_PINCODE_KEY);
         _fetchOTP(pincode);
     }
 
