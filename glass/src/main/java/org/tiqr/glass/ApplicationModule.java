@@ -2,6 +2,7 @@ package org.tiqr.glass;
 
 import android.content.Context;
 
+import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.glass.authentication.AuthenticationConfirmationActivity;
 import org.tiqr.glass.authentication.AuthenticationIdentitySelectActivity;
 import org.tiqr.glass.enrollment.EnrollmentConfirmationActivity;
@@ -22,7 +23,7 @@ import dagger.Provides;
                 ScanActivity.class,
                 EnrollmentConfirmationActivity.class,
                 AuthenticationIdentitySelectActivity.class,
-                AuthenticationConfirmationActivity.class
+                AuthenticationConfirmationActivity.class,
         }
 )
 public class ApplicationModule {
@@ -42,5 +43,14 @@ public class ApplicationModule {
      */
     @Provides @Singleton Context provideContext() {
         return _application.getApplicationContext();
+    }
+
+    /**
+     * Allow the DBAdapter to be injected.
+     */
+    @Provides
+    @Singleton
+    public DbAdapter provideDbAdapter() {
+        return new DbAdapter(_application.getApplicationContext());
     }
 }

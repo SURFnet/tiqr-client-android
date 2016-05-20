@@ -16,12 +16,14 @@ import java.net.URL;
  * Dialog for confirming the enrollment for a certain identity / identity_provider.
  */
 public class EnrollmentConfirmationActivity extends AbstractConfirmationActivity {
+
     /**
      * Called when the activity is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setTitleText(R.string.enrollment_confirmation_title);
         setDescriptionText(R.string.enrollment_confirmation_description);
         setConfirmButtonText(R.string.enrollment_confirm_button);
@@ -54,6 +56,7 @@ public class EnrollmentConfirmationActivity extends AbstractConfirmationActivity
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
         Intent enrollmentPincodeIntent = new Intent().setClass(this, EnrollmentPincodeActivity.class);
         parent.startChildActivity("EnrollmentPincodeActivity", enrollmentPincodeIntent);
+
     }
 
     /**

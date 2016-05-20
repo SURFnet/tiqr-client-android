@@ -1,9 +1,11 @@
-package org.tiqr.authenticator;
+package org.tiqr.authenticator.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ProgressBar;
+
+import org.tiqr.authenticator.R;
 
 /**
  * Dialog used to show an activity indicator wheel.

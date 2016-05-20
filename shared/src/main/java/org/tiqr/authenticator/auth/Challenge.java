@@ -125,4 +125,10 @@ public abstract class Challenge implements Parcelable {
     {
         _returnURL = returnURL;
     }
+
+
+
+
+
+
 }

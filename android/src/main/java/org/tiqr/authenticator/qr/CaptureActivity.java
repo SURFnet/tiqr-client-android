@@ -37,12 +37,12 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import org.tiqr.authenticator.ActivityDialog;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
+import org.tiqr.authenticator.dialog.ActivityDialog;
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup;
 import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.authenticator.qr.camera.CameraManager;
@@ -70,6 +70,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     protected
     @Inject
     AuthenticationService _authenticationService;
+
     protected
     @Inject
     EnrollmentService _enrollmentService;
@@ -186,12 +187,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             double maxWidth = parentView.getWidth();
             double maxHeight = parentView.getHeight();
 
-            double scaleX = maxWidth/CameraManager.get().getCameraResolution().y;
-            double scaleY = maxHeight/CameraManager.get().getCameraResolution().x;
+            double scaleX = maxWidth / CameraManager.get().getCameraResolution().y;
+            double scaleY = maxHeight / CameraManager.get().getCameraResolution().x;
             double scale = Math.min(scaleX, scaleY);
 
-            surfaceView.getLayoutParams().width = (int)(scale*CameraManager.get().getCameraResolution().y);
-            surfaceView.getLayoutParams().height = (int)(scale*CameraManager.get().getCameraResolution().x);
+            surfaceView.getLayoutParams().width = (int)(scale * CameraManager.get().getCameraResolution().y);
+            surfaceView.getLayoutParams().height = (int)(scale * CameraManager.get().getCameraResolution().x);
 
             surfaceView.requestLayout();
         } catch (IOException ioe) {

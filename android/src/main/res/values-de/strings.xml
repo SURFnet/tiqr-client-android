@@ -138,4 +138,12 @@ nur einmalig gültigen Daten einzugeben:</string>
     <Data><![CDATA[<html><body>Gehen Sie zu dem Dienst bei dem Sie sich anmelden wollen und folgen Sie diesen Schritten:<ul> <li>Scannen Sie den QR Code auf der Anmeldeseite des Dienstes.</li> <li><i>Wenn Sie mehrere Identitäten haben, wählen Sie die gewünschte aus.</i></li> <li>Bestätigen Sie Ihre Identität (dazu müssen Sie Ihre PIN eingeben).</li> <li>Sie sind angemeldet!</li> </ul> Drücken Sie auf <b>Scannen</b> um den Anmeldevorgang zu starten.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Und nun?</b><br></br> Fragen Sie Ihre(n) Identitätsprovider nach einem neuen Aktivierungscode. Zur Kontaktaufnahme mit Ihrem Identitätsprovider(n) überprüfen Sie bitte ihre Identäten (erreichbar von oben rechts). <br></br><br></br> Zusammen mit dem neuen Aktivierungscode erhalten Sie auch Anweisungen mit denen Sie Ihr Benutzerkonto wieder reaktivieren können. Drücken Sie <b>Scannen</b> wenn Sie dazu aufgefordert werden.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

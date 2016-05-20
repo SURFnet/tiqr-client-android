@@ -159,4 +159,12 @@ aktivaciju vašeg naloga. Tokom aktivacije potrebno je skenirati
  Zahtevajte novi aktivacioni kod od vašeg Davaoca Identiteta. Za link do traženog Davaoca Identiteta proverite vaše identitete (dostupno u gornjem desnom uglu).<br></br>
 <br></br>
 Zajedno sa novim aktivacionim kodom biće poslata i uputstva za ponovnu aktivaciju vašeg korisničkog naloga. Pritisnite <b>Skeniraj</b> ako se to traži.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

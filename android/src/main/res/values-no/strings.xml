@@ -104,7 +104,7 @@ følgende engangsopplysninger:</string>
   <string name="error_auth_invalid_account_message">Du forsøkte å logge inn med en ukjent eller ugyldig konto. Vennligst (re)aktiver konto først.</string>
   <string name="error_auth_account_blocked_title">Konto blokkert</string>
   <string name="error_auth_account_blocked_message">Konto kan ikke lenger brukes.</string>
-  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temprorarily.</string>
+  <string name="error_auth_account_blocked_temporary_title">This account has been blocked temporarily.</string>
   <string name="error_auth_account_blocked_temporary_message">This account has been blocked for %d minutes.</string>
   <string name="error_auth_invalid_challenge_title">Ugyldig utfordring</string>
   <string name="error_auth_invalid_challenge_message">Den skannede QR koden er ugyldig eller utløpt. Vennligst forsøk igjen.</string>
@@ -155,4 +155,12 @@ for å aktivere din konto. Under aktiveringsprosessen må du skanne
  </ul>Trykk <b>Skan</b> for å starte pålogging.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>Hva nå?</b>⏎ <br></br>⏎ Spør din(e) identitetsleverandør(er) om en ny aktiveringskode. For en link til din ⏎ identitetsleverandør sjekk dine identiteter (øverst til høyre).<br></br>⏎ <br></br>⏎ Sammen med en ny aktiveringskode vil du motta instruksjoner for ⏎ å reaktivere din konto. Trukk <b>Skan</b> når det spørres om dette.</string>
+  <string name="upgrade_to_touch_id_title"/>
+  <string name="upgrade_to_touch_id_message"/>
+  <string name="upgrade_button"/>
+  <string name="fingerprint_intro"/>
+  <string name="touch_sensor"/>
+  <string name="error_auth_wrong_fingerprint"></string>
+  <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+  <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>

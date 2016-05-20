@@ -1,7 +1,5 @@
 package org.tiqr.authenticator.datamodel;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,13 +9,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DbAdapter {
     public static final String ROWID = "_id";
     public static final String DISPLAY_NAME = "displayName";
     public static final String BLOCKED = "blocked";
     public static final String IDENTIFIER = "identifier";
-    public static final String IDENTITYPROVIDER = "identityProvider";
     public static final String SORT_INDEX = "sortIndex";
+    public static final String SHOW_FINGERPRINT_UPGRADE = "showFingerPrintUpgrade";
+    public static final String USE_FINGERPRINT = "useFingerPrint";
+    public static final String IDENTITYPROVIDER = "identityProvider";
     public static final String LOGO = "logo";
     public static final String INFO_URL = "infoUrl";
     public static final String AUTHENTICATION_URL = "authenticationUrl";
@@ -29,7 +31,8 @@ public class DbAdapter {
 
     private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
+    private static final int DB_VERSION_INITIAL = 4;
 
     private final Context _ctx;
 
@@ -39,7 +42,6 @@ public class DbAdapter {
     public DbAdapter(Context context) {
         _ctx = context;
         _DBHelper = new DatabaseHelper(_ctx);
-
         _db = _DBHelper.getWritableDatabase();
     }
 
@@ -54,18 +56,17 @@ public class DbAdapter {
                     + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " BINARY);");
 
             db.execSQL("CREATE TABLE " + TABLE_IDENTITY + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BLOCKED + " INTEGER NOT NULL DEFAULT 0, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, "
-                    + IDENTITYPROVIDER + " INTEGER NOT NULL, " + SORT_INDEX + " INTEGER NOT NULL);");
-
+                    + IDENTITYPROVIDER + " INTEGER NOT NULL, " + SORT_INDEX + " INTEGER NOT NULL, " + SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1, " + USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0);");
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // WARNING! TODO. Dropping identities is not an acceptable migration path. 
             // But since we are at level 4 since first release, and still are, this code isn't used yet.
             Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_IDENTITY);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_IDENTITYPROVIDER);
-            onCreate(db);
+            if(oldVersion == DB_VERSION_INITIAL && newVersion == DATABASE_VERSION) {
+                db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1; ");
+                db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0; ");
+            }
         }
     }
 
@@ -86,6 +87,8 @@ public class DbAdapter {
         values.put(BLOCKED, identity.isBlocked() ? 1 : 0);
         values.put(IDENTITYPROVIDER, ip.getId());
         values.put(SORT_INDEX, identity.getSortIndex());
+        values.put(SHOW_FINGERPRINT_UPGRADE, identity.showFingerprintUpgrade() ? 1 : 0);
+        values.put(USE_FINGERPRINT, identity.isUsingFingerprint() ? 1 : 0);
 
         long id = _db.insert(TABLE_IDENTITY, null, values);
         if (id != -1) {
@@ -109,7 +112,8 @@ public class DbAdapter {
         values.put(DISPLAY_NAME, identity.getDisplayName());
         values.put(BLOCKED, identity.isBlocked() ? 1 : 0);
         values.put(SORT_INDEX, identity.getSortIndex());
-
+        values.put(SHOW_FINGERPRINT_UPGRADE, identity.showFingerprintUpgrade() ? 1 : 0);
+        values.put(USE_FINGERPRINT, identity.isUsingFingerprint() ? 1 : 0);
         return _db.update(TABLE_IDENTITY, values, ROWID + " = ?", new String[] { String.valueOf(identity.getId()) }) > 0;
     }
 
@@ -143,12 +147,16 @@ public class DbAdapter {
         int displayNameColumn = cursor.getColumnIndex(DbAdapter.DISPLAY_NAME);
         int blockedColumn = cursor.getColumnIndex(DbAdapter.BLOCKED);
         int sortIndexColumn = cursor.getColumnIndex(DbAdapter.SORT_INDEX);
+        int showFingerprintUpgrade = cursor.getColumnIndex(DbAdapter.SHOW_FINGERPRINT_UPGRADE);
+        int useFingerprint = cursor.getColumnIndex(DbAdapter.USE_FINGERPRINT);
 
         identity.setId(cursor.getLong(rowIdColumn));
         identity.setIdentifier(cursor.getString(identifierColumn));
         identity.setDisplayName(cursor.getString(displayNameColumn));
         identity.setBlocked(cursor.getInt(blockedColumn) == 1 ? true : false);
         identity.setSortIndex(cursor.getInt(sortIndexColumn));
+        identity.setShowFingerprintUpgrade(cursor.getInt(showFingerprintUpgrade) == 1 ? true : false);
+        identity.setUseFingerprint(cursor.getInt(useFingerprint) == 1 ? true : false);
 
         return identity;
     }
@@ -191,7 +199,15 @@ public class DbAdapter {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
-        Cursor cursor = builder.query(_db, new String[] {TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + IDENTITYPROVIDER, TABLE_IDENTITY + "." + SORT_INDEX}, TABLE_IDENTITY + "." + IDENTIFIER + " = ? AND " + TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] {identityIdentifier, identityProviderIdentifier}, null, null, SORT_INDEX);
+        Cursor cursor = builder.query(_db, new String[] {TABLE_IDENTITY + "." + ROWID,
+                TABLE_IDENTITY + "." + DISPLAY_NAME,
+                TABLE_IDENTITY + "." + BLOCKED,
+                TABLE_IDENTITY + "." + IDENTIFIER,
+                TABLE_IDENTITY + "." + IDENTITYPROVIDER,
+                TABLE_IDENTITY + "." + SORT_INDEX,
+                TABLE_IDENTITY + "." + SHOW_FINGERPRINT_UPGRADE,
+                TABLE_IDENTITY + "." + USE_FINGERPRINT},
+                TABLE_IDENTITY + "." + IDENTIFIER + " = ? AND " + TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] {identityIdentifier, identityProviderIdentifier}, null, null, SORT_INDEX);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -204,7 +220,13 @@ public class DbAdapter {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
-        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + SORT_INDEX,
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID,
+                TABLE_IDENTITY + "." + DISPLAY_NAME,
+                TABLE_IDENTITY + "." + BLOCKED,
+                TABLE_IDENTITY + "." + IDENTIFIER,
+                TABLE_IDENTITY + "." + SORT_INDEX,
+                TABLE_IDENTITY + "." + SHOW_FINGERPRINT_UPGRADE,
+                TABLE_IDENTITY + "." + USE_FINGERPRINT,
                 TABLE_IDENTITYPROVIDER + "." + LOGO }, TABLE_IDENTITY + "." + ROWID + " = ?", new String[] { String.valueOf(identity_id) }, null, null, SORT_INDEX);
 
         Identity[] identities = _createIdentityObjectsForCursor(cursor);
@@ -234,7 +256,7 @@ public class DbAdapter {
      * @return cursor object
      */
     public Cursor getAllIdentities() {
-        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] {ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX}, null, null, null, null, SORT_INDEX);
+        Cursor cursor = _db.query(TABLE_IDENTITY, new String[] {ROWID, DISPLAY_NAME, BLOCKED, IDENTIFIER, IDENTITYPROVIDER, SORT_INDEX, SHOW_FINGERPRINT_UPGRADE, USE_FINGERPRINT}, null, null, null, null, SORT_INDEX);
 
         return cursor;
     }
@@ -256,7 +278,13 @@ public class DbAdapter {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
-        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + SORT_INDEX,
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID,
+                TABLE_IDENTITY + "." + DISPLAY_NAME,
+                TABLE_IDENTITY + "." + BLOCKED,
+                TABLE_IDENTITY + "." + IDENTIFIER,
+                TABLE_IDENTITY + "." + SORT_INDEX,
+                TABLE_IDENTITY + "." + SHOW_FINGERPRINT_UPGRADE,
+                TABLE_IDENTITY + "." + USE_FINGERPRINT,
                 TABLE_IDENTITYPROVIDER + "." + LOGO }, null, null, null, null, SORT_INDEX);
 
         return cursor;
@@ -264,16 +292,33 @@ public class DbAdapter {
     }
 
     /**
-     * Returns the identities for the given identity providers ordered by their sort index and returns them as an array of Identity objects.
+<<<<<<< HEAD
+     * Returns the identities for the given identity provider ordered by their sort index.
      * 
-     * @return result array
+     * Filter out the identities which are blocked, because this is only used for authentication
+     * 
+     * @param identityProviderId Identity provider row-id
+     * 
+     * @return result cursor
      */
-    public Identity[] getAllIdentitiesAsObjects() {
-        try {
-            return _createIdentityObjectsForCursor(getAllIdentities());
-        } catch (Exception ex) {
-            return new Identity[0];
+    public Cursor findIdentitiesByIdentityProviderIdWithIdentityProviderData(long identityProviderId) throws SQLException {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
+
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID,
+                TABLE_IDENTITY + "." + DISPLAY_NAME,
+                TABLE_IDENTITY + "." + BLOCKED,
+                TABLE_IDENTITY + "." + IDENTIFIER,
+                TABLE_IDENTITY + "." + SORT_INDEX,
+                TABLE_IDENTITY + "." + SHOW_FINGERPRINT_UPGRADE,
+                TABLE_IDENTITY + "." + USE_FINGERPRINT,
+                TABLE_IDENTITYPROVIDER + "." + LOGO, }, IDENTITYPROVIDER + " = ? AND " + TABLE_IDENTITY + "." + BLOCKED + " <> 1", new String[] { String.valueOf(identityProviderId) }, null, null, SORT_INDEX);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
         }
+
+        return cursor;
     }
 
     /**
@@ -287,7 +332,15 @@ public class DbAdapter {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
-        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID, TABLE_IDENTITY + "." + DISPLAY_NAME, TABLE_IDENTITY + "." + BLOCKED, TABLE_IDENTITY + "." + IDENTIFIER, TABLE_IDENTITY + "." + IDENTITYPROVIDER, TABLE_IDENTITY + "." + SORT_INDEX, TABLE_IDENTITYPROVIDER + "." + LOGO}, TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] { identityProviderIdentifier }, null, null, SORT_INDEX);
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITY + "." + ROWID,
+                TABLE_IDENTITY + "." + DISPLAY_NAME,
+                TABLE_IDENTITY + "." + BLOCKED,
+                TABLE_IDENTITY + "." + IDENTIFIER,
+                TABLE_IDENTITY + "." + IDENTITYPROVIDER,
+                TABLE_IDENTITY + "." + SORT_INDEX,
+                TABLE_IDENTITY + "." + SHOW_FINGERPRINT_UPGRADE,
+                TABLE_IDENTITY + "." + USE_FINGERPRINT,
+                TABLE_IDENTITYPROVIDER + "." + LOGO}, TABLE_IDENTITYPROVIDER + "." + IDENTIFIER + " = ?", new String[] { identityProviderIdentifier }, null, null, SORT_INDEX);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -339,25 +392,6 @@ public class DbAdapter {
         } else {
             return false;
         }
-    }
-
-    /**
-     * Updates an existing identity provider.
-     * 
-     * @param identityProvider The identity provider
-     * 
-     * @return update successful?
-     */
-    public boolean updateIdentityProvider(IdentityProvider identityProvider) {
-        ContentValues values = new ContentValues();
-        values.put(IDENTIFIER, identityProvider.getIdentifier());
-        values.put(DISPLAY_NAME, identityProvider.getDisplayName());
-        values.put(AUTHENTICATION_URL, identityProvider.getAuthenticationURL());
-        values.put(OCRA_SUITE, identityProvider.getOCRASuite());
-        values.put(LOGO, identityProvider.getLogoData());
-        values.put(INFO_URL, identityProvider.getInfoURL());
- 
-        return _db.update(TABLE_IDENTITYPROVIDER, values, ROWID + " = ?", new String[] { String.valueOf(identityProvider.getId()) }) > 0;
     }
 
     /**
@@ -438,8 +472,13 @@ public class DbAdapter {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(JOIN_IDENTITY_IDENTITYPROVIDER);
 
-        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITYPROVIDER + "." + ROWID, TABLE_IDENTITYPROVIDER + "." + DISPLAY_NAME, TABLE_IDENTITYPROVIDER + "." + IDENTIFIER, TABLE_IDENTITYPROVIDER + "." + AUTHENTICATION_URL,
-                TABLE_IDENTITYPROVIDER + "." + OCRA_SUITE, TABLE_IDENTITYPROVIDER + "." + INFO_URL, TABLE_IDENTITYPROVIDER + "." + LOGO, }, TABLE_IDENTITY + "." + ROWID + " = ?",
+        Cursor cursor = builder.query(_db, new String[] { TABLE_IDENTITYPROVIDER + "." + ROWID,
+                TABLE_IDENTITYPROVIDER + "." + DISPLAY_NAME,
+                TABLE_IDENTITYPROVIDER + "." + IDENTIFIER,
+                TABLE_IDENTITYPROVIDER + "." + AUTHENTICATION_URL,
+                TABLE_IDENTITYPROVIDER + "." + OCRA_SUITE,
+                TABLE_IDENTITYPROVIDER + "." + INFO_URL,
+                TABLE_IDENTITYPROVIDER + "." + LOGO, }, TABLE_IDENTITY + "." + ROWID + " = ?",
                 new String[] { String.valueOf(identity_id) }, null, null, SORT_INDEX);
 
         IdentityProvider[] identityProviders = _createIdentityProviderObjectsForCursor(cursor);

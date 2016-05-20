@@ -148,4 +148,12 @@ un código QR. Pulse <b>Escanear</b> si es requerido.</body></html> ]]> </Data>
 </ul>Pulse <b>Escanear</b> para comenzar el proceso de acceso.</body></html> ]]> </Data>
   </string>
   <string name="main_text_blocked"><b>¿Y ahora qué?</b><br></br> Pida un nuevo código de activación a su(s) proveedor(es) de identidad. Para localizar su(s) proveedor(es) de identidad, compruebe sus identidades (disponibles en la parte superior derecha). <br></br><br></br> Recibirá instrucciones para reactivar su cuenta junto al nuevo código de activación. Pulse <b>Escanear</b> si se le pide.</string>
+    <string name="upgrade_to_touch_id_title"/>
+    <string name="upgrade_to_touch_id_message"/>
+    <string name="upgrade_button"/>
+    <string name="fingerprint_intro"/>
+    <string name="touch_sensor"/>
+    <string name="error_auth_wrong_fingerprint"></string>
+    <string name="error_fingerprint_auth_x_attempts_left" formatted="false"></string>
+    <string name="error_fingerprint_auth_one_attempt_left"></string>
 </resources>
