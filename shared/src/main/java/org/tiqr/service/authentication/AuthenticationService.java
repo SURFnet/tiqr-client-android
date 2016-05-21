@@ -113,7 +113,13 @@ public class AuthenticationService {
                 Identity identity = null;
 
                 if (url.getUserInfo() != null) {
-                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(url.getUserInfo(), ip.getIdentifier());
+                    String userInfo  = url.getUserInfo();
+                    try {
+                        userInfo = URLDecoder.decode(userInfo, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        // never happens...
+                    }
+                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(userInfo, ip.getIdentifier());
                     if (identity == null) {
                         return new ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity));
                     }
