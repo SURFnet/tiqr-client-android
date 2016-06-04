@@ -1,10 +1,7 @@
 package org.tiqr.authenticator.authentication;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +16,6 @@ import org.tiqr.authenticator.general.HeaderView;
 
 public class AuthenticationSummaryActivity extends AbstractActivityGroup {
 
-    private FingerprintManagerCompat fingerprintManager;
 
     /**
      * Called when the activity is first created.
@@ -62,25 +58,6 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
         if (footer != null) {
             footer.hideInfoIcon();
         }
-
-        fingerprintManager = FingerprintManagerCompat.from(this);
-
-        if (fingerprintManager.hasEnrolledFingerprints()) {
-            _showFingerPrintUpgradeDialog();
-        }
-    }
-
-    private void _showFingerPrintUpgradeDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.upgrade_to_touch_id_title))
-                .setMessage(getString(R.string.upgrade_to_touch_id_message))
-                .setPositiveButton(getString(R.string.upgrade_button), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                })
-                .setNegativeButton(getString(R.string.cancel_button), null)
-                .create()
-                .show();
     }
 
     /**

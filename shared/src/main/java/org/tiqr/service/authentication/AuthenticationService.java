@@ -4,19 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.tiqr.Constants;
 import org.tiqr.R;
+import org.tiqr.Utils;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.datamodel.Identity;
@@ -33,13 +25,14 @@ import org.tiqr.service.notification.NotificationService;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
@@ -213,38 +206,42 @@ public class AuthenticationService {
 
                     otp = ocra.generateOCRA(challenge.getIdentityProvider().getOCRASuite(), secretKey.getEncoded(), challenge.getChallenge(), challenge.getSessionKey());
 
-                    DefaultHttpClient httpclient = new DefaultHttpClient();
-                    HttpPost httppost = new HttpPost(challenge.getIdentityProvider().getAuthenticationURL());
-
                     // Add your dNameValuePair
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                    nameValuePairs.add(new BasicNameValuePair("sessionKey", challenge.getSessionKey()));
-                    nameValuePairs.add(new BasicNameValuePair("userId", challenge.getIdentity().getIdentifier()));
-                    nameValuePairs.add(new BasicNameValuePair("response", otp));
-                    nameValuePairs.add(new BasicNameValuePair("language", Locale.getDefault().getLanguage()));
+                    Map<String, String> nameValuePairs = new HashMap<>();
+                    nameValuePairs.put("sessionKey", challenge.getSessionKey());
+                    nameValuePairs.put("userId", challenge.getIdentity().getIdentifier());
+                    nameValuePairs.put("response", otp);
+                    nameValuePairs.put("language", Locale.getDefault().getLanguage());
+
                     String notificationAddress = _notificationService.getNotificationToken();
                     if (notificationAddress != null) {
                         // communicate latest notification type and address
-                        nameValuePairs.add(new BasicNameValuePair("notificationType", "GCM"));
-                        nameValuePairs.add(new BasicNameValuePair("notificationAddress", notificationAddress));
+                        nameValuePairs.put("notificationType", "GCM");
+                        nameValuePairs.put("notificationAddress", notificationAddress);
                     }
 
-                    nameValuePairs.add(new BasicNameValuePair("operation", "login"));
+                    nameValuePairs.put("operation", "login");
 
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+                    byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
 
-                    httppost.setHeader("ACCEPT", "application/json");
-                    httppost.setHeader("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    URL authenticationURL = new URL(challenge.getIdentityProvider().getAuthenticationURL());
+                    HttpURLConnection httpURLConnection = (HttpURLConnection)authenticationURL.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setRequestProperty("ACCEPT", "application/json");
+                    httpURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.getOutputStream().write(postData);
 
-                    // Execute HTTP Post Request
-                    HttpResponse httpResponse = httpclient.execute(httppost);
-                    Header versionHeader = httpResponse.getFirstHeader("X-TIQR-Protocol-Version");
-                    if (versionHeader == null || versionHeader.getValue().equals("1")) {
+                    String response = Utils.urlConnectionResponseAsString(httpURLConnection);
+                    String versionHeader = httpURLConnection.getHeaderField("X-TIQR-Protocol-Version");
+                    if (versionHeader == null || versionHeader.equals("1")) {
                         // v1 protocol (ascii)
-                        return _parseV1Response(EntityUtils.toString(httpResponse.getEntity()));
+                        return _parseV1Response(response);
                     } else {
                         // v2 protocol (json)
-                        return _parseV2Response(EntityUtils.toString(httpResponse.getEntity()));
+                        return _parseV2Response(response);
                     }
                 } catch (InvalidChallengeException e) {
                     return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
