@@ -4,44 +4,42 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+import org.tiqr.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.net.ssl.HttpsURLConnection;
 
-public class NotificationService
-{
-    protected @Inject Context _context;
+public class NotificationService {
+    protected
+    @Inject
+    Context _context;
 
     public static final String TOKENEXCHANGE_URL = "https://mobi.surfnet.nl/tokenexchange/?appId=tiqr";
 
-    private void _sendRequestWithDeviceToken(final String deviceToken) throws Exception
-    {
+    private void _sendRequestWithDeviceToken(final String deviceToken) throws Exception {
         String notificationToken = getNotificationToken();
 
-        HttpPost httpPost = new HttpPost(TOKENEXCHANGE_URL);
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("deviceToken", deviceToken));
+        Map<String, String> nameValuePairs = new HashMap<>();
+        nameValuePairs.put("deviceToken", deviceToken);
         if (notificationToken != null) {
-            nameValuePairs.add(new BasicNameValuePair("notificationToken", notificationToken));
+            nameValuePairs.put("notificationToken", notificationToken);
         }
 
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+        URL tokenExchangeURL = new URL(TOKENEXCHANGE_URL);
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) tokenExchangeURL.openConnection();
+        httpsURLConnection.setRequestMethod("POST");
+        httpsURLConnection.setDoOutput(true);
+        byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
+        httpsURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        httpsURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
+        httpsURLConnection.getOutputStream().write(postData);
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpResponse httpResponse;
-        httpResponse = httpClient.execute(httpPost);
+        notificationToken = Utils.urlConnectionResponseAsString(httpsURLConnection);
 
-        notificationToken = EntityUtils.toString(httpResponse.getEntity());
         Log.d(NotificationService.class.getSimpleName(), "Notification token: " + notificationToken);
 
         SharedPreferences settings = Prefs.get(_context);
@@ -49,18 +47,15 @@ public class NotificationService
         editor.putString("sa_notificationToken", notificationToken);
         editor.commit();
     }
-    
-    public String getNotificationToken()
-    {
+
+    public String getNotificationToken() {
         SharedPreferences settings = Prefs.get(_context);
         return settings.getString("sa_notificationToken", null);
     }
 
-    public void sendRequestWithDeviceToken(final String deviceToken)
-    {
+    public void sendRequestWithDeviceToken(final String deviceToken) {
         new Thread(new Runnable() {
-            public void run()
-            {
+            public void run() {
                 try {
                     _sendRequestWithDeviceToken(deviceToken);
                 } catch (Exception ex) {

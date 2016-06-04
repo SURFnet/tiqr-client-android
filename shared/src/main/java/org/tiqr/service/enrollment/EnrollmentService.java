@@ -4,22 +4,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.ByteArrayBuffer;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.tiqr.Constants;
 import org.tiqr.R;
+import org.tiqr.Utils;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.datamodel.Identity;
@@ -32,32 +22,37 @@ import org.tiqr.service.enrollment.EnrollmentError.Type;
 import org.tiqr.service.notification.NotificationService;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Enrollment data service.
  */
 public class EnrollmentService {
-    public interface OnParseEnrollmentChallengeListener {
-        public void onParseEnrollmentChallengeSuccess(EnrollmentChallenge challenge);
 
-        public void onParseEnrollmentChallengeError(ParseEnrollmentChallengeError error);
+    public interface OnParseEnrollmentChallengeListener {
+        void onParseEnrollmentChallengeSuccess(EnrollmentChallenge challenge);
+
+        void onParseEnrollmentChallengeError(ParseEnrollmentChallengeError error);
     }
 
     public interface OnEnrollmentListener {
-        public void onEnrollmentSuccess();
+        void onEnrollmentSuccess();
 
-        public void onEnrollmentError(EnrollmentError error);
+        void onEnrollmentError(EnrollmentError error);
     }
 
     protected
@@ -112,12 +107,12 @@ public class EnrollmentService {
                 JSONObject metadata;
 
                 try {
-                    HttpGet httpGet = new HttpGet(url.toString());
-                    httpGet.setHeader("ACCEPT", "application/json");
-                    httpGet.setHeader("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
-                    DefaultHttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse httpResponse = httpClient.execute(httpGet);
-                    String json = EntityUtils.toString(httpResponse.getEntity());
+                    HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+                    urlConnection.addRequestProperty("ACCEPT", "application/json");
+                    urlConnection.addRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.connect();
+                    String json = Utils.urlConnectionResponseAsString(urlConnection);
                     Log.d(getClass().getSimpleName(), "Enrollment server response: " + json);
                     JSONTokener tokener = new JSONTokener(json);
                     Object value = tokener.nextValue();
@@ -125,7 +120,7 @@ public class EnrollmentService {
                         throw new UserException(_context.getString(R.string.error_enroll_invalid_response));
                     }
 
-                    metadata = (JSONObject)value;
+                    metadata = (JSONObject) value;
                     challenge.setEnrollmentURL(metadata.getJSONObject("service").getString("enrollmentUrl"));
                     challenge.setReturnURL(null); // TODO: FIXME
                     challenge.setIdentityProvider(_getIdentityProviderForMetadata(metadata.getJSONObject("service")));
@@ -144,10 +139,10 @@ public class EnrollmentService {
             @Override
             protected void onPostExecute(Object result) {
                 if (result instanceof EnrollmentChallenge) {
-                    EnrollmentChallenge challenge = (EnrollmentChallenge)result;
+                    EnrollmentChallenge challenge = (EnrollmentChallenge) result;
                     listener.onParseEnrollmentChallengeSuccess(challenge);
                 } else {
-                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError)result;
+                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError) result;
                     listener.onParseEnrollmentChallengeError(error);
                 }
             }
@@ -173,36 +168,39 @@ public class EnrollmentService {
 
                     SecretKey secret = _generateSecret();
 
-                    HttpPost httpPost = new HttpPost(challenge.getEnrollmentURL());
 
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                    nameValuePairs.add(new BasicNameValuePair("secret", _keyToHex(secret)));
-                    nameValuePairs.add(new BasicNameValuePair("language", Locale.getDefault().getLanguage()));
+                    Map<String, String> nameValuePairs = new HashMap<>();
+                    nameValuePairs.put("secret", _keyToHex(secret));
+                    nameValuePairs.put("language", Locale.getDefault().getLanguage());
                     String notificationAddress = _notificationService.getNotificationToken();
                     if (notificationAddress != null) {
-                        nameValuePairs.add(new BasicNameValuePair("notificationType", "GCM"));
-                        nameValuePairs.add(new BasicNameValuePair("notificationAddress", notificationAddress));
+                        nameValuePairs.put("notificationType", "GCM");
+                        nameValuePairs.put("notificationAddress", notificationAddress);
                     }
 
-                    nameValuePairs.add(new BasicNameValuePair("operation", "register"));
+                    nameValuePairs.put("operation", "register");
 
-                    httpPost.setHeader("ACCEPT", "application/json");
-                    httpPost.setHeader("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    URL enrollmentURL = new URL(challenge.getEnrollmentURL());
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection)enrollmentURL.openConnection();
+                    httpsURLConnection.setRequestMethod("POST");
+                    httpsURLConnection.setRequestProperty("ACCEPT", "application/json");
+                    httpsURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    httpsURLConnection.setDoOutput(true);
+                    byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
+                    httpsURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpsURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
+                    httpsURLConnection.getOutputStream().write(postData);
+                    String response = Utils.urlConnectionResponseAsString(httpsURLConnection);
 
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+                    String versionHeader = httpsURLConnection.getHeaderField("X-TIQR-Protocol-Version");
 
-                    DefaultHttpClient httpClient = new DefaultHttpClient();
-                    HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                    EnrollmentError error = null;
-
-                    Header versionHeader = httpResponse.getFirstHeader("X-TIQR-Protocol-Version");
-                    if (versionHeader == null || versionHeader.getValue().equals("1")) {
+                    EnrollmentError error;
+                    if (versionHeader == null || versionHeader.equals("1")) {
                         // v1 protocol (ascii)
-                        error = _parseV1Response(EntityUtils.toString(httpResponse.getEntity()));
+                        error = _parseV1Response(response);
                     } else {
                         // v2 protocol (json)
-                        error = _parseV2Response(EntityUtils.toString(httpResponse.getEntity()));
+                        error = _parseV2Response(response);
                     }
 
                     if (error == null) {
@@ -331,14 +329,14 @@ public class EnrollmentService {
     private byte[] _downloadSynchronously(URL url) throws IOException {
         URLConnection connection = url.openConnection();
         InputStream inputStream = connection.getInputStream();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        ByteArrayBuffer buffer = new ByteArrayBuffer(50);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int nRead;
+        byte[] data = new byte[4096];
 
-        int current = 0;
-        while ((current = bufferedInputStream.read()) != -1) {
-            buffer.append((byte)current);
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
         }
-
+        buffer.flush();
         return buffer.toByteArray();
     }
 
@@ -394,17 +392,16 @@ public class EnrollmentService {
         return identity;
     }
 
-
     private String _keyToHex(SecretKey secret) {
         byte[] buf = secret.getEncoded();
         StringBuffer strbuf = new StringBuffer(buf.length * 2);
         int i;
 
         for (i = 0; i < buf.length; i++) {
-            if (((int)buf[i] & 0xff) < 0x10)
+            if (((int) buf[i] & 0xff) < 0x10)
                 strbuf.append("0");
 
-            strbuf.append(Long.toString((int)buf[i] & 0xff, 16));
+            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
         }
 
         return strbuf.toString();
