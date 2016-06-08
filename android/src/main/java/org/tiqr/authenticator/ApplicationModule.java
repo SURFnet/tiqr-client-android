@@ -10,6 +10,8 @@ import org.tiqr.authenticator.authentication.AuthenticationPincodeActivity;
 import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity;
+import org.tiqr.authenticator.messaging.TiqrFirebaseInstanceIdService;
+import org.tiqr.authenticator.messaging.TiqrFirebaseMessagingService;
 import org.tiqr.authenticator.qr.CaptureActivity;
 
 import javax.inject.Singleton;
@@ -31,7 +33,8 @@ import dagger.Provides;
                 EnrollmentPincodeVerificationActivity.class,
                 AuthenticationSummaryActivity.class,
                 CaptureActivity.class,
-                C2DMReceiver.class
+                TiqrFirebaseInstanceIdService.class,
+                TiqrFirebaseMessagingService.class
         }
 )
 public class ApplicationModule {

@@ -21,22 +21,19 @@ import org.tiqr.authenticator.security.Secret;
 import org.tiqr.service.enrollment.EnrollmentError.Type;
 import org.tiqr.service.notification.NotificationService;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Enrollment data service.
@@ -107,7 +104,7 @@ public class EnrollmentService {
                 JSONObject metadata;
 
                 try {
-                    HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+                    HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                     urlConnection.addRequestProperty("ACCEPT", "application/json");
                     urlConnection.addRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
                     urlConnection.setRequestMethod("GET");
@@ -120,7 +117,7 @@ public class EnrollmentService {
                         throw new UserException(_context.getString(R.string.error_enroll_invalid_response));
                     }
 
-                    metadata = (JSONObject) value;
+                    metadata = (JSONObject)value;
                     challenge.setEnrollmentURL(metadata.getJSONObject("service").getString("enrollmentUrl"));
                     challenge.setReturnURL(null); // TODO: FIXME
                     challenge.setIdentityProvider(_getIdentityProviderForMetadata(metadata.getJSONObject("service")));
@@ -139,10 +136,10 @@ public class EnrollmentService {
             @Override
             protected void onPostExecute(Object result) {
                 if (result instanceof EnrollmentChallenge) {
-                    EnrollmentChallenge challenge = (EnrollmentChallenge) result;
+                    EnrollmentChallenge challenge = (EnrollmentChallenge)result;
                     listener.onParseEnrollmentChallengeSuccess(challenge);
                 } else {
-                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError) result;
+                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError)result;
                     listener.onParseEnrollmentChallengeError(error);
                 }
             }
@@ -181,18 +178,18 @@ public class EnrollmentService {
                     nameValuePairs.put("operation", "register");
 
                     URL enrollmentURL = new URL(challenge.getEnrollmentURL());
-                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection)enrollmentURL.openConnection();
-                    httpsURLConnection.setRequestMethod("POST");
-                    httpsURLConnection.setRequestProperty("ACCEPT", "application/json");
-                    httpsURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
-                    httpsURLConnection.setDoOutput(true);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection)enrollmentURL.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setRequestProperty("ACCEPT", "application/json");
+                    httpURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    httpURLConnection.setDoOutput(true);
                     byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
-                    httpsURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    httpsURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
-                    httpsURLConnection.getOutputStream().write(postData);
-                    String response = Utils.urlConnectionResponseAsString(httpsURLConnection);
+                    httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
+                    httpURLConnection.getOutputStream().write(postData);
+                    String response = Utils.urlConnectionResponseAsString(httpURLConnection);
 
-                    String versionHeader = httpsURLConnection.getHeaderField("X-TIQR-Protocol-Version");
+                    String versionHeader = httpURLConnection.getHeaderField("X-TIQR-Protocol-Version");
 
                     EnrollmentError error;
                     if (versionHeader == null || versionHeader.equals("1")) {
@@ -398,10 +395,10 @@ public class EnrollmentService {
         int i;
 
         for (i = 0; i < buf.length; i++) {
-            if (((int) buf[i] & 0xff) < 0x10)
+            if (((int)buf[i] & 0xff) < 0x10)
                 strbuf.append("0");
 
-            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
+            strbuf.append(Long.toString((int)buf[i] & 0xff, 16));
         }
 
         return strbuf.toString();

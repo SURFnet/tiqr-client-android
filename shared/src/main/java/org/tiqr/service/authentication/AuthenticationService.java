@@ -25,19 +25,17 @@ import org.tiqr.service.notification.NotificationService;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Authentication data service.
@@ -115,7 +113,7 @@ public class AuthenticationService {
                 Identity identity;
 
                 if (url.getUserInfo() != null) {
-                    String userInfo  = url.getUserInfo();
+                    String userInfo = url.getUserInfo();
                     try {
                         userInfo = URLDecoder.decode(userInfo, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
@@ -233,17 +231,17 @@ public class AuthenticationService {
                     byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
 
                     URL authenticationURL = new URL(challenge.getIdentityProvider().getAuthenticationURL());
-                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection)authenticationURL.openConnection();
-                    httpsURLConnection.setRequestMethod("POST");
-                    httpsURLConnection.setRequestProperty("ACCEPT", "application/json");
-                    httpsURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
-                    httpsURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    httpsURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
-                    httpsURLConnection.setDoOutput(true);
-                    httpsURLConnection.getOutputStream().write(postData);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection)authenticationURL.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setRequestProperty("ACCEPT", "application/json");
+                    httpURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
+                    httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpURLConnection.setRequestProperty("Content-Length", String.valueOf(postData.length));
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.getOutputStream().write(postData);
 
-                    String response = Utils.urlConnectionResponseAsString(httpsURLConnection);
-                    String versionHeader = httpsURLConnection.getHeaderField("X-TIQR-Protocol-Version");
+                    String response = Utils.urlConnectionResponseAsString(httpURLConnection);
+                    String versionHeader = httpURLConnection.getHeaderField("X-TIQR-Protocol-Version");
                     if (versionHeader == null || versionHeader.equals("1")) {
                         // v1 protocol (ascii)
                         return _parseV1Response(response, challenge.getIdentity());
