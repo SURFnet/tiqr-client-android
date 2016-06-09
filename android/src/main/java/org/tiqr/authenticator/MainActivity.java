@@ -12,8 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.webkit.WebView;
 
-import com.google.android.c2dm.C2DMessaging;
-
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
@@ -113,13 +111,6 @@ public class MainActivity extends Activity {
 
     public void onStart() {
         super.onStart();
-
-        String deviceToken = C2DMessaging.getRegistrationId(this);
-        if (deviceToken != null && !"" .equals(deviceToken)) {
-            _notificationService.sendRequestWithDeviceToken(deviceToken);
-        } else {
-            C2DMessaging.register(this, C2DMReceiver.SENDER_ID);
-        }
         // Handle tiqrauth:// and tiqrenroll:// URLs
         final Intent intent = getIntent();
         final String action = intent.getAction();
