@@ -81,5 +81,21 @@ public class AboutActivity extends Activity {
                 _openURL("http://www.stroomt.com/");
             }
         });
+        TextView debugInfo = (TextView)findViewById(R.id.debug_info);
+        debugInfo.setText(_getDebugInfos());
+    }
+
+    /**
+     * Returns informations about the device the app is running on.
+     *
+     * @return OS and device details as a string, to display to the user.
+     */
+    private String _getDebugInfos() {
+        String result = "Debug informations (make a screenshot of this when submitting a bug report):";
+        result += "\n OS Version: " + System.getProperty("os.version") + "(" + android.os.Build.VERSION.INCREMENTAL + ")";
+        result += "\n API Level: " + android.os.Build.VERSION.SDK_INT;
+        result += "\n Device: " + android.os.Build.DEVICE;
+        result += "\n Model and product: " + android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")";
+        return result;
     }
 }
