@@ -18,7 +18,7 @@ public class NotificationService {
     @Inject
     Context _context;
 
-    public static final String TOKENEXCHANGE_URL = "https://mobi.surfnet.nl/tokenexchange/?appId=tiqr";
+    public static final String TOKENEXCHANGE_URL = "https://tx.tiqr.org/tokenexchange/?appId=tiqr";
 
     private void _sendRequestWithDeviceToken(final String deviceToken) throws Exception {
         String notificationToken = getNotificationToken();
