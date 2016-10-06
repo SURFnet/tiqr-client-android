@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.tiqr.BuildConfig;
 import org.tiqr.Utils;
 
 import java.net.HttpURLConnection;
@@ -18,7 +19,7 @@ public class NotificationService {
     @Inject
     Context _context;
 
-    public static final String TOKENEXCHANGE_URL = "https://tx.tiqr.org/tokenexchange/?appId=tiqr";
+    private static final String TOKENEXCHANGE_URL = BuildConfig.TOKENEXCHANGE_URL;
 
     private void _sendRequestWithDeviceToken(final String deviceToken) throws Exception {
         String notificationToken = getNotificationToken();
