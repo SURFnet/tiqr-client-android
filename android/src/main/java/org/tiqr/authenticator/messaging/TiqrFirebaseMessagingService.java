@@ -24,6 +24,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
@@ -103,6 +104,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                 Notification notification = builder.setContentIntent(pendingIntent)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
                         .setSmallIcon(icon).setTicker(text).setWhen(when)
                         .setAutoCancel(true).setContentTitle(title)
                         .setContentText(text).build();
