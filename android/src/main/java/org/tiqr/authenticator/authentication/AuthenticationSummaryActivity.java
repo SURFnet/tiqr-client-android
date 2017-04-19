@@ -94,7 +94,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
             footer.hideInfoIcon();
         }
         FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(this);
-        if(fingerprintManager.hasEnrolledFingerprints() && parent.getChallenge().getIdentity().showFingerprintUpgrade()) {
+        if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && parent.getChallenge().getIdentity().showFingerprintUpgrade()) {
             _showFingerPrintUpgradeDialog();
         }
     }
