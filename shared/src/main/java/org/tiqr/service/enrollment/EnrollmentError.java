@@ -9,9 +9,7 @@ public class EnrollmentError {
     public enum Type {
         UNKNOWN,
         CONNECTION,
-        INVALID_RESPONSE,
-        VERIFICATION_REQUIRED,
-        USERNAME_TAKEN
+        INVALID_RESPONSE
     }
 
     private final Type _type;
