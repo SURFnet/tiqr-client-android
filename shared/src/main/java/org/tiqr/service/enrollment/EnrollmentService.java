@@ -260,16 +260,13 @@ public class EnrollmentService {
 
             if (message.length() == 0) {
                 switch (responseCode) {
-                    case 100:
-                        type = Type.VERIFICATION_REQUIRED;
-                        message = _context.getString(R.string.error_enroll_verification_needed);
-                        break;
-                    case 102:
-                        type = Type.USERNAME_TAKEN;
-                        message = _context.getString(R.string.error_enroll_username_taken);
+                    case 101:
+                        type = Type.INVALID_RESPONSE;
+                        message = _context.getString(R.string.error_enroll_general);
                         break;
                     default:
-                        message = _context.getString(R.string.error_enroll_unknown);
+                        type = Type.UNKNOWN;
+                        message = _context.getString(R.string.error_enroll_general);
                         break;
                 }
             }

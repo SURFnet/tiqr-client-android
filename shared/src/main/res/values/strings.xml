@@ -44,10 +44,8 @@
     <string name="error_enroll_failed_to_store_identity_provider">Failed to store identity provider. Please contact support.</string>
     <string name="error_enroll_failed_to_store_identity">Failed to store identity. Please contact support.</string>
     <string name="error_enroll_failed_to_generate_secret">Failed to generate identity secret. Please contact support.</string>
-    <string name="error_enroll_username_taken">The supplied username is already taken</string>
-    <string name="error_enroll_verification_needed">Your account needs to be verified before you can enroll</string>
     <string name="error_device_incompatible_with_security_standards">Device is not compatible with required security standards.</string>
-    <string name="error_enroll_unknown">An error occurred during enrollment</string>
+    <string name="error_enroll_general">An error occurred during enrollment</string>
     <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
 </resources>
