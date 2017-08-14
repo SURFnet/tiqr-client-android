@@ -351,18 +351,7 @@ public class EnrollmentService {
         if (metadata.has("ocraSuite")) {
             ip.setOCRASuite(metadata.getString("ocraSuite"));
         }
-        try {
-            URL logoURL = new URL(metadata.getString("logoUrl"));
-            byte[] logoData = _downloadSynchronously(logoURL);
-            ip.setLogoData(logoData);
-        } catch (Exception ex) {
-            throw new UserException(_context.getString(R.string.error_enroll_logo_error), ex);
-        }
-
-        if (ip.getLogoBitmap() == null) {
-            throw new UserException(_context.getString(R.string.error_enroll_logo_error));
-        }
-
+        ip.setLogoURL(metadata.getString("logoUrl"));
         return ip;
     }
 
@@ -376,7 +365,7 @@ public class EnrollmentService {
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
         Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
         if (identity != null) {
-            Object[] args = new Object[]{metadata.getString("displayName"), ip.getDisplayName()};
+            Object[] args = new Object[] { metadata.getString("displayName"), ip.getDisplayName() };
             throw new UserException(_context.getString(R.string.error_enroll_already_enrolled, args));
         }
 

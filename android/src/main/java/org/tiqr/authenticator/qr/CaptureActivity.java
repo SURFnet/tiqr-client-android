@@ -295,10 +295,4 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             }
         });
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //intentionally not calling super to avoid TransactionTooLargeException
-        //super.onSaveInstanceState(outState);
-    }
 }

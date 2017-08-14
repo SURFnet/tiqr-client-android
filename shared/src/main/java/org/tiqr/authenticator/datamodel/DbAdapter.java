@@ -31,7 +31,7 @@ public class DbAdapter {
 
     private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final int DB_VERSION_INITIAL = 4;
 
     private final Context _ctx;
@@ -53,7 +53,7 @@ public class DbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " + AUTHENTICATION_URL + " TEXT NOT NULL, "
-                    + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " BINARY);");
+                    + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " TEXT);");
 
             db.execSQL("CREATE TABLE " + TABLE_IDENTITY + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BLOCKED + " INTEGER NOT NULL DEFAULT 0, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, "
                     + IDENTITYPROVIDER + " INTEGER NOT NULL, " + SORT_INDEX + " INTEGER NOT NULL, " + SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1, " + USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0);");
@@ -61,23 +61,27 @@ public class DbAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // But since we are at level 4 since first release, and still are, this code isn't used yet.
             Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-            if(oldVersion == DB_VERSION_INITIAL && newVersion == DATABASE_VERSION) {
+            if (oldVersion == DB_VERSION_INITIAL && newVersion >= DATABASE_VERSION) {
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1; ");
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0; ");
+            }
+            if (oldVersion <= 5 && newVersion >= DATABASE_VERSION) {
+                // Need to recreate the identity provider table, because data is not compatible with new version anymore.
+                db.execSQL("DROP TABLE " + TABLE_IDENTITYPROVIDER + ";");
+                db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " +                 AUTHENTICATION_URL + " TEXT NOT NULL, " + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " TEXT);");
             }
         }
     }
 
     /**
      * Inserts an identity into the database.
-     * 
+     *
      * The identity object's id is automatically set based on the new database row id.
-     * 
+     *
      * @param identity Identity
      * @param ip IdentityProvider
-     * 
+     *
      * @return insertion successful?
      */
     public boolean insertIdentityForIdentityProvider(Identity identity, IdentityProvider ip) {
@@ -101,9 +105,9 @@ public class DbAdapter {
 
     /**
      * Updates an existing identity.
-     * 
+     *
      * @param identity identity
-     * 
+     *
      * @return update successful?
      */
     public boolean updateIdentity(Identity identity) {
@@ -119,9 +123,9 @@ public class DbAdapter {
 
     /**
      * Deletes a particular identity.
-     * 
+     *
      * @param identityId identity row-id
-     * 
+     *
      * @return delete successful?
      */
     public boolean deleteIdentity(long identityId) {
@@ -130,7 +134,7 @@ public class DbAdapter {
 
     /**
      * Convenience method to block all available identities
-     * 
+     *
      * @return The number of affected rows
      */
     public int blockAllIdentities() {
@@ -163,11 +167,11 @@ public class DbAdapter {
 
     /**
      * Create identity objects for the results of the given cursor.
-     * 
+     *
      * NOTE: this method closes the cursor when it's done!
-     * 
+     *
      * @param cursor database cursor
-     * 
+     *
      * @return Identity objects
      */
     private Identity[] _createIdentityObjectsForCursor(Cursor cursor) {
@@ -189,7 +193,7 @@ public class DbAdapter {
 
     /**
      * Returns the identity with the given identifier and identity provider.
-     * 
+     *
      * @param identityIdentifier identity identifier
      * @param identityProviderIdentifier identityIProvider identifier
      *
@@ -239,10 +243,10 @@ public class DbAdapter {
 
     /**
      * Returns the identity with the given identifier and identity provider identifier as an identity provider object.
-     * 
+     *
      * @param identifier identity identifier
      * @param identityProviderIdentifier identity provider identifier
-     * 
+     *
      * @return identity provider object or null if identity provider is unknown
      */
     public Identity getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(String identifier, String identityProviderIdentifier) {
@@ -252,7 +256,7 @@ public class DbAdapter {
 
     /**
      * Returns a cursor for all identities available in the system. The identities are ordered by their sort index.
-     * 
+     *
      * @return cursor object
      */
     public Cursor getAllIdentities() {
@@ -263,7 +267,7 @@ public class DbAdapter {
 
     /**
      * Count how many identities there are in the database./
-     * 
+     *
      * @return cursor object
      */
     public int identityCount() {
@@ -294,11 +298,11 @@ public class DbAdapter {
     /**
 <<<<<<< HEAD
      * Returns the identities for the given identity provider ordered by their sort index.
-     * 
+     *
      * Filter out the identities which are blocked, because this is only used for authentication
-     * 
+     *
      * @param identityProviderId Identity provider row-id
-     * 
+     *
      * @return result cursor
      */
     public Cursor findIdentitiesByIdentityProviderIdWithIdentityProviderData(long identityProviderId) throws SQLException {
@@ -323,9 +327,9 @@ public class DbAdapter {
 
     /**
      * Returns the identities for the given identity provider ordered by their sort index.
-     * 
+     *
      * @param identityProviderIdentifier identity provider identifier
-     * 
+     *
      * @return result cursor
      */
     public Cursor findIdentitiesByIdentityProviderIdentifier(String identityProviderIdentifier) throws SQLException {
@@ -351,9 +355,9 @@ public class DbAdapter {
 
     /**
      * Returns the identities for the given identity provider ordered by their sort index and returns them as an array of Identity objects.
-     * 
+     *
      * @param identityProviderIdentifier identity provider identifier
-     * 
+     *
      * @return result array
      */
     public Identity[] findIdentitiesByIdentityProviderIdentifierAsObjects(String identityProviderIdentifier) {
@@ -367,13 +371,13 @@ public class DbAdapter {
 
     /**
      * Inserts an identity provider into the database.
-     * 
+     *
      * TODO: logo
-     * 
+     *
      * The identity provider object's id is automatically set based on the new database row id.
-     * 
+     *
      * @param identityProvider The identity provider
-     * 
+     *
      * @return insertion successful?
      */
     public boolean insertIdentityProvider(IdentityProvider identityProvider) {
@@ -382,9 +386,9 @@ public class DbAdapter {
         values.put(DISPLAY_NAME, identityProvider.getDisplayName());
         values.put(AUTHENTICATION_URL, identityProvider.getAuthenticationURL());
         values.put(OCRA_SUITE, identityProvider.getOCRASuite());
-        values.put(LOGO, identityProvider.getLogoData());
+        values.put(LOGO, identityProvider.getLogoURL());
         values.put(INFO_URL, identityProvider.getInfoURL());
- 
+
         long id = _db.insert(TABLE_IDENTITYPROVIDER, null, values);
         if (id != -1) {
             identityProvider.setId(id);
@@ -396,9 +400,9 @@ public class DbAdapter {
 
     /**
      * Deletes a particular identity provider.
-     * 
+     *
      * @param identityProviderId The identity provider row-id
-     * 
+     *
      * @return delete successful?
      */
     public boolean deleteIdentityProvider(long identityProviderId) {
@@ -407,11 +411,11 @@ public class DbAdapter {
 
     /**
      * Create identity provider objects for the results of the given cursor.
-     * 
+     *
      * NOTE: this method closes the cursor when it's done!
-     * 
+     *
      * @param cursor database cursor
-     * 
+     *
      * @return IdentityProvider objects
      */
     private IdentityProvider[] _createIdentityProviderObjectsForCursor(Cursor cursor) {
@@ -425,7 +429,7 @@ public class DbAdapter {
             int ocraSuiteColumn = cursor.getColumnIndex(DbAdapter.OCRA_SUITE);
             int logoColumn = cursor.getColumnIndex(DbAdapter.LOGO);
             int infoURLColumn = cursor.getColumnIndex(DbAdapter.INFO_URL);
-      
+
             do {
                 IdentityProvider ip = new IdentityProvider();
                 ip.setId(cursor.getInt(rowIdColumn));
@@ -433,7 +437,7 @@ public class DbAdapter {
                 ip.setDisplayName(cursor.getString(displayNameColumn));
                 ip.setAuthenticationURL(cursor.getString(authURLColumn));
                 ip.setOCRASuite(cursor.getString(ocraSuiteColumn));
-                ip.setLogoData(cursor.getBlob(logoColumn));
+                ip.setLogoURL(cursor.getString(logoColumn));
                 ip.setInfoURL(cursor.getString(infoURLColumn));
                 identityproviders.add(ip);
             } while (cursor.moveToNext());
@@ -447,9 +451,9 @@ public class DbAdapter {
 
     /**
      * Returns the identity provider with the given identifier.
-     * 
+     *
      * @param identifier identity provider identifier
-     * 
+     *
      * @return cursor object for identity provider
      */
     public Cursor getIdentityProviderByIdentifier(String identifier) throws SQLException {
@@ -464,7 +468,7 @@ public class DbAdapter {
 
     /**
      * Return the identity provider for a given identity (identified by its id)
-     * 
+     *
      * @param identity_id The identity id
      * @return
      */
@@ -491,9 +495,9 @@ public class DbAdapter {
 
     /**
      * Returns the identity provider with the given identifier as an identityprovider object.
-     * 
+     *
      * @param identifier identity provider identifier
-     * 
+     *
      * @return identity provider object or null if identity provider is unknown
      */
     public IdentityProvider getIdentityProviderByIdentifierAsObject(String identifier) {
