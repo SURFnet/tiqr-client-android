@@ -1,7 +1,5 @@
 package org.tiqr.authenticator.datamodel;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,15 +10,14 @@ public class IdentityProvider implements Parcelable {
     private long _id = -1;
     private String _identifier;
     private String _displayName;
-    private byte[] _logoData;
-    private Bitmap _logoBitmap;
+    private String _logoURL;
     private String _authenticationURL;
     private String _infoURL;
     private String _ocraSuite = null;
 
     // The default version is compatible with old moby dick servers that don't specify a
     // suite. Default is to use an SHA1 hash
-    public final static String DEFAULT_OCRA_SUITE = "OCRA-1:HOTP-SHA1-6:QN10";
+    private static final String DEFAULT_OCRA_SUITE = "OCRA-1:HOTP-SHA1-6:QN10";
 
     /**
      * Factory.
@@ -48,8 +45,7 @@ public class IdentityProvider implements Parcelable {
         _id = source.readLong();
         _identifier = source.readString();
         _displayName = source.readString();
-        _logoData = source.createByteArray();
-        _logoBitmap = source.readParcelable(Bitmap.class.getClassLoader());
+        _logoURL = source.readString();
         _authenticationURL = source.readString();
         _infoURL = source.readString();
         _ocraSuite = source.readString();
@@ -71,8 +67,7 @@ public class IdentityProvider implements Parcelable {
         dest.writeLong(_id);
         dest.writeString(_identifier);
         dest.writeString(_displayName);
-        dest.writeByteArray(_logoData);
-        dest.writeParcelable(_logoBitmap, 0);
+        dest.writeString(_logoURL);
         dest.writeString(_authenticationURL);
         dest.writeString(_infoURL);
         dest.writeString(_ocraSuite);
@@ -80,9 +75,8 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Returns the service (row) id.
-     * 
      * The id is -1 for a service that hasn't bee inserted yet.
-     * 
+     *
      * @return service id
      */
     public long getId() {
@@ -91,7 +85,7 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Sets the service row id.
-     * 
+     *
      * @param id row id
      */
     public void setId(long id) {
@@ -100,7 +94,7 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Returns the service identifier.
-     * 
+     *
      * @return service identifier
      */
     public String getIdentifier() {
@@ -109,7 +103,7 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Sets the service identifier.
-     * 
+     *
      * @param identifier service identifier
      */
     public void setIdentifier(String identifier) {
@@ -118,7 +112,7 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Returns the display name.
-     * 
+     *
      * @return display name
      */
     public String getDisplayName() {
@@ -127,51 +121,35 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Sets the display name.
-     * 
+     *
      * @param displayName display name
      */
     public void setDisplayName(String displayName) {
         _displayName = displayName;
     }
 
+
     /**
-     * Returns the logo image bytes.
-     * 
-     * @return logo image bytes
+     * Returns the URL which points to the image where the logo of the provider is available.
+     *
+     * @return The URL of the logo.
      */
-    public byte[] getLogoData() {
-        return _logoData;
+    public String getLogoURL() {
+        return _logoURL;
     }
 
     /**
-     * Sets the logo image bytes.
-     * 
-     * @param logoData logo image bytes
+     * Sets the logo URL for the identity provider.
+     *
+     * @param logoURL The URL to the logo of the identity provider.
      */
-    public void setLogoData(byte[] logoData) {
-        _logoData = logoData;
-        _logoBitmap = null;
-    }
-
-    /**
-     * Return the logo bitmap (creates one if it hasn't been created yet).
-     * 
-     * @param Bitmap logo bitmap
-     */
-    public Bitmap getLogoBitmap() {
-        if (_logoBitmap != null) {
-            return _logoBitmap;
-        } else if (_logoData.length > 0) {
-            _logoBitmap = BitmapFactory.decodeByteArray(_logoData, 0, _logoData.length);
-            return _logoBitmap;
-        } else {
-            return null;
-        }
+    public void setLogoURL(String logoURL) {
+        _logoURL = logoURL;
     }
 
     /**
      * Returns the authentication URL.
-     * 
+     *
      * @return authentication URL
      */
     public String getAuthenticationURL() {
@@ -180,8 +158,8 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Sets the authentication URL.
-     * 
-     * @param authenticationUrl authentication URL
+     *
+     * @param authenticationURL authentication URL
      */
     public void setAuthenticationURL(String authenticationURL) {
         _authenticationURL = authenticationURL;
@@ -195,15 +173,15 @@ public class IdentityProvider implements Parcelable {
     }
 
     /**
-     * @param String the info URL for the Identity Provider
+     * @param infoURL the info URL for the Identity Provider
      */
-    public void setInfoURL(String _infoURL) {
-        _infoURL = _infoURL;
+    public void setInfoURL(String infoURL) {
+        _infoURL = infoURL;
     }
 
     /**
      * Retrieve the ocra suite for this service.
-     * 
+     *
      * @return The OCRA suite
      */
     public String getOCRASuite() {
