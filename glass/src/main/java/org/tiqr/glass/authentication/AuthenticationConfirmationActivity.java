@@ -62,6 +62,9 @@ public class AuthenticationConfirmationActivity extends Activity {
         _progressView = findViewById(R.id.progress);
 
         final AuthenticationChallenge challenge = getIntent().getParcelableExtra(CHALLENGE);
+        if (challenge == null) {
+            throw new RuntimeException(this.getClass().getName() + " can only start if you provide it a challenge in the intent!");
+        }
 
         RequestOptions requestOptions = new RequestOptions()
                 .priority(Priority.IMMEDIATE);

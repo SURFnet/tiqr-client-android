@@ -75,7 +75,6 @@ public class IdentityProvider implements Parcelable {
 
     /**
      * Returns the service (row) id.
-     * <p>
      * The id is -1 for a service that hasn't bee inserted yet.
      *
      * @return service id
