@@ -354,7 +354,7 @@ public class AuthenticationService {
                     int duration = object.getInt("duration");
                     Bundle extras = new Bundle();
                     extras.putInt("duration", duration);
-                    return new AuthenticationError(Type.ACCOUNT_TEMPORARY_BLOCKED, _context.getString(R.string.error_auth_account_blocked_temporary_title), _context.getString(R.string.error_auth_account_blocked_temporary_message), extras);
+                    return new AuthenticationError(Type.ACCOUNT_TEMPORARY_BLOCKED, _context.getString(R.string.error_auth_account_blocked_temporary_title), String.format(_context.getString(R.string.error_auth_account_blocked_temporary_message),duration), extras);
                 } else {
                     return new AuthenticationError(Type.ACCOUNT_BLOCKED, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message));
                 }
