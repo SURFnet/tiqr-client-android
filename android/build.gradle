@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
     }
 
     // TODO: reset lintOptions to defauls
@@ -26,18 +26,20 @@ android {
 
 dependencies {
     // Dependency injection
-    compile 'com.squareup.dagger:dagger:1.2.+'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+    implementation 'com.squareup.dagger:dagger:1.2.5'
+    annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.5'
 
     //Support
-    compile 'com.android.support:appcompat-v7:23.0.0'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:support-v4:27.0.2' // required because firebase adds an older version
+    implementation 'com.android.support:support-media-compat:27.0.2' // required because firebase adds an older version
 
     // Push notifications
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
+    implementation 'com.google.firebase:firebase-messaging:11.8.0'
 
-    compile project(':shared')
+    implementation project(':shared')
 
-    compile 'com.journeyapps:zxing-android-embedded:3.1.0@aar'
+    implementation 'com.journeyapps:zxing-android-embedded:3.1.0@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

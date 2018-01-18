@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         buildConfigField "String", "TOKENEXCHANGE_URL", "\"https://tx.tiqr.org/tokenexchange/?appId=tiqr\""
     }
 }
@@ -14,7 +14,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.squareup.dagger:dagger:1.2.+'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
-    compile 'com.google.zxing:core:3.2.0'
+    implementation 'com.squareup.dagger:dagger:1.2.5'
+    annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.5'
+    api 'com.google.zxing:core:3.3.0'
 }

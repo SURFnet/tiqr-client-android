@@ -10,7 +10,7 @@ import org.tiqr.authenticator.auth.Challenge;
  *
  * @author Wiebe
  */
-public class AbstractAuthenticationActivity extends Activity {
+public abstract class AbstractAuthenticationActivity extends Activity {
 
     private ProgressDialog _progressDialog;
 

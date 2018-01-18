@@ -19,6 +19,7 @@
 package org.tiqr.authenticator.messaging;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -26,7 +27,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.NotificationCompat;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -47,6 +50,7 @@ import javax.inject.Inject;
 public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = TiqrFirebaseMessagingService.class.getName();
+    private static final String CHANNEL_ID = "default";
 
     @Inject
     protected Context _context;
@@ -102,16 +106,36 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, authIntent, 0);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-                Notification notification = builder.setContentIntent(pendingIntent)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
-                        .setSmallIcon(icon).setTicker(text).setWhen(when)
-                        .setAutoCancel(true).setContentTitle(title)
-                        .setContentText(text).build();
+                NotificationManager notificationManager = (NotificationManager)_context.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (notificationManager != null) {
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(_context, CHANNEL_ID);
+                    Notification notification = builder.setContentIntent(pendingIntent)
+                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
+                            .setSmallIcon(icon)
+                            .setAutoCancel(true)
+                            .setWhen(when)
+                            .setContentTitle(title)
+                            .setTicker(text)
+                            .setContentText(text)
+                            .build();
 
-                NotificationManager manager = (NotificationManager)_context.getSystemService(Context.NOTIFICATION_SERVICE);
-                manager.notify(0, notification);
+                    _initNotificationChannel(notificationManager);
+
+                    notificationManager.notify(0, notification);
+                }
             }
         }
+    }
+
+    private void _initNotificationChannel(@NonNull NotificationManager notificationManager) {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, _context.getString(R.string.notification_channel_name), NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setDescription(_context.getString(R.string.notification_channel_description));
+        notificationChannel.enableLights(true);
+        notificationChannel.enableVibration(true);
+        notificationManager.createNotificationChannel(notificationChannel);
     }
 }

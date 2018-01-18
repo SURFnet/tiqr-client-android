@@ -1,17 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.google.gms:google-services:3.1.1'
     }
 }
 
 subprojects {
     repositories {
+        google()
         jcenter()
         maven {
             url 'https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/'

@@ -169,4 +169,6 @@ drukt u op <b>Scan</b>.</string>
   <string name="error_auth_wrong_fingerprint">Verkeerde Vingerafdruk</string>
   <string name="error_fingerprint_auth_x_attempts_left" formatted="false">De opgegeven vingerafdruk is onjuist. U heeft nog %d pogingen. Bevestig nogmaals uw vingerafdruk.</string>
   <string name="error_fingerprint_auth_one_attempt_left">U heeft nog één laatste poging. Als u weer een foute vingerafdruk invoert zullen alle tiqr accounts op dit toestel geblokkeerd worden.</string>
+  <string name="notification_channel_name">Berichten</string>
+  <string name="notification_channel_description">Notificaties voor berichten van tiqr</string>
 </resources>
