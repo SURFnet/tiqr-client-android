@@ -102,7 +102,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, authIntent, 0);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(_context, "default");
                 Notification notification = builder.setContentIntent(pendingIntent)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
                         .setSmallIcon(icon).setTicker(text).setWhen(when)
