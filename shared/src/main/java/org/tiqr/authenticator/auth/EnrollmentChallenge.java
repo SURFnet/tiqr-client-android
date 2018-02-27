@@ -1,11 +1,12 @@
 package org.tiqr.authenticator.auth;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Represents an enrollment challenge.
  */
-public class EnrollmentChallenge extends Challenge {
+public class EnrollmentChallenge extends Challenge implements Parcelable {
     private String _enrollmentURL;
 
 
