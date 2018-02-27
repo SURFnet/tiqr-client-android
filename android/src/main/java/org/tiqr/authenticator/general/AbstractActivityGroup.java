@@ -31,16 +31,16 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
 
     @Override
     public void finishFromChild(Activity child) {
-        String id = _ids.get(_ids.size() - 1);
-        getLocalActivityManager().destroyActivity(id, true);
-        _ids.remove(id);
-
-        if (_ids.size() == 0) {
+        int size = _ids.size();
+        if (size == 0) {
             finish();
             return;
         }
 
-        id = _ids.get(_ids.size() - 1);
+        String id = _ids.get(size - 1);
+        getLocalActivityManager().destroyActivity(id, true);
+        _ids.remove(id);
+
         Intent intent = getLocalActivityManager().getActivity(id).getIntent();
         View view = getLocalActivityManager().startActivity(id, intent).getDecorView();
         setContentView(view);
@@ -68,7 +68,11 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         _inOnPrepareOptionsMenu = true;
         menu.clear();
         boolean result = onCreateOptionsMenu(menu);
-        result = result && getLocalActivityManager().getCurrentActivity().onPrepareOptionsMenu(menu);
+
+        Activity activity = getLocalActivityManager().getCurrentActivity();
+        if (activity != null) {
+            result = result && getLocalActivityManager().getCurrentActivity().onPrepareOptionsMenu(menu);
+        }
         _inOnPrepareOptionsMenu = false;
         return result;
     }
@@ -82,7 +86,12 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
 
         _inOnCreateOptionsMenu = true;
         menu.clear();
-        boolean result = getLocalActivityManager().getCurrentActivity().onCreateOptionsMenu(menu);
+
+        boolean result = false;
+        Activity activity = getLocalActivityManager().getCurrentActivity();
+        if (activity != null) {
+            result = getLocalActivityManager().getCurrentActivity().onCreateOptionsMenu(menu);
+        }
         _inOnCreateOptionsMenu = false;
         return result;
     }
@@ -95,7 +104,11 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         }
 
         _inOnOptionsItemSelected = true;
-        boolean result = getLocalActivityManager().getCurrentActivity().onOptionsItemSelected(item);
+        boolean result = false;
+        Activity activity = getLocalActivityManager().getCurrentActivity();
+        if (activity != null) {
+            result = getLocalActivityManager().getCurrentActivity().onOptionsItemSelected(item);
+        }
         _inOnOptionsItemSelected = false;
         return result;
     }

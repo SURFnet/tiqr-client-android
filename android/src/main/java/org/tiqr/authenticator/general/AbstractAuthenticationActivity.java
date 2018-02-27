@@ -37,6 +37,9 @@ public abstract class AbstractAuthenticationActivity extends Activity {
     }
 
     protected void _cancelProgressDialog() {
-        _progressDialog.cancel();
+        if (_progressDialog != null && _progressDialog.isShowing()) {
+            _progressDialog.dismiss();
+            _progressDialog = null;
+        }
     }
 }
