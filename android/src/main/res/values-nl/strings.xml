@@ -5,8 +5,7 @@
   <string name="authentication_title">Login</string>
   <string name="identity_title">Identiteiten</string>
   <string name="identity_blocked">Geblokkeerd</string>
-  <string name="identity_blocked_message">Waarschuwing: dit account is geblokkeerd
-en moet opnieuw geactiveerd worden.</string>
+  <string name="identity_blocked_message">Waarschuwing: dit account is geblokkeerd\nen moet opnieuw geactiveerd worden.</string>
   <string name="confirm_enrollment_title">Registratie bevestigen</string>
   <string name="confirm_authentication_title">Login bevestigen</string>
   <string name="select_identity_title">Selecteer identiteit</string>
