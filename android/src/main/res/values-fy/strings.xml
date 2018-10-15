@@ -5,8 +5,7 @@
   <string name="authentication_title">Ynloche</string>
   <string name="identity_title">Identiteiten</string>
   <string name="identity_blocked">Blokkearre</string>
-  <string name="identity_blocked_message">Warskôging: dit akkount is blokkeart
-en moat op ‘e nij aktiveart wurde.</string>
+  <string name="identity_blocked_message">Warskôging: dit akkount is blokkeart\nen moat op ‘e nij aktiveart wurde.</string>
   <string name="confirm_enrollment_title">Registraasje befêstigje</string>
   <string name="confirm_authentication_title">Ynloch befêstigje </string>
   <string name="select_identity_title">Selektear identiteit</string>
