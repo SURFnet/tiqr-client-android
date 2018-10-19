@@ -1,7 +1,15 @@
 package org.tiqr.authenticator;
 
+import android.text.TextUtils;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.tiqr.service.notification.NotificationService;
+
 import java.util.Arrays;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 
@@ -11,11 +19,18 @@ import dagger.ObjectGraph;
 public class Application extends android.app.Application {
     private ObjectGraph _objectGraph;
 
+    @Inject NotificationService _notificationService;
+
     @Override
     public void onCreate() {
         super.onCreate();
         _objectGraph = ObjectGraph.create(_getModules().toArray());
         _objectGraph.inject(this);
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        if (token != null && !TextUtils.isEmpty(token)) {
+            _notificationService.sendRequestWithDeviceToken(token);
+        }
     }
 
     private List<Object> _getModules() {
