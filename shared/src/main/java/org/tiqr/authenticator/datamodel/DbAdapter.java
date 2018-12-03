@@ -296,7 +296,6 @@ public class DbAdapter {
     }
 
     /**
-<<<<<<< HEAD
      * Returns the identities for the given identity provider ordered by their sort index.
      *
      * Filter out the identities which are blocked, because this is only used for authentication
