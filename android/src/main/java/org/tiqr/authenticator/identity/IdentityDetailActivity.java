@@ -1,17 +1,22 @@
 package org.tiqr.authenticator.identity;
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
@@ -19,8 +24,14 @@ import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.general.FooterView;
 import org.tiqr.authenticator.general.HeaderView;
+import org.tiqr.service.authentication.AuthenticationService;
+
+import javax.inject.Inject;
 
 public class IdentityDetailActivity extends Activity {
+
+    @Inject
+    protected AuthenticationService _authenticationService;
 
     protected Identity _identity;
     protected IdentityProvider _identityProvider;
@@ -34,6 +45,7 @@ public class IdentityDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.identity_detail);
+        ((Application)getApplication()).inject(this);
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {
@@ -53,6 +65,28 @@ public class IdentityDetailActivity extends Activity {
             TextView identity_provider_displayName = (TextView)findViewById(R.id.identity_provider_displayName);
             TextView identity_provider_identifier = (TextView)findViewById(R.id.identity_provider_identifier);
             TextView identity_provider_info_url = (TextView)findViewById(R.id.identity_provider_infoURL);
+
+            Switch usesFingerprint = findViewById(R.id.use_fingerprint_switch);
+            Switch upgradeToFingerprint = findViewById(R.id.upgrade_fingerprint_switch);
+            usesFingerprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    _identity.setUseFingerprint(checked);
+                    _db.updateIdentity(_identity);
+                    _updateFingerPrintViews();
+                }
+            });
+
+            upgradeToFingerprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    _identity.setShowFingerprintUpgrade(checked);
+                    _db.updateIdentity(_identity);
+                    _updateFingerPrintViews();
+                }
+            });
+
+            _updateFingerPrintViews();
 
             identity_displayName.setText(_identity.getDisplayName());
             identity_identifier.setText(_identity.getIdentifier());
@@ -93,6 +127,33 @@ public class IdentityDetailActivity extends Activity {
 
         FooterView footerView = (FooterView)findViewById(R.id.fallbackFooterView);
         footerView.hideInfoIcon();
+    }
+
+    protected void _updateFingerPrintViews() {
+        View useFingerprintContainer = findViewById(R.id.use_fingerprint_container);
+        View upgradeFingerprintContainer = findViewById(R.id.upgrade_fingerprint_container);
+        Switch usesFingerprint = findViewById(R.id.use_fingerprint_switch);
+        Switch upgradeToFingerprint = findViewById(R.id.upgrade_fingerprint_switch);
+
+        FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(this);
+        if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
+            if (_identity.isUsingFingerprint()) {
+                usesFingerprint.setChecked(true);
+                upgradeFingerprintContainer.setVisibility(View.GONE);
+                useFingerprintContainer.setVisibility(View.VISIBLE);
+            } else if (_authenticationService.hasFingerprintSecret(_identity)) {
+                usesFingerprint.setChecked(false);
+                upgradeFingerprintContainer.setVisibility(View.GONE);
+                useFingerprintContainer.setVisibility(View.VISIBLE);
+            } else {
+                useFingerprintContainer.setVisibility(View.GONE);
+                upgradeFingerprintContainer.setVisibility(View.VISIBLE);
+                upgradeToFingerprint.setChecked(_identity.showFingerprintUpgrade());
+            }
+        } else {
+            useFingerprintContainer.setVisibility(View.GONE);
+            upgradeFingerprintContainer.setVisibility(View.GONE);
+        }
     }
 
     /**

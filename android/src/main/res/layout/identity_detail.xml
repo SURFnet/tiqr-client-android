@@ -80,6 +80,48 @@
 				</LinearLayout>
 			</TableRow>
 
+			<TableRow android:layout_height="fill_parent"
+				android:layout_width="fill_parent"
+				android:id="@+id/use_fingerprint_container">
+				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:orientation="horizontal" android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:textStyle="bold" android:text="@string/identity_uses_fingerprint"
+						/>
+
+					<Switch
+						android:id="@+id/use_fingerprint_switch"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="right"
+						/>
+
+				</LinearLayout>
+			</TableRow>
+
+			<TableRow android:layout_height="fill_parent"
+				android:layout_width="fill_parent"
+				android:id="@+id/upgrade_fingerprint_container">
+				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:orientation="horizontal" android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:textStyle="bold" android:text="@string/identity_upgrade_to_fingerprint"
+						/>
+
+					<Switch
+						android:id="@+id/upgrade_fingerprint_switch"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="right"
+						/>
+
+				</LinearLayout>
+			</TableRow>
+
 			<TableRow android:layout_height="fill_parent" android:layout_weight="1"
 				android:layout_width="fill_parent" android:gravity="center_horizontal|bottom">
 				<TextView android:id="@+id/identity_blocked_message"

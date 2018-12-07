@@ -419,4 +419,22 @@ public class AuthenticationService {
         identity.setShowFingerprintUpgrade(showFingerprintUpgraded);
         _dbAdapter.updateIdentity(identity);
     }
+
+    /**
+     * Tests if the user has a valid fingerprint signature  for the identity secret
+     * @param identity
+     * @return
+     */
+    public boolean hasFingerprintSecret(Identity identity) {
+        try {
+            SecretKey sessionKey = Encryption.keyFromPassword(_context, Constants.AUTHENTICATION_FINGERPRINT_KEY);
+            Secret secret = Secret.secretForIdentity(identity, _context);
+            secret.getSecret(sessionKey);
+            return true;
+        } catch (SecurityFeaturesException e) {
+            return false;
+        } catch (InvalidKeyException e) {
+            return false;
+        }
+    }
 }
