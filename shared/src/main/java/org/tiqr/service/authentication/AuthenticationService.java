@@ -409,4 +409,14 @@ public class AuthenticationService {
         identity.setShowFingerprintUpgrade(false);
         _dbAdapter.updateIdentity(identity);
     }
+
+    /**
+     * Stores the user option to not use fingerprint upgrade
+     *
+     * @param identity the Identity for which the fingerprint update dialog will not be shown anymore.
+     */
+    public void shouldShowFingerprintUpgradeForIdentitiy(Identity identity, boolean showFingerprintUpgraded) {
+        identity.setShowFingerprintUpgrade(showFingerprintUpgraded);
+        _dbAdapter.updateIdentity(identity);
+    }
 }
