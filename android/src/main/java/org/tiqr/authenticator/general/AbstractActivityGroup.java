@@ -38,10 +38,9 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         }
 
         String id = _ids.get(size - 1);
+        Intent intent = getLocalActivityManager().getActivity(id).getIntent();
         getLocalActivityManager().destroyActivity(id, true);
         _ids.remove(id);
-
-        Intent intent = getLocalActivityManager().getActivity(id).getIntent();
         View view = getLocalActivityManager().startActivity(id, intent).getDecorView();
         setContentView(view);
     }
