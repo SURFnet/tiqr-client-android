@@ -108,26 +108,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                 .setMessage(getString(R.string.upgrade_to_touch_id_message))
                 .setPositiveButton(getString(R.string.upgrade_button), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        String pincode = getIntent().getStringExtra(PIN);
-                        try {
-                            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-                            AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
-                            if (pincode != null) {
-                                SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
-                                Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
-
-                                //Check if sessionKey is correct
-                                secret.getSecret(sessionKey);
-
-                                SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
-                                secret.storeInKeyStore(newSessionKey);
-                            }
-                            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
-                        } catch (SecurityFeaturesException | InvalidKeyException e) {
-                            // No user action required
-                            Log.e(TAG, "Not able to save the key to the keystore");
-                        }
+                        _upgradeToFingerprint();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
@@ -141,6 +122,29 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                 .show();
     }
 
+    private void _upgradeToFingerprint() {
+        String pincode = getIntent().getStringExtra(PIN);
+        try {
+            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+            AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
+            if (pincode != null) {
+                SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
+
+                Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
+
+                //Check if sessionKey is correct
+                secret.getSecret(sessionKey, Secret.Type.PINCODE);
+
+                SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
+                secret.storeInKeyStore(newSessionKey, Secret.Type.FINGERPRINT);
+            }
+            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
+        } catch (SecurityFeaturesException | InvalidKeyException e) {
+            // No user action required
+            Log.e(TAG, "Not able to save the key to the keystore");
+        }
+    }
+
     /**
      * Return to the home screen
      */
@@ -149,5 +153,4 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
 }
