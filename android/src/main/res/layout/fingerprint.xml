@@ -35,5 +35,16 @@
             android:textSize="14sp"
             tools:text="Touch sensor"/>
 
+        <TextView
+            android:id="@+id/pincodeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="24dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="@string/use_pincode"
+            />
     </RelativeLayout>
 </LinearLayout>

@@ -179,7 +179,6 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
         pin4.setTypeface(tf_animals);
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
-        headerView.hideLeftButton();
         headerView.hideRightButton();
     }
 

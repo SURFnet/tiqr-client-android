@@ -10,6 +10,7 @@ import org.tiqr.authenticator.authentication.AuthenticationPincodeActivity;
 import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity;
 import org.tiqr.authenticator.datamodel.DbAdapter;
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity;
+import org.tiqr.authenticator.identity.IdentityDetailActivity;
 import org.tiqr.authenticator.messaging.TiqrFirebaseInstanceIdService;
 import org.tiqr.authenticator.messaging.TiqrFirebaseMessagingService;
 import org.tiqr.authenticator.qr.CaptureActivity;
@@ -31,6 +32,7 @@ import dagger.Provides;
                 AuthenticationPincodeActivity.class,
                 AuthenticationFingerprintActivity.class,
                 EnrollmentPincodeVerificationActivity.class,
+                IdentityDetailActivity.class,
                 AuthenticationSummaryActivity.class,
                 CaptureActivity.class,
                 TiqrFirebaseInstanceIdService.class,

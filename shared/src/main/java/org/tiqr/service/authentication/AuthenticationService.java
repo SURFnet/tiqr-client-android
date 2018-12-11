@@ -409,4 +409,32 @@ public class AuthenticationService {
         identity.setShowFingerprintUpgrade(false);
         _dbAdapter.updateIdentity(identity);
     }
+
+    /**
+     * Stores the user option to not use fingerprint upgrade
+     *
+     * @param identity the Identity for which the fingerprint update dialog will not be shown anymore.
+     */
+    public void shouldShowFingerprintUpgradeForIdentitiy(Identity identity, boolean showFingerprintUpgraded) {
+        identity.setShowFingerprintUpgrade(showFingerprintUpgraded);
+        _dbAdapter.updateIdentity(identity);
+    }
+
+    /**
+     * Tests if the user has a valid fingerprint signature  for the identity secret
+     * @param identity
+     * @return
+     */
+    public boolean hasFingerprintSecret(Identity identity) {
+        try {
+            SecretKey sessionKey = Encryption.keyFromPassword(_context, Constants.AUTHENTICATION_FINGERPRINT_KEY);
+            Secret secret = Secret.secretForIdentity(identity, _context);
+            secret.getSecret(sessionKey);
+            return true;
+        } catch (SecurityFeaturesException e) {
+            return false;
+        } catch (InvalidKeyException e) {
+            return false;
+        }
+    }
 }

@@ -161,4 +161,7 @@ reactivating your account. Press <b>Scan</b> if asked.</string>
     <string name="error_fingerprint_auth_one_attempt_left">You have one last attempt left. If you supply an incorrect fingerprint again all the accounts on this device will be blocked.</string>
     <string name="notification_channel_name">Messages</string>
     <string name="notification_channel_description">Notifications for messages from tiqr</string>
+    <string name="use_pincode">Use pincode</string>
+    <string name="identity_uses_fingerprint">Uses fingerprint</string>
+    <string name="identity_upgrade_to_fingerprint">Upgrade to fingerprint after next login</string>
 </resources>

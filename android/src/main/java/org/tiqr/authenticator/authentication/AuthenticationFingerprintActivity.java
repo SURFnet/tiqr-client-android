@@ -1,17 +1,23 @@
 package org.tiqr.authenticator.authentication;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
+import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractAuthenticationActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
+import org.tiqr.authenticator.general.HeaderView;
 import org.tiqr.service.authentication.AuthenticationError;
 import org.tiqr.service.authentication.AuthenticationService;
 
@@ -23,6 +29,8 @@ import javax.inject.Inject;
 public class AuthenticationFingerprintActivity extends AbstractAuthenticationActivity {
 
     private static final String TAG = AuthenticationFingerprintActivity.class.getSimpleName();
+
+    protected TextView usePincodeTextView;
 
     protected
     @Inject
@@ -42,12 +50,27 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
         ((Application)getApplication()).inject(this);
 
         _fingerprintManager = FingerprintManagerCompat.from(this);
+
+
     }
 
     @Override
     protected void onResume() {
         setContentView(R.layout.fingerprint);
         super.onResume();
+
+        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.hideRightButton();
+
+        usePincodeTextView = findViewById(R.id.pincodeButton);
+        usePincodeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+                Intent authenticationPincodeIntent = new Intent().setClass(parent, AuthenticationPincodeActivity.class);
+                parent.startChildActivity("AuthenticationPincodeActivity", authenticationPincodeIntent);
+            }
+        });
 
         _login();
     }
