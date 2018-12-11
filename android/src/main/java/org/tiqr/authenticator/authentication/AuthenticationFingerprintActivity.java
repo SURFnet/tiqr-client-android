@@ -1,7 +1,6 @@
 package org.tiqr.authenticator.authentication;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
@@ -11,13 +10,13 @@ import android.widget.TextView;
 
 import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
-import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractAuthenticationActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
 import org.tiqr.authenticator.general.HeaderView;
+import org.tiqr.authenticator.security.Secret;
 import org.tiqr.service.authentication.AuthenticationError;
 import org.tiqr.service.authentication.AuthenticationService;
 
@@ -94,7 +93,7 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
     private void _login(AuthenticationChallenge challenge, String password) {
         _showProgressDialog(getString(R.string.authenticating));
 
-        _authenticationService.authenticate(challenge, password, new AuthenticationService.OnAuthenticationListener() {
+        _authenticationService.authenticate(challenge, password, Secret.Type.FINGERPRINT, new AuthenticationService.OnAuthenticationListener() {
             @Override
             public void onAuthenticationSuccess() {
                 _cancelProgressDialog();

@@ -10,6 +10,7 @@ import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
+import org.tiqr.authenticator.security.Secret;
 import org.tiqr.service.authentication.AuthenticationError;
 import org.tiqr.service.authentication.AuthenticationService;
 
@@ -55,7 +56,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
     private void _login(AuthenticationChallenge challenge, String pin) {
         _showProgressDialog(getString(R.string.authenticating));
 
-        _authenticationService.authenticate(challenge, pin, new AuthenticationService.OnAuthenticationListener() {
+        _authenticationService.authenticate(challenge, pin, Secret.Type.PINCODE, new AuthenticationService.OnAuthenticationListener() {
             @Override
             public void onAuthenticationSuccess() {
                 _cancelProgressDialog();

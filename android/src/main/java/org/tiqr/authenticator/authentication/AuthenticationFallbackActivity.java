@@ -77,7 +77,7 @@ public class AuthenticationFallbackActivity extends Activity {
             AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
             AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
             Secret secret = Secret.secretForIdentity(challenge.getIdentity(), this);
-            SecretKey secretKey = secret.getSecret(sessionKey);
+            SecretKey secretKey = secret.getSecret(sessionKey, Secret.Type.PINCODE);
 
             OCRAProtocol ocra;
             if (challenge.getProtocolVersion().equals("1")) {
