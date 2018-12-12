@@ -192,7 +192,7 @@ public class AuthenticationService {
      * @param listener  Completion listener.
      * @return async task
      */
-    public AsyncTask<?, ?, ?> authenticate(final AuthenticationChallenge challenge, final String password, final OnAuthenticationListener listener) {
+    public AsyncTask<?, ?, ?> authenticate(final AuthenticationChallenge challenge, final String password, final Secret.Type type, final OnAuthenticationListener listener) {
         AsyncTask<Void, Void, AuthenticationError> task = new AsyncTask<Void, Void, AuthenticationError>() {
             @Override
             protected AuthenticationError doInBackground(Void... voids) {
@@ -201,7 +201,7 @@ public class AuthenticationService {
                 try {
                     SecretKey sessionKey = Encryption.keyFromPassword(_context, password);
                     Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
-                    SecretKey secretKey = secret.getSecret(sessionKey);
+                    SecretKey secretKey = secret.getSecret(sessionKey, type);
 
                     OCRAProtocol ocra;
                     if (challenge.getProtocolVersion().equals("1")) {
@@ -408,6 +408,7 @@ public class AuthenticationService {
         identity.setUseFingerprint(true);
         identity.setShowFingerprintUpgrade(false);
         _dbAdapter.updateIdentity(identity);
+
     }
 
     /**
@@ -429,7 +430,7 @@ public class AuthenticationService {
         try {
             SecretKey sessionKey = Encryption.keyFromPassword(_context, Constants.AUTHENTICATION_FINGERPRINT_KEY);
             Secret secret = Secret.secretForIdentity(identity, _context);
-            secret.getSecret(sessionKey);
+            secret.getSecret(sessionKey, Secret.Type.FINGERPRINT);
             return true;
         } catch (SecurityFeaturesException e) {
             return false;

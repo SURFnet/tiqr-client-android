@@ -307,7 +307,7 @@ public class EnrollmentService {
         Secret secretStore = Secret.secretForIdentity(challenge.getIdentity(), _context);
         secretStore.setSecret(secret);
         try {
-            secretStore.storeInKeyStore(sessionKey);
+            secretStore.storeInKeyStore(sessionKey, Secret.Type.PINCODE);
         } catch (SecurityFeaturesException e) {
             throw new UserException(_context.getString(R.string.error_device_incompatible_with_security_standards));
         }

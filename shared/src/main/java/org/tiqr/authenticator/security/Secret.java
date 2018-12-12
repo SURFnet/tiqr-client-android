@@ -12,6 +12,14 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Secret {
+
+    public enum Type {
+        PINCODE,
+        FINGERPRINT
+    }
+
+    private final static String FINGERPRINT_SUFFIX = "org.tiqr.FP";
+
     private Identity _identity = null;
     private SecretKey _secret = null;
     private SecretStore _store = null;
@@ -28,9 +36,9 @@ public class Secret {
         _ctx = context;
     }
 
-    public SecretKey getSecret(SecretKey sessionKey) throws InvalidKeyException, SecurityFeaturesException {
+    public SecretKey getSecret(SecretKey sessionKey, Type type) throws InvalidKeyException, SecurityFeaturesException {
         if (_secret == null) {
-            _loadFromKeyStore(sessionKey);
+            _loadFromKeyStore(sessionKey, type);
         }
         return _secret;
     }
@@ -39,10 +47,17 @@ public class Secret {
         _secret = secret;
     }
 
-    private SecretKey _loadFromKeyStore(SecretKey sessionKey) throws SecurityFeaturesException, InvalidKeyException {
-        String id = Long.toString(_identity.getId());
+    private String getId(Type type) {
+        if (type == Type.PINCODE) {
+            return Long.toString(_identity.getId());
+        } else {
+            return Long.toString(_identity.getId()) + FINGERPRINT_SUFFIX;
+        }
+    }
+
+    private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException {
         SecretKey deviceKey = Encryption.getDeviceKey(_ctx);
-        CipherPayload civ = _store.getSecretKey(id, deviceKey);
+        CipherPayload civ = _store.getSecretKey(getId(type), deviceKey);
         if (civ.cipherText == null) {
             throw new InvalidKeyException("Requested key not found.");
         }
@@ -50,13 +65,13 @@ public class Secret {
         if (civ.iv == null) {
             // Old keys didn't store the iv, so upgrade it to a new key.
             Log.i("encryption", "Found old style key; upgrading to new key.");
-            storeInKeyStore(sessionKey);
+            storeInKeyStore(sessionKey, type);
         }
         return _secret;
     }
 
-    public void storeInKeyStore(SecretKey sessionKey) throws SecurityFeaturesException {
+    public void storeInKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException {
         CipherPayload civ = Encryption.encrypt(_secret.getEncoded(), sessionKey);
-        _store.setSecretKey(Long.toString(_identity.getId()), civ, Encryption.getDeviceKey(_ctx));
+        _store.setSecretKey(getId(type), civ, Encryption.getDeviceKey(_ctx));
     }
 }
