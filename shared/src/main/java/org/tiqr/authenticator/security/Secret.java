@@ -58,7 +58,7 @@ public class Secret {
     private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException {
         SecretKey deviceKey = Encryption.getDeviceKey(_ctx);
         CipherPayload civ = _store.getSecretKey(getId(type), deviceKey);
-        if (civ.cipherText == null) {
+        if (civ == null || civ.cipherText == null) {
             throw new InvalidKeyException("Requested key not found.");
         }
         _secret = new SecretKeySpec(Encryption.decrypt(civ, sessionKey), "RAW");
