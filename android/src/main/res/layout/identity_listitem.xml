@@ -5,7 +5,8 @@
     android:padding="10dp">
     <ImageView android:id="@+id/identity_provider_logo"
         android:layout_width="80dip"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"

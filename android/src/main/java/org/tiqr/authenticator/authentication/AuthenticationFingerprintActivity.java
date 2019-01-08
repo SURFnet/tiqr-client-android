@@ -59,6 +59,12 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
         super.onResume();
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         headerView.hideRightButton();
 
         usePincodeTextView = findViewById(R.id.pincodeButton);
