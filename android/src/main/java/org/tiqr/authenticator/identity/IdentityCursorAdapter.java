@@ -41,10 +41,10 @@ public class IdentityCursorAdapter extends SimpleCursorAdapter {
         super.bindView(v, context, cursor);
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private ImageView imageView;
+        private DownloadImageTask(ImageView imageView) {
+            this.imageView = imageView;
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -54,13 +54,14 @@ public class IdentityCursorAdapter extends SimpleCursorAdapter {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bmp = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e(DownloadImageTask.class.getName(), "Error fetching bitmap", e);
                 e.printStackTrace();
             }
             return bmp;
         }
+
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            imageView.setImageBitmap(result);
         }
     }
 }
