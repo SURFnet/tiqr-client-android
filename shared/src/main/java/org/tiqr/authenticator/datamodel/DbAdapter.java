@@ -29,9 +29,9 @@ public class DbAdapter {
     private static final String TABLE_IDENTITY = "identity";
     private static final String TABLE_IDENTITYPROVIDER = "identityprovider";
 
-    private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
+    private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " LEFT JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final int DB_VERSION_INITIAL = 4;
 
     private final Context _ctx;
@@ -61,15 +61,31 @@ public class DbAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
+            Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy identityprovider logo data");
             if (oldVersion == DB_VERSION_INITIAL && newVersion >= DATABASE_VERSION) {
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1; ");
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0; ");
             }
-            if (oldVersion <= 5 && newVersion >= DATABASE_VERSION) {
-                // Need to recreate the identity provider table, because data is not compatible with new version anymore.
-                db.execSQL("DROP TABLE " + TABLE_IDENTITYPROVIDER + ";");
-                db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " +                 AUTHENTICATION_URL + " TEXT NOT NULL, " + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " TEXT);");
+            if (oldVersion <= 6 && newVersion >= DATABASE_VERSION) {
+                // SQLLite doesn't allow ALTER COLUMN
+                // Backup identity provider data.
+                // Recreate table
+                // Re-add backup data
+                // ADD logo column (which is allowed)
+                // Logo information is lost. But not all data is lost and users can still use their existing identities
+                db.beginTransaction();
+                try {
+                    db.execSQL("CREATE TEMPORARY TABLE " + TABLE_IDENTITYPROVIDER + "_backup(" + ROWID + "," + DISPLAY_NAME + "," + IDENTIFIER + "," + AUTHENTICATION_URL + "," + OCRA_SUITE + "," + INFO_URL + ");");
+                    db.execSQL("INSERT INTO " + TABLE_IDENTITYPROVIDER + "_backup SELECT " + ROWID + "," + DISPLAY_NAME + ", " + IDENTIFIER + "," + AUTHENTICATION_URL + "," + OCRA_SUITE + "," + INFO_URL + " FROM " + TABLE_IDENTITYPROVIDER + ";");
+                    db.execSQL("DROP TABLE " + TABLE_IDENTITYPROVIDER + ";");
+                    db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " + AUTHENTICATION_URL + " TEXT NOT NULL, " + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT);");
+                    db.execSQL("INSERT INTO " + TABLE_IDENTITYPROVIDER + " SELECT " + ROWID + "," +  DISPLAY_NAME + ", " + IDENTIFIER + "," + AUTHENTICATION_URL + "," + OCRA_SUITE + "," + INFO_URL + " FROM " + TABLE_IDENTITYPROVIDER + "_backup;");
+                    db.execSQL("DROP TABLE " + TABLE_IDENTITYPROVIDER + "_backup");
+                    db.execSQL("ALTER TABLE " + TABLE_IDENTITYPROVIDER + " ADD COLUMN " + LOGO + " TEXT;");
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
             }
         }
     }

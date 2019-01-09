@@ -27,7 +27,9 @@ public class IdentityCursorAdapter extends SimpleCursorAdapter {
         ImageView i = (ImageView)v.findViewById(R.id.identity_provider_logo);
 
         String logoUrl = cursor.getString(cursor.getColumnIndex(DbAdapter.LOGO));
-        new DownloadImageTask(i).execute(logoUrl);
+        if (logoUrl != null && !logoUrl.isEmpty()) {
+            new DownloadImageTask(i).execute(logoUrl);
+        }
 
         int blocked = cursor.getInt(cursor.getColumnIndex(DbAdapter.BLOCKED));
         TextView blockedText = (TextView)v.findViewById(R.id.blocked);
