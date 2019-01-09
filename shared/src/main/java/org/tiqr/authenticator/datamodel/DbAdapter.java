@@ -62,11 +62,11 @@ public class DbAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w("DbAdapter", "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy identityprovider logo data");
-            if (oldVersion == DB_VERSION_INITIAL && newVersion >= DATABASE_VERSION) {
+            if (oldVersion == DB_VERSION_INITIAL && newVersion >= 6) {
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  SHOW_FINGERPRINT_UPGRADE + " INTEGER NOT NULL DEFAULT 1; ");
                 db.execSQL("ALTER TABLE " + TABLE_IDENTITY +  " ADD COLUMN " +  USE_FINGERPRINT + " INTEGER NOT NULL DEFAULT 0; ");
             }
-            if (oldVersion <= 6 && newVersion >= DATABASE_VERSION) {
+            if (oldVersion <= 6 && newVersion >= 7) {
                 // SQLLite doesn't allow ALTER COLUMN
                 // Backup identity provider data.
                 // Recreate table
