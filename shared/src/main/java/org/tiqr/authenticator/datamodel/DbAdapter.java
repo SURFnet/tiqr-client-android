@@ -29,7 +29,7 @@ public class DbAdapter {
     private static final String TABLE_IDENTITY = "identity";
     private static final String TABLE_IDENTITYPROVIDER = "identityprovider";
 
-    private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
+    private static final String JOIN_IDENTITY_IDENTITYPROVIDER = TABLE_IDENTITY + " LEFT JOIN " + TABLE_IDENTITYPROVIDER + " ON " + TABLE_IDENTITY + "." + IDENTITYPROVIDER + " = " + TABLE_IDENTITYPROVIDER + "." + ROWID;
 
     private static final int DATABASE_VERSION = 6;
     private static final int DB_VERSION_INITIAL = 4;
@@ -69,7 +69,8 @@ public class DbAdapter {
             if (oldVersion <= 5 && newVersion >= DATABASE_VERSION) {
                 // Need to recreate the identity provider table, because data is not compatible with new version anymore.
                 db.execSQL("DROP TABLE " + TABLE_IDENTITYPROVIDER + ";");
-                db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " +                 AUTHENTICATION_URL + " TEXT NOT NULL, " + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " TEXT);");
+                db.execSQL("CREATE TABLE " + TABLE_IDENTITYPROVIDER + " (" + ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DISPLAY_NAME + " TEXT NOT NULL, " + IDENTIFIER + " TEXT NOT NULL, " +
+                    AUTHENTICATION_URL + " TEXT NOT NULL, " + OCRA_SUITE + " TEXT NOT NULL, " + INFO_URL + " TEXT, " + LOGO + " TEXT);");
             }
         }
     }
