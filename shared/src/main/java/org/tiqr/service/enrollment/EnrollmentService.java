@@ -28,6 +28,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -295,7 +298,7 @@ public class EnrollmentService {
     /**
      * Store identity and identity provider.
      */
-    private void _storeIdentityAndIdentityProvider(EnrollmentChallenge challenge, SecretKey secret, SecretKey sessionKey) throws UserException {
+    private void _storeIdentityAndIdentityProvider(EnrollmentChallenge challenge, SecretKey secret, SecretKey sessionKey) throws UserException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         if (!_dbAdapter.insertIdentityProvider(challenge.getIdentityProvider())) {
             throw new UserException(_context.getString(R.string.error_enroll_failed_to_store_identity_provider));
         }

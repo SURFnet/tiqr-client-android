@@ -2,6 +2,7 @@ package org.tiqr.authenticator.authentication;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,7 +23,12 @@ import org.tiqr.authenticator.security.OCRAWrapper;
 import org.tiqr.authenticator.security.OCRAWrapper_v1;
 import org.tiqr.authenticator.security.Secret;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;
 
@@ -95,15 +101,15 @@ public class AuthenticationFallbackActivity extends Activity {
             TextView otpView = (TextView)findViewById(R.id.otp);
             otpView.setText(otp);
         } catch (InvalidChallengeException e) {
-            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge));
+            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), e);
         } catch (ArrayIndexOutOfBoundsException e) {
-            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_server_incompatible));
-        } catch (InvalidKeyException e) {
-            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_key));
+            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_server_incompatible), e);
         } catch (SecurityFeaturesException e) {
             new IncompatibilityDialog().show(this);
         } catch (NumberFormatException e) {
-            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge));
+            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), e);
+        } catch (InvalidKeyException | IOException | CertificateException | NoSuchAlgorithmException | UnrecoverableEntryException | KeyStoreException e) {
+            _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_key), e);
         }
     }
 
@@ -113,10 +119,11 @@ public class AuthenticationFallbackActivity extends Activity {
      * @param title
      * @param message
      */
-    protected void _showErrorActivityWithMessage(String title, String message) {
+    protected void _showErrorActivityWithMessage(String title, String message, @Nullable Exception ex) {
         new ErrorActivity.ErrorBuilder()
                 .setTitle(title)
                 .setMessage(message)
+                .setException(ex)
                 .show(this);
     }
 

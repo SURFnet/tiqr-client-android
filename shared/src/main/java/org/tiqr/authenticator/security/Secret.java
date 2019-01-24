@@ -6,7 +6,12 @@ import android.util.Log;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,18 +30,17 @@ public class Secret {
     private SecretStore _store = null;
     private Context _ctx = null;
 
-    public static Secret secretForIdentity(Identity identity, Context context) {
-        Secret s = new Secret(identity, context);
-        return s;
+    public static Secret secretForIdentity(Identity identity, Context context) throws KeyStoreException {
+        return new Secret(identity, context);
     }
 
-    private Secret(Identity identity, Context context) {
+    private Secret(Identity identity, Context context) throws KeyStoreException {
         _identity = identity;
         _store = new SecretStore(context);
         _ctx = context;
     }
 
-    public SecretKey getSecret(SecretKey sessionKey, Type type) throws InvalidKeyException, SecurityFeaturesException {
+    public SecretKey getSecret(SecretKey sessionKey, Type type) throws InvalidKeyException, SecurityFeaturesException, CertificateException, UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException, IOException {
         if (_secret == null) {
             _loadFromKeyStore(sessionKey, type);
         }
@@ -55,7 +59,7 @@ public class Secret {
         }
     }
 
-    private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException {
+    private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableEntryException {
         SecretKey deviceKey = Encryption.getDeviceKey(_ctx);
         CipherPayload civ = _store.getSecretKey(getId(type), deviceKey);
         if (civ == null || civ.cipherText == null) {
@@ -70,7 +74,7 @@ public class Secret {
         return _secret;
     }
 
-    public void storeInKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException {
+    public void storeInKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         CipherPayload civ = Encryption.encrypt(_secret.getEncoded(), sessionKey);
         _store.setSecretKey(getId(type), civ, Encryption.getDeviceKey(_ctx));
     }

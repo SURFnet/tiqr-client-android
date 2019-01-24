@@ -30,6 +30,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -170,10 +174,10 @@ public class AuthenticationService {
             @Override
             protected void onPostExecute(Object result) {
                 if (result instanceof AuthenticationChallenge) {
-                    AuthenticationChallenge challenge = (AuthenticationChallenge)result;
+                    AuthenticationChallenge challenge = (AuthenticationChallenge) result;
                     listener.onParseAuthenticationChallengeSuccess(challenge);
                 } else {
-                    ParseAuthenticationChallengeError error = (ParseAuthenticationChallengeError)result;
+                    ParseAuthenticationChallengeError error = (ParseAuthenticationChallengeError) result;
                     listener.onParseAuthenticationChallengeError(error);
                 }
             }
@@ -231,7 +235,7 @@ public class AuthenticationService {
                     byte[] postData = Utils.keyValueMapToByteArray(nameValuePairs);
 
                     URL authenticationURL = new URL(challenge.getIdentityProvider().getAuthenticationURL());
-                    HttpURLConnection httpURLConnection = (HttpURLConnection)authenticationURL.openConnection();
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) authenticationURL.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setRequestProperty("ACCEPT", "application/json");
                     httpURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
@@ -249,14 +253,14 @@ public class AuthenticationService {
                         // v2 protocol (json)
                         return _parseV2Response(response, challenge.getIdentity());
                     }
-                } catch (InvalidChallengeException e) {
-                    return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
-                } catch (InvalidKeyException e) {
-                    return new AuthenticationError(Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_key));
-                } catch (SecurityFeaturesException e) {
-                    return new AuthenticationError(Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards));
-                } catch (IOException e) {
-                    return new AuthenticationError(Type.CONNECTION, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_connect_error));
+                } catch (InvalidChallengeException ex) {
+                    return new AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
+                } catch (InvalidKeyException ex) {
+                    return new AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_key));
+                } catch (SecurityFeaturesException | CertificateException | UnrecoverableEntryException | NoSuchAlgorithmException | KeyStoreException ex) {
+                    return new AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards));
+                } catch (IOException ex) {
+                    return new AuthenticationError(ex, Type.CONNECTION, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_connect_error));
                 }
             }
 
@@ -325,12 +329,12 @@ public class AuthenticationService {
             } else if (response.equals("INVALID_USERID")) {
                 return new AuthenticationError(Type.INVALID_USER, _context.getString(R.string.error_auth_invalid_account), _context.getString(R.string.error_auth_invalid_account_message));
             } else {
-                return new AuthenticationError(Type.UNKNOWN, _context.getString(R.string.unknown_error), _context.getString(R.string.error_auth_unknown_error));
+                return new AuthenticationError(null, Type.UNKNOWN, _context.getString(R.string.unknown_error), _context.getString(R.string.error_auth_unknown_error));
             }
-        } catch (NumberFormatException e) {
-            return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message));
-        } catch (Exception e) {
-            return new AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message));
+        } catch (NumberFormatException ex) {
+            return new AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message));
+        } catch (Exception ex) {
+            return new AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message));
         }
     }
 
@@ -423,6 +427,7 @@ public class AuthenticationService {
 
     /**
      * Tests if the user has a valid fingerprint signature  for the identity secret
+     *
      * @param identity
      * @return
      */
@@ -432,9 +437,7 @@ public class AuthenticationService {
             Secret secret = Secret.secretForIdentity(identity, _context);
             secret.getSecret(sessionKey, Secret.Type.FINGERPRINT);
             return true;
-        } catch (SecurityFeaturesException e) {
-            return false;
-        } catch (InvalidKeyException e) {
+        } catch (Exception ex) {
             return false;
         }
     }

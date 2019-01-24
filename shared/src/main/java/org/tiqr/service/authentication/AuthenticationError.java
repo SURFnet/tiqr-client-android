@@ -17,33 +17,40 @@ public class AuthenticationError {
         ACCOUNT_TEMPORARY_BLOCKED
     }
 
+    private final Exception _exception;
     private final Type _type;
     private final String _title;
     private final String _message;
     private final Bundle _extras;
 
-    /**
-     * Constructor.
-     *
-     * @param type
-     * @param message
-     */
     public AuthenticationError(Type type, String title, String message) {
-        this(type, title, message, new Bundle());
+        this(null, type, title, message, new Bundle());
     }
 
-    /**
-     * Constructor.
-     *
-     * @param type
-     * @param message
-     * @param extras
-     */
+    public AuthenticationError(Exception exception, Type type, String title, String message) {
+        this(exception, type, title, message, new Bundle());
+    }
+
     public AuthenticationError(Type type, String title, String message, Bundle extras) {
+        this(null, type, title, message, extras);
+    }
+
+
+    public AuthenticationError(Exception exception, Type type, String title, String message, Bundle extras) {
+        _exception = exception;
         _type = type;
         _title = title;
         _message = message;
         _extras = extras;
+    }
+
+    /**
+     * The exception thrown by the application which triggered this error.
+     *
+     * @return The exception which was the cause of this error. Can ben null
+     */
+    public Exception getException() {
+        return _exception;
     }
 
     /**

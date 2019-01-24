@@ -26,7 +26,12 @@ import org.tiqr.authenticator.security.Encryption;
 import org.tiqr.authenticator.security.Secret;
 import org.tiqr.service.authentication.AuthenticationService;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
@@ -139,9 +144,9 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                 secret.storeInKeyStore(newSessionKey, Secret.Type.FINGERPRINT);
             }
             _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
-        } catch (SecurityFeaturesException | InvalidKeyException e) {
+        } catch (SecurityFeaturesException | InvalidKeyException | CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException | UnrecoverableEntryException e) {
             // No user action required
-            Log.e(TAG, "Not able to save the key to the keystore");
+            Log.e(TAG, "Not able to save the key to the keystore", e);
         }
     }
 
