@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
@@ -32,7 +33,11 @@ public abstract class AbstractIdentityListActivity extends ListActivity {
         setContentView(R.layout.identity);
 
         _db = new DbAdapter(this);
-        new SecretStore(this);
+        try {
+            new SecretStore(this);
+        } catch (Exception ex) {
+            Log.e(AbstractIdentityListActivity.class.getName(), "Initializing the keystore has failed!", ex);
+        }
 
         startManagingCursor(getIdentityCursor());
 

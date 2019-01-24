@@ -14,7 +14,11 @@
 
 	<uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
-	<application android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:name="org.tiqr.authenticator.Application"
+	<application
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:name="org.tiqr.authenticator.Application"
+		android:usesCleartextTraffic="true"
 		android:theme="@style/Theme.Surfnet">
 		<activity android:name="MainActivity" android:label="@string/app_name"
 			android:screenOrientation="portrait">

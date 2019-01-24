@@ -173,4 +173,5 @@ drukt u op <b>Scan</b>.</string>
   <string name="use_pincode">Gebruik pincode</string>
   <string name="identity_uses_fingerprint">Gebruik vingerafdruk</string>
   <string name="identity_upgrade_to_fingerprint">Gebruik vingerafdruk na volgende login</string>
+  <string name="error_show_technical_details">Toon technische details</string>
 </resources>

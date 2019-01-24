@@ -96,6 +96,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
                     new ErrorActivity.ErrorBuilder()
                             .setTitle(error.getTitle())
                             .setMessage(error.getMessage())
+                            .setException(error.getException())
                             .show(this);
                     break;
                 }
@@ -103,6 +104,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
                 new ErrorActivity.ErrorBuilder()
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
+                        .setException(error.getException())
                         .show(this);
                 break;
         }
