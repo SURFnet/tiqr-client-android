@@ -15,6 +15,7 @@ public class EnrollmentError {
     private final Type _type;
     private final String _title;
     private final String _message;
+    private final Exception _exception;
     private final Bundle _extras;
 
     /**
@@ -23,8 +24,8 @@ public class EnrollmentError {
      * @param type
      * @param message
      */
-    public EnrollmentError(Type type, String title, String message) {
-        this(type, title, message, new Bundle());
+    public EnrollmentError(Type type, String title, String message, Exception exception) {
+        this(type, title, message, new Bundle(), exception);
     }
 
     /**
@@ -34,11 +35,12 @@ public class EnrollmentError {
      * @param message
      * @param extras
      */
-    public EnrollmentError(Type type, String title, String message, Bundle extras) {
+    public EnrollmentError(Type type, String title, String message, Bundle extras, Exception exception) {
         _type = type;
         _title = title;
         _message = message;
         _extras = extras;
+        _exception = exception;
     }
 
     /**
@@ -75,5 +77,13 @@ public class EnrollmentError {
      */
     public Bundle getExtras() {
         return _extras;
+    }
+
+    /**
+     * Exception.
+     * @return The exception which trigerred this error. Could be null.
+     */
+    public Exception getException() {
+        return _exception;
     }
 }

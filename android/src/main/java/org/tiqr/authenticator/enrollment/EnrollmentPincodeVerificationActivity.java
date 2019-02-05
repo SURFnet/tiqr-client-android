@@ -80,6 +80,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
                 new ErrorActivity.ErrorBuilder()
                         .setTitle(error.getTitle())
                         .setMessage(error.getMessage())
+                        .setException(error.getException())
                         .show(EnrollmentPincodeVerificationActivity.this);
             }
         });

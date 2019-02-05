@@ -107,7 +107,7 @@ public class EnrollmentService {
                 JSONObject metadata;
 
                 try {
-                    HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.addRequestProperty("ACCEPT", "application/json");
                     urlConnection.addRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
                     urlConnection.setRequestMethod("GET");
@@ -120,7 +120,7 @@ public class EnrollmentService {
                         throw new UserException(_context.getString(R.string.error_enroll_invalid_response));
                     }
 
-                    metadata = (JSONObject)value;
+                    metadata = (JSONObject) value;
                     challenge.setEnrollmentURL(metadata.getJSONObject("service").getString("enrollmentUrl"));
                     challenge.setReturnURL(null); // TODO: FIXME
                     challenge.setIdentityProvider(_getIdentityProviderForMetadata(metadata.getJSONObject("service")));
@@ -139,10 +139,10 @@ public class EnrollmentService {
             @Override
             protected void onPostExecute(Object result) {
                 if (result instanceof EnrollmentChallenge) {
-                    EnrollmentChallenge challenge = (EnrollmentChallenge)result;
+                    EnrollmentChallenge challenge = (EnrollmentChallenge) result;
                     listener.onParseEnrollmentChallengeSuccess(challenge);
                 } else {
-                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError)result;
+                    ParseEnrollmentChallengeError error = (ParseEnrollmentChallengeError) result;
                     listener.onParseEnrollmentChallengeError(error);
                 }
             }
@@ -181,7 +181,7 @@ public class EnrollmentService {
                     nameValuePairs.put("operation", "register");
 
                     URL enrollmentURL = new URL(challenge.getEnrollmentURL());
-                    HttpURLConnection httpURLConnection = (HttpURLConnection)enrollmentURL.openConnection();
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) enrollmentURL.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setRequestProperty("ACCEPT", "application/json");
                     httpURLConnection.setRequestProperty("X-TIQR-Protocol-Version", Constants.PROTOCOL_VERSION);
@@ -210,7 +210,7 @@ public class EnrollmentService {
                         return error;
                     }
                 } catch (Exception ex) {
-                    return new EnrollmentError(Type.CONNECTION, _context.getString(R.string.error_enroll_connect_error), _context.getString(R.string.error_enroll_connect_error));
+                    return new EnrollmentError(Type.CONNECTION, _context.getString(R.string.error_enroll_connect_error), _context.getString(R.string.error_enroll_connect_error), ex);
                 }
             }
 
@@ -239,7 +239,7 @@ public class EnrollmentService {
         if (response != null && response.equals("OK")) {
             return null;
         } else {
-            return new EnrollmentError(Type.UNKNOWN, _context.getString(R.string.enrollment_failure_title), response);
+            return new EnrollmentError(Type.UNKNOWN, _context.getString(R.string.enrollment_failure_title), response, new Exception("Unexpected response: " + response));
         }
     }
 
@@ -273,10 +273,9 @@ public class EnrollmentService {
                         break;
                 }
             }
-
-            return new EnrollmentError(type, _context.getString(R.string.enrollment_failure_title), message);
-        } catch (JSONException e) {
-            return new EnrollmentError(Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_response));
+            return new EnrollmentError(type, _context.getString(R.string.enrollment_failure_title), message, new Exception("Unexpected response code: " + responseCode + "; message: " + message));
+        } catch (JSONException ex) {
+            return new EnrollmentError(Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_response), ex);
         }
 
     }
@@ -368,7 +367,7 @@ public class EnrollmentService {
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
         Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());
         if (identity != null) {
-            Object[] args = new Object[] { metadata.getString("displayName"), ip.getDisplayName() };
+            Object[] args = new Object[]{metadata.getString("displayName"), ip.getDisplayName()};
             throw new UserException(_context.getString(R.string.error_enroll_already_enrolled, args));
         }
 
@@ -384,10 +383,10 @@ public class EnrollmentService {
         int i;
 
         for (i = 0; i < buf.length; i++) {
-            if (((int)buf[i] & 0xff) < 0x10)
+            if (((int) buf[i] & 0xff) < 0x10)
                 strbuf.append("0");
 
-            strbuf.append(Long.toString((int)buf[i] & 0xff, 16));
+            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
         }
 
         return strbuf.toString();
