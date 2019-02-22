@@ -32,7 +32,7 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
     @Override
     public void finishFromChild(Activity child) {
         int size = _ids.size();
-        if (size == 0) {
+        if (size <= 1) {
             finish();
             return;
         }
@@ -41,7 +41,9 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         Intent intent = getLocalActivityManager().getActivity(id).getIntent();
         getLocalActivityManager().destroyActivity(id, true);
         _ids.remove(id);
-        View view = getLocalActivityManager().startActivity(id, intent).getDecorView();
+        String idBehind = _ids.get(_ids.size() - 1);
+        Intent intentBehind = getLocalActivityManager().getActivity(idBehind).getIntent();
+        View view = getLocalActivityManager().startActivity(idBehind, intentBehind).getDecorView();
         setContentView(view);
     }
 

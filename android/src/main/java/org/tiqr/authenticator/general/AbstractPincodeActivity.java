@@ -178,7 +178,14 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
         pin3.setTypeface(tf_animals);
         pin4.setTypeface(tf_animals);
 
-        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        HeaderView headerView = findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        headerView.leftButton.setFocusable(false);
         headerView.hideRightButton();
     }
 
@@ -286,9 +293,9 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
                 break;
         }
 
-        pin1.setFocusable(text.length() > 1);
-        pin2.setFocusable(text.length() > 2);
-        pin3.setFocusable(text.length() > 3);
+        pin1.setFocusable(text.length() >= 1);
+        pin2.setFocusable(text.length() >= 2);
+        pin3.setFocusable(text.length() >= 3);
         pin4.setFocusable(false);
 
         if (text.length() == 4) {
