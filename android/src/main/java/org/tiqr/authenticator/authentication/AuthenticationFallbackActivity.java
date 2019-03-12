@@ -69,7 +69,8 @@ public class AuthenticationFallbackActivity extends Activity {
         }
 
         String pincode = getIntent().getStringExtra(Constants.AUTHENTICATION_PINCODE_KEY);
-        _fetchOTP(pincode);
+        Secret.Type secretType = Secret.Type.valueOf(getIntent().getStringExtra(Constants.AUTHENTICATION_SECRET_TYPE));
+        _fetchOTP(pincode, secretType);
     }
 
     /**
@@ -77,13 +78,13 @@ public class AuthenticationFallbackActivity extends Activity {
      *
      * @param pincode
      */
-    protected void _fetchOTP(String pincode) {
+    protected void _fetchOTP(String pincode, Secret.Type type) {
         try {
             SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
             AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
             AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
             Secret secret = Secret.secretForIdentity(challenge.getIdentity(), this);
-            SecretKey secretKey = secret.getSecret(sessionKey, Secret.Type.PINCODE);
+            SecretKey secretKey = secret.getSecret(sessionKey, type);
 
             OCRAProtocol ocra;
             if (challenge.getProtocolVersion().equals("1")) {

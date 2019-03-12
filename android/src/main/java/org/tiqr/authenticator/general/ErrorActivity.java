@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.tiqr.authenticator.BuildConfig;
 import org.tiqr.authenticator.R;
 
 public class ErrorActivity extends Activity {
@@ -15,6 +17,8 @@ public class ErrorActivity extends Activity {
     private static final String INTENT_KEY_TITLE = "org.tiqr.error.title";
     private static final String INTENT_KEY_MESSAGE = "org.tiqr.error.message";
     private static final String INTENT_KEY_EXCEPTION = "org.tiqr.error.exception";
+
+    private static final String TAG = ErrorActivity.class.getName();
 
     /**
      * Called when the activity is first created.
@@ -29,6 +33,9 @@ public class ErrorActivity extends Activity {
 
         if (getIntent().hasExtra(INTENT_KEY_EXCEPTION)) {
             Exception exception = (Exception) getIntent().getSerializableExtra(INTENT_KEY_EXCEPTION);
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "Exception occurred doing normal operation.", exception);
+            }
             final TextView technicalDetailsText = findViewById(R.id.technical_details_text);
             technicalDetailsText.setText(exception.toString());
             final Button showTechnicalDetailsButton = findViewById(R.id.show_technical_details_button);
