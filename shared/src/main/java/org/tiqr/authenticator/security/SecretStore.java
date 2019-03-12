@@ -3,6 +3,8 @@ package org.tiqr.authenticator.security;
 import android.content.Context;
 import android.util.Log;
 
+import org.tiqr.Utils;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -58,7 +60,7 @@ public class SecretStore {
     }
 
     private char[] _sessionKeyToCharArray(SecretKey sessionKey) {
-        return new String(sessionKey.getEncoded()).toCharArray();
+        return Utils.byteArrayToCharArray(sessionKey.getEncoded());
     }
 
     private void _saveKeyStore(SecretKey sessionKey) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
