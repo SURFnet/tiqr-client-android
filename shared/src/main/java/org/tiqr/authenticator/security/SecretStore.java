@@ -3,6 +3,7 @@ package org.tiqr.authenticator.security;
 import android.content.Context;
 import android.util.Log;
 
+import org.tiqr.BuildConfig;
 import org.tiqr.Utils;
 
 import java.io.FileInputStream;
@@ -14,6 +15,7 @@ import java.security.KeyStore.SecretKeyEntry;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;
@@ -28,6 +30,8 @@ public class SecretStore {
     private Context _ctx;
     private boolean _initialized = false;
     private final static String IV_SUFFIX = "-org.tiqr.iv";
+
+    private static final String TAG = SecretStore.class.getName();
 
     public SecretStore(Context ctx) throws KeyStoreException {
         _ctx = ctx;
@@ -63,6 +67,11 @@ public class SecretStore {
         return Utils.byteArrayToCharArray(sessionKey.getEncoded());
     }
 
+    private char[] _sessionKeyToCharArrayAlternative(SecretKey sessionKey) {
+        return new String(sessionKey.getEncoded()).toCharArray();
+    }
+
+
     private void _saveKeyStore(SecretKey sessionKey) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
         // Create the file
         FileOutputStream output = null;
@@ -80,12 +89,21 @@ public class SecretStore {
 
     public CipherPayload getSecretKey(String identity, SecretKey sessionKey) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
         _initializeKeyStore(sessionKey);
-        SecretKeyEntry ctEntry = (SecretKeyEntry) _keyStore.getEntry(
-                identity, new KeyStore.PasswordProtection(
-                        _sessionKeyToCharArray(sessionKey)));
-        SecretKeyEntry ivEntry = (SecretKeyEntry) _keyStore.getEntry(
-                identity + IV_SUFFIX, new KeyStore.PasswordProtection(
-                        _sessionKeyToCharArray(sessionKey)));
+        SecretKeyEntry ctEntry;
+        SecretKeyEntry ivEntry;
+
+        boolean migrateKeys = false;
+
+        try {
+            ctEntry = (SecretKeyEntry) _keyStore.getEntry(identity, new KeyStore.PasswordProtection(_sessionKeyToCharArray(sessionKey)));
+             ivEntry = (SecretKeyEntry) _keyStore.getEntry(identity + IV_SUFFIX, new KeyStore.PasswordProtection(_sessionKeyToCharArray(sessionKey)));
+        } catch (UnrecoverableKeyException ex) {
+            // The keystore is still using the old keys?
+            ctEntry = (SecretKeyEntry) _keyStore.getEntry(identity, new KeyStore.PasswordProtection(_sessionKeyToCharArrayAlternative(sessionKey)));
+            ivEntry = (SecretKeyEntry) _keyStore.getEntry(identity + IV_SUFFIX, new KeyStore.PasswordProtection(_sessionKeyToCharArrayAlternative(sessionKey)));
+            // If we got this far, then yes.
+            migrateKeys = true;
+        }
         byte[] ivBytes;
         // For old keys, we don't store the IV:
         if (ivEntry == null || ivEntry.getSecretKey() == null) {
@@ -95,7 +113,14 @@ public class SecretStore {
             ivBytes = ivEntry.getSecretKey().getEncoded();
             Log.i("encryption", "IV for: " + identity + " is " + new String(Base64Coder.encode(ivBytes)));
         }
-        return new CipherPayload(ctEntry.getSecretKey().getEncoded(), ivBytes);
+        CipherPayload cipherPayload = new CipherPayload(ctEntry.getSecretKey().getEncoded(), ivBytes);
+        if (migrateKeys) {
+            setSecretKey(identity, cipherPayload, sessionKey);
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "Migration of keys and store has finished.");
+            }
+        }
+        return cipherPayload;
     }
 
     public void setSecretKey(String identity, CipherPayload civ, SecretKey sessionKey) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
@@ -143,7 +168,19 @@ public class SecretStore {
             // Reset the keyStore
             _keyStore = KeyStore.getInstance("BKS");
             // Load the store
-            _keyStore.load(input, _sessionKeyToCharArray(sessionKey));
+            try {
+                _keyStore.load(input, _sessionKeyToCharArray(sessionKey));
+            } catch (IOException ex) {
+                // It might be an old style password. In this case, the next time we save the keystore
+                // it will be on using the new style password
+                try { input.close(); } catch (Exception ex2) { /* Unhandled */ }
+                input = _ctx.openFileInput(_filenameKeyStore);
+                _keyStore = KeyStore.getInstance("BKS");
+                _keyStore.load(input, _sessionKeyToCharArrayAlternative(sessionKey));
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "Opened keystore with alternative password.");
+                }
+            }
             _initialized = true;
         } finally {
             if (input != null) {
