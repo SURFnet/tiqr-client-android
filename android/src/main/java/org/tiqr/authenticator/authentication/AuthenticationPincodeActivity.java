@@ -87,6 +87,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
                 AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
                 Intent fallbackIntent = new Intent(this, AuthenticationFallbackActivity.class);
                 fallbackIntent.putExtra(Constants.AUTHENTICATION_PINCODE_KEY, pincode.getText().toString());
+                fallbackIntent.putExtra(Constants.AUTHENTICATION_SECRET_TYPE, Secret.Type.PINCODE.name());
                 group.startChildActivity("AuthenticationFallbackActivity", fallbackIntent);
                 break;
             case INVALID_RESPONSE:
