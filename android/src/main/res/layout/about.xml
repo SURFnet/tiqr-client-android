@@ -146,6 +146,35 @@
                         android:layout_weight="1"/>
 
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/dump_logcat"
+                    android:text="Print dump logs to logcat"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/dump_email"
+                    android:text="Send dump logs via email"
+                    />
+
+            </TableRow>
         </TableLayout>
     </ScrollView>
 </LinearLayout>
