@@ -18,6 +18,7 @@
   <string name="account_ready">Uw account is klaar voor gebruik</string>
   <string name="account_activated">Uw account is geactiveerd!</string>
   <string name="enrollment_confirm_button">OK</string>
+  <string name="enrollment_cancel_button">Annuleren</string>
   <string name="remember_pincode_notice">Onthoud uw PIN, deze kan niet veranderd worden!</string>
   <string name="enter_the_following">Voer de volgende gegevens in:</string>
   <string name="full_name">Volledige naam</string>
