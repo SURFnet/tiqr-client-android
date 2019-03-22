@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -29,16 +30,20 @@ public class Utils {
      * @param connection The URL connection to get the response of.
      * @return The response as a string.
      */
-    public static String urlConnectionResponseAsString(URLConnection connection) {
-        String result = null;
+    public static String urlConnectionResponseAsString(HttpURLConnection connection) {
+        String result;
         StringBuilder stringBuilder = new StringBuilder();
-        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
 
         try {
-            inputStream = new BufferedInputStream(connection.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            connection.connect();
+            if (200 <= connection.getResponseCode() && connection.getResponseCode() <= 299) {
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
             String inputLine;
-            while ((inputLine = br.readLine()) != null) {
+            while ((inputLine = bufferedReader.readLine()) != null) {
                 stringBuilder.append(inputLine);
             }
             result = stringBuilder.toString();
@@ -46,9 +51,10 @@ public class Utils {
             Log.e(TAG, "Error reading InputStream", e);
             result = null;
         } finally {
-            if (inputStream != null) {
+            connection.disconnect();
+            if (bufferedReader != null) {
                 try {
-                    inputStream.close();
+                    bufferedReader.close();
                 } catch (IOException e) {
                     Log.i(TAG, "Error closing InputStream", e);
                 }
