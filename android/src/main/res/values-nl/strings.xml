@@ -29,9 +29,9 @@
   <string name="retry_button">Opnieuw</string>
   <string name="delete_button">Verwijder</string>
   <string name="delete_confirm_title">Weet u het zeker?</string>
-  <string name="delete_confirm">Deze account kan niet meer gebruikt worden als hij verwijderd is.</string>
+  <string name="delete_confirm">Dit account kan niet meer gebruikt worden nadat deze verwijderd is.</string>
   <string name="identifier_label">Gebruikers ID:</string>
-  <string name="fallback_identifier_label">Uw gebruikers ID is:</string>
+  <string name="fallback_identifier_label">Uw ID is:</string>
   <string name="note_pin_not_verified_title">Opmerking: uw PIN is nog niet geverifieerd.</string>
   <string name="note_pin_not_verified">Als u niet kunt inloggen met bovenstaande gegevens, scan
 dan opnieuw en geef de correcte PIN code in.</string>
@@ -175,4 +175,9 @@ drukt u op <b>Scan</b>.</string>
   <string name="identity_uses_fingerprint">Gebruik vingerafdruk</string>
   <string name="identity_upgrade_to_fingerprint">Gebruik vingerafdruk na volgende login</string>
   <string name="error_show_technical_details">Toon technische details</string>
+  <string name="entroll_pin_verify_title">Verifieer PIN</string>
+  <string name="entroll_pin_title">Kies een unieke PIN</string>
+  <string name="login_pin_title">Voer PIN in</string>
+  <string name="enroll_account_details">Account details</string>
+  <string name="tiqr_id">tiqr Account ID</string>
 </resources>
