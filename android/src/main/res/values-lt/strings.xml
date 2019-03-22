@@ -24,6 +24,7 @@
     <string name="full_name">Vardas Pavardė</string>
     <string name="tiqr_id">Tiqr paskyros id</string>
     <string name="information">Informacija</string>
+    <string name="information_with_host">Informacija (%s)</string>
     <string name="cancel_button">Atšaukti</string>
     <string name="ok_button">Taip</string>
     <string name="retry_button">Pakartoti</string>

@@ -23,6 +23,7 @@
   <string name="full_name">Volledige naam</string>
   <string name="id">ID</string>
   <string name="information">Informatie</string>
+  <string name="information_with_host">Informatie (%s)</string>
   <string name="cancel_button">Annuleren</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Opnieuw</string>

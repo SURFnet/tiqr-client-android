@@ -23,6 +23,7 @@
   <string name="full_name">フルネーム</string>
   <string name="id">ID</string>
   <string name="information">情報</string>
+  <string name="information_with_host">情報 (%s)</string>
   <string name="cancel_button">キャンセル</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">リトライ</string>

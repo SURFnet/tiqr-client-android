@@ -23,6 +23,7 @@
   <string name="full_name">Vollständiger Name</string>
   <string name="id">ID</string>
   <string name="information">Information</string>
+  <string name="information_with_host">Information (%s)</string>
   <string name="cancel_button">Abbrechen</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Wiederholen</string>

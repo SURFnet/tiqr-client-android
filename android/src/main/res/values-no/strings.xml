@@ -23,6 +23,7 @@
   <string name="full_name">Fullt navn</string>
   <string name="id">ID</string>
   <string name="information">Informasjon</string>
+  <string name="information_with_host">Informasjon (%s)</string>
   <string name="cancel_button">Annuller</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Forsøk igjen</string>

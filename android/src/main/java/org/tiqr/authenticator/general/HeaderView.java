@@ -25,8 +25,8 @@ public class HeaderView extends FrameLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.tiqr_titlebar, this);
 
-        leftButton = (ImageView)findViewById(R.id.left_button);
-        rightButton = (ImageView)findViewById(R.id.right_button);
+        leftButton = findViewById(R.id.left_button);
+        rightButton = findViewById(R.id.right_button);
 
         setOnRightClickListener(new OnClickListener() {
             public void onClick(View v) {
