@@ -24,6 +24,7 @@
     <string name="full_name">Full name</string>
     <string name="tiqr_id">Tiqr account id</string>
     <string name="information">Information</string>
+    <string name="information_with_host">Information (%s)</string>
     <string name="cancel_button">Cancel</string>
     <string name="ok_button">OK</string>
     <string name="retry_button">Retry</string>

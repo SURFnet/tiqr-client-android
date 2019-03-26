@@ -116,6 +116,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
                         _upgradeToFingerprint();
                     }
                 })
+                .setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();

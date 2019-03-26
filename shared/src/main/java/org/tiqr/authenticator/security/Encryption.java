@@ -70,7 +70,7 @@ public class Encryption {
             bytes = Base64Coder.decode(value);
         } else {
 
-            bytes = getRandomBytes(ctx, SALT_BYTES);
+            bytes = getRandomBytes(SALT_BYTES);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString(DEVICE_KEY, new String(Base64Coder.encode(bytes)));
@@ -226,7 +226,7 @@ public class Encryption {
             return Base64Coder.decode(value);
         }
 
-        byte[] bytes = getRandomBytes(ctx, SALT_BYTES);
+        byte[] bytes = getRandomBytes(SALT_BYTES);
 
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(SALT_KEY, new String(Base64Coder.encode(bytes)));
@@ -238,12 +238,11 @@ public class Encryption {
     /**
      * Get a number of random bytes using a secure random algorithm.
      *
-     * @param ctx
      * @param numberOfBytes
      * @return
      * @throws SecurityFeaturesException
      */
-    public static byte[] getRandomBytes(Context ctx, int numberOfBytes) throws SecurityFeaturesException {
+    public static byte[] getRandomBytes(int numberOfBytes) throws SecurityFeaturesException {
         byte[] bytes = new byte[numberOfBytes];
         try {
 

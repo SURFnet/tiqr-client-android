@@ -23,6 +23,7 @@
   <string name="full_name">Ime in priimek</string>
   <string name="id">ID</string>
   <string name="information">Informacije</string>
+  <string name="information_with_host">Informacije (%s)</string>
   <string name="cancel_button">Prekliči</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Poskusi znova</string>

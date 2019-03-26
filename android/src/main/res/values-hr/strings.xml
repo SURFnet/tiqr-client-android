@@ -23,6 +23,7 @@
   <string name="full_name">Puno ime</string>
   <string name="id">Identifikator</string>
   <string name="information">Informacije</string>
+  <string name="information_with_host">Informacije (%s)</string>
   <string name="cancel_button">Odustani</string>
   <string name="ok_button">U redu</string>
   <string name="retry_button">Pokušaj ponovno</string>

@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,6 +32,8 @@ import org.tiqr.service.authentication.AuthenticationService;
 import javax.inject.Inject;
 
 public class IdentityDetailActivity extends Activity {
+
+    private static final String TAG = IdentityDetailActivity.class.getName();
 
     @Inject
     protected AuthenticationService _authenticationService;
@@ -60,11 +65,11 @@ public class IdentityDetailActivity extends Activity {
         _setIdentityAndIdentityProvider();
 
         if (_identity != null && _identityProvider != null) {
-            TextView identity_displayName = (TextView)findViewById(R.id.identity_displayName);
-            TextView identity_identifier = (TextView)findViewById(R.id.identity_identifier);
-            TextView identity_provider_displayName = (TextView)findViewById(R.id.identity_provider_displayName);
-            TextView identity_provider_identifier = (TextView)findViewById(R.id.identity_provider_identifier);
-            TextView identity_provider_info_url = (TextView)findViewById(R.id.identity_provider_infoURL);
+            TextView identity_displayName = findViewById(R.id.identity_displayName);
+            TextView identity_identifier = findViewById(R.id.identity_identifier);
+            TextView identity_provider_displayName = findViewById(R.id.identity_provider_displayName);
+            TextView identity_provider_identifier = findViewById(R.id.identity_provider_identifier);
+            TextView identity_provider_info_url = findViewById(R.id.identity_provider_info_url);
 
             Switch usesFingerprint = findViewById(R.id.use_fingerprint_switch);
             Switch upgradeToFingerprint = findViewById(R.id.upgrade_fingerprint_switch);
@@ -92,15 +97,29 @@ public class IdentityDetailActivity extends Activity {
             identity_identifier.setText(_identity.getIdentifier());
             identity_provider_displayName.setText(_identityProvider.getDisplayName());
             identity_provider_identifier.setText(_identityProvider.getIdentifier());
-            identity_provider_info_url.setText(_identityProvider.getInfoURL());
+            final String infoUrl = _identityProvider.getInfoURL();
+            try {
+                String infoUrlHost = Uri.parse(infoUrl).getHost();
+                identity_provider_info_url.setText(getString(R.string.information_with_host, infoUrlHost));
+            } catch (Exception ex) {
+                Log.w(TAG, "Unable to set URL on the information label.", ex);
+                identity_provider_info_url.setText(_identityProvider.getInfoURL());
+            }
+
+            // Underline the textview to denote it is clickable
+            identity_provider_info_url.setPaintFlags(identity_provider_info_url.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            identity_provider_info_url.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(infoUrl));
+                    startActivity(browserIntent);
+                }
+            });
 
             if (_identity.isBlocked()) {
                 TextView identity_blocked_message = (TextView)findViewById(R.id.identity_blocked_message);
                 identity_blocked_message.setVisibility(View.VISIBLE);
             }
-
-            // Make the info url clickable
-            Linkify.addLinks(identity_provider_info_url, Linkify.WEB_URLS);
         }
 
         Button delete_btn = (Button)findViewById(R.id.delete_button);
