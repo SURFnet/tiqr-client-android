@@ -1,150 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:orientation="vertical"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-	<org.tiqr.authenticator.general.HeaderView
-		android:id="@+id/headerView"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"/>
+    <org.tiqr.authenticator.general.HeaderView
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-		<TableLayout
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_margin="20dp"
-			android:stretchColumns="*">
-			<TableRow android:layout_height="fill_parent"
-				android:layout_width="fill_parent">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="vertical" android:layout_width="fill_parent"
-					android:gravity="center_vertical" android:layout_height="wrap_content"
-							  android:paddingBottom="20dp">
-					<TextView android:id="@+id/identity_provider_displayName"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
-						android:gravity="left" android:textSize="20dp" android:textStyle="bold"
-						android:text="&lt;identity provider display name&gt;" />
-					<TextView android:id="@+id/identity_provider_identifier"
-						android:paddingTop="3dp" android:gravity="left" android:textSize="12dp"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
-						android:text="&lt;identity provider identifier&gt;" />
-				</LinearLayout>
-			</TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
 
-			<TableRow android:layout_height="wrap_content"
-				android:layout_width="fill_parent">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="horizontal" android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView android:id="@+id/identity_displayName_label"
-						android:layout_width="120dp" android:layout_height="wrap_content"
-						android:textStyle="bold" android:text="@string/full_name"
-						/>
-					<TextView android:id="@+id/identity_displayName"
-						android:layout_width="fill_parent" android:gravity="right"
-						android:layout_height="wrap_content" android:text="&lt;Full Name&gt;"
-						/>
-				</LinearLayout>
-			</TableRow>
-			<TableRow android:layout_height="fill_parent"
-				android:layout_width="fill_parent">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="horizontal" android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView android:id="@+id/identity_identifier_label"
-						android:layout_width="120dp" android:layout_height="wrap_content"
-						android:textStyle="bold" android:text="@string/tiqr_id"/>
-					<TextView android:id="@+id/identity_identifier"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
-						android:gravity="right" android:text="&lt;ID&gt;"
-						/>
-				</LinearLayout>
-			</TableRow>
-			<TableRow android:layout_height="fill_parent"
-				android:layout_width="fill_parent">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="horizontal" android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView android:id="@+id/identity_provider_infoURL_label"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:textStyle="bold" android:text="@string/information"
-						/>
-					<TextView android:id="@+id/identity_provider_infoURL"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
-						android:text="&lt;Info URL&gt;"
-						android:gravity="right"/>
-				</LinearLayout>
-			</TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-			<TableRow android:layout_height="fill_parent"
-				android:layout_width="fill_parent"
-				android:id="@+id/use_fingerprint_container">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="horizontal" android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:textStyle="bold" android:text="@string/identity_uses_fingerprint"
-						/>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp">
 
-					<Switch
-						android:id="@+id/use_fingerprint_switch"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:gravity="right"
-						/>
+                    <TextView
+                        android:id="@+id/identity_provider_displayName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        tools:text="Identity provider display name"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-				</LinearLayout>
-			</TableRow>
+                    <TextView
+                        android:id="@+id/identity_provider_identifier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingTop="3dp"
+                        tools:text="Identity provider identifier"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </TableRow>
 
-			<TableRow android:layout_height="fill_parent"
-				android:layout_width="fill_parent"
-				android:id="@+id/upgrade_fingerprint_container">
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:orientation="horizontal" android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:textStyle="bold" android:text="@string/identity_upgrade_to_fingerprint"
-						/>
+            <TableRow style="@style/IdentityRow">
 
-					<Switch
-						android:id="@+id/upgrade_fingerprint_switch"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:gravity="right"
-						/>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-				</LinearLayout>
-			</TableRow>
+                    <TextView
+                        android:id="@+id/identity_displayName_label"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/full_name"
+                        android:textStyle="bold" />
 
-			<TableRow android:layout_height="fill_parent" android:layout_weight="1"
-				android:layout_width="fill_parent" android:gravity="center_horizontal|bottom">
-				<TextView android:id="@+id/identity_blocked_message"
-					android:textColor="#9F9F9F" android:paddingBottom="10dp"
-					android:gravity="center_horizontal"
-					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:visibility="invisible" android:text="@string/identity_blocked_message" />
-			</TableRow>
-		</TableLayout>
-	</ScrollView>
+                    <TextView
+                        android:id="@+id/identity_displayName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        tools:text="Full Name" />
+                </LinearLayout>
+            </TableRow>
 
-	<Button android:id="@+id/delete_button"
-			style="@style/SurfnetPrimaryButton"
-			android:text="@string/delete_button"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="40dp"
-			android:layout_marginRight="40dp"
-			android:layout_marginTop="20dp"
-			android:layout_marginBottom="40dp"/>
+            <TableRow style="@style/IdentityRow">
 
-	<org.tiqr.authenticator.general.FooterView
-		android:id="@+id/fallbackFooterView" android:layout_width="fill_parent"
-		android:layout_height="wrap_content"/>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/identity_identifier_label"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tiqr_id"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/identity_identifier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        tools:text="ID" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow style="@style/IdentityRow">
+
+                <TextView
+                    android:id="@+id/identity_provider_info_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/information"
+                    android:textColor="@color/link_text"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/use_fingerprint_container"
+                style="@style/IdentityRow">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/identity_uses_fingerprint"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/use_fingerprint_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right" />
+
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/upgrade_fingerprint_container"
+                style="@style/IdentityRow">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/identity_upgrade_to_fingerprint"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/upgrade_fingerprint_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right" />
+
+                </LinearLayout>
+            </TableRow>
+
+
+            <TextView
+                android:id="@+id/identity_blocked_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/identity_blocked_message"
+                android:textColor="@color/tiqr_red"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/delete_button"
+        style="@style/SurfnetButton.Ternary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/delete_button" />
+
+    <org.tiqr.authenticator.general.FooterView
+        android:id="@+id/fallbackFooterView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

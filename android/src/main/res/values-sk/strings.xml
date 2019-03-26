@@ -23,6 +23,7 @@
   <string name="full_name">Celé meno</string>
   <string name="id">ID</string>
   <string name="information">Informácie</string>
+  <string name="information_with_host">Informácie (%s)</string>
   <string name="cancel_button">Zrušiť</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Skúsiť znova</string>

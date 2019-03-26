@@ -24,6 +24,7 @@
     <string name="full_name">Full name</string>
     <string name="tiqr_id">Tiqr account id</string>
     <string name="information">Information</string>
+    <string name="information_with_host">Information (%s)</string>
     <string name="cancel_button">Cancel</string>
     <string name="ok_button">OK</string>
     <string name="retry_button">Retry</string>
@@ -152,7 +153,7 @@ identity provider(s) check your identities (accessible from the top right). <br 
 Together with your new activation code you will receive instructions for 
 reactivating your account. Press <b>Scan</b> if asked.</string>
     <string name="upgrade_to_touch_id_title">Upgrade account</string>
-    <string name="upgrade_to_touch_id_message">Do you want to upgrade this account to use Fingerprint instead of a PIN?</string>
+    <string name="upgrade_to_touch_id_message">Do you want to log in with this account using the fingerprint scanner instead of a PIN?</string>
     <string name="upgrade_button">Upgrade</string>
     <string name="fingerprint_intro">Confirm fingerprint to continue</string>
     <string name="touch_sensor">Touch fingerprint sensor</string>

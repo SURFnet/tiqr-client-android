@@ -86,7 +86,7 @@
 	</ScrollView>
 
 	<Button android:id="@+id/confirm_button"
-			style="@style/SurfnetPrimaryButton"
+			style="@style/SurfnetButton.Primary"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="40dp"

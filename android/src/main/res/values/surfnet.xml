@@ -7,18 +7,31 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <style name="SurfnetPrimaryButton">
+    <style name="SurfnetButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/button_tiqr_green</item>
+    </style>
+
+    <style name="SurfnetButton.Primary">
         <item name="android:textSize">20sp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:background">@drawable/button_tiqr_green</item>
     </style>
 
-    <style name="SurfnetSecondaryButton">
+    <style name="SurfnetButton.Secondary">
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
         <item name="android:background">@drawable/button_tiqr_white</item>
+    </style>
+
+    <style name="SurfnetButton.Ternary">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_tiqr_red</item>
     </style>
 
 </resources>

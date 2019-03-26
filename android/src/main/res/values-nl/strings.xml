@@ -18,19 +18,21 @@
   <string name="account_ready">Uw account is klaar voor gebruik</string>
   <string name="account_activated">Uw account is geactiveerd!</string>
   <string name="enrollment_confirm_button">OK</string>
+  <string name="enrollment_cancel_button">Annuleren</string>
   <string name="remember_pincode_notice">Onthoud uw PIN, deze kan niet veranderd worden!</string>
   <string name="enter_the_following">Voer de volgende gegevens in:</string>
   <string name="full_name">Volledige naam</string>
   <string name="id">ID</string>
   <string name="information">Informatie</string>
+  <string name="information_with_host">Informatie (%s)</string>
   <string name="cancel_button">Annuleren</string>
   <string name="ok_button">OK</string>
   <string name="retry_button">Opnieuw</string>
   <string name="delete_button">Verwijder</string>
   <string name="delete_confirm_title">Weet u het zeker?</string>
-  <string name="delete_confirm">Deze account kan niet meer gebruikt worden als hij verwijderd is.</string>
+  <string name="delete_confirm">Dit account kan niet meer gebruikt worden nadat deze verwijderd is.</string>
   <string name="identifier_label">Gebruikers ID:</string>
-  <string name="fallback_identifier_label">Uw gebruikers ID is:</string>
+  <string name="fallback_identifier_label">Uw ID is:</string>
   <string name="note_pin_not_verified_title">Opmerking: uw PIN is nog niet geverifieerd.</string>
   <string name="note_pin_not_verified">Als u niet kunt inloggen met bovenstaande gegevens, scan
 dan opnieuw en geef de correcte PIN code in.</string>
@@ -161,7 +163,7 @@ naar uw identiteitverstrekker(s) is beschikbaar vanuit het account overzicht
 Bij uw nieuwe activatiecode ontvangt u instructies. Zodra u daar om gevraagd wordt 
 drukt u op <b>Scan</b>.</string>
   <string name="upgrade_to_touch_id_title">Account upgraden</string>
-  <string name="upgrade_to_touch_id_message">Wil je dit account upgraden naar TouchID? Hierdoor kun je in het vervolg inloggen met jouw vingerafdruk in plaats van een PIN-code</string>
+  <string name="upgrade_to_touch_id_message">Wil je voor dit account voortaan inloggen met de vingerafdrukscanner in plaats van een PIN-code?</string>
   <string name="upgrade_button">Upgrade</string>
   <string name="fingerprint_intro">Bevestig vingerafdruk om door te gaan</string>
   <string name="touch_sensor">Raak vingerafdruk sensor aan</string>
@@ -174,4 +176,9 @@ drukt u op <b>Scan</b>.</string>
   <string name="identity_uses_fingerprint">Gebruik vingerafdruk</string>
   <string name="identity_upgrade_to_fingerprint">Gebruik vingerafdruk na volgende login</string>
   <string name="error_show_technical_details">Toon technische details</string>
+  <string name="entroll_pin_verify_title">Verifieer PIN</string>
+  <string name="entroll_pin_title">Kies een unieke PIN</string>
+  <string name="login_pin_title">Voer PIN in</string>
+  <string name="enroll_account_details">Account details</string>
+  <string name="tiqr_id">tiqr Account ID</string>
 </resources>

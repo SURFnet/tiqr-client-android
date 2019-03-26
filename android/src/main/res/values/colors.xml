@@ -17,6 +17,10 @@
 <resources>
   <color name="tiqr_green">#ABBD26</color>
   <color name="tiqr_dark_green">#9AAA22</color>
+
+  <color name="tiqr_red">#f44336</color>
+  <color name="tiqr_dark_red">#ba000d</color>
+
   <color name="contents_text">#ff000000</color>
   <color name="encode_view">#ffffffff</color>
   <color name="help_button_view">#ffcccccc</color>
@@ -41,4 +45,6 @@
   <color name="viewfinder_frame">#ff000000</color>
   <color name="viewfinder_laser">#ffff0000</color>
   <color name="viewfinder_mask">#60000000</color>
+  <color name="link_text">#0288d1</color>
+
 </resources>

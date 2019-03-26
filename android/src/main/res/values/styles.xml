@@ -12,4 +12,10 @@
 		<item name="android:gravity">center_vertical|center_horizontal</item>
 		<item name="android:background">@android:color/transparent</item>
 	</style>
+
+	<style name="IdentityRow">
+        <item name="android:gravity">center</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">36dp</item>
+	</style>
 </resources>
