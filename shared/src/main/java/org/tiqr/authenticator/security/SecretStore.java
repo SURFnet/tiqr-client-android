@@ -87,7 +87,8 @@ public class SecretStore {
         }
     }
 
-    public CipherPayload getSecretKey(String identity, SecretKey sessionKey) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public CipherPayload getSecretKey(String identity, SecretKey sessionKey) throws UnrecoverableEntryException,
+            NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
         _initializeKeyStore(sessionKey);
         SecretKeyEntry ctEntry;
         SecretKeyEntry ivEntry;
@@ -112,6 +113,9 @@ public class SecretStore {
         } else {
             ivBytes = ivEntry.getSecretKey().getEncoded();
             Log.i("encryption", "IV for: " + identity + " is " + new String(Base64Coder.encode(ivBytes)));
+        }
+        if (ctEntry == null || ctEntry.getSecretKey() == null) {
+            throw new UnrecoverableKeyException("Cipher entry has not been found!");
         }
         CipherPayload cipherPayload = new CipherPayload(ctEntry.getSecretKey().getEncoded(), ivBytes);
         if (migrateKeys) {

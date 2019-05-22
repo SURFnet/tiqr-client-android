@@ -11,6 +11,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;
@@ -59,7 +60,8 @@ public class Secret {
         }
     }
 
-    private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableEntryException {
+    private SecretKey _loadFromKeyStore(SecretKey sessionKey, Type type) throws SecurityFeaturesException, InvalidKeyException, CertificateException,
+            NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableEntryException {
         SecretKey deviceKey = Encryption.getDeviceKey(_ctx);
         CipherPayload civ = _store.getSecretKey(getId(type), deviceKey);
         if (civ == null || civ.cipherText == null) {
