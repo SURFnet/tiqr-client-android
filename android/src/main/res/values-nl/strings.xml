@@ -132,6 +132,7 @@ eenmalige gegevens in te geven:</string>
   <string name="error_enroll_failed_to_store_identity">Opslaan identeit mislukt. Neem contact op met support.</string>
   <string name="error_enroll_failed_to_generate_secret">Genereren geheim mislukt. Neem contact op met support.</string>
   <string name="error_device_incompatible_with_security_standards">Telefoon is niet compatible met de vereiste beveiligingsstandaarden.</string>
+  <string name="error_browser_not_available">Geen browser beschikbaar voor het openen van deze URL.</string>
   <string name="provided_by">aangeboden door:</string>
   <string name="main_text_welcome">Met tiqr kunt u met uw smartphone veilig en vertrouwd inloggen bij 
 verschillende webdiensten. &lt;br/&gt;

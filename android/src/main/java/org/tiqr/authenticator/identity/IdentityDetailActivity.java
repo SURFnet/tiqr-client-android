@@ -1,6 +1,7 @@
 package org.tiqr.authenticator.identity;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.MainActivity;
@@ -112,7 +114,11 @@ public class IdentityDetailActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(infoUrl));
-                    startActivity(browserIntent);
+                    try {
+                        startActivity(browserIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        Toast.makeText(v.getContext(), R.string.error_browser_not_available, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
