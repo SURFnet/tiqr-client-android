@@ -1,7 +1,11 @@
 package org.tiqr.authenticator.general;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
 
 import org.tiqr.authenticator.auth.Challenge;
 
@@ -14,6 +18,17 @@ public abstract class AbstractAuthenticationActivity extends Activity {
 
     private ProgressDialog _progressDialog;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        disableAutoFill();
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void disableAutoFill() {
+        getWindow().getDecorView().setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+    }
 
     /**
      * Returns the challenge.

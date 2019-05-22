@@ -166,4 +166,5 @@ reactivating your account. Press <b>Scan</b> if asked.</string>
     <string name="identity_uses_fingerprint">Uses fingerprint</string>
     <string name="identity_upgrade_to_fingerprint">Upgrade to fingerprint after next login</string>
     <string name="error_show_technical_details">Show technical details</string>
+    <string name="error_browser_not_available">A browser needs to be installed to open this URL.</string>
 </resources>
