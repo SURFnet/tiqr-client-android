@@ -42,7 +42,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
      * When the ok button has been pressed, user has entered the pin
      */
     @Override
-    public void process(final View v) {
+    public void process() {
         _hideSoftKeyboard(pincode);
 
         AuthenticationChallenge challenge = (AuthenticationChallenge)_getChallenge();

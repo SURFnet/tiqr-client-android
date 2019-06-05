@@ -37,7 +37,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
     }
 
     @Override
-    public void process(View v) {
+    public void process() {
         String secondPin = pincode.getText().toString();
         if (!firstPin.equals(secondPin)) {
             _clear();
