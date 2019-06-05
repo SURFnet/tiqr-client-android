@@ -2,25 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pincode_layout"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
 
     <org.tiqr.authenticator.general.HeaderView
         android:id="@+id/headerView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:paddingLeft="20dip"
-        android:paddingTop="1dip"
-        android:paddingRight="20dip"
-        android:paddingBottom="3dip">
+        android:paddingLeft="20dp"
+        android:paddingTop="4dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="3dp">
 
         <TextView
             android:id="@+id/title"
@@ -42,92 +41,87 @@
             android:layout_height="wrap_content"
             tools:text="@string/login_intro" />
 
-        <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/pinShadow"
-                android:layout_width="1px"
-                android:layout_height="1px"
-                android:layout_x="0px"
-                android:layout_y="0px"
-                android:focusable="true"
+                android:id="@+id/pincode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="80dp"
+                android:background="@android:color/transparent"
+                android:cursorVisible="false"
+                android:digits="0123456789"
+                android:inputType="numberPassword"
                 android:maxLength="4"
-                android:numeric="integer" />
-        </AbsoluteLayout>
+                android:textColor="@android:color/transparent" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/pin1Field"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:nextFocusRight="@id/pin2Field"
-                android:nextFocusForward="@id/pin2Field"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:password="true"
-                android:singleLine="true"
-                android:textSize="32dp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/pin2Field"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:nextFocusRight="@id/pin3Field"
-                android:nextFocusForward="@id/pin3Field"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textSize="32dp" />
+                <TextView
+                    android:id="@+id/pin1Field"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp" />
 
-            <EditText
-                android:id="@+id/pin3Field"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:nextFocusRight="@id/pin4Field"
-                android:nextFocusForward="@id/pin4Field"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textSize="32dp" />
+                <TextView
+                    android:id="@+id/pin2Field"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp" />
 
-            <EditText
-                android:id="@+id/pin4Field"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textSize="32dp" />
+                <TextView
+                    android:id="@+id/pin3Field"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/edit_text"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/ok_button"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:onClick="process"
-                android:text="@string/ok_button" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/pin4Field"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/edit_text"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/ok_button"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="@string/ok_button" />
+            </LinearLayout>
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/pinHint"

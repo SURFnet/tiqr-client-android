@@ -140,7 +140,7 @@ public class AuthenticationService {
 
                 challenge.setIdentity(identity);
                 challenge.setIdentityProvider(identity == null ? ip : _dbAdapter.getIdentityProviderForIdentityId(identity.getId()));
-
+                challenge.setStepUpChallenge(url.getUserInfo() != null && url.getUserInfo().length() > 0);
                 challenge.setSessionKey(pathComponents[1]);
                 challenge.setChallenge(pathComponents[2]);
 
@@ -248,10 +248,10 @@ public class AuthenticationService {
                     String versionHeader = httpURLConnection.getHeaderField("X-TIQR-Protocol-Version");
                     if (versionHeader == null || versionHeader.equals("1")) {
                         // v1 protocol (ascii)
-                        return _parseV1Response(response, challenge.getIdentity());
+                        return _parseV1Response(response, type, challenge.getIdentity());
                     } else {
                         // v2 protocol (json)
-                        return _parseV2Response(response, challenge.getIdentity());
+                        return _parseV2Response(response, type, challenge.getIdentity());
                     }
                 } catch (InvalidChallengeException ex) {
                     return new AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge));
@@ -292,9 +292,10 @@ public class AuthenticationService {
      *
      * @param response authentication response
      * @param identity the corresponding identity
+     * @param secretType The secret type used for authenticating
      * @return Error or null on success.
      */
-    private AuthenticationError _parseV1Response(String response, Identity identity) {
+    private AuthenticationError _parseV1Response(String response, Secret.Type secretType, Identity identity) {
         try {
             if (response != null && response.equals("OK")) {
                 return null;
@@ -309,7 +310,7 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                if (identity.isUsingFingerprint()) {
+                if (secretType == Secret.Type.FINGERPRINT) {
                     if (attemptsLeft > 1) {
                         return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
                     } else if (attemptsLeft == 1) {
@@ -345,7 +346,7 @@ public class AuthenticationService {
      * @param identity the corresponding identity
      * @return Error or null on success.
      */
-    private AuthenticationError _parseV2Response(String response, Identity identity) {
+    private AuthenticationError _parseV2Response(String response, Secret.Type secretType, Identity identity) {
         try {
             JSONObject object = new JSONObject(response);
 
@@ -371,7 +372,7 @@ public class AuthenticationService {
                 Bundle extras = new Bundle();
                 extras.putInt("attemptsLeft", attemptsLeft);
 
-                if (identity.isUsingFingerprint()) {
+                if (secretType == Secret.Type.FINGERPRINT) {
                     if (attemptsLeft > 1) {
                         return new AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras);
                     } else if (attemptsLeft == 1) {

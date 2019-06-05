@@ -10,7 +10,8 @@ import org.tiqr.authenticator.general.AbstractPincodeActivity;
 
 public class EnrollmentPincodeActivity extends AbstractPincodeActivity {
 
-    public void process(View v) {
+    @Override
+    public void process() {
         _hideSoftKeyboard(pincode);
 
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
