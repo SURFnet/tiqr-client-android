@@ -11,6 +11,7 @@ public class AuthenticationChallenge extends Challenge implements Parcelable {
     private String _challenge;
     private String _serviceProviderDisplayName;
     private String _serviceProviderIdentifier;
+    private boolean _isStepUpChallenge;
 
     /**
      * Factory.
@@ -40,6 +41,7 @@ public class AuthenticationChallenge extends Challenge implements Parcelable {
         _challenge = source.readString();
         _serviceProviderDisplayName = source.readString();
         _serviceProviderIdentifier = source.readString();
+        _isStepUpChallenge = source.readInt() == 1;
     }
 
     /**
@@ -52,15 +54,15 @@ public class AuthenticationChallenge extends Challenge implements Parcelable {
         dest.writeString(_challenge);
         dest.writeString(_serviceProviderDisplayName);
         dest.writeString(_serviceProviderIdentifier);
+        dest.writeInt(_isStepUpChallenge ? 1 : 0);
     }
 
     /**
      * The session key for this challenge.
-     * 
+     *
      * @return session key
      */
-    public String getSessionKey() 
-    {
+    public String getSessionKey() {
         return _sessionKey;
     }
 
@@ -69,19 +71,17 @@ public class AuthenticationChallenge extends Challenge implements Parcelable {
      *
      * @param sessionKey session key
      */
-    public void setSessionKey(String sessionKey)
-    {
+    public void setSessionKey(String sessionKey) {
         _sessionKey = sessionKey;
     }
 
     /**
      * The authentication challenge, used to verify the request (not to be confused with the
      * raw challenge!).
-     * 
+     *
      * @return authentication challenge
      */
-    public String getChallenge()
-    {
+    public String getChallenge() {
         return _challenge;
     }
 
@@ -91,44 +91,61 @@ public class AuthenticationChallenge extends Challenge implements Parcelable {
      *
      * @param challenge authentication challenge
      */
-    public void setChallenge(String challenge)
-    {
+    public void setChallenge(String challenge) {
         _challenge = challenge;
     }
-    
+
     /**
      * The service provider (readable) name
-     * 
-	 * @return the service provider
-	 */
-	public String getServiceProviderDisplayName() {
-		return _serviceProviderDisplayName;
-	}
+     *
+     * @return the service provider
+     */
+    public String getServiceProviderDisplayName() {
+        return _serviceProviderDisplayName;
+    }
 
-	/**
+    /**
      * Sets the service provider display name.
      *
-	 * @param serviceProviderDisplayName the service provider display name to set
-	 */
-	public void setServiceProviderDisplayName(String serviceProviderDisplayName) {
-		_serviceProviderDisplayName = serviceProviderDisplayName;
-	}
+     * @param serviceProviderDisplayName the service provider display name to set
+     */
+    public void setServiceProviderDisplayName(String serviceProviderDisplayName) {
+        _serviceProviderDisplayName = serviceProviderDisplayName;
+    }
 
-	/**
- 	 * A unique identifier for the service provider
- 	 * 
-	 * @return the service provider identifier
-	 */
-	public String getServiceProviderIdentifier() {
-		return _serviceProviderIdentifier;
-	}
+    /**
+     * A unique identifier for the service provider
+     *
+     * @return the service provider identifier
+     */
+    public String getServiceProviderIdentifier() {
+        return _serviceProviderIdentifier;
+    }
 
-	/**
+    /**
      * Sets the service provider identifier.
      *
-	 * @param serviceProviderIdentifier The service provider identifier to set
-	 */
-	public void setServiceProviderIdentifier(String serviceProviderIdentifier) {
-		_serviceProviderIdentifier = serviceProviderIdentifier;
-	}
+     * @param serviceProviderIdentifier The service provider identifier to set
+     */
+    public void setServiceProviderIdentifier(String serviceProviderIdentifier) {
+        _serviceProviderIdentifier = serviceProviderIdentifier;
+    }
+
+    /**
+     * Returns if the authentication is a step-up challenge.
+     *
+     * @return True if the server already knows the identity of the user. False if not.
+     */
+    public boolean isStepUpChallenge() {
+        return _isStepUpChallenge;
+    }
+
+    /**
+     * Sets if the authentication is a step-up challenge.
+     *
+     * @param stepUpChallenge True if the server already knows the identity of the user. False if not.
+     */
+    public void setStepUpChallenge(boolean stepUpChallenge) {
+        _isStepUpChallenge = stepUpChallenge;
+    }
 }

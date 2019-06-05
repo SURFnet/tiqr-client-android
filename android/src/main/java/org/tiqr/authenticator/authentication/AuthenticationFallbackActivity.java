@@ -1,6 +1,7 @@
 package org.tiqr.authenticator.authentication;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,9 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.tiqr.Constants;
-import org.tiqr.authenticator.dialog.IncompatibilityDialog;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
+import org.tiqr.authenticator.auth.Challenge;
+import org.tiqr.authenticator.dialog.IncompatibilityDialog;
 import org.tiqr.authenticator.exceptions.InvalidChallengeException;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
@@ -45,7 +47,7 @@ public class AuthenticationFallbackActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fallback);
 
-        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        HeaderView headerView = findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,19 +56,27 @@ public class AuthenticationFallbackActivity extends Activity {
         });
         headerView.hideRightButton();
 
-        TextView identifier = (TextView)findViewById(R.id.identifier);
-        identifier.setText(((AuthenticationActivityGroup)getParent()).getChallenge().getIdentity().getIdentifier());
-
-        Button ok = (Button)findViewById(R.id.confirm_button);
-        ok.setText(R.string.authentication_fallback_button);
-
-        if (ok != null) {
-            ok.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+        boolean isStepUpChallenge = false;
+        Challenge challenge = ((AuthenticationActivityGroup) getParent()).getChallenge();
+        if (challenge instanceof AuthenticationChallenge) {
+            isStepUpChallenge = ((AuthenticationChallenge) challenge).isStepUpChallenge();
         }
+        TextView identifier = findViewById(R.id.identifier);
+        if (isStepUpChallenge) {
+            // This is a stepup challenge
+            findViewById(R.id.identifier_label).setVisibility(View.GONE);
+            identifier.setVisibility(View.GONE);
+        } else {
+            identifier.setText(((AuthenticationActivityGroup) getParent()).getChallenge().getIdentity().getIdentifier());
+        }
+
+        Button ok = findViewById(R.id.confirm_button);
+        ok.setText(R.string.authentication_fallback_button);
+        ok.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         String pincode = getIntent().getStringExtra(Constants.AUTHENTICATION_PINCODE_KEY);
         Secret.Type secretType = Secret.Type.valueOf(getIntent().getStringExtra(Constants.AUTHENTICATION_SECRET_TYPE));
@@ -81,8 +91,8 @@ public class AuthenticationFallbackActivity extends Activity {
     protected void _fetchOTP(String pincode, Secret.Type type) {
         try {
             SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
-            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-            AuthenticationChallenge challenge = (AuthenticationChallenge)parent.getChallenge();
+            AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
+            AuthenticationChallenge challenge = (AuthenticationChallenge) parent.getChallenge();
             Secret secret = Secret.secretForIdentity(challenge.getIdentity(), this);
             SecretKey secretKey = secret.getSecret(sessionKey, type);
 
@@ -99,7 +109,7 @@ public class AuthenticationFallbackActivity extends Activity {
                     challenge.getChallenge(),
                     challenge.getSessionKey());
 
-            TextView otpView = (TextView)findViewById(R.id.otp);
+            TextView otpView = (TextView) findViewById(R.id.otp);
             otpView.setText(otp);
         } catch (InvalidChallengeException e) {
             _showErrorActivityWithMessage(getString(R.string.authentication_failure_title), getString(R.string.error_auth_invalid_challenge), e);
@@ -130,7 +140,7 @@ public class AuthenticationFallbackActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+        AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
         parent.finish();
     }
 }

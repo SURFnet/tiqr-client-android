@@ -34,19 +34,16 @@ public class MainActivity extends Activity {
 
 
     @Inject
-    NotificationService _notificationService;
+    protected NotificationService _notificationService;
 
-    protected
     @Inject
-    EnrollmentService _enrollmentService;
+    protected EnrollmentService _enrollmentService;
 
-    protected
     @Inject
-    AuthenticationService _authenticationService;
+    protected AuthenticationService _authenticationService;
 
-    protected
     @Inject
-    DbAdapter _dbAdapter;
+    protected DbAdapter _dbAdapter;
 
     private ActivityDialog activityDialog;
 
@@ -60,10 +57,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         ((Application)getApplication()).inject(this);
 
-        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        HeaderView headerView = findViewById(R.id.headerView);
         headerView.hideLeftButton();
 
-        int contentResource = 0;
+        int contentResource;
         if (_dbAdapter.identityCount() > 0) {
             contentResource = R.string.main_text_instructions;
         } else {
@@ -86,7 +83,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -102,7 +99,7 @@ public class MainActivity extends Activity {
     }
 
     public void loadContentsIntoWebView(int contentResourceId, int webviewResourceId) {
-        WebView webView = (WebView)findViewById(webviewResourceId);
+        WebView webView = findViewById(webviewResourceId);
         String data = getString(contentResourceId);
         //needed to render chars correctly
         webView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
