@@ -8,15 +8,11 @@ import android.os.Bundle;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 
 import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
-import org.tiqr.authenticator.auth.AuthenticationChallenge;
-import org.tiqr.authenticator.auth.Challenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
-import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
