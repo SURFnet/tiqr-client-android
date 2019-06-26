@@ -1,27 +1,59 @@
 package org.tiqr.authenticator.enrollment;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
+import org.tiqr.Constants;
 import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
+import org.tiqr.authenticator.datamodel.Identity;
+import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
+import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
 import org.tiqr.authenticator.general.ErrorActivity;
+import org.tiqr.authenticator.security.Encryption;
+import org.tiqr.authenticator.security.Secret;
+import org.tiqr.service.authentication.AuthenticationService;
 import org.tiqr.service.enrollment.EnrollmentError;
 import org.tiqr.service.enrollment.EnrollmentService;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
+
+import javax.crypto.SecretKey;
 import javax.inject.Inject;
 
 /**
  * Verify enrollment PIN and start enrollment process.
  */
 public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivity {
+
+    // Logging tag
+    private static final String TAG = EnrollmentPincodeVerificationActivity.class.getSimpleName();
+
+    protected
+    @Inject
+    Context _context;
+
     protected
     @Inject
     EnrollmentService _enrollmentService;
+
+    protected
+    @Inject
+    AuthenticationService _authenticationService;
+
     protected String firstPin;
 
     @Override
@@ -62,16 +94,19 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
      * @param challenge Challenge.
      * @param pin       PIN code.
      */
-    private void _enroll(EnrollmentChallenge challenge, String pin) {
+    private void _enroll(EnrollmentChallenge challenge, final String pin) {
         _showProgressDialog(getString(R.string.enrolling));
 
         _enrollmentService.enroll(challenge, pin, new EnrollmentService.OnEnrollmentListener() {
             @Override
             public void onEnrollmentSuccess() {
                 _cancelProgressDialog();
-                EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
-                Intent summaryIntent = new Intent(EnrollmentPincodeVerificationActivity.this, EnrollmentSummaryActivity.class);
-                group.startChildActivity("EnrollmentSummaryActivity", summaryIntent);
+                FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(EnrollmentPincodeVerificationActivity.this);
+                if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && getIdentity().showFingerprintUpgrade()) {
+                    _showFingerPrintUpgradeDialog(pin);
+                } else {
+                    startEnrollmentSummaryActivity();
+                }
             }
 
             @Override
@@ -126,5 +161,64 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
     protected void _onDialogCancel() {
         EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
         group.goToRoot();
+    }
+
+    private Identity getIdentity() {
+        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+        return parent.getChallenge().getIdentity();
+    }
+
+    /**
+     * Show a dialog to ask if the user wants to upgrade to fingerprint authentication.
+     */
+    private void _showFingerPrintUpgradeDialog(final String pin) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.upgrade_to_touch_id_title))
+                .setMessage(getString(R.string.upgrade_to_touch_id_message))
+                .setPositiveButton(getString(R.string.upgrade_button), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        _upgradeToFingerprint(pin);
+                    }
+                })
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        _authenticationService.shouldShowFingerprintUpgradeForIdentitiy(getIdentity(), false);
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        startEnrollmentSummaryActivity();
+                        _cancelProgressDialog();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void _upgradeToFingerprint(String pincode) {
+        try {
+            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+            EnrollmentChallenge challenge = (EnrollmentChallenge)parent.getChallenge();
+            if (pincode != null) {
+                SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
+                Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
+                //Check if sessionKey is correct
+                secret.getSecret(sessionKey, Secret.Type.PINCODE);
+                SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
+                secret.storeInKeyStore(newSessionKey, Secret.Type.FINGERPRINT);
+            }
+            _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
+        } catch (SecurityFeaturesException | InvalidKeyException | CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException | UnrecoverableEntryException e) {
+            // No user action required
+            Log.e(TAG, "Not able to save the key to the keystore", e);
+        }
+    }
+
+    private void startEnrollmentSummaryActivity() {
+        EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
+        Intent summaryIntent = new Intent(EnrollmentPincodeVerificationActivity.this, EnrollmentSummaryActivity.class);
+        group.startChildActivity("EnrollmentSummaryActivity", summaryIntent);
     }
 }
