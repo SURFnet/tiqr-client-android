@@ -97,7 +97,6 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
                 onBackPressed();
             }
         });
-        headerView.leftButton.setFocusable(false);
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
