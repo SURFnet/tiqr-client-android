@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
@@ -88,7 +88,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.capture);
 
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

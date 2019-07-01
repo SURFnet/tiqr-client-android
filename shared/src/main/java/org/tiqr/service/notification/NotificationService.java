@@ -15,9 +15,12 @@ import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
 
 public class NotificationService {
-    protected
-    @Inject
-    Context _context;
+
+    private final Context _context;
+
+    public NotificationService(Context context) {
+        _context = context;
+    }
 
     private static final String TOKENEXCHANGE_URL = BuildConfig.TOKENEXCHANGE_URL;
 

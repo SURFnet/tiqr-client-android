@@ -8,8 +8,9 @@ import android.database.Cursor;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.app.AlertDialog;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.MainActivity;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.datamodel.DbAdapter;
@@ -50,7 +51,7 @@ public class IdentityDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.identity_detail);
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {

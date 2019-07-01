@@ -5,13 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+
 import org.tiqr.Constants;
-import org.tiqr.authenticator.Application;
 import org.tiqr.authenticator.R;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.exceptions.SecurityFeaturesException;
@@ -59,7 +60,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         firstPin = getIntent().getStringExtra("org.tiqr.firstPin");
 
@@ -82,13 +83,13 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
 
         _hideSoftKeyboard(pincode);
 
-        EnrollmentChallenge challenge = (EnrollmentChallenge)_getChallenge();
+        EnrollmentChallenge challenge = (EnrollmentChallenge) _getChallenge();
         _enroll(challenge, secondPin);
     }
 
     /**
      * Enroll user
-     *
+     * <p>
      * We run this in a new thread here because otherwise, the activity dialog wouldn't show
      *
      * @param challenge Challenge.
@@ -102,7 +103,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
             public void onEnrollmentSuccess() {
                 _cancelProgressDialog();
                 FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(EnrollmentPincodeVerificationActivity.this);
-                if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && getIdentity().showFingerprintUpgrade()) {
+                if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && getIdentity().showFingerprintUpgrade()) {
                     _showFingerPrintUpgradeDialog(pin);
                 } else {
                     startEnrollmentSummaryActivity();
@@ -128,7 +129,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
         if (doReturn && _getChallenge().getReturnURL() != null) {
             _returnToChallengeUrl(successful);
         } else {
-            EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
+            EnrollmentActivityGroup group = (EnrollmentActivityGroup) getParent();
             group.finish(); // back to the scanner
         }
     }
@@ -159,12 +160,12 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
      * Handle cancel.
      */
     protected void _onDialogCancel() {
-        EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
+        EnrollmentActivityGroup group = (EnrollmentActivityGroup) getParent();
         group.goToRoot();
     }
 
     private Identity getIdentity() {
-        AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
+        AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
         return parent.getChallenge().getIdentity();
     }
 
@@ -199,8 +200,8 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
 
     private void _upgradeToFingerprint(String pincode) {
         try {
-            AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-            EnrollmentChallenge challenge = (EnrollmentChallenge)parent.getChallenge();
+            AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
+            EnrollmentChallenge challenge = (EnrollmentChallenge) parent.getChallenge();
             if (pincode != null) {
                 SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
                 Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
@@ -217,7 +218,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
     }
 
     private void startEnrollmentSummaryActivity() {
-        EnrollmentActivityGroup group = (EnrollmentActivityGroup)getParent();
+        EnrollmentActivityGroup group = (EnrollmentActivityGroup) getParent();
         Intent summaryIntent = new Intent(EnrollmentPincodeVerificationActivity.this, EnrollmentSummaryActivity.class);
         group.startChildActivity("EnrollmentSummaryActivity", summaryIntent);
     }
