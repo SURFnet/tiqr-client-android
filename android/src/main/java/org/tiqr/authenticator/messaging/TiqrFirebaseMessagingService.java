@@ -58,7 +58,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((Application) getApplication()).inject(this);
+        ((Application)getApplication()).inject(this);
     }
 
     /**
@@ -103,11 +103,10 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
 
                 int icon = R.drawable.icon_notification;
                 long when = System.currentTimeMillis();
-                long timeout = 1 * 60 * 1000; // after 10 minutes
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, authIntent, 0);
 
-                NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager)_context.getSystemService(Context.NOTIFICATION_SERVICE);
                 if (notificationManager != null) {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(_context, CHANNEL_ID);
                     Notification notification = builder.setContentIntent(pendingIntent)
@@ -117,7 +116,6 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
                             .setWhen(when)
                             .setContentTitle(title)
                             .setTicker(text)
-                            .setTimeoutAfter(timeout)
                             .setContentText(text)
                             .build();
 
@@ -133,7 +131,8 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT < 26) {
             return;
         }
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, _context.getString(R.string.notification_channel_name), NotificationManager.IMPORTANCE_HIGH);
+
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, _context.getString(R.string.notification_channel_name), NotificationManager.IMPORTANCE_DEFAULT);
         notificationChannel.setDescription(_context.getString(R.string.notification_channel_description));
         notificationChannel.enableLights(true);
         notificationChannel.enableVibration(true);
