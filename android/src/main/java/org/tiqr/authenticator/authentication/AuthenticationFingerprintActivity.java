@@ -2,14 +2,14 @@ package org.tiqr.authenticator.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v4.os.CancellationSignal;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.core.os.CancellationSignal;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import org.tiqr.Constants;
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
@@ -46,7 +46,7 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         _fingerprintManager = FingerprintManagerCompat.from(this);
 

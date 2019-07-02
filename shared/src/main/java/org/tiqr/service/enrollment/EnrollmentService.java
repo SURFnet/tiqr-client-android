@@ -55,17 +55,19 @@ public class EnrollmentService {
         void onEnrollmentError(EnrollmentError error);
     }
 
-    protected
-    @Inject
-    NotificationService _notificationService;
 
-    protected
-    @Inject
-    Context _context;
+    private final NotificationService _notificationService;
+    private final Context _context;
+    private final DbAdapter _dbAdapter;
 
-    protected
-    @Inject
-    DbAdapter _dbAdapter;
+    public EnrollmentService(Context context,
+                             NotificationService notificationService,
+                             DbAdapter dbAdapter) {
+        _context =context;
+        _notificationService = notificationService;
+        _dbAdapter = dbAdapter;
+
+    }
 
     /**
      * Contains an enrollment challenge?
@@ -341,9 +343,9 @@ public class EnrollmentService {
      *
      * @param metadata JSON identity provider metadata
      * @return IdentityProvider object
-     * @throws Exception
+     * @throws JSONException If the JSON could not be parsed.
      */
-    private IdentityProvider _getIdentityProviderForMetadata(JSONObject metadata) throws JSONException, UserException {
+    private IdentityProvider _getIdentityProviderForMetadata(JSONObject metadata) throws JSONException {
         IdentityProvider ip = new IdentityProvider();
 
         ip.setIdentifier(metadata.getString("identifier"));
@@ -362,7 +364,7 @@ public class EnrollmentService {
      *
      * @param metadata JSON identity metadata
      * @return identity object
-     * @throws Exception
+     * @throws JSONException,UserException If the JSON could not be parsed or if the identity is already enrolled
      */
     private Identity _getIdentityForMetadata(JSONObject metadata, IdentityProvider ip) throws JSONException, UserException {
         Identity identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.getIdentifier());

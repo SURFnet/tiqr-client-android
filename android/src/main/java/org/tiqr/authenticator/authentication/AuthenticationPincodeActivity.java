@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.tiqr.Constants;
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractPincodeActivity;
@@ -30,7 +30,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         // Update the text.
         title.setText(R.string.login_pin_title);

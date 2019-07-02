@@ -28,16 +28,17 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.R;
+import org.tiqr.service.notification.NotificationService;
 
 import java.util.Map;
 
@@ -55,10 +56,21 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
     @Inject
     protected Context _context;
 
+    @Inject
+    protected NotificationService _notificationService;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
+    }
+
+    @Override
+    public void onNewToken(String token) {
+        super.onNewToken(token);
+        Log.d(TAG, "Refreshed token: " + token);
+        _notificationService.sendRequestWithDeviceToken(token);
     }
 
     /**

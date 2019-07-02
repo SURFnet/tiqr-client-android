@@ -58,17 +58,15 @@ public class AuthenticationService {
         public void onAuthenticationError(AuthenticationError error);
     }
 
-    protected
-    @Inject
-    NotificationService _notificationService;
-    protected
-    @Inject
-    Context _context;
+    private final Context _context;
+    private final NotificationService _notificationService;
+    private final DbAdapter _dbAdapter;
 
-    protected
-    @Inject
-    DbAdapter _dbAdapter;
-
+    public AuthenticationService(Context context, NotificationService notificationService, DbAdapter dbAdapter) {
+        _context = context;
+        _notificationService = notificationService;
+        _dbAdapter = dbAdapter;
+    }
 
     /**
      * Contains an authentication challenge?

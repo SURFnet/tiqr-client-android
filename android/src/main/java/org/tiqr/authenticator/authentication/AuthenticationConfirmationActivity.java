@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.tiqr.authenticator.Application;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.general.AbstractActivityGroup;
 import org.tiqr.authenticator.general.AbstractConfirmationActivity;
+import org.tiqr.authenticator.inject.TiqrComponent;
 import org.tiqr.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
@@ -32,7 +33,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((Application)getApplication()).inject(this);
+        TiqrApplication.Companion.component().inject(this);
 
         setTitleText(R.string.authentication_confirmation_title);
         setDescriptionText(R.string.authentication_confirmation_description);
