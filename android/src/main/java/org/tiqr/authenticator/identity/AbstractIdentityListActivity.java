@@ -14,7 +14,7 @@ public abstract class AbstractIdentityListActivity extends ListActivity {
     protected static final int REQUEST_BASE = 0;
 
 
-    protected static String[] FROM = {DbAdapter.IDENTIFIER, DbAdapter.DISPLAY_NAME};
+    protected static String[] FROM = { DbAdapter.Companion.getIDENTIFIER(), DbAdapter.Companion.getDISPLAY_NAME() };
     protected static int[] TO = {R.id.identifier, R.id.displayName};
 
     private Cursor _identitiesCursor;

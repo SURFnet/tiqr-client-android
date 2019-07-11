@@ -28,7 +28,7 @@ public class IdentityCursorAdapter extends SimpleCursorAdapter {
     public final void bindView(final View v, final Context context, final Cursor cursor) {
         ImageView logoView = v.findViewById(R.id.identity_provider_logo);
 
-        String logoUrl = cursor.getString(cursor.getColumnIndex(DbAdapter.LOGO));
+        String logoUrl = cursor.getString(cursor.getColumnIndex(DbAdapter.Companion.getLOGO()));
         if (logoUrl != null && !logoUrl.isEmpty()) {
             Glide.with(logoView)
                     .load(logoUrl)
@@ -36,7 +36,7 @@ public class IdentityCursorAdapter extends SimpleCursorAdapter {
                     .into(logoView);
         }
 
-        int blocked = cursor.getInt(cursor.getColumnIndex(DbAdapter.BLOCKED));
+        int blocked = cursor.getInt(cursor.getColumnIndex(DbAdapter.Companion.getBLOCKED()));
         TextView blockedText = v.findViewById(R.id.blocked);
 
         if (blocked == 0) {

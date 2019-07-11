@@ -123,7 +123,7 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
             AuthenticationChallenge challenge = (AuthenticationChallenge)_getChallenge();
-            _login(challenge, Constants.AUTHENTICATION_FINGERPRINT_KEY);
+            _login(challenge, Constants.INSTANCE.getAUTHENTICATION_FINGERPRINT_KEY());
         }
 
         @Override
@@ -145,8 +145,8 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
                 finish(); // Clear current from the stack so back goes back one deeper.
                 AuthenticationActivityGroup group = (AuthenticationActivityGroup)getParent();
                 Intent fallbackIntent = new Intent(this, AuthenticationFallbackActivity.class);
-                fallbackIntent.putExtra(Constants.AUTHENTICATION_PINCODE_KEY, Constants.AUTHENTICATION_FINGERPRINT_KEY);
-                fallbackIntent.putExtra(Constants.AUTHENTICATION_SECRET_TYPE, Secret.Type.FINGERPRINT.name());
+                fallbackIntent.putExtra(Constants.INSTANCE.getAUTHENTICATION_PINCODE_KEY(), Constants.INSTANCE.getAUTHENTICATION_FINGERPRINT_KEY());
+                fallbackIntent.putExtra(Constants.INSTANCE.getAUTHENTICATION_SECRET_TYPE(), Secret.Type.FINGERPRINT.name());
                 group.startChildActivity("AuthenticationFallbackActivity", fallbackIntent);
                 break;
             case INVALID_RESPONSE:

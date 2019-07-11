@@ -161,7 +161,7 @@ public class IdentityDetailActivity extends Activity {
 
         FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(this);
         if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
-            if (_identity.isUsingFingerprint()) {
+            if (_identity.getUseFingerprint()) {
                 usesFingerprint.setChecked(true);
                 upgradeFingerprintContainer.setVisibility(View.GONE);
                 useFingerprintContainer.setVisibility(View.VISIBLE);
