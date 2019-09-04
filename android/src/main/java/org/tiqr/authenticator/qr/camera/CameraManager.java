@@ -272,11 +272,12 @@ public final class CameraManager {
             Point cameraResolution = _configManager.getCameraResolution();
             Point surfaceResolution = _configManager.getSurfaceResolution();
 
-            // HACK: x and y get swapped here because the frame is rotated even though the device is rotated. 
-            rect.left = rect.left * cameraResolution.y / surfaceResolution.x;
-            rect.right = rect.right * cameraResolution.y / surfaceResolution.x;
-            rect.top = rect.top * cameraResolution.x / surfaceResolution.y;
-            rect.bottom = rect.bottom * cameraResolution.x / surfaceResolution.y;
+            int correction = 70;
+            // HACK: x and y get swapped here because the frame is rotated even though the device is rotated.
+            rect.left = rect.left * cameraResolution.y / surfaceResolution.x - correction;
+            rect.right = rect.right * cameraResolution.y / surfaceResolution.x + correction;
+            rect.top = rect.top * cameraResolution.x / surfaceResolution.y - correction;
+            rect.bottom = rect.bottom * cameraResolution.x / surfaceResolution.y + correction;
 
             _framingRectInPreview = rect;
         }
