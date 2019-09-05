@@ -47,4 +47,6 @@
   <color name="viewfinder_mask">#60000000</color>
   <color name="link_text">#0288d1</color>
 
+  <color name="notification_icon_color">#000000</color>
+
 </resources>

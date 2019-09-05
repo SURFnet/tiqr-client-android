@@ -30,6 +30,8 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -123,6 +125,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(_context, CHANNEL_ID);
                     Notification notification = builder.setContentIntent(pendingIntent)
                             .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
+                            .setColor(ContextCompat.getColor(this, R.color.notification_icon_color))
                             .setSmallIcon(icon)
                             .setAutoCancel(true)
                             .setWhen(when)
