@@ -28,6 +28,8 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.journeyapps.barcodescanner.Decoder;
+import com.journeyapps.barcodescanner.MixedDecoder;
 
 import org.tiqr.authenticator.R;
 import org.tiqr.authenticator.qr.camera.CameraManager;
@@ -40,10 +42,12 @@ final class DecodeHandler extends Handler {
 
     private final CaptureActivity activity;
     private final MultiFormatReader multiFormatReader;
+    private Decoder decoder;
 
     DecodeHandler(CaptureActivity activity, Hashtable<DecodeHintType, Object> hints) {
         multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
+        decoder = new MixedDecoder(multiFormatReader);
         this.activity = activity;
     }
 
@@ -82,14 +86,7 @@ final class DecodeHandler extends Handler {
 
         // HACK: height and width are swapped because the data is rotated.
         PlanarYUVLuminanceSource source = CameraManager.get().buildLuminanceSource(rotatedData, height, width);
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-        try {
-            rawResult = multiFormatReader.decodeWithState(bitmap);
-        } catch (ReaderException re) {
-            // continue
-        } finally {
-            multiFormatReader.reset();
-        }
+        rawResult = decoder.decode(source);
 
         if (rawResult != null) {
             long end = System.currentTimeMillis();
