@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
@@ -119,13 +120,15 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
                 long when = System.currentTimeMillis();
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, authIntent, 0);
-
+                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 NotificationManager notificationManager = (NotificationManager)_context.getSystemService(Context.NOTIFICATION_SERVICE);
                 if (notificationManager != null) {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(_context, CHANNEL_ID);
                     Notification notification = builder.setContentIntent(pendingIntent)
                             .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification_big))
                             .setColor(ContextCompat.getColor(this, R.color.notification_icon_color))
+                            .setTimeoutAfter(getResources().getInteger(R.integer.notification_timeout_ms))
+                            .setSound(soundUri)
                             .setSmallIcon(icon)
                             .setAutoCancel(true)
                             .setWhen(when)
