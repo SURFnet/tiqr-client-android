@@ -40,9 +40,7 @@ ponovno i unesite ispravan PIN kod.</string>
   <string name="return_button">Povratak</string>
   <string name="unknown">Nepoznato</string>
   <string name="unknown_error">Nepoznata greška</string>
-  <string name="no_identities">Nemate definiranih identiteta.
-
-Pritisnite tipku <b>Izbornik</b> kako biste dodali identitet.</string>
+  <string name="no_identities">Nemate definiranih identiteta.\n\nPritisnite tipku <b>Izbornik</b> kako biste dodali identitet.</string>
   <string name="to_service_provider">na:</string>
   <string name="for_identity_provider">Za:</string>
   <string name="confirm_authentication">Jeste li sigurni da želite da se prijavite?</string>
@@ -81,9 +79,7 @@ Odaberite PIN koji možete upamtiti.</string>
   <string name="powered_by_title">Zasnovan na:</string>
   <string name="interaction_by_title">Dizajn interfejsa:</string>
   <string name="acknowledgements_title">Priznanja:</string>
-  <string name="acknowledgements">        ZXing -&lt;a href="http://code.google.com/p/zxing/"&gt;http://code.google.com/p/zxing/&lt;/a&gt;        
-
-        Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</string>
+  <string name="acknowledgements">ZXing -&lt;a href="http://code.google.com/p/zxing/"&gt;http://code.google.com/p/zxing/&lt;/a&gt;<br/><br/>Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</string>
   <string name="msg_default_status">Unesite QR kod unutar pravougaonika da bi ga skenirali.</string>
   <string name="authentication_confirmation_title">Da li ste sigurni da želite da se prijavite?</string>
   <string name="authentication_confirmation_description">Bićete prijavljeni kao:</string>

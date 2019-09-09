@@ -39,9 +39,7 @@ QR kodo in vpišite vaš PIN.</string>
   <string name="return_button">Nazaj</string>
   <string name="unknown">Neznan(a)</string>
   <string name="unknown_error">Neznana napaka</string>
-  <string name="no_identities">Niste ustvarili še nobene identitete.
-
-Pritisnite na gumb <b>menu</b> in jo ustvarite.</string>
+  <string name="no_identities">Niste ustvarili še nobene identitete.\n\nPritisnite na gumb <b>menu</b> in jo ustvarite.</string>
   <string name="to_service_provider">za:</string>
   <string name="for_identity_provider">Za:</string>
   <string name="confirm_authentication">Se zares želite prijaviti?</string>
