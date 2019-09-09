@@ -38,9 +38,7 @@ dan op ‘e nij en jou de korrekte PIN koade yn.</string>
   <string name="return_button">Werom</string>
   <string name="unknown">Ûnbekend</string>
   <string name="unknown_error">Ûnbekende fout</string>
-  <string name="no_identities">Jo hawwe noch gjinien identiteit.
-
-Druk op de <b>menu</b> knop om in identiteit ta te foegje.</string>
+  <string name="no_identities">Jo hawwe noch gjinien identiteit.\n\nDruk op de <b>menu</b> knop om in identiteit ta te foegje.</string>
   <string name="to_service_provider">foar:</string>
   <string name="for_identity_provider">foar:</string>
   <string name="confirm_authentication">Binne jo wis dat jo ynloche wolle?</string>

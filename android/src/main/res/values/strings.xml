@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">tiqr</string>
     <string name="scan_button">Scan</string>
     <string name="authentication_title">Login</string>
@@ -22,6 +21,7 @@
     <string name="enrollment_cancel_button">Cancel</string>
     <string name="enter_the_following">Enter the following info:</string>
     <string name="full_name">Full name</string>
+    <string name="id">ID</string>
     <string name="tiqr_id">Tiqr account id</string>
     <string name="information">Information</string>
     <string name="information_with_host">Information (%s)</string>
@@ -39,6 +39,7 @@
     <string name="return_button">Return</string>
     <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="no_identities">You don\'t have an account yet \n\nSelect the <b>menu</b> button to add one.</string>
     <string name="to_service_provider">to:</string>
     <string name="for_identity_provider">For:</string>
     <string name="confirm_authentication">Are you sure you want to log in?</string>
@@ -81,8 +82,7 @@
     <string name="powered_by_title">Powered by:</string>
     <string name="interaction_by_title">Interaction design:</string>
     <string name="acknowledgements_title">Acknowledgements:</string>
-    <string name="acknowledgements">        ZXing -<a href="http://code.google.com/p/zxing/">http://code.google.com/p/zxing/</a>        \n
-        Glyphish -<a href="http://glyphish.com">http://glyphish.com</a></string>
+    <string name="acknowledgements">ZXing -<a href="http://code.google.com/p/zxing/">http://code.google.com/p/zxing/</a>\n\nGlyphish -<a href="http://glyphish.com">http://glyphish.com</a></string>
     <string name="msg_default_status">Place a QR code inside the rectangle to scan it.</string>
     <string name="authentication_confirmation_title">Are you sure you want to log in?</string>
     <string name="authentication_confirmation_description">You will be logged in as:</string>

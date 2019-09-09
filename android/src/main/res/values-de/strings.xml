@@ -39,9 +39,7 @@ scannen Sie noch einmal und geben Sie den korrekten PIN Code ein.</string>
   <string name="return_button">Zurück</string>
   <string name="unknown">Unbekannt</string>
   <string name="unknown_error">Unbekannter Fehler</string>
-  <string name="no_identities">Sie haben noch keine Nutzerdaten.
-
-Bitte drücken Sie die <b>Menu</b> Taste.</string>
+  <string name="no_identities">Sie haben noch keine Nutzerdaten.\n\nBitte drücken Sie die <b>Menu</b> Taste.</string>
   <string name="to_service_provider">zu:</string>
   <string name="for_identity_provider">Vor:</string>
   <string name="confirm_authentication">Möchten Sie sich wirklich anmelden?</string>

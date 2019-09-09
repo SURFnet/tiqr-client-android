@@ -39,9 +39,7 @@
   <string name="return_button">Späť</string>
   <string name="unknown">Nešpecifikovaný</string>
   <string name="unknown_error">Nešpecifikovaná chyba</string>
-  <string name="no_identities">Nemáte vytvorenú žiadnu identitu.
-
-Zvoľte <b>menu</b> a přidejte identitu.</string>
+  <string name="no_identities">Nemáte vytvorenú žiadnu identitu.\n\nZvoľte <b>menu</b> a přidejte identitu.</string>
   <string name="to_service_provider">k:</string>
   <string name="for_identity_provider">Pre prístup k:</string>
   <string name="confirm_authentication">Skutočne sa chcete prihlásiť?</string>

@@ -39,9 +39,7 @@ igjen og oppgi korrekt pinkode.</string>
   <string name="return_button">Returner</string>
   <string name="unknown">Ukjent</string>
   <string name="unknown_error">Ukjent feil</string>
-  <string name="no_identities">Du har ingen identiteter. 
-
-Trykk <b> Meny </b> knappen for å legge til en identitet.</string>
+  <string name="no_identities">Du har ingen identiteter. \n\nTrykk <b> Meny </b> knappen for å legge til en identitet.</string>
   <string name="to_service_provider">til:</string>
   <string name="for_identity_provider">For:</string>
   <string name="confirm_authentication">Sikker på at du vil logge inn?</string>

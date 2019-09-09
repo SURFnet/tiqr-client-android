@@ -38,9 +38,7 @@
   <string name="return_button">Inapoi</string>
   <string name="unknown">Necunoscut</string>
   <string name="unknown_error">Eroare necunoscuta</string>
-  <string name="no_identities">Nu aveti date de autentificare inca.
-
-Apasati butonul <b>menu</b> pentru a adauga o identitate.</string>
+  <string name="no_identities">Nu aveti date de autentificare inca.\n\nApasati butonul <b>menu</b> pentru a adauga o identitate.</string>
   <string name="to_service_provider">catre:</string>
   <string name="for_identity_provider">Pentru:</string>
   <string name="confirm_authentication">Sunteti sigur ca vreti sa va autentificati?</string>

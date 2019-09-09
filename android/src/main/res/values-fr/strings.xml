@@ -40,9 +40,7 @@ code PIN correcte.</string>
   <string name="return_button">Retour</string>
   <string name="unknown">Inconnu</string>
   <string name="unknown_error">Erreur inconnue</string>
-  <string name="no_identities">Vous n\'avez pas encode d\'identité.
-
-Appuyez sur le bouton <b>menu</b> pour ajouter une identité.</string>
+  <string name="no_identities">Vous n\'avez pas encode d\'identité.\n\nAppuyez sur le bouton <b>menu</b> pour ajouter une identité.</string>
   <string name="to_service_provider">vers: </string>
   <string name="for_identity_provider">Pour: </string>
   <string name="confirm_authentication">Etes-vous sûr de vouloir vous connecter?</string>

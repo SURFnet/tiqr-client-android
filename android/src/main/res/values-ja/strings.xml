@@ -38,9 +38,7 @@
   <string name="return_button">リターン</string>
   <string name="unknown">不明</string>
   <string name="unknown_error">不明なエラー</string>
-  <string name="no_identities">まだアカウントが登録されていません。
-
-アカウントを登録するために <b>メニュー</b> ボタンを押してください。</string>
+  <string name="no_identities">まだアカウントが登録されていません\n\nアカウントを登録するために <b>メニュー</b> ボタンを押してください。</string>
   <string name="to_service_provider">ログイン先：</string>
   <string name="for_identity_provider">ログイン元：</string>
   <string name="confirm_authentication">本当にログインしますか？</string>

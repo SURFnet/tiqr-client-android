@@ -39,9 +39,7 @@ ponovno i unesite ispravan PIN kod.</string>
   <string name="return_button">Povratak</string>
   <string name="unknown">Nepoznato</string>
   <string name="unknown_error">Nepoznata pogreška</string>
-  <string name="no_identities">Nemate definiranih identiteta.
-
-Pritisnite tipku <b>Izbornik</b> kako biste dodali identitet.</string>
+  <string name="no_identities">Nemate definiranih identiteta.\n\nPritisnite tipku <b>Izbornik</b> kako biste dodali identitet.</string>
   <string name="to_service_provider">za:</string>
   <string name="for_identity_provider">Za:</string>
   <string name="confirm_authentication">Jeste li sigurni da se želite prijaviti?</string>
