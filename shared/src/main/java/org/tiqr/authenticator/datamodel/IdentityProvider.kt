@@ -29,7 +29,5 @@ class IdentityProvider (
         val DEFAULT_OCRA_SUITE = "OCRA-1:HOTP-SHA1-6:QN10"
     }
 
-    @IgnoredOnParcel
     var ocraSuite: String = DEFAULT_OCRA_SUITE
-
 }
