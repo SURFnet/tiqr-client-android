@@ -363,10 +363,10 @@ class EnrollmentService(private val _context: Context,
 
         i = 0
         while (i < buf.size) {
-            if (buf[i].toInt() and 0xff < 0x10)
+            if (buf[i].toInt().and(0xff) < 0x10)
                 strbuf.append("0")
 
-            strbuf.append(java.lang.Long.toString((buf[i].toInt() and 0xff).toLong(), 16))
+            strbuf.append(java.lang.Long.toString((buf[i].toInt().and(0xff)).toLong(), 16))
             i++
         }
 

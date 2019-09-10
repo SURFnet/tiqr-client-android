@@ -14,7 +14,6 @@ import org.tiqr.oath.OCRA_v1
 @SuppressLint("DefaultLocale")
 class OCRAWrapper_v1 : OCRAProtocol {
     protected fun _numStrToHex(question: String): String {
-
         return BigInteger(question, 10).toString(16).toUpperCase()
     }
 

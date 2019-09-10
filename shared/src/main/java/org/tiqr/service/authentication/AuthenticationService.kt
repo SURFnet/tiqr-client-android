@@ -115,7 +115,7 @@ class AuthenticationService(private val _context: Context, private val _notifica
                         return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_no_identities_for_identity_provider))
                     }
 
-                    identity = if (identities.size == 1) identities[0] else null
+                    identity = if (identities.size >= 1) identities[0] else null
                 }
 
                 val identityProvider = if (identity == null) ip else _dbAdapter.getIdentityProviderForIdentityId(identity.id)

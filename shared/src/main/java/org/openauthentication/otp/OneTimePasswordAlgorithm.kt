@@ -157,24 +157,24 @@ object OneTimePasswordAlgorithm {
 
         val text = ByteArray(8)
         for (i in text.indices.reversed()) {
-            text[i] = (movingFactor and 0xff).toByte()
-            movingFactor = movingFactor shr 8
+            text[i] = movingFactor.and(0xff).toByte()
+            movingFactor = movingFactor.shr(8)
         }
 
         // compute hmac hash
         val hash = hmac_sha1(secret, text)
 
         // put selected bytes into result int
-        var offset = hash[hash.size - 1].toInt() and 0xf
+        var offset = hash[hash.size - 1].toInt().and(0xf)
 
         if (0 <= truncationOffset && truncationOffset < hash.size - 4) {
             offset = truncationOffset
         }
 
-        val binary = (hash[offset].toInt() and 0x7f shl 24
-                or (hash[offset + 1].toInt() and 0xff shl 16)
-                or (hash[offset + 2].toInt() and 0xff shl 8)
-                or (hash[offset + 3].toInt() and 0xff))
+        val binary = hash[offset].toInt().and(0x7f).shl(24)
+                .or(hash[offset + 1].toInt().and(0xff).shl(16))
+                .or(hash[offset + 2].toInt().and(0xff).shl(8))
+                .or(hash[offset + 3].toInt().and(0xff))
 
         var otp = binary % DIGITS_POWER[codeDigits]
         if (addChecksum) {

@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec
 import org.tiqr.authenticator.exceptions.InvalidChallengeException
 
 import java.math.BigInteger
+import kotlin.experimental.and
 
 
 /**
@@ -259,10 +260,11 @@ object OCRA_v1 {
         // put selected bytes into result int
         val offset = hash[hash.size - 1].toInt() and 0xf
 
-        val binary = (hash[offset].toInt() and 0x7f shl 24 or
-                (hash[offset + 1].toInt() and 0xff shl 16) or
-                (hash[offset + 2].toInt() and 0xff shl 8) or
-                (hash[offset + 3].toInt() and 0xff)).toByte()
+        val binary =
+                hash[offset].and(127).toInt().shl(24)
+                        .or(hash[offset + 1].toInt().and(255).toInt().shl(16))
+                        .or(hash[offset + 2].toInt().and(255).toInt().shl(8))
+                        .or(hash[offset + 3].toInt().and(255).toInt())
 
         val otp = binary % DIGITS_POWER[codeDigits]
         result = Integer.toString(otp)

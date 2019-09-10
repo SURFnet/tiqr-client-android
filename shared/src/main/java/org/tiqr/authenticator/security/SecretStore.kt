@@ -108,7 +108,7 @@ constructor(private val _ctx: Context) {
             Log.i("encryption", "No IV found for: $identity")
         } else {
             ivBytes = ivEntry.secretKey.encoded
-            Log.i("encryption", "IV for: " + identity + " is " + String(Base64.decode(ivBytes, Base64.DEFAULT)))
+            Log.i("encryption", "IV for: " + identity + " is " + String(Base64.encode(ivBytes, Base64.DEFAULT)))
         }
         if (ctEntry == null || ctEntry.secretKey == null) {
             throw UnrecoverableKeyException("Cipher entry has not been found!")
