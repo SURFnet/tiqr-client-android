@@ -19,7 +19,8 @@ class IdentityProvider (
     val displayName: String,
     val logoURL: String,
     val authenticationURL: String,
-    val infoURL: String
+    val infoURL: String,
+    var ocraSuite: String = DEFAULT_OCRA_SUITE
 
 ) : Parcelable {
 
@@ -28,6 +29,4 @@ class IdentityProvider (
         // suite. Default is to use an SHA1 hash
         val DEFAULT_OCRA_SUITE = "OCRA-1:HOTP-SHA1-6:QN10"
     }
-
-    var ocraSuite: String = DEFAULT_OCRA_SUITE
 }
