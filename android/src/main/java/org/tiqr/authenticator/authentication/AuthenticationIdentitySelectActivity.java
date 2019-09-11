@@ -22,7 +22,7 @@ public class AuthenticationIdentitySelectActivity extends AbstractIdentityListAc
         _resourceid = R.layout.select_identity_listitem;
         super.onCreate(savedInstanceState);
 
-        HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
+        HeaderView headerView = findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

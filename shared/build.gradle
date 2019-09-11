@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -9,6 +12,10 @@ android {
         targetSdkVersion 28
         buildConfigField "String", "TOKENEXCHANGE_URL", "\"https://tx.tiqr.org/tokenexchange/?appId=tiqr\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    androidExtensions {
+        experimental = true
     }
 }
     
@@ -24,4 +31,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test:rules:1.1.1'
     androidTestImplementation 'junit:junit:4.12'
+    implementation "androidx.core:core-ktx:1.0.2"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

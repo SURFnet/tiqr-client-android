@@ -174,7 +174,7 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
      */
     private String _verificationCharForPin(String pin) {
         String table = "$',^onljDP";
-        int location = Verhoeff.verhoeffDigit(pin);
+        int location = Verhoeff.INSTANCE.verhoeffDigit(pin);
         return table.substring(location, location + 1);
     }
 

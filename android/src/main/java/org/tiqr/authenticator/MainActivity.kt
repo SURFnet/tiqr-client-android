@@ -98,7 +98,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             // Perform the actions needed to parse the raw challenge
             activityDialog = ActivityDialog.show(this)
             val rawChallenge = intent.dataString
-            if (enrollmentService.isEnrollmentChallenge(rawChallenge)) {
+            if (enrollmentService.isEnrollmentChallenge(rawChallenge!!)) {
                 enroll(rawChallenge)
             } else {
                 authenticate(rawChallenge)
@@ -111,7 +111,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      *
      * @param challenge The raw authentication challenge.
      */
-    private fun authenticate(challenge: String?) {
+    private fun authenticate(challenge: String) {
         authenticationService.parseAuthenticationChallenge(challenge, object : AuthenticationService.OnParseAuthenticationChallengeListener {
             override fun onParseAuthenticationChallengeSuccess(challenge: AuthenticationChallenge) {
                 activityDialog?.cancel()
@@ -138,7 +138,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      *
      * @param challenge The raw challenge to enroll for.
      */
-    private fun enroll(challenge: String?) {
+    private fun enroll(challenge: String) {
         enrollmentService.parseEnrollmentChallenge(challenge, object : EnrollmentService.OnParseEnrollmentChallengeListener {
             override fun onParseEnrollmentChallengeSuccess(challenge: EnrollmentChallenge) {
                 activityDialog?.cancel()

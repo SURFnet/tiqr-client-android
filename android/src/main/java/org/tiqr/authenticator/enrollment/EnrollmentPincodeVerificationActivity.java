@@ -203,11 +203,11 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
             AbstractActivityGroup parent = (AbstractActivityGroup) getParent();
             EnrollmentChallenge challenge = (EnrollmentChallenge) parent.getChallenge();
             if (pincode != null) {
-                SecretKey sessionKey = Encryption.keyFromPassword(getParent(), pincode);
-                Secret secret = Secret.secretForIdentity(challenge.getIdentity(), _context);
+                SecretKey sessionKey = Encryption.INSTANCE.keyFromPassword(getParent(), pincode);
+                Secret secret = Secret.Companion.secretForIdentity(challenge.getIdentity(), _context);
                 //Check if sessionKey is correct
                 secret.getSecret(sessionKey, Secret.Type.PINCODE);
-                SecretKey newSessionKey = Encryption.keyFromPassword(getParent(), Constants.AUTHENTICATION_FINGERPRINT_KEY);
+                SecretKey newSessionKey = Encryption.INSTANCE.keyFromPassword(getParent(), Constants.INSTANCE.getAUTHENTICATION_FINGERPRINT_KEY());
                 secret.storeInKeyStore(newSessionKey, Secret.Type.FINGERPRINT);
             }
             _authenticationService.useFingerPrintAsAuthenticationForIdentity(challenge.getIdentity());
