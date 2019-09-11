@@ -11,16 +11,16 @@ import java.util.HashMap
 
 import javax.net.ssl.HttpsURLConnection
 
-class NotificationService(private val _context: Context) {
+class NotificationService(private val context: Context) {
 
     val notificationToken: String?
         get() {
-            val settings = Prefs.get(_context)
+            val settings = Prefs.get(context)
             return settings.getString("sa_notificationToken", null)
         }
 
     @Throws(Exception::class)
-    private fun _sendRequestWithDeviceToken(deviceToken: String) {
+    private fun realSendRequestWithDeviceToken(deviceToken: String) {
         var notificationToken = notificationToken
 
         val nameValuePairs = HashMap<String, String>()
@@ -42,7 +42,7 @@ class NotificationService(private val _context: Context) {
 
         Log.d(NotificationService::class.java.simpleName, "Notification token: " + notificationToken!!)
 
-        val settings = Prefs.get(_context)
+        val settings = Prefs.get(context)
         val editor = settings.edit()
         editor.putString("sa_notificationToken", notificationToken)
         editor.commit()
@@ -51,7 +51,7 @@ class NotificationService(private val _context: Context) {
     fun sendRequestWithDeviceToken(deviceToken: String) {
         Thread(Runnable {
             try {
-                _sendRequestWithDeviceToken(deviceToken)
+                realSendRequestWithDeviceToken(deviceToken)
             } catch (ex: Exception) {
                 Log.e(NotificationService::class.java.simpleName, "Error retrieving device notification token", ex)
             }
@@ -59,7 +59,6 @@ class NotificationService(private val _context: Context) {
     }
 
     companion object {
-
         private val TOKENEXCHANGE_URL = BuildConfig.TOKENEXCHANGE_URL
     }
 }

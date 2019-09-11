@@ -97,8 +97,8 @@ class DbAdapter(private val _ctx: Context) {
         values.put(BLOCKED, if (identity.isBlocked) 1 else 0)
         values.put(IDENTITYPROVIDER, ip.id)
         values.put(SORT_INDEX, identity.sortIndex)
-        values.put(SHOW_FINGERPRINT_UPGRADE, if (identity.showFingerprintUpgrade()) 1 else 0)
-        values.put(USE_FINGERPRINT, if (identity.getUseFingerprint()) 1 else 0)
+        values.put(SHOW_FINGERPRINT_UPGRADE, if (identity.showFingerprintUpgrade) 1 else 0)
+        values.put(USE_FINGERPRINT, if (identity.usingFingerprint) 1 else 0)
 
         val id = _db.insert(TABLE_IDENTITY, null, values)
         if (id != -1L) {
@@ -122,8 +122,8 @@ class DbAdapter(private val _ctx: Context) {
         values.put(DISPLAY_NAME, identity.displayName)
         values.put(BLOCKED, if (identity.isBlocked) 1 else 0)
         values.put(SORT_INDEX, identity.sortIndex)
-        values.put(SHOW_FINGERPRINT_UPGRADE, if (identity.showFingerprintUpgrade()) 1 else 0)
-        values.put(USE_FINGERPRINT, if (identity.getUseFingerprint()) 1 else 0)
+        values.put(SHOW_FINGERPRINT_UPGRADE, if (identity.showFingerprintUpgrade) 1 else 0)
+        values.put(USE_FINGERPRINT, if (identity.usingFingerprint) 1 else 0)
         return _db.update(TABLE_IDENTITY, values, "$ROWID = ?", arrayOf(identity.id.toString())) > 0
     }
 
@@ -165,8 +165,8 @@ class DbAdapter(private val _ctx: Context) {
             displayName = cursor.getString(displayNameColumn),
             sortIndex = cursor.getInt(sortIndexColumn),
             isBlocked = if (cursor.getInt(blockedColumn) == 1) true else false,
-            _showFingerprintUpgrade = if (cursor.getInt(showFingerprintUpgrade) == 1) true else false,
-            isUsingFingerprint = if (cursor.getInt(useFingerprint) == 1) true else false
+            showFingerprintUpgrade = if (cursor.getInt(showFingerprintUpgrade) == 1) true else false,
+            usingFingerprint = if (cursor.getInt(useFingerprint) == 1) true else false
         )
     }
 

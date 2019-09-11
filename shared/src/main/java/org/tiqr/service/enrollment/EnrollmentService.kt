@@ -36,9 +36,9 @@ import javax.crypto.SecretKey
 /**
  * Enrollment data service.
  */
-class EnrollmentService(private val _context: Context,
-                        private val _notificationService: NotificationService,
-                        private val _dbAdapter: DbAdapter) {
+class EnrollmentService(internal val context: Context,
+                        internal val notificationService: NotificationService,
+                        internal val dbAdapter: DbAdapter) {
 
     private val TAG = EnrollmentService::class.java.name
 
@@ -75,18 +75,18 @@ class EnrollmentService(private val _context: Context,
             override fun doInBackground(vararg voids: Void): Any {
 
                 if (!rawChallenge.startsWith("tiqrenroll://")) {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_qr_code))
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_invalid_qr_code))
                 }
 
                 val url: URL
                 try {
                     url = URL(rawChallenge.substring(13))
                 } catch (ex: MalformedURLException) {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_qr_code))
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_invalid_qr_code))
                 }
 
                 if (url.protocol != "http" && url.protocol != "https") {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_qr_code))
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_invalid_qr_code))
                 }
 
                 val metadata: JSONObject
@@ -101,23 +101,23 @@ class EnrollmentService(private val _context: Context,
                     Log.d(javaClass.simpleName, "Enrollment server response: " + json!!)
                     val tokener = JSONTokener(json)
                     val value = tokener.nextValue() as? JSONObject
-                            ?: throw UserException(_context.getString(R.string.error_enroll_invalid_response))
+                            ?: throw UserException(context.getString(R.string.error_enroll_invalid_response))
 
                     metadata = value
-                    val identityProvider = _getIdentityProviderForMetadata(metadata.getJSONObject("service"))
+                    val identityProvider = getIdentityProviderForMetadata(metadata.getJSONObject("service"))
                     return EnrollmentChallenge(
                         enrollmentURL = metadata.getJSONObject("service").getString("enrollmentUrl"),
                         protocolVersion = null,
                         identityProvider = identityProvider,
-                        identity = _getIdentityForMetadata(metadata.getJSONObject("identity"), identityProvider),
+                        identity = getIdentityForMetadata(metadata.getJSONObject("identity"), identityProvider),
                         returnURL = null // TODO: FIXME
                     )
                 } catch (ex: IOException) {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.CONNECTION, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_connect_error))
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.CONNECTION, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_connect_error))
                 } catch (ex: JSONException) {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_response))
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_RESPONSE, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_invalid_response))
                 } catch (ex: UserException) {
-                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.enrollment_failure_title), ex.message ?: "no message available")
+                    return ParseEnrollmentChallengeError(ParseEnrollmentChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.enrollment_failure_title), ex.message ?: "no message available")
                 }
             }
 
@@ -146,15 +146,15 @@ class EnrollmentService(private val _context: Context,
         val task = object : AsyncTask<Void, Void, EnrollmentError>() {
             override fun doInBackground(vararg voids: Void): EnrollmentError? {
                 try {
-                    val sessionKey = Encryption.keyFromPassword(_context, password)
+                    val sessionKey = Encryption.keyFromPassword(context, password)
 
-                    val secret = _generateSecret()
+                    val secret = generateSecret()
 
 
                     val nameValuePairs = HashMap<String, String>()
-                    nameValuePairs["secret"] = _keyToHex(secret)
+                    nameValuePairs["secret"] = keyToHex(secret)
                     nameValuePairs["language"] = Locale.getDefault().language
-                    val notificationAddress = _notificationService.notificationToken
+                    val notificationAddress = notificationService.notificationToken
                     if (notificationAddress != null) {
                         nameValuePairs["notificationType"] = "GCM"
                         nameValuePairs["notificationAddress"] = notificationAddress
@@ -179,20 +179,20 @@ class EnrollmentService(private val _context: Context,
                     val error: EnrollmentError?
                     if (versionHeader == null || versionHeader == "1") {
                         // v1 protocol (ascii)
-                        error = _parseV1Response(response)
+                        error = parseV1Response(response)
                     } else {
                         // v2 protocol (json)
-                        error = _parseV2Response(response)
+                        error = parseV2Response(response)
                     }
 
                     if (error == null) {
-                        _storeIdentityAndIdentityProvider(challenge, secret, sessionKey)
+                        storeIdentityAndIdentityProvider(challenge, secret, sessionKey)
                         return null
                     } else {
                         return error
                     }
                 } catch (ex: Exception) {
-                    return EnrollmentError(Type.CONNECTION, _context.getString(R.string.error_enroll_connect_error), _context.getString(R.string.error_enroll_connect_error), ex)
+                    return EnrollmentError(Type.CONNECTION, context.getString(R.string.error_enroll_connect_error), context.getString(R.string.error_enroll_connect_error), ex)
                 }
 
             }
@@ -217,11 +217,11 @@ class EnrollmentService(private val _context: Context,
      * @param response
      * @return Error object on failure.
      */
-    private fun _parseV1Response(response: String?): EnrollmentError? {
+    private fun parseV1Response(response: String?): EnrollmentError? {
         return if (response != null && response == "OK") {
             null
         } else {
-            EnrollmentError(Type.UNKNOWN, _context.getString(R.string.enrollment_failure_title), response!!, Exception("Unexpected response: $response"))
+            EnrollmentError(Type.UNKNOWN, context.getString(R.string.enrollment_failure_title), response!!, Exception("Unexpected response: $response"))
         }
     }
 
@@ -231,7 +231,7 @@ class EnrollmentService(private val _context: Context,
      * @param response
      * @return Error object on failure.
      */
-    private fun _parseV2Response(response: String?): EnrollmentError? {
+    private fun parseV2Response(response: String?): EnrollmentError? {
         try {
             val `object` = JSONObject(response)
 
@@ -247,17 +247,17 @@ class EnrollmentService(private val _context: Context,
                 when (responseCode) {
                     101 -> {
                         type = Type.INVALID_RESPONSE
-                        message = _context.getString(R.string.error_enroll_general)
+                        message = context.getString(R.string.error_enroll_general)
                     }
                     else -> {
                         type = Type.UNKNOWN
-                        message = _context.getString(R.string.error_enroll_general)
+                        message = context.getString(R.string.error_enroll_general)
                     }
                 }
             }
-            return EnrollmentError(type, _context.getString(R.string.enrollment_failure_title), message, Exception("Unexpected response code: $responseCode; message: $message"))
+            return EnrollmentError(type, context.getString(R.string.enrollment_failure_title), message, Exception("Unexpected response code: $responseCode; message: $message"))
         } catch (ex: JSONException) {
-            return EnrollmentError(Type.INVALID_RESPONSE, _context.getString(R.string.enrollment_failure_title), _context.getString(R.string.error_enroll_invalid_response), ex)
+            return EnrollmentError(Type.INVALID_RESPONSE, context.getString(R.string.enrollment_failure_title), context.getString(R.string.error_enroll_invalid_response), ex)
         }
 
     }
@@ -269,11 +269,11 @@ class EnrollmentService(private val _context: Context,
      * @throws UserException
      */
     @Throws(UserException::class)
-    private fun _generateSecret(): SecretKey {
+    private fun generateSecret(): SecretKey {
         try {
             return Encryption.generateRandomSecretKey()
         } catch (ex: Exception) {
-            throw UserException(_context.getString(R.string.error_enroll_failed_to_generate_secret))
+            throw UserException(context.getString(R.string.error_enroll_failed_to_generate_secret))
         }
 
     }
@@ -282,23 +282,23 @@ class EnrollmentService(private val _context: Context,
      * Store identity and identity provider.
      */
     @Throws(UserException::class, CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class, IOException::class)
-    private fun _storeIdentityAndIdentityProvider(challenge: EnrollmentChallenge, secret: SecretKey, sessionKey: SecretKey) {
+    private fun storeIdentityAndIdentityProvider(challenge: EnrollmentChallenge, secret: SecretKey, sessionKey: SecretKey) {
 
-        if (!_dbAdapter.insertIdentityProvider(challenge.identityProvider)) {
-            throw UserException(_context.getString(R.string.error_enroll_failed_to_store_identity_provider))
+        if (!dbAdapter.insertIdentityProvider(challenge.identityProvider)) {
+            throw UserException(context.getString(R.string.error_enroll_failed_to_store_identity_provider))
         }
 
-        if (!_dbAdapter.insertIdentityForIdentityProvider(challenge.identity, challenge.identityProvider)) {
-            throw UserException(_context.getString(R.string.error_enroll_failed_to_store_identity))
+        if (!dbAdapter.insertIdentityForIdentityProvider(challenge.identity, challenge.identityProvider)) {
+            throw UserException(context.getString(R.string.error_enroll_failed_to_store_identity))
         }
 
-        val secretStore = Secret.secretForIdentity(challenge.identity, _context)
+        val secretStore = Secret.secretForIdentity(challenge.identity, context)
         secretStore.setSecret(secret)
         try {
             secretStore.storeInKeyStore(sessionKey, Secret.Type.PINCODE)
             return
         } catch (e: SecurityFeaturesException) {
-            throw UserException(_context.getString(R.string.error_device_incompatible_with_security_standards))
+            throw UserException(context.getString(R.string.error_device_incompatible_with_security_standards))
         }
     }
 
@@ -310,7 +310,7 @@ class EnrollmentService(private val _context: Context,
      * @return data
      */
     @Throws(IOException::class)
-    private fun _downloadSynchronously(url: URL): ByteArray {
+    private fun downloadSynchronously(url: URL): ByteArray {
         return url.readBytes()
     }
 
@@ -322,7 +322,7 @@ class EnrollmentService(private val _context: Context,
      * @throws JSONException If the JSON could not be parsed.
      */
     @Throws(JSONException::class)
-    private fun _getIdentityProviderForMetadata(metadata: JSONObject): IdentityProvider {
+    private fun getIdentityProviderForMetadata(metadata: JSONObject): IdentityProvider {
         val provider = IdentityProvider(
             identifier = metadata.getString("identifier"),
             displayName = metadata.getString("displayName"),
@@ -344,10 +344,10 @@ class EnrollmentService(private val _context: Context,
      * @throws JSONException,UserException If the JSON could not be parsed or if the identity is already enrolled
      */
     @Throws(JSONException::class, UserException::class)
-    private fun _getIdentityForMetadata(metadata: JSONObject, ip: IdentityProvider): Identity {
-        var identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.identifier)
+    private fun getIdentityForMetadata(metadata: JSONObject, ip: IdentityProvider): Identity {
+        var identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(metadata.getString("identifier"), ip.identifier)
         if (identity != null) {
-            throw UserException(_context.getString(R.string.error_enroll_already_enrolled, metadata.getString("displayName"), ip.displayName))
+            throw UserException(context.getString(R.string.error_enroll_already_enrolled, metadata.getString("displayName"), ip.displayName))
         }
 
         return Identity(
@@ -356,7 +356,7 @@ class EnrollmentService(private val _context: Context,
         )
     }
 
-    private fun _keyToHex(secret: SecretKey): String {
+    private fun keyToHex(secret: SecretKey): String {
         val buf = secret.encoded
         val strbuf = StringBuffer(buf.size * 2)
         var i: Int

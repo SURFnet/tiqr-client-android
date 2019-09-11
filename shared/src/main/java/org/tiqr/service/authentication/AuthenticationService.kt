@@ -39,7 +39,7 @@ import java.util.Locale
 /**
  * Authentication data service.
  */
-class AuthenticationService(private val _context: Context, private val _notificationService: NotificationService, private val _dbAdapter: DbAdapter) {
+class AuthenticationService(private val context: Context, private val notificationService: NotificationService, private val dbAdapter: DbAdapter) {
 
     interface OnParseAuthenticationChallengeListener {
         fun onParseAuthenticationChallengeSuccess(challenge: AuthenticationChallenge)
@@ -74,7 +74,7 @@ class AuthenticationService(private val _context: Context, private val _notifica
             override fun doInBackground(vararg voids: Void): Any {
 
                 if (!rawChallenge.startsWith("tiqrauth://")) {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_qr_code))
+                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_invalid_qr_code))
                 }
 
                 val url: URL
@@ -82,16 +82,16 @@ class AuthenticationService(private val _context: Context, private val _notifica
                 try {
                     url = URL(rawChallenge.replaceFirst("tiqrauth://".toRegex(), "http://"))
                 } catch (ex: MalformedURLException) {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_qr_code))
+                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_invalid_qr_code))
                 }
 
                 val pathComponents = url.path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (pathComponents.size < 3) {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_qr_code))
+                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_CHALLENGE, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_invalid_qr_code))
                 }
 
-                val ip = _dbAdapter.getIdentityProviderByIdentifierAsObject(url.host)
-                        ?: return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider))
+                val ip = dbAdapter.getIdentityProviderByIdentifierAsObject(url.host)
+                        ?: return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity_provider))
 
                 var identity: Identity?
 
@@ -103,27 +103,27 @@ class AuthenticationService(private val _context: Context, private val _notifica
                         // never happens...
                     }
 
-                    identity = _dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(userInfo, ip.identifier)
+                    identity = dbAdapter.getIdentityByIdentifierAndIdentityProviderIdentifierAsObject(userInfo, ip.identifier)
                     if (identity == null) {
-                        return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity))
+                        return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity))
                     }
 
                 } else {
-                    val identities = _dbAdapter.findIdentitiesByIdentityProviderIdentifierAsObjects(ip.identifier)
+                    val identities = dbAdapter.findIdentitiesByIdentityProviderIdentifierAsObjects(ip.identifier)
 
                     if (identities.size == 0) {
-                        return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_no_identities_for_identity_provider))
+                        return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_no_identities_for_identity_provider))
                     }
 
                     identity = if (identities.size >= 1) identities[0] else null
                 }
 
-                val identityProvider = if (identity == null) ip else _dbAdapter.getIdentityProviderForIdentityId(identity.id)
+                val identityProvider = if (identity == null) ip else dbAdapter.getIdentityProviderForIdentityId(identity.id)
                 val isStepUpChallenge = url.userInfo != null && url.userInfo.length > 0
 
                 val serviceProviderDisplayName = when {
                     pathComponents.size > 3 -> pathComponents[3]
-                    else -> _context.getString(R.string.unknown)
+                    else -> context.getString(R.string.unknown)
                 }
 
                 val protocolVersion = when {
@@ -154,9 +154,9 @@ class AuthenticationService(private val _context: Context, private val _notifica
                             returnURL = returnURL
                     )
                 } else if (identity == null) {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity))
+                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity))
                 } else {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_unknown_identity_provider))
+                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity_provider))
                 }
             }
 
@@ -189,8 +189,8 @@ class AuthenticationService(private val _context: Context, private val _notifica
                 var otp: String?
 
                 try {
-                    val sessionKey = Encryption.keyFromPassword(_context, password)
-                    val secret = Secret.secretForIdentity(challenge.identity, _context)
+                    val sessionKey = Encryption.keyFromPassword(context, password)
+                    val secret = Secret.secretForIdentity(challenge.identity, context)
                     val secretKey = secret.getSecret(sessionKey, type)
 
                     val ocra: OCRAProtocol
@@ -209,7 +209,7 @@ class AuthenticationService(private val _context: Context, private val _notifica
                     nameValuePairs["response"] = otp
                     nameValuePairs["language"] = Locale.getDefault().language
 
-                    val notificationAddress = _notificationService.notificationToken
+                    val notificationAddress = notificationService.notificationToken
                     if (notificationAddress != null) {
                         // communicate latest notification type and address
                         nameValuePairs["notificationType"] = "GCM"
@@ -234,27 +234,27 @@ class AuthenticationService(private val _context: Context, private val _notifica
                     val versionHeader = httpURLConnection.getHeaderField("X-TIQR-Protocol-Version")
                     return if (versionHeader == null || versionHeader == "1") {
                         // v1 protocol (ascii)
-                        _parseV1Response(response, type)
+                        parseV1Response(response, type)
                     } else {
                         // v2 protocol (json)
-                        _parseV2Response(response, type)
+                        parseV2Response(response, type)
                     }
                 } catch (ex: InvalidChallengeException) {
-                    return AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge))
+                    return AuthenticationError(ex, Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge))
                 } catch (ex: InvalidKeyException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_invalid_key))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_invalid_key))
                 } catch (ex: SecurityFeaturesException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_device_incompatible_with_security_standards))
                 } catch (ex: CertificateException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_device_incompatible_with_security_standards))
                 } catch (ex: UnrecoverableEntryException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_device_incompatible_with_security_standards))
                 } catch (ex: NoSuchAlgorithmException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_device_incompatible_with_security_standards))
                 } catch (ex: KeyStoreException) {
-                    return AuthenticationError(ex, Type.UNKNOWN, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_device_incompatible_with_security_standards))
+                    return AuthenticationError(ex, Type.UNKNOWN, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_device_incompatible_with_security_standards))
                 } catch (ex: IOException) {
-                    return AuthenticationError(ex, Type.CONNECTION, _context.getString(R.string.authentication_failure_title), _context.getString(R.string.error_auth_connect_error))
+                    return AuthenticationError(ex, Type.CONNECTION, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_connect_error))
                 }
 
             }
@@ -265,10 +265,10 @@ class AuthenticationService(private val _context: Context, private val _notifica
                 } else {
                     if (error.type === Type.ACCOUNT_BLOCKED) {
                         challenge.identity.isBlocked = true
-                        _dbAdapter.updateIdentity(challenge.identity)
+                        dbAdapter.updateIdentity(challenge.identity)
                     } else if (error.type === Type.INVALID_RESPONSE) {
                         if (error.extras.containsKey("attemptsLeft") && error.extras.getInt("attemptsLeft") == 0) {
-                            _dbAdapter.blockAllIdentities()
+                            dbAdapter.blockAllIdentities()
                         }
                     }
 
@@ -289,16 +289,16 @@ class AuthenticationService(private val _context: Context, private val _notifica
      * @param secretType The secret type used for authenticating
      * @return Error or null on success.
      */
-    private fun _parseV1Response(response: String?, secretType: Secret.Type): AuthenticationError? {
+    private fun parseV1Response(response: String?, secretType: Secret.Type): AuthenticationError? {
         try {
             if (response != null && response == "OK") {
                 return null
             } else if (response == "ACCOUNT_BLOCKED") {
-                return AuthenticationError(Type.ACCOUNT_BLOCKED, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message))
+                return AuthenticationError(Type.ACCOUNT_BLOCKED, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message))
             } else if (response == "INVALID_CHALLENGE") {
-                return AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+                return AuthenticationError(Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
             } else if (response == "INVALID_REQUEST") {
-                return AuthenticationError(Type.INVALID_REQUEST, _context.getString(R.string.error_auth_invalid_request_title), _context.getString(R.string.error_auth_invalid_request_message))
+                return AuthenticationError(Type.INVALID_REQUEST, context.getString(R.string.error_auth_invalid_request_title), context.getString(R.string.error_auth_invalid_request_message))
             } else if (response!!.substring(0, 17) == "INVALID_RESPONSE:") {
                 val attemptsLeft = Integer.parseInt(response.substring(17, 18))
                 val extras = Bundle()
@@ -306,30 +306,30 @@ class AuthenticationService(private val _context: Context, private val _notifica
 
                 return if (secretType == Secret.Type.FINGERPRINT) {
                     if (attemptsLeft > 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_fingerprint), String.format(context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras)
                     } else if (attemptsLeft == 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), _context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_fingerprint), context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras)
                     } else {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message), extras)
                     }
                 } else {
                     if (attemptsLeft > 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_pin), String.format(context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras)
                     } else if (attemptsLeft == 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_pin), context.getString(R.string.error_auth_one_attempt_left), extras)
                     } else {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message), extras)
                     }
                 }
             } else return if (response == "INVALID_USERID") {
-                AuthenticationError(Type.INVALID_USER, _context.getString(R.string.error_auth_invalid_account), _context.getString(R.string.error_auth_invalid_account_message))
+                AuthenticationError(Type.INVALID_USER, context.getString(R.string.error_auth_invalid_account), context.getString(R.string.error_auth_invalid_account_message))
             } else {
-                AuthenticationError(null, Type.UNKNOWN, _context.getString(R.string.unknown_error), _context.getString(R.string.error_auth_unknown_error))
+                AuthenticationError(null, Type.UNKNOWN, context.getString(R.string.unknown_error), context.getString(R.string.error_auth_unknown_error))
             }
         } catch (ex: NumberFormatException) {
-            return AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+            return AuthenticationError(ex, Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
         } catch (ex: Exception) {
-            return AuthenticationError(ex, Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+            return AuthenticationError(ex, Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
         }
 
     }
@@ -340,7 +340,7 @@ class AuthenticationService(private val _context: Context, private val _notifica
      * @param response authentication response
      * @return Error or null on success.
      */
-    private fun _parseV2Response(response: String?, secretType: Secret.Type): AuthenticationError? {
+    private fun parseV2Response(response: String?, secretType: Secret.Type): AuthenticationError? {
         try {
             val `object` = JSONObject(response)
 
@@ -353,14 +353,14 @@ class AuthenticationService(private val _context: Context, private val _notifica
                     val duration = `object`.getInt("duration")
                     val extras = Bundle()
                     extras.putInt("duration", duration)
-                    return AuthenticationError(Type.ACCOUNT_TEMPORARY_BLOCKED, _context.getString(R.string.error_auth_account_blocked_temporary_title), _context.getString(R.string.error_auth_account_blocked_temporary_message, duration), extras)
+                    return AuthenticationError(Type.ACCOUNT_TEMPORARY_BLOCKED, context.getString(R.string.error_auth_account_blocked_temporary_title), context.getString(R.string.error_auth_account_blocked_temporary_message, duration), extras)
                 } else {
-                    return AuthenticationError(Type.ACCOUNT_BLOCKED, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message))
+                    return AuthenticationError(Type.ACCOUNT_BLOCKED, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message))
                 }
             } else if (responseCode == 203) {
-                return AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+                return AuthenticationError(Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
             } else if (responseCode == 202) {
-                return AuthenticationError(Type.INVALID_REQUEST, _context.getString(R.string.error_auth_invalid_request_title), _context.getString(R.string.error_auth_invalid_request_message))
+                return AuthenticationError(Type.INVALID_REQUEST, context.getString(R.string.error_auth_invalid_request_title), context.getString(R.string.error_auth_invalid_request_message))
             } else if (responseCode == 201) {
                 val attemptsLeft = `object`.getInt("attemptsLeft")
                 val extras = Bundle()
@@ -368,32 +368,32 @@ class AuthenticationService(private val _context: Context, private val _notifica
 
                 return if (secretType == Secret.Type.FINGERPRINT) {
                     if (attemptsLeft > 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), String.format(_context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_fingerprint), String.format(context.getString(R.string.error_fingerprint_auth_x_attempts_left), attemptsLeft), extras)
                     } else if (attemptsLeft == 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_fingerprint), _context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_fingerprint), context.getString(R.string.error_fingerprint_auth_one_attempt_left), extras)
                     } else {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message), extras)
                     }
                 } else {
                     if (attemptsLeft > 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), String.format(_context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_pin), String.format(context.getString(R.string.error_auth_x_attempts_left), attemptsLeft), extras)
                     } else if (attemptsLeft == 1) {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_wrong_pin), _context.getString(R.string.error_auth_one_attempt_left), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_wrong_pin), context.getString(R.string.error_auth_one_attempt_left), extras)
                     } else {
-                        AuthenticationError(Type.INVALID_RESPONSE, _context.getString(R.string.error_auth_account_blocked_title), _context.getString(R.string.error_auth_account_blocked_message), extras)
+                        AuthenticationError(Type.INVALID_RESPONSE, context.getString(R.string.error_auth_account_blocked_title), context.getString(R.string.error_auth_account_blocked_message), extras)
                     }
                 }
             } else return if (responseCode == 205) {
-                AuthenticationError(Type.INVALID_USER, _context.getString(R.string.error_auth_invalid_account), _context.getString(R.string.error_auth_invalid_account_message))
+                AuthenticationError(Type.INVALID_USER, context.getString(R.string.error_auth_invalid_account), context.getString(R.string.error_auth_invalid_account_message))
             } else {
-                AuthenticationError(Type.UNKNOWN, _context.getString(R.string.unknown_error), _context.getString(R.string.error_auth_unknown_error))
+                AuthenticationError(Type.UNKNOWN, context.getString(R.string.unknown_error), context.getString(R.string.error_auth_unknown_error))
             }
         } catch (e: JSONException) {
-            return AuthenticationError(Type.UNKNOWN, _context.getString(R.string.unknown_error), _context.getString(R.string.error_auth_unknown_error))
+            return AuthenticationError(Type.UNKNOWN, context.getString(R.string.unknown_error), context.getString(R.string.error_auth_unknown_error))
         } catch (e: NumberFormatException) {
-            return AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+            return AuthenticationError(Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
         } catch (e: Exception) {
-            return AuthenticationError(Type.INVALID_CHALLENGE, _context.getString(R.string.error_auth_invalid_challenge_title), _context.getString(R.string.error_auth_invalid_challenge_message))
+            return AuthenticationError(Type.INVALID_CHALLENGE, context.getString(R.string.error_auth_invalid_challenge_title), context.getString(R.string.error_auth_invalid_challenge_message))
         }
 
     }
@@ -405,9 +405,9 @@ class AuthenticationService(private val _context: Context, private val _notifica
      * @param identity the Identity that will be using the fingerprint authentication
      */
     fun useFingerPrintAsAuthenticationForIdentity(identity: Identity) {
-        identity.setUseFingerprint(true)
-        identity.setShowFingerprintUpgrade(false)
-        _dbAdapter.updateIdentity(identity)
+        identity.usingFingerprint = true
+        identity.showFingerprintUpgrade = false
+        dbAdapter.updateIdentity(identity)
 
     }
 
@@ -417,8 +417,8 @@ class AuthenticationService(private val _context: Context, private val _notifica
      * @param identity the Identity for which the fingerprint update dialog will not be shown anymore.
      */
     fun shouldShowFingerprintUpgradeForIdentitiy(identity: Identity, showFingerprintUpgraded: Boolean) {
-        identity.setShowFingerprintUpgrade(showFingerprintUpgraded)
-        _dbAdapter.updateIdentity(identity)
+        identity.showFingerprintUpgrade = showFingerprintUpgraded
+        dbAdapter.updateIdentity(identity)
     }
 
     /**
@@ -429,8 +429,8 @@ class AuthenticationService(private val _context: Context, private val _notifica
      */
     fun hasFingerprintSecret(identity: Identity): Boolean {
         try {
-            val sessionKey = Encryption.keyFromPassword(_context, Constants.AUTHENTICATION_FINGERPRINT_KEY)
-            val secret = Secret.secretForIdentity(identity, _context)
+            val sessionKey = Encryption.keyFromPassword(context, Constants.AUTHENTICATION_FINGERPRINT_KEY)
+            val secret = Secret.secretForIdentity(identity, context)
             secret.getSecret(sessionKey, Secret.Type.FINGERPRINT)
             return true
         } catch (ex: Exception) {

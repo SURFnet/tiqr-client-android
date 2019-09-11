@@ -20,8 +20,8 @@ class Identity(
         val displayName : String? = null,
         val sortIndex : Int = 0,
         var isBlocked : Boolean = false,
-        var _showFingerprintUpgrade : Boolean = true,
-        var isUsingFingerprint : Boolean = false
+        var showFingerprintUpgrade : Boolean = true,
+        var usingFingerprint : Boolean = false
 
 ) : Parcelable {
 
