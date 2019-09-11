@@ -103,7 +103,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
             public void onEnrollmentSuccess() {
                 _cancelProgressDialog();
                 FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(EnrollmentPincodeVerificationActivity.this);
-                if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && getIdentity().showFingerprintUpgrade()) {
+                if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && getIdentity().getShowFingerprintUpgrade()) {
                     _showFingerPrintUpgradeDialog(pin);
                 } else {
                     startEnrollmentSummaryActivity();
