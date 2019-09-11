@@ -20,27 +20,11 @@ class Identity(
         val displayName : String? = null,
         val sortIndex : Int = 0,
         var isBlocked : Boolean = false,
-        private var _showFingerprintUpgrade : Boolean = true,
-        private var isUsingFingerprint : Boolean = false
+        var _showFingerprintUpgrade : Boolean = true,
+        var isUsingFingerprint : Boolean = false
 
 ) : Parcelable {
 
     val isNew: Boolean
         get() = id == -1L
-
-    fun showFingerprintUpgrade(): Boolean {
-        return _showFingerprintUpgrade
-    }
-
-    fun setShowFingerprintUpgrade(showFingerprintUpgrade: Boolean) {
-        _showFingerprintUpgrade = showFingerprintUpgrade
-    }
-
-    fun setUseFingerprint(useFingerprint: Boolean) {
-        isUsingFingerprint = useFingerprint
-    }
-
-    fun getUseFingerprint(): Boolean {
-        return isUsingFingerprint
-    }
 }

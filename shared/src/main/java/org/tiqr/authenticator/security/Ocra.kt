@@ -9,12 +9,12 @@ import org.openauthentication.otp.OneTimePasswordAlgorithm
 
 // This is a light ocra version (hotp with a challenge). See separate story for full ocra support.
 
-class Ocra(private val _secret: ByteArray) {
+class Ocra(private val secret: ByteArray) {
 
     @Throws(InvalidKeyException::class, SecurityFeaturesException::class)
     fun computeResponse(challenge: Long): String {
         try {
-            return OneTimePasswordAlgorithm.generateOTP(_secret, challenge, Ocra.RESPONSE_DIGITS, false, -1)
+            return OneTimePasswordAlgorithm.generateOTP(secret, challenge, Ocra.RESPONSE_DIGITS, false, -1)
         } catch (e: NoSuchAlgorithmException) {
             throw SecurityFeaturesException()
         }

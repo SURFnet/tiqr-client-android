@@ -20,7 +20,6 @@ import com.google.zxing.ResultPoint
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -38,34 +37,33 @@ import java.util.ArrayList
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-class ViewfinderView// This constructor is used when the class is built from an XML resource.
-(context: Context, attrs: AttributeSet) : View(context, attrs) {
+class ViewfinderView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private val _paint: Paint
-    private var _resultBitmap: Bitmap? = null
-    private val _maskColor: Int
-    private val _resultColor: Int
-    private val _laserColor: Int
-    private val _resultPointColor: Int
-    private var _scannerAlpha: Int = 0
-    private var _possibleResultPoints: MutableList<ResultPoint>? = null
-    private var _lastPossibleResultPoints: List<ResultPoint>? = null
-    private var _previewWidth: Int = 0
-    private var _previewHeight: Int = 0
-    private var _finderArea: Rect? = null
+    private val paint: Paint
+    private var resultBitmap: Bitmap? = null
+    private val maskColor: Int
+    private val resultColor: Int
+    private val laserColor: Int
+    private val resultPointColor: Int
+    private var scannerAlpha: Int = 0
+    private var possibleResultPoints: MutableList<ResultPoint>? = null
+    private var lastPossibleResultPoints: List<ResultPoint>? = null
+    private var previewWidth: Int = 0
+    private var previewHeight: Int = 0
+    private var finderArea: Rect? = null
 
     init {
 
         // Initialize these once for performance rather than calling them every time in onDraw().
-        _paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val resources = resources
-        _maskColor = resources.getColor(R.color.viewfinder_mask)
-        _resultColor = resources.getColor(R.color.result_view)
-        _laserColor = resources.getColor(R.color.viewfinder_laser)
-        _resultPointColor = resources.getColor(R.color.possible_result_points)
-        _scannerAlpha = 0
-        _possibleResultPoints = ArrayList(5)
-        _lastPossibleResultPoints = null
+        maskColor = resources.getColor(R.color.viewfinder_mask)
+        resultColor = resources.getColor(R.color.result_view)
+        laserColor = resources.getColor(R.color.viewfinder_laser)
+        resultPointColor = resources.getColor(R.color.possible_result_points)
+        scannerAlpha = 0
+        possibleResultPoints = ArrayList(5)
+        lastPossibleResultPoints = null
     }
 
     /**
@@ -75,8 +73,8 @@ class ViewfinderView// This constructor is used when the class is built from an 
      * @param height
      */
     fun setPreviewSize(width: Int, height: Int) {
-        _previewWidth = width
-        _previewHeight = height
+        previewWidth = width
+        previewHeight = height
     }
 
     /**
@@ -85,75 +83,76 @@ class ViewfinderView// This constructor is used when the class is built from an 
      * @param finderArea Finder area.
      */
     fun setFinderArea(finderArea: Rect) {
-        _finderArea = finderArea
+        this.finderArea = finderArea
     }
 
     @SuppressLint("DrawAllocation")
     public override fun onDraw(canvas: Canvas) {
+
         val width = canvas.width
         val height = canvas.height
 
-        val frame = if (_finderArea != null) _finderArea else Rect(0, 0, width, height)
+        val frame = if (finderArea != null) finderArea else Rect(0, 0, width, height)
 
         frame?.also {
 
             val previewFrame = Rect()
-            previewFrame.left = frame.left * _previewWidth / width
-            previewFrame.right = frame.right * _previewWidth / width
-            previewFrame.top = frame.top * _previewHeight / height
-            previewFrame.bottom = frame.bottom * _previewHeight / height
+            previewFrame.left = frame.left * previewWidth / width
+            previewFrame.right = frame.right * previewWidth / width
+            previewFrame.top = frame.top * previewHeight / height
+            previewFrame.bottom = frame.bottom * previewHeight / height
 
             // Draw the exterior (i.e. outside the framing rect) darkened
-            _paint.color = if (_resultBitmap != null) _resultColor else _maskColor
-            canvas.drawRect(0f, 0f, width.toFloat(), frame.top.toFloat(), _paint)
-            canvas.drawRect(0f, frame.top.toFloat(), frame.left.toFloat(), (frame.bottom + 1).toFloat(), _paint)
-            canvas.drawRect((frame.right + 1).toFloat(), frame.top.toFloat(), width.toFloat(), (frame.bottom + 1).toFloat(), _paint)
-            canvas.drawRect(0f, (frame.bottom + 1).toFloat(), width.toFloat(), height.toFloat(), _paint)
+            paint.color = if (resultBitmap != null) resultColor else maskColor
+            canvas.drawRect(0f, 0f, width.toFloat(), frame.top.toFloat(), paint)
+            canvas.drawRect(0f, frame.top.toFloat(), frame.left.toFloat(), (frame.bottom + 1).toFloat(), paint)
+            canvas.drawRect((frame.right + 1).toFloat(), frame.top.toFloat(), width.toFloat(), (frame.bottom + 1).toFloat(), paint)
+            canvas.drawRect(0f, (frame.bottom + 1).toFloat(), width.toFloat(), height.toFloat(), paint)
 
-            if (_resultBitmap != null) {
+            if (resultBitmap != null) {
                 // Draw the opaque result bitmap over the scanning rectangle
-                _paint.alpha = CURRENT_POINT_OPACITY
-                canvas.drawBitmap(_resultBitmap!!, null, frame, _paint)
+                paint.alpha = CURRENT_POINT_OPACITY
+                canvas.drawBitmap(resultBitmap!!, null, frame, paint)
             } else {
 
                 // Draw a red "laser scanner" line through the middle to show decoding is active
-                _paint.color = _laserColor
-                _paint.alpha = SCANNER_ALPHA[_scannerAlpha]
-                _scannerAlpha = (_scannerAlpha + 1) % SCANNER_ALPHA.size
+                paint.color = laserColor
+                paint.alpha = SCANNER_ALPHA[scannerAlpha]
+                scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.size
                 val middle = frame.height() / 2 + frame.top
-                canvas.drawRect((frame.left + 2).toFloat(), (middle - 1).toFloat(), (frame.right - 1).toFloat(), (middle + 2).toFloat(), _paint)
+                canvas.drawRect((frame.left + 2).toFloat(), (middle - 1).toFloat(), (frame.right - 1).toFloat(), (middle + 2).toFloat(), paint)
 
                 val scaleX = frame.width() / previewFrame.width().toFloat()
                 val scaleY = frame.height() / previewFrame.height().toFloat()
 
-                val currentPossible = _possibleResultPoints
-                val currentLast = _lastPossibleResultPoints
+                val currentPossible = possibleResultPoints
+                val currentLast = lastPossibleResultPoints
                 val frameLeft = frame.left
                 val frameTop = frame.top
                 if (currentPossible!!.isEmpty()) {
-                    _lastPossibleResultPoints = null
+                    lastPossibleResultPoints = null
                 } else {
-                    _possibleResultPoints = ArrayList(5)
-                    _lastPossibleResultPoints = currentPossible
-                    _paint.alpha = CURRENT_POINT_OPACITY
-                    _paint.color = _resultPointColor
+                    possibleResultPoints = ArrayList(5)
+                    lastPossibleResultPoints = currentPossible
+                    paint.alpha = CURRENT_POINT_OPACITY
+                    paint.color = resultPointColor
                     synchronized(currentPossible) {
                         for (point in currentPossible) {
                             canvas.drawCircle((frameLeft + (point.x * scaleX).toInt()).toFloat(),
                                     (frameTop + (point.y * scaleY).toInt()).toFloat(),
-                                    POINT_SIZE.toFloat(), _paint)
+                                    POINT_SIZE.toFloat(), paint)
                         }
                     }
                 }
                 if (currentLast != null) {
-                    _paint.alpha = CURRENT_POINT_OPACITY / 2
-                    _paint.color = _resultPointColor
+                    paint.alpha = CURRENT_POINT_OPACITY / 2
+                    paint.color = resultPointColor
                     synchronized(currentLast) {
                         val radius = POINT_SIZE / 2.0f
                         for (point in currentLast) {
                             canvas.drawCircle((frameLeft + (point.x * scaleX).toInt()).toFloat(),
                                     (frameTop + (point.y * scaleY).toInt()).toFloat(),
-                                    radius, _paint)
+                                    radius, paint)
                         }
                     }
                 }
@@ -170,8 +169,8 @@ class ViewfinderView// This constructor is used when the class is built from an 
     }
 
     fun drawViewfinder() {
-        val resultBitmap = this._resultBitmap
-        this._resultBitmap = null
+        val resultBitmap = this.resultBitmap
+        this.resultBitmap = null
         resultBitmap?.recycle()
         invalidate()
     }
@@ -182,12 +181,12 @@ class ViewfinderView// This constructor is used when the class is built from an 
      * @param barcode An image of the decoded barcode.
      */
     fun drawResultBitmap(barcode: Bitmap) {
-        _resultBitmap = barcode
+        resultBitmap = barcode
         invalidate()
     }
 
     fun addPossibleResultPoint(point: ResultPoint) {
-        val points = _possibleResultPoints
+        val points = possibleResultPoints
         points?.also {
             synchronized(points) {
                 points.add(point)

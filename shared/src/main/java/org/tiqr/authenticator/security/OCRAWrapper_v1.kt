@@ -13,7 +13,8 @@ import org.tiqr.oath.OCRA_v1
  */
 @SuppressLint("DefaultLocale")
 class OCRAWrapper_v1 : OCRAProtocol {
-    protected fun _numStrToHex(question: String): String {
+
+    protected fun numStrToHex(question: String): String {
         return BigInteger(question, 10).toString(16).toUpperCase()
     }
 
@@ -32,7 +33,7 @@ class OCRAWrapper_v1 : OCRAProtocol {
         val challenge: String
         if (ocraSuite.toLowerCase().indexOf("qn") > 1) {
             // Using numeric challenge questions, need to convert to hex first
-            challenge = _numStrToHex(challengeQuestion)
+            challenge = numStrToHex(challengeQuestion)
         } else {
             // if qh, we're already dealing with hex
             challenge = challengeQuestion

@@ -23,20 +23,17 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 class SecretStore @Throws(KeyStoreException::class)
-constructor(private val _ctx: Context) {
-    private var _keyStore: KeyStore? = null
-    private val _filenameKeyStore = "MobileAuthDb.kstore"
-    private var _initialized = false
+constructor(private val ctx: Context) {
 
-    init {
-        _keyStore = KeyStore.getInstance("BKS")
-    }
+    private var keyStore: KeyStore = KeyStore.getInstance("BKS")
+    private val filenameKeyStore = "MobileAuthDb.kstore"
+    private var initialized = false
 
-    private fun _keyStoreExists(): Boolean {
+    private fun keyStoreExists(): Boolean {
         var input: FileInputStream? = null
         // Try to read the keystore from file
         try {
-            input = _ctx.openFileInput(_filenameKeyStore)
+            input = ctx.openFileInput(filenameKeyStore)
             return true
         } catch (ex: FileNotFoundException) {
             return false
@@ -47,35 +44,34 @@ constructor(private val _ctx: Context) {
                 } catch (e: IOException) {
                     // Empty catch.
                 }
-
             }
         }
 
     }
 
     @Throws(CertificateException::class, NoSuchAlgorithmException::class, IOException::class)
-    private fun _createKeyStore() {
+    private fun createKeyStore() {
         // Load the default Key Store
-        _keyStore!!.load(null, null)
+        keyStore.load(null, null)
     }
 
-    private fun _sessionKeyToCharArray(sessionKey: SecretKey): CharArray {
+    private fun sessionKeyToCharArray(sessionKey: SecretKey): CharArray {
         return Utils.byteArrayToCharArray(sessionKey.encoded)
     }
 
-    private fun _sessionKeyToCharArrayAlternative(sessionKey: SecretKey): CharArray {
+    private fun sessionKeyToCharArrayAlternative(sessionKey: SecretKey): CharArray {
         return String(sessionKey.encoded).toCharArray()
     }
 
 
     @Throws(IOException::class, CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class)
-    private fun _saveKeyStore(sessionKey: SecretKey) {
+    private fun saveKeyStore(sessionKey: SecretKey) {
         // Create the file
         var output: FileOutputStream? = null
         try {
-            output = _ctx.openFileOutput(_filenameKeyStore, Context.MODE_PRIVATE)
+            output = ctx.openFileOutput(filenameKeyStore, Context.MODE_PRIVATE)
             // Save the key
-            _keyStore!!.store(output, _sessionKeyToCharArray(sessionKey))
+            keyStore.store(output, sessionKeyToCharArray(sessionKey))
         } finally {
             // Close the keystore and set the input stream
             output?.close()
@@ -84,19 +80,19 @@ constructor(private val _ctx: Context) {
 
     @Throws(UnrecoverableEntryException::class, NoSuchAlgorithmException::class, KeyStoreException::class, CertificateException::class, IOException::class)
     fun getSecretKey(identity: String, sessionKey: SecretKey): CipherPayload {
-        _initializeKeyStore(sessionKey)
+        initializeKeyStore(sessionKey)
         var ctEntry: SecretKeyEntry?
         var ivEntry: SecretKeyEntry?
 
         var migrateKeys = false
 
         try {
-            ctEntry = _keyStore!!.getEntry(identity, KeyStore.PasswordProtection(_sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
-            ivEntry = _keyStore!!.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(_sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
+            ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
+            ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
         } catch (ex: UnrecoverableKeyException) {
             // The keystore is still using the old keys?
-            ctEntry = _keyStore!!.getEntry(identity, KeyStore.PasswordProtection(_sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
-            ivEntry = _keyStore!!.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(_sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
+            ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
+            ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
             // If we got this far, then yes.
             migrateKeys = true
         }
@@ -125,7 +121,7 @@ constructor(private val _ctx: Context) {
 
     @Throws(CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class, IOException::class)
     fun setSecretKey(identity: String, civ: CipherPayload, sessionKey: SecretKey) {
-        _initializeKeyStore(sessionKey)
+        initializeKeyStore(sessionKey)
 
         val cipherText = SecretKeySpec(civ.cipherText, "RAW")
         val ctEntry = KeyStore.SecretKeyEntry(
@@ -134,45 +130,45 @@ constructor(private val _ctx: Context) {
         val iv = SecretKeySpec(civ.iv, "RAW")
         val ivEntry = KeyStore.SecretKeyEntry(iv)
 
-        _keyStore!!.setEntry(identity, ctEntry,
+        keyStore.setEntry(identity, ctEntry,
                 KeyStore.PasswordProtection(
-                        _sessionKeyToCharArray(sessionKey)))
-        _keyStore!!.setEntry(identity + IV_SUFFIX, ivEntry,
+                        sessionKeyToCharArray(sessionKey)))
+        keyStore.setEntry(identity + IV_SUFFIX, ivEntry,
                 KeyStore.PasswordProtection(
-                        _sessionKeyToCharArray(sessionKey)))
+                        sessionKeyToCharArray(sessionKey)))
 
-        _saveKeyStore(sessionKey)
+        saveKeyStore(sessionKey)
     }
 
     @Throws(CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class, IOException::class)
     fun removeSecretKey(identity: String, sessionKey: SecretKey) {
-        _initializeKeyStore(sessionKey)
-        _keyStore!!.deleteEntry(identity)
-        _saveKeyStore(sessionKey)
+        initializeKeyStore(sessionKey)
+        keyStore.deleteEntry(identity)
+        saveKeyStore(sessionKey)
     }
 
     @Throws(CertificateException::class, NoSuchAlgorithmException::class, IOException::class, KeyStoreException::class)
-    private fun _initializeKeyStore(sessionKey: SecretKey) {
-        if (_initialized) {
+    private fun initializeKeyStore(sessionKey: SecretKey) {
+        if (initialized) {
             // Already initialized
             return
         }
 
-        if (!_keyStoreExists()) {
-            _createKeyStore()
-            _saveKeyStore(sessionKey)
+        if (!keyStoreExists()) {
+            createKeyStore()
+            saveKeyStore(sessionKey)
         }
 
         var input: FileInputStream? = null
 
         try {
             // Try and open the private key store
-            input = _ctx.openFileInput(_filenameKeyStore)
+            input = ctx.openFileInput(filenameKeyStore)
             // Reset the keyStore
-            _keyStore = KeyStore.getInstance("BKS")
+            keyStore = KeyStore.getInstance("BKS")
             // Load the store
             try {
-                _keyStore!!.load(input, _sessionKeyToCharArray(sessionKey))
+                keyStore.load(input, sessionKeyToCharArray(sessionKey))
             } catch (ex: IOException) {
                 // It might be an old style password. In this case, the next time we save the keystore
                 // it will be on using the new style password
@@ -181,15 +177,15 @@ constructor(private val _ctx: Context) {
                 } catch (ex2: Exception) { /* Unhandled */
                 }
 
-                input = _ctx.openFileInput(_filenameKeyStore)
-                _keyStore = KeyStore.getInstance("BKS")
-                _keyStore!!.load(input, _sessionKeyToCharArrayAlternative(sessionKey))
+                input = ctx.openFileInput(filenameKeyStore)
+                keyStore = KeyStore.getInstance("BKS")
+                keyStore.load(input, sessionKeyToCharArrayAlternative(sessionKey))
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "Opened keystore with alternative password.")
                 }
             }
 
-            _initialized = true
+            initialized = true
         } finally {
             if (input != null) {
                 try {
@@ -197,7 +193,6 @@ constructor(private val _ctx: Context) {
                 } catch (e: IOException) {
                     // Empty catch block
                 }
-
             }
         }
     }
