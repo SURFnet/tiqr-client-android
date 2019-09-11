@@ -77,7 +77,7 @@ public class IdentityDetailActivity extends Activity {
             usesFingerprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    _identity.setUseFingerprint(checked);
+                    _identity.setUsingFingerprint(checked);
                     _db.updateIdentity(_identity);
                     _updateFingerPrintViews();
                 }
@@ -161,7 +161,7 @@ public class IdentityDetailActivity extends Activity {
 
         FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(this);
         if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
-            if (_identity.getUseFingerprint()) {
+            if (_identity.getUsingFingerprint()) {
                 usesFingerprint.setChecked(true);
                 upgradeFingerprintContainer.setVisibility(View.GONE);
                 useFingerprintContainer.setVisibility(View.VISIBLE);
@@ -172,7 +172,7 @@ public class IdentityDetailActivity extends Activity {
             } else {
                 useFingerprintContainer.setVisibility(View.GONE);
                 upgradeFingerprintContainer.setVisibility(View.VISIBLE);
-                upgradeToFingerprint.setChecked(_identity.showFingerprintUpgrade());
+                upgradeToFingerprint.setChecked(_identity.getShowFingerprintUpgrade());
             }
         } else {
             useFingerprintContainer.setVisibility(View.GONE);
