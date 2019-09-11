@@ -63,7 +63,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     @Override
     protected void _onDialogConfirm() {
         AbstractActivityGroup parent = (AbstractActivityGroup)getParent();
-        if (parent.getChallenge().getIdentity().getUseFingerprint()) {
+        if (parent.getChallenge().getIdentity().getUsingFingerprint()) {
             Intent authenticationFingerprintIntent = new Intent().setClass(this, AuthenticationFingerprintActivity.class);
             parent.startChildActivity("AuthenticationFingerprintActivity", authenticationFingerprintIntent);
         } else {

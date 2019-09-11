@@ -116,16 +116,16 @@ object OCRA {
      */
     fun generateOCRA(ocraSuite: String,
                      key: String,
-                     counter_: String,
-                     question_: String,
-                     password_: String,
-                     sessionInformation_: String,
-                     timeStamp_: String): String {
-        var counter = counter_
-        var question = question_
-        var password = password_
-        var sessionInformation = sessionInformation_
-        var timeStamp = timeStamp_
+                     counter: String,
+                     question: String,
+                     password: String,
+                     sessionInformation: String,
+                     timeStamp: String): String {
+        var counter = counter
+        var question = question
+        var password = password
+        var sessionInformation = sessionInformation
+        var timeStamp = timeStamp
         var codeDigits: Int
         var crypto = ""
         var result: String?

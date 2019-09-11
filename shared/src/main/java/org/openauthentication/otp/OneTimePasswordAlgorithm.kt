@@ -64,9 +64,9 @@ object OneTimePasswordAlgorithm {
      *
      * @return the checksum of num
      */
-    fun calcChecksum(num_: Long, digits_: Int): Int {
-        var num = num_
-        var digits = digits_
+    fun calcChecksum(num: Long, digits: Int): Int {
+        var num = num
+        var digits = digits
         var doubleDigit = true
         var total = 0
         while (0 < digits--) {
@@ -150,8 +150,8 @@ object OneTimePasswordAlgorithm {
      * digit if requested.
      */
     @Throws(NoSuchAlgorithmException::class, InvalidKeyException::class)
-    fun generateOTP(secret: ByteArray, movingFactor_: Long, codeDigits: Int, addChecksum: Boolean, truncationOffset: Int): String {
-        var movingFactor = movingFactor_
+    fun generateOTP(secret: ByteArray, movingFactor: Long, codeDigits: Int, addChecksum: Boolean, truncationOffset: Int): String {
+        var movingFactor = movingFactor
         var result: String?
         val digits = if (addChecksum) codeDigits + 1 else codeDigits
 
