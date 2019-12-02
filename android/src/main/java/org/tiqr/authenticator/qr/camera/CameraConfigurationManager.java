@@ -16,176 +16,204 @@
 
 package org.tiqr.authenticator.qr.camera;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
-import android.os.Build;
 import android.util.Log;
-import android.view.SurfaceHolder;
-
-import java.lang.reflect.Method;
-import java.util.regex.Pattern;
+import android.view.Display;
+import android.view.Surface;
+import android.view.WindowManager;
 
 /**
- * Camera configuration manager.
+ * A class which deals with reading, parsing, and setting the camera parameters which are used to
+ * configure the camera hardware.
  */
 final class CameraConfigurationManager {
-    private static final String TAG = CameraConfigurationManager.class.getSimpleName();
-    private static final Pattern COMMA_PATTERN = Pattern.compile(",");
 
-    private Point _surfaceResolution;
-    private Point _cameraResolution;
-    private int _previewFormat;
-    private String _previewFormatString;
+    private static final String TAG = "CameraConfiguration";
 
-    /**
-     * Calculates the optimal preview size
-     *
-     * @param previewSizeValueString
-     * @param surfaceResolution
-     * @return optimal preview size
-     */
-    private static Point _calculateOptimalPreviewSize(CharSequence previewSizeValueString, Point surfaceResolution) {
-        int bestX = 0;
-        int bestY = 0;
-        int diff = Integer.MAX_VALUE;
-        for (String previewSize : COMMA_PATTERN.split(previewSizeValueString)) {
-            previewSize = previewSize.trim();
-            int dimPosition = previewSize.indexOf('x');
-            if (dimPosition < 0) {
-                Log.w(TAG, "Bad preview-size: " + previewSize);
-                continue;
-            }
+    private final Context context;
+    private int cwNeededRotation;
+    private int cwRotationFromDisplayToCamera;
+    private Point screenResolution;
+    private Point cameraResolution;
+    private Point bestPreviewSize;
+    private Point previewSizeOnScreen;
 
-            int newX;
-            int newY;
-            try {
-                newX = Integer.parseInt(previewSize.substring(0, dimPosition));
-                newY = Integer.parseInt(previewSize.substring(dimPosition + 1));
-            } catch (NumberFormatException nfe) {
-                Log.w(TAG, "Bad preview-size: " + previewSize);
-                continue;
-            }
-
-            int newDiff = Math.abs(newX - surfaceResolution.x) + Math.abs(newY - surfaceResolution.y);
-            if (newDiff == 0) {
-                bestX = newX;
-                bestY = newY;
-                break;
-            } else if (newDiff < diff) {
-                bestX = newX;
-                bestY = newY;
-                diff = newDiff;
-            }
-
-        }
-
-        if (bestX > 0 && bestY > 0) {
-            return new Point(bestX, bestY);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Calculates the optimal camera resolution.
-     *
-     * @param parameters        camera parameters
-     * @param surfaceResolution surface resolution
-     * @return
-     */
-    private static Point _calculateOptimalCameraResolution(Camera.Parameters parameters, Point surfaceResolution) {
-        String previewSizeValueString = parameters.get("preview-size-values");
-        if (previewSizeValueString == null) {
-            previewSizeValueString = parameters.get("preview-size-value");
-        }
-
-        Point cameraResolution = null;
-
-        if (previewSizeValueString != null) {
-            Log.d(TAG, "preview-size-values parameter: " + previewSizeValueString);
-            cameraResolution = _calculateOptimalPreviewSize(previewSizeValueString, surfaceResolution);
-        }
-
-        if (cameraResolution == null) {
-            // Ensure that the camera resolution is a multiple of 8, as the surface may not be.
-            cameraResolution = new Point((surfaceResolution.x >> 3) << 3, (surfaceResolution.y >> 3) << 3);
-        }
-
-        return cameraResolution;
+    CameraConfigurationManager(Context context) {
+        this.context = context;
     }
 
     /**
      * Reads, one time, values from the camera that are needed by the app.
      */
-    void init(Camera camera, SurfaceHolder surfaceHolder) {
-        Camera.Parameters parameters = camera.getParameters();
-        _previewFormat = parameters.getPreviewFormat();
-        _previewFormatString = parameters.get("preview-format");
-        Log.d(TAG, "Default preview format: " + _previewFormat + '/' + _previewFormatString);
-        _surfaceResolution = new Point(surfaceHolder.getSurfaceFrame().width(), surfaceHolder.getSurfaceFrame().height());
-        Log.d(TAG, "Surface resolution: " + _surfaceResolution);
-        _cameraResolution = _calculateOptimalCameraResolution(parameters, _surfaceResolution);
-        Log.d(TAG, "Camera resolution: " + _cameraResolution);
-    }
+    void initFromCameraParameters(OpenCamera camera) {
+        Camera.Parameters parameters = camera.getCamera().getParameters();
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
 
-    /**
-     * Sets the camera up to take preview images which are used for both preview
-     * and decoding. We detect the preview format here so that
-     * buildLuminanceSource() can build an appropriate LuminanceSource subclass.
-     * In the future we may want to force YUV420SP as it's the smallest, and the
-     * planar Y can be used for barcode scanning without a copy in some cases.
-     */
-    public void setDesiredCameraParameters(Camera camera) {
-        // TODO: find a way to do this without falling back to reflection
-        boolean usePortraitOrientation = Integer.parseInt(Build.VERSION.SDK) >= 8;
-        if (usePortraitOrientation) { // only 2.2
-            try {
-                Method method = camera.getClass().getMethod("setDisplayOrientation", new Class[] {int.class});
-                method.invoke(camera, 90);
-            } catch (Exception ex) {
+        int displayRotation = display.getRotation();
+        int cwRotationFromNaturalToDisplay;
+        switch (displayRotation) {
+            case Surface.ROTATION_0:
+                cwRotationFromNaturalToDisplay = 0;
+                break;
+            case Surface.ROTATION_90:
+                cwRotationFromNaturalToDisplay = 90;
+                break;
+            case Surface.ROTATION_180:
+                cwRotationFromNaturalToDisplay = 180;
+                break;
+            case Surface.ROTATION_270:
+                cwRotationFromNaturalToDisplay = 270;
+                break;
+            default:
+                // Have seen this return incorrect values like -90
+                if (displayRotation % 90 == 0) {
+                    cwRotationFromNaturalToDisplay = (360 + displayRotation) % 360;
+                } else {
+                    throw new IllegalArgumentException("Bad rotation: " + displayRotation);
+                }
+        }
+        Log.i(TAG, "Display at: " + cwRotationFromNaturalToDisplay);
 
-            }
+        int cwRotationFromNaturalToCamera = camera.getOrientation();
+        Log.i(TAG, "Camera at: " + cwRotationFromNaturalToCamera);
+
+        // Still not 100% sure about this. But acts like we need to flip this:
+        if (camera.getFacing() == CameraFacing.FRONT) {
+            cwRotationFromNaturalToCamera = (360 - cwRotationFromNaturalToCamera) % 360;
+            Log.i(TAG, "Front camera overriden to: " + cwRotationFromNaturalToCamera);
         }
 
+        cwRotationFromDisplayToCamera =
+                (360 + cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
+        Log.i(TAG, "Final display orientation: " + cwRotationFromDisplayToCamera);
+        if (camera.getFacing() == CameraFacing.FRONT) {
+            Log.i(TAG, "Compensating rotation for front camera");
+            cwNeededRotation = (360 - cwRotationFromDisplayToCamera) % 360;
+        } else {
+            cwNeededRotation = cwRotationFromDisplayToCamera;
+        }
+        Log.i(TAG, "Clockwise rotation from display to camera: " + cwNeededRotation);
+
+        Point theScreenResolution = new Point();
+        display.getSize(theScreenResolution);
+        screenResolution = theScreenResolution;
+        Log.i(TAG, "Screen resolution in current orientation: " + screenResolution);
+        cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+        Log.i(TAG, "Camera resolution: " + cameraResolution);
+        bestPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+        Log.i(TAG, "Best available preview size: " + bestPreviewSize);
+
+        boolean isScreenPortrait = screenResolution.x < screenResolution.y;
+        boolean isPreviewSizePortrait = bestPreviewSize.x < bestPreviewSize.y;
+
+        if (isScreenPortrait == isPreviewSizePortrait) {
+            previewSizeOnScreen = bestPreviewSize;
+        } else {
+            //noinspection SuspiciousNameCombination
+            previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
+        }
+        Log.i(TAG, "Preview size on screen: " + previewSizeOnScreen);
+    }
+
+    void setDesiredCameraParameters(OpenCamera camera, boolean safeMode) {
+
+        Camera theCamera = camera.getCamera();
+        Camera.Parameters parameters = theCamera.getParameters();
+
+        if (parameters == null) {
+            Log.w(TAG, "Device error: no camera parameters are available. Proceeding without configuration.");
+            return;
+        }
+
+        Log.i(TAG, "Initial camera parameters: " + parameters.flatten());
+
+        if (safeMode) {
+            Log.w(TAG, "In camera config safe mode -- most settings will not be honored");
+        }
+
+        initializeTorch(parameters, safeMode);
+
+        CameraConfigurationUtils.setFocus(
+                parameters,
+                true,
+                true,
+                safeMode);
+
+        if (!safeMode) {
+            CameraConfigurationUtils.setBarcodeSceneMode(parameters);
+            CameraConfigurationUtils.setVideoStabilization(parameters);
+            CameraConfigurationUtils.setFocusArea(parameters);
+            CameraConfigurationUtils.setMetering(parameters);
+        }
+
+        parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
+
+        theCamera.setParameters(parameters);
+
+        theCamera.setDisplayOrientation(cwRotationFromDisplayToCamera);
+
+        Camera.Parameters afterParameters = theCamera.getParameters();
+        Camera.Size afterSize = afterParameters.getPreviewSize();
+        if (afterSize != null && (bestPreviewSize.x != afterSize.width || bestPreviewSize.y != afterSize.height)) {
+            Log.w(TAG, "Camera said it supported preview size " + bestPreviewSize.x + 'x' + bestPreviewSize.y +
+                    ", but after setting it, preview size is " + afterSize.width + 'x' + afterSize.height);
+            bestPreviewSize.x = afterSize.width;
+            bestPreviewSize.y = afterSize.height;
+        }
+    }
+
+    Point getBestPreviewSize() {
+        return bestPreviewSize;
+    }
+
+    Point getPreviewSizeOnScreen() {
+        return previewSizeOnScreen;
+    }
+
+    Point getCameraResolution() {
+        return cameraResolution;
+    }
+
+    Point getScreenResolution() {
+        return screenResolution;
+    }
+
+    int getCWNeededRotation() {
+        return cwNeededRotation;
+    }
+
+    boolean getTorchState(Camera camera) {
+        if (camera != null) {
+            Camera.Parameters parameters = camera.getParameters();
+            if (parameters != null) {
+                String flashMode = parameters.getFlashMode();
+                return flashMode != null &&
+                        (Camera.Parameters.FLASH_MODE_ON.equals(flashMode) ||
+                                Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode));
+            }
+        }
+        return false;
+    }
+
+    void setTorch(Camera camera, boolean newSetting) {
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(_cameraResolution.x, _cameraResolution.y);
-        parameters.set("orientation", "portrait");
-        parameters.set("rotation", 90);
+        doSetTorch(parameters, newSetting, false);
         camera.setParameters(parameters);
-
-        Log.d(TAG, "Set camera preview size: " + parameters.getPreviewSize());
     }
 
-    /**
-     * Returns the camera resolution used.
-     *
-     * @return camera resolution
-     */
-    public Point getCameraResolution() {
-        return _cameraResolution;
+    private void initializeTorch(Camera.Parameters parameters, boolean safeMode) {
+        boolean currentSetting = false;
+        doSetTorch(parameters, currentSetting, safeMode);
     }
 
-    /**
-     * Returns the surface resolution.
-     *
-     * @return surface resolution
-     */
-    public Point getSurfaceResolution() {
-        return _surfaceResolution;
+    private void doSetTorch(Camera.Parameters parameters, boolean newSetting, boolean safeMode) {
+        CameraConfigurationUtils.setTorch(parameters, newSetting);
+        if (!safeMode) {
+            CameraConfigurationUtils.setBestExposure(parameters, newSetting);
+        }
     }
 
-    /**
-     * Returns the preview format.
-     */
-    public int getPreviewFormat() {
-        return _previewFormat;
-    }
-
-    /**
-     * Returns the preview format string.
-     */
-    public String getPreviewFormatString() {
-        return _previewFormatString;
-    }
 }

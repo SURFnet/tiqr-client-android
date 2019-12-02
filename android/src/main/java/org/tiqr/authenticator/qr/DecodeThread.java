@@ -23,8 +23,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;
 
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -33,39 +35,43 @@ import java.util.concurrent.CountDownLatch;
  * @author dswitkin@google.com (Daniel Switkin)
  */
 final class DecodeThread extends Thread {
+
     public static final String BARCODE_BITMAP = "barcode_bitmap";
+    public static final String BARCODE_SCALED_FACTOR = "barcode_scaled_factor";
 
-    private final CaptureActivity _activity;
-    private final Hashtable<DecodeHintType, Object> _hints;
-    private Handler _handler;
-    private final CountDownLatch _handlerInitLatch;
+    private final CaptureActivity activity;
+    private final Map<DecodeHintType,Object> hints;
+    private Handler handler;
+    private final CountDownLatch handlerInitLatch;
 
-    DecodeThread(CaptureActivity activity, ResultPointCallback resultPointCallback) {
-        _activity = activity;
-        _handlerInitLatch = new CountDownLatch(1);
+    DecodeThread(CaptureActivity activity,
 
-        _hints = new Hashtable<DecodeHintType, Object>(3);
-        Vector<BarcodeFormat> decodeFormats = new Vector<BarcodeFormat>();
-        decodeFormats.add(BarcodeFormat.QR_CODE);
-        _hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
-        _hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
+                 ResultPointCallback resultPointCallback) {
+
+        this.activity = activity;
+        handlerInitLatch = new CountDownLatch(1);
+
+        hints = new EnumMap<>(DecodeHintType.class);
+        Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+        decodeFormats.addAll(EnumSet.of(BarcodeFormat.QR_CODE));
+        hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
+        hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
     }
 
     Handler getHandler() {
         try {
-            _handlerInitLatch.await();
+            handlerInitLatch.await();
         } catch (InterruptedException ie) {
             // continue?
         }
-
-        return _handler;
+        return handler;
     }
 
     @Override
     public void run() {
         Looper.prepare();
-        _handler = new DecodeHandler(_activity, _hints);
-        _handlerInitLatch.countDown();
+        handler = new DecodeHandler(activity, hints);
+        handlerInitLatch.countDown();
         Looper.loop();
     }
 

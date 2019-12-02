@@ -21,5 +21,6 @@
   <item type="id" name="decode_failed"/>
   <item type="id" name="decode_succeeded"/>
   <item type="id" name="quit"/>
+  <item type="id" name="restart_preview"/>
   <item type="id" name="scan_inactivity"/>
 </resources>

@@ -16,8 +16,6 @@
 
 package org.tiqr.authenticator.qr;
 
-import android.graphics.Bitmap;
-
 import com.google.zxing.LuminanceSource;
 
 /**
@@ -32,7 +30,9 @@ import com.google.zxing.LuminanceSource;
  */
 public final class PlanarYUVLuminanceSource extends LuminanceSource {
 
-    private byte[] yuvData;
+    private static final int THUMBNAIL_SCALE_FACTOR = 2;
+
+    private final byte[] yuvData;
     private final int dataWidth;
     private final int dataHeight;
     private final int left;
@@ -58,7 +58,7 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
         this.left = left;
         this.top = top;
         if (reverseHorizontal) {
-            this.yuvData = reverseHorizontal(width, height);
+            reverseHorizontal(width, height);
         }
     }
 
@@ -98,10 +98,9 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
         }
 
         // Otherwise copy one cropped row at a time.
-        byte[] yuv = yuvData;
         for (int y = 0; y < height; y++) {
             int outputOffset = y * width;
-            System.arraycopy(yuv, inputOffset, matrix, outputOffset, width);
+            System.arraycopy(yuvData, inputOffset, matrix, outputOffset, width);
             inputOffset += dataWidth;
         }
         return matrix;
@@ -112,17 +111,21 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
         return true;
     }
 
-    public int getDataWidth() {
-        return dataWidth;
+    @Override
+    public LuminanceSource crop(int left, int top, int width, int height) {
+        return new PlanarYUVLuminanceSource(yuvData,
+                dataWidth,
+                dataHeight,
+                this.left + left,
+                this.top + top,
+                width,
+                height,
+                false);
     }
 
-    public int getDataHeight() {
-        return dataHeight;
-    }
-
-    public Bitmap renderCroppedGreyscaleBitmap() {
-        int width = getWidth();
-        int height = getHeight();
+    public int[] renderThumbnail() {
+        int width = getWidth() / THUMBNAIL_SCALE_FACTOR;
+        int height = getHeight() / THUMBNAIL_SCALE_FACTOR;
         int[] pixels = new int[width * height];
         byte[] yuv = yuvData;
         int inputOffset = top * dataWidth + left;
@@ -130,18 +133,29 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
         for (int y = 0; y < height; y++) {
             int outputOffset = y * width;
             for (int x = 0; x < width; x++) {
-                int grey = yuv[inputOffset + x] & 0xff;
+                int grey = yuv[inputOffset + x * THUMBNAIL_SCALE_FACTOR] & 0xff;
                 pixels[outputOffset + x] = 0xFF000000 | (grey * 0x00010101);
             }
-            inputOffset += dataWidth;
+            inputOffset += dataWidth * THUMBNAIL_SCALE_FACTOR;
         }
-
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
+        return pixels;
     }
 
-    private byte[] reverseHorizontal(int width, int height) {
+    /**
+     * @return width of image from {@link #renderThumbnail()}
+     */
+    public int getThumbnailWidth() {
+        return getWidth() / THUMBNAIL_SCALE_FACTOR;
+    }
+
+    /**
+     * @return height of image from {@link #renderThumbnail()}
+     */
+    public int getThumbnailHeight() {
+        return getHeight() / THUMBNAIL_SCALE_FACTOR;
+    }
+
+    private void reverseHorizontal(int width, int height) {
         byte[] yuvData = this.yuvData;
         for (int y = 0, rowStart = top * dataWidth + left; y < height; y++, rowStart += dataWidth) {
             int middle = rowStart + width / 2;
@@ -151,9 +165,6 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
                 yuvData[x2] = temp;
             }
         }
-
-        return yuvData;
-
     }
 
 }
