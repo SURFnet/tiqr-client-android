@@ -1,0 +1,99 @@
+import org.tiqr.authenticator.buildsrc.Versions
+import org.tiqr.authenticator.buildsrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        buildConfigField "String", "TOKENEXCHANGE_URL", "\"https://tx.tiqr.org/tokenexchange/?appId=tiqr\""
+
+        buildConfigField "String", "TOKEN_EXCHANGE_BASE_URL", "\"https://tx.tiqr.org/\""
+        buildConfigField "String", "TOKEN_EXCHANGE_APP_ID", "\"tiqr\""
+
+        buildConfigField "String", "BASE_URL", "\"https://demo.tiqr.org\""
+        buildConfigField "String", "PROTOCOL_VERSION", "\"2\""
+
+        buildConfigField "String", "TIQR_ENROLL_SCHEME", "\"${project.schemeEnroll}://\""
+        buildConfigField "String", "TIQR_AUTH_SCHEME", "\"${project.schemeAuth}://\""
+
+        kapt {
+            correctErrorTypes = true
+            useBuildCache = true
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+        javacOptions {
+            option("-Xmaxerrs", 1000)
+        }
+    }
+}
+
+androidExtensions {
+    features = ["parcelize"]
+}
+
+dependencies {
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Kotlin.Coroutines.core
+    implementation Libs.Kotlin.Coroutines.android
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.core
+    implementation Libs.Google.material
+
+    api Libs.Dagger.dagger
+    kapt Libs.Dagger.compiler
+
+    implementation Libs.OkHttp.okhttp
+    implementation Libs.OkHttp.logging
+
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.converterMoshi
+    implementation Libs.Retrofit.converterScalars
+
+    implementation Libs.Moshi.moshi
+    kapt Libs.Moshi.codegen
+
+    implementation Libs.AndroidX.Room.runtime
+    implementation Libs.AndroidX.Room.ktx
+    kapt Libs.AndroidX.Room.compiler
+
+    api Libs.Timber.timber
+
+    androidTestImplementation Libs.Kotlin.Coroutines.test
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

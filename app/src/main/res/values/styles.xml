@@ -1,0 +1,28 @@
+<resources>
+    <!-- Special theme to use as Launch (a.k.a. Splash) -->
+    <style name="LaunchTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="android:colorBackground">@color/grey_50</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button"/>
+    <style name="AppTheme.Button.White">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,81 @@
+import org.tiqr.authenticator.buildsrc.Libs
+import org.tiqr.authenticator.buildsrc.Versions
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId "org.tiqr.authenticator"
+        versionCode 18
+        versionName "3.0.1"  // TODO: check versions
+
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders.schemeEnroll = project.schemeEnroll
+        manifestPlaceholders.schemeAuth = project.schemeAuth
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        // TODO: reset lintOptions to default
+        //checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+        javacOptions {
+            option("-Xmaxerrs", 1000)
+        }
+    }
+
+    buildTypes {
+        debug {
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")  //TODO: check if analytics should be disabled completely
+        }
+    }
+}
+
+dependencies {
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.AndroidX.activity
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.core
+    implementation Libs.AndroidX.constraintLayout
+    implementation Libs.AndroidX.fragment
+    implementation Libs.AndroidX.Lifecycle.liveData
+    implementation Libs.Google.material
+
+    implementation project(':data')
+
+    implementation Libs.Dagger.android
+    kapt Libs.Dagger.compiler
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
