@@ -34,9 +34,9 @@ class TiqrApplication : android.app.Application() {
     }
 
     companion object {
-
         private lateinit var component: TiqrComponent
 
+        @JvmStatic
         fun component(): TiqrComponent {
             return component
         }

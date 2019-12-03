@@ -26,8 +26,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -37,8 +37,9 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import org.tiqr.authenticator.TiqrApplication;
+import org.jetbrains.annotations.NotNull;
 import org.tiqr.authenticator.R;
+import org.tiqr.authenticator.TiqrApplication;
 import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.EnrollmentChallenge;
 import org.tiqr.authenticator.authentication.AuthenticationActivityGroup;
@@ -56,26 +57,33 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 /**
- * Capture activity.
+ * This activity opens the camera and does the actual scanning on a background thread. It draws a
+ * viewfinder to help the user place the barcode correctly, shows feedback as the image processing
+ * is happening, and then overlays the results when a scan is successful.
+ *
+ * @author dswitkin@google.com (Daniel Switkin)
+ * @author Sean Owen
  */
-public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
+    private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
+    private TextView statusView;
     private boolean hasSurface;
     private BeepManager beepManager;
+
     private ActivityDialog activityDialog;
 
-    protected
     @Inject
-    AuthenticationService _authenticationService;
+    protected AuthenticationService _authenticationService;
 
-    protected
     @Inject
-    EnrollmentService _enrollmentService;
+    protected EnrollmentService _enrollmentService;
 
-    public ViewfinderView getViewfinderView() {
+    ViewfinderView getViewfinderView() {
         return viewfinderView;
     }
 
@@ -83,16 +91,21 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         return handler;
     }
 
+    CameraManager getCameraManager() {
+        return cameraManager;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.capture);
 
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.component().inject(this);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         window.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+
+        setContentView(R.layout.capture);
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {
@@ -103,9 +116,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         });
         headerView.hideRightButton();
 
-        CameraManager.init(getApplication());
-        viewfinderView = (ViewfinderView)findViewById(R.id.viewfinder_view);
-        handler = null;
         hasSurface = false;
         beepManager = new BeepManager(this);
     }
@@ -114,39 +124,79 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     protected void onResume() {
         super.onResume();
 
-        SurfaceView surfaceView = (SurfaceView)findViewById(R.id.preview_view);
-        if (hasSurface) {
-            // The activity was paused but not stopped, so the surface still
-            // exists. Therefore
-            // surfaceCreated() won't be called, so init the camera here.
-            initCamera(surfaceView);
-        } else {
-            // Install the callback and wait for surfaceCreated() to init the
-            // camera.
-            SurfaceHolder surfaceHolder = surfaceView.getHolder();
-            surfaceHolder.addCallback(this);
-            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        }
+        // CameraManager must be initialized here, not in onCreate(). This is necessary because we don't
+        // want to open the camera driver and measure the screen size if we're going to show the help on
+        // first launch. That led to bugs where the scanning rectangle was the wrong size and partially
+        // off screen.
+        cameraManager = new CameraManager(getApplication());
+
+        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        viewfinderView.setCameraManager(cameraManager);
+
+        statusView = (TextView) findViewById(R.id.status_view);
+
+        handler = null;
+
+        resetStatusView();
 
         beepManager.updatePrefs();
+
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+        SurfaceHolder surfaceHolder = surfaceView.getHolder();
+        if (hasSurface) {
+            // The activity was paused but not stopped, so the surface still exists. Therefore
+            // surfaceCreated() won't be called, so init the camera here.
+            initCamera(surfaceHolder);
+        } else {
+            // Install the callback and wait for surfaceCreated() to init the camera.
+            surfaceHolder.addCallback(this);
+        }
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
         }
-        CameraManager.get().closeDriver();
+        beepManager.close();
+        cameraManager.closeDriver();
+
+        if (!hasSurface) {
+            SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+            SurfaceHolder surfaceHolder = surfaceView.getHolder();
+            surfaceHolder.removeCallback(this);
+        }
+        super.onPause();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_FOCUS:
+            case KeyEvent.KEYCODE_CAMERA:
+                // Handle these events so they don't launch the Camera app
+                return true;
+            // Use volume up/down to turn on light
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                cameraManager.setTorch(false);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                cameraManager.setTorch(true);
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        if (holder == null) {
+            Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
+        }
         if (!hasSurface) {
             hasSurface = true;
-            SurfaceView surfaceView = (SurfaceView)findViewById(R.id.preview_view);
-            initCamera(surfaceView);
+            initCamera(holder);
         }
     }
 
@@ -157,16 +207,17 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
     }
 
     /**
-     * A valid barcode has been found, so give an indication of success and show
-     * the results.
+     * A valid barcode has been found, so give an indication of success and show the results.
      *
      * @param rawResult The contents of the barcode.
      * @param barcode   A greyscale bitmap of the camera data which was decoded.
+     * @param scaleFactor amount by which thumbnail was scaled
      */
-    public void handleDecode(final Result rawResult, Bitmap barcode) {
+    public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
         activityDialog = ActivityDialog.show(this);
         beepManager.playBeepSoundAndVibrate();
 
@@ -178,40 +229,32 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
     }
 
-    private void initCamera(SurfaceView surfaceView) {
+    private void initCamera(SurfaceHolder surfaceHolder) {
+        if (surfaceHolder == null) {
+            throw new IllegalStateException("No SurfaceHolder provided");
+        }
+        if (cameraManager.isOpen()) {
+            Log.w(TAG, "initCamera() while already open -- late SurfaceView callback?");
+            return;
+        }
         try {
-            CameraManager.get().openDriver(surfaceView.getHolder());
-            // resize surface to preview ratio
-            View parentView = (View)surfaceView.getParent();
-
-            double maxWidth = parentView.getWidth();
-            double maxHeight = parentView.getHeight();
-
-            double scaleX = maxWidth / CameraManager.get().getCameraResolution().y;
-            double scaleY = maxHeight / CameraManager.get().getCameraResolution().x;
-            double scale = Math.min(scaleX, scaleY);
-
-            surfaceView.getLayoutParams().width = (int)(scale * CameraManager.get().getCameraResolution().y);
-            surfaceView.getLayoutParams().height = (int)(scale * CameraManager.get().getCameraResolution().x);
-
-            surfaceView.requestLayout();
+            cameraManager.openDriver(surfaceHolder);
+            // Creating the handler starts the preview, which can also throw a RuntimeException.
+            if (handler == null) {
+                handler = new CaptureActivityHandler(this, cameraManager);
+            }
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
-            return;
         } catch (RuntimeException e) {
             // Barcode Scanner has seen crashes in the wild of this variety:
-            // java.lang.RuntimeException: Fail to connect to camera service
-            Log.w(TAG, "Unexpected error initializating camera", e);
-            return;
+            // java.?lang.?RuntimeException: Fail to connect to camera service
+            Log.w(TAG, "Unexpected error initializing camera", e);
         }
+    }
 
-        if (handler == null) {
-            handler = new CaptureActivityHandler(this);
-
-            Message msg = new Message();
-            msg.what = R.id.scan_inactivity;
-            handler.sendMessageDelayed(msg, 3000);
-        }
+    private void resetStatusView() {
+        statusView.setVisibility(View.INVISIBLE);
+        viewfinderView.setVisibility(View.VISIBLE);
     }
 
     public void drawViewfinder() {
@@ -219,8 +262,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     }
 
     public void handleInactivity() {
-        // TODO Auto-generated method stub
-        TextView statusView = (TextView)findViewById(R.id.status_view);
         statusView.setVisibility(View.VISIBLE);
     }
 
@@ -232,7 +273,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private void _authenticate(String challenge) {
         _authenticationService.parseAuthenticationChallenge(challenge, new AuthenticationService.OnParseAuthenticationChallengeListener() {
             @Override
-            public void onParseAuthenticationChallengeSuccess(AuthenticationChallenge challenge) {
+            public void onParseAuthenticationChallengeSuccess(@NotNull AuthenticationChallenge challenge) {
                 activityDialog.cancel();
                 Intent intent = new Intent(getApplicationContext(), AuthenticationActivityGroup.class);
                 intent.putExtra("org.tiqr.challenge", challenge);
@@ -242,7 +283,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             }
 
             @Override
-            public void onParseAuthenticationChallengeError(ParseAuthenticationChallengeError error) {
+            public void onParseAuthenticationChallengeError(@NotNull ParseAuthenticationChallengeError error) {
                 activityDialog.cancel();
 
                 new AlertDialog.Builder(CaptureActivity.this)
@@ -268,7 +309,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private void _enroll(String challenge) {
         _enrollmentService.parseEnrollmentChallenge(challenge, new EnrollmentService.OnParseEnrollmentChallengeListener() {
             @Override
-            public void onParseEnrollmentChallengeSuccess(EnrollmentChallenge challenge) {
+            public void onParseEnrollmentChallengeSuccess(@NotNull EnrollmentChallenge challenge) {
                 activityDialog.cancel();
                 Intent intent = new Intent(getApplicationContext(), EnrollmentActivityGroup.class);
                 intent.putExtra("org.tiqr.challenge", challenge);
@@ -278,7 +319,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             }
 
             @Override
-            public void onParseEnrollmentChallengeError(ParseEnrollmentChallengeError error) {
+            public void onParseEnrollmentChallengeError(@NotNull ParseEnrollmentChallengeError error) {
                 activityDialog.cancel();
 
                 new AlertDialog.Builder(CaptureActivity.this)
