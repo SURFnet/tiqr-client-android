@@ -2,34 +2,70 @@ package org.tiqr.service.notification
 
 import android.content.Context
 import android.util.Log
-
+import androidx.annotation.VisibleForTesting
 import org.tiqr.BuildConfig
 import org.tiqr.Utils
-
+import org.tiqr.service.Token
 import java.net.URL
-import java.util.HashMap
-
+import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-class NotificationService(private val context: Context) {
+open class NotificationService(private val context: Context) {
 
-    val notificationToken: String?
+    open val notificationToken: String?
         get() {
-            val settings = Prefs.get(context)
-            return settings.getString("sa_notificationToken", null)
+            val settings = Prefs[context]
+            return settings.getString(TOKEN_KEY, null)
         }
 
-    @Throws(Exception::class)
-    private fun realSendRequestWithDeviceToken(deviceToken: String) {
-        var notificationToken = notificationToken
+    open var shouldValidateExistingToken: Boolean
+        get() =
+            Prefs[context].getBoolean(SHOULD_VALIDATE_KEY, true)
+        set(value) {
+            val settings = Prefs[context]
+            val editor = settings.edit()
+            editor.putBoolean(SHOULD_VALIDATE_KEY, value)
+            editor.apply()
+        }
 
+    fun requestNewToken(deviceToken: String) =
+            Thread(Runnable {
+                testableRequestNewToken(deviceToken)
+            }).start()
+
+    @VisibleForTesting
+    fun testableRequestNewToken(deviceToken: String) {
+        try {
+            val nameValuePairs = createPostData(deviceToken)
+            when (val newToken = requestToken(nameValuePairs)) {
+                is Token.Valid -> saveNewToken(newToken.value)
+                is Token.Invalid -> Log.e(TAG, "Failed to retrieve a new token")
+            }
+        } catch (ex: Exception) {
+            Log.e(TAG, "Error retrieving device notification token", ex)
+        }
+    }
+
+    @VisibleForTesting
+    fun createPostData(deviceToken: String): HashMap<String, String> {
+        if (notificationToken != null && shouldValidateExistingToken) {
+            validateExistingToken()
+            //perform validation only once
+            shouldValidateExistingToken = false
+        }
         val nameValuePairs = HashMap<String, String>()
+        val notificationToken = notificationToken
         nameValuePairs["deviceToken"] = deviceToken
         if (notificationToken != null) {
             nameValuePairs["notificationToken"] = notificationToken
         }
+        return nameValuePairs
+    }
 
-        val tokenExchangeURL = URL(TOKENEXCHANGE_URL)
+    @Throws(Exception::class)
+    @VisibleForTesting
+    open fun requestToken(nameValuePairs: HashMap<String, String>): Token {
+        val tokenExchangeURL = URL(BuildConfig.TOKENEXCHANGE_URL)
         val httpsURLConnection = tokenExchangeURL.openConnection() as HttpsURLConnection
         httpsURLConnection.requestMethod = "POST"
         httpsURLConnection.doOutput = true
@@ -38,27 +74,32 @@ class NotificationService(private val context: Context) {
         httpsURLConnection.setRequestProperty("Content-Length", postData.size.toString())
         httpsURLConnection.outputStream.write(postData)
 
-        notificationToken = Utils.urlConnectionResponseAsString(httpsURLConnection)
-
-        Log.d(NotificationService::class.java.simpleName, "Notification token: " + notificationToken!!)
-
-        val settings = Prefs.get(context)
-        val editor = settings.edit()
-        editor.putString("sa_notificationToken", notificationToken)
-        editor.commit()
+        return Utils.urlConnectionResponse(httpsURLConnection)
     }
 
-    fun sendRequestWithDeviceToken(deviceToken: String) {
-        Thread(Runnable {
-            try {
-                realSendRequestWithDeviceToken(deviceToken)
-            } catch (ex: Exception) {
-                Log.e(NotificationService::class.java.simpleName, "Error retrieving device notification token", ex)
+    @VisibleForTesting
+    open fun saveNewToken(notificationToken: String?) {
+        val settings = Prefs[context]
+        val editor = settings.edit()
+        editor.putString(TOKEN_KEY, notificationToken)
+        editor.apply()
+    }
+
+    @VisibleForTesting
+    fun validateExistingToken() {
+        val nameValuePairs = HashMap<String, String>()
+        nameValuePairs["notificationToken"] = notificationToken!!
+        when (requestToken(nameValuePairs)) {
+            is Token.Invalid -> saveNewToken(null)
+            is Token.Valid -> {
+                //NOP
             }
-        }).start()
+        }
     }
 
     companion object {
-        private val TOKENEXCHANGE_URL = BuildConfig.TOKENEXCHANGE_URL
+        const val TAG = "NotificationService"
+        const val TOKEN_KEY = "sa_notificationToken"
+        const val SHOULD_VALIDATE_KEY = "sa_shouldValidateExistingToken"
     }
 }

@@ -1,27 +1,48 @@
 package org.tiqr
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
+import org.tiqr.service.Token
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URLEncoder
-import kotlin.String
 
 object Utils {
 
     private val TAG = "org.tiqr.KUtils"
+    private const val NOT_FOUND = "NOT FOUND"
     private val REPLACEMENT_CHAR = 0xfffd.toChar()
 
     fun urlConnectionResponseAsString(connection: HttpURLConnection): String? {
-        try {
-            return when (connection.getResponseCode()) {
-                in 200..299 -> connection.getInputStream()
-                else -> connection.getErrorStream()
+        return try {
+            when (connection.responseCode) {
+                in 200..299 -> connection.inputStream
+                else -> connection.errorStream
             }.bufferedReader().use { it.readText() }  // defaults to UTF-8
-
         } catch (e: Exception) {
             Log.e(TAG, "Error reading InputStream", e)
-            return null
+            null
         }
+    }
+
+    fun urlConnectionResponse(connection: HttpURLConnection): Token = testableReadResponse(TestableConnectionWrapper(connection))
+
+    @VisibleForTesting
+    fun testableReadResponse(connection: TestableConnectionWrapper): Token = try {
+        if (connection.responseCode in 200..299) {
+            // defaults to UTF-8
+            val validToken = connection.readResponse()
+            if (NOT_FOUND == validToken) {
+                Token.Invalid
+            } else {
+                Token.Valid(validToken)
+            }
+        } else {
+            Token.Invalid
+        }
+    } catch (e: Exception) {
+        Log.e(TAG, "Error reading InputStream", e)
+        Token.Invalid
     }
 
     fun keyValueMapToByteArray(keyValueMap: Map<String, String>): ByteArray {
@@ -140,4 +161,11 @@ object Utils {
         return value
     }
 
+}
+
+open class TestableConnectionWrapper(private val httpConnection: HttpURLConnection) {
+    open val responseCode = httpConnection.responseCode
+
+    @Throws(Exception::class)
+    open fun readResponse(): String = httpConnection.inputStream.bufferedReader().use { it.readText() }
 }
