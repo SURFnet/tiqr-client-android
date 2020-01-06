@@ -27,9 +27,11 @@ class TiqrApplication : android.app.Application() {
                 .also {
                     it.inject(this)
                 }
+
+
         val token = FirebaseInstanceId.getInstance().token
         if (token != null && !TextUtils.isEmpty(token)) {
-            notificationService.sendRequestWithDeviceToken(token)
+            notificationService.requestNewToken(token)
         }
     }
 

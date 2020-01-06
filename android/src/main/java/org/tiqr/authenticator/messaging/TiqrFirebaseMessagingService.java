@@ -73,7 +73,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         super.onNewToken(token);
         Log.d(TAG, "Refreshed token: " + token);
-        _notificationService.sendRequestWithDeviceToken(token);
+        _notificationService.requestNewToken(token);
     }
 
     /**
