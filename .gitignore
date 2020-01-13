@@ -15,6 +15,7 @@
 # generated files
 bin/
 gen/
+captures/
 
 # Ignore gradle files
 .gradle/
@@ -37,7 +38,8 @@ Thumbs.db
 
 # IDEA/Android Studio project files, because
 # the project can be imported from settings.gradle
-.idea
+.idea/*
 *.iml
-
+# whitelist copyright
+!.idea/copyright/
 
