@@ -29,18 +29,102 @@
 
 package org.tiqr.authenticator
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.transition.TransitionManager
+import android.view.KeyEvent
+import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.*
+import androidx.navigation.ui.setupActionBarWithNavController
+import org.tiqr.authenticator.base.BindingActivity
+import org.tiqr.authenticator.databinding.ActivityMainBinding
+import org.tiqr.authenticator.scan.KeyEventReceiver
+import org.tiqr.authenticator.scan.ScanFragment
+import org.tiqr.authenticator.util.extensions.currentNavigationFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+    private lateinit var navController: NavController
+
+    @LayoutRes
+    override val layout = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Switch from launch theme to regular theme
         setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        //TODO
+        navController = findNavController(R.id.nav_host_fragment)
+        with(navController) {
+            setSupportActionBar(binding.toolbar)
+            setupActionBarWithNavController(this)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+
+            navController.addOnDestinationChangedListener(this@MainActivity)
+
+            Navigation.setViewNavController(binding.bottombar, this)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        navController.removeOnDestinationChangedListener(this)
+    }
+
+    override fun onSupportNavigateUp() = navController.navigateUp()
+
+    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+        when (destination.id) {
+            //TODO: add other destinations which need bottombar to be hidden
+            R.id.scanFragment,
+            R.id.aboutFragment -> toggleBottomBar(false)
+            else -> toggleBottomBar(true)
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_FOCUS,
+            KeyEvent.KEYCODE_CAMERA,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                if (supportFragmentManager.currentNavigationFragment<ScanFragment>() != null) {
+                    Intent(KeyEventReceiver.KEY_EVENT_ACTION).apply {
+                        putExtra(KeyEventReceiver.KEY_EVENT_EXTRA, keyCode)
+                    }.run {
+                        LocalBroadcastManager.getInstance(this@MainActivity)
+                                .sendBroadcast(this)
+                    }
+                    true // Mark as handled since we sent the broadcast because currently scanning
+                } else {
+                    false
+                }
+            }
+            else -> super.onKeyDown(keyCode, event)
+        }
+    }
+
+    /**
+     * Toggle the bottom bar visibility with slide animation.
+     */
+    private fun toggleBottomBar(show: Boolean) {
+        ConstraintSet().apply {
+            clone(binding.container)
+
+            if (show) {
+                clear(binding.bottombar.id, ConstraintSet.TOP)
+                connect(binding.bottombar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            } else {
+                clear(binding.bottombar.id, ConstraintSet.BOTTOM)
+                connect(binding.bottombar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            }
+
+            applyTo(binding.container)
+        }
+
+        TransitionManager.beginDelayedTransition(binding.container)
     }
 }

@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -38,15 +38,16 @@ import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import javax.inject.Singleton
 
+/**
+ * Module which serves the services.
+ */
 @Module(includes = [PersistenceModule::class])
-object ServiceModule {
+internal object ServiceModule {
     @Provides
     @Singleton
-    @JvmStatic
     internal fun provideDatabaseService(dao: TiqrDao): DatabaseService = DatabaseService(dao)
 
     @Provides
     @Singleton
-    @JvmStatic
     internal fun providePreferenceService(context: Context): PreferenceService = PreferenceService(context)
 }

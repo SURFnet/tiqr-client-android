@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="url_tiqr"
+            type="String" />
+
+        <variable
+            name="url_surf"
+            type="String" />
+
+        <variable
+            name="url_egeniq"
+            type="String" />
+
+        <variable
+            name="url_keen"
+            type="String" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_32dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:drawableBottom="@drawable/logo_tiqr_small"
+                android:drawablePadding="@dimen/default_padding"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/default_padding"
+                android:textAppearance="@style/AppTheme.TextAppearance.About"
+                app:appName="@{@string/app_name}"
+                app:openBrowser="@{url_tiqr}"
+                tools:text="tiqr &#8226; v4.0.0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:drawableBottom="@drawable/ic_surfnet"
+                android:drawablePadding="@dimen/default_padding"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/default_padding"
+                android:text="@string/about_label_provided_by"
+                android:textAppearance="@style/AppTheme.TextAppearance.About"
+                app:openBrowser="@{url_surf}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:drawableBottom="@drawable/logo_egeniq"
+                android:drawablePadding="@dimen/default_padding"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/default_padding"
+                android:text="@string/about_label_developed_by"
+                android:textAppearance="@style/AppTheme.TextAppearance.About"
+                app:openBrowser="@{url_egeniq}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:drawableBottom="@drawable/logo_keen_design"
+                android:drawablePadding="@dimen/default_padding"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/default_padding"
+                android:text="@string/about_label_interaction_by"
+                android:textAppearance="@style/AppTheme.TextAppearance.About"
+                app:openBrowser="@{url_keen}" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

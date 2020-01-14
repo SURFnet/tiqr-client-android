@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -37,7 +37,7 @@ import java.io.IOException
 /**
  * OkHttp interceptor to inject headers
  */
-class HeaderInjector : Interceptor {
+internal class HeaderInjector : Interceptor {
     companion object {
         const val HEADER_PROTOCOL = "X-TIQR-Protocol-Version"
         private const val HEADER_ACCEPT = "ACCEPT"

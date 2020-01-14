@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="com.google.android.material.bottomappbar.BottomAppBar">
+
+    <ImageButton
+        android:id="@+id/surfnet"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="end"
+        android:adjustViewBounds="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_surfnet"
+        tools:ignore="ContentDescription" />
+</merge>

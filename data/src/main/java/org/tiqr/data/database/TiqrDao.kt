@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -33,6 +33,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
 
@@ -66,12 +67,12 @@ interface TiqrDao {
     suspend fun blockAllIdentities(): Int
 
     @Query(value = "SELECT COUNT(_id) FROM identity;")
-    suspend fun identityCount(): Int
+    fun identityCount(): Flow<Int>
     //endregion
 
     //region IdentityProvider
     @Query("SELECT * FROM identityprovider")
-    suspend fun getIdentityProviders(): List<IdentityProvider>
+    fun getIdentityProviders(): Flow<List<IdentityProvider>>
 
     @Query(value = "SELECT * FROM identityprovider WHERE _id = :id")
     suspend fun getIdentityProvider(id: Long): IdentityProvider?

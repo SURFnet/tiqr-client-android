@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1092033875165",
+    "firebase_url": "https://tiqr-demo.firebaseio.com",
+    "project_id": "tiqr-demo",
+    "storage_bucket": "tiqr-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092033875165:android:28fc03ca432dd733",
+        "android_client_info": {
+          "package_name": "org.tiqr.authenticator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092033875165-c81dpmm16e9i21m4ca5rtqn96b9su4pq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.tiqr.authenticator",
+            "certificate_hash": "8B478F038C63F9A0C6F556185AA980035E11CDDD"
+          }
+        },
+        {
+          "client_id": "1092033875165-e57fu2g81c5rqo6kopl72g3qbehgntom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK-cKRD8pjUeQyI6tXA3lckRwG3L4-tMs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092033875165-e57fu2g81c5rqo6kopl72g3qbehgntom.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

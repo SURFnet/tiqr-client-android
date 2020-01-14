@@ -15,14 +15,27 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <item name="android:colorBackground">@color/grey_50</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
     </style>
 
     <!-- Buttons -->
-    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button"/>
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button" />
+
     <style name="AppTheme.Button.White">
         <item name="backgroundTint">@color/white</item>
     </style>
 
+    <!-- TextAppearance -->
+    <style name="AppTheme.TextAppearance" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <style name="AppTheme.TextAppearance.Main" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="AppTheme.TextAppearance.About" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Widgets -->
+    <style name="AppTheme.Progress">
+        <item name="colorSecondary">@color/primaryDarkColor</item> <!-- TODO: check if we need a pinkish color from old code -->
+    </style>
 
 </resources>
