@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -29,6 +29,7 @@
 
 package org.tiqr.data.service
 
+import kotlinx.coroutines.flow.Flow
 import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.database.TiqrDatabase
 import org.tiqr.data.model.Identity
@@ -47,7 +48,7 @@ class DatabaseService(private val dao: TiqrDao) {
     /**
      * Get the count of all identities
      */
-    suspend fun getIdentityCount(): Int = dao.identityCount()
+    fun getIdentityCount(): Flow<Int> = dao.identityCount()
 
     /**
      * Get an identity by (row) id.
@@ -89,6 +90,6 @@ class DatabaseService(private val dao: TiqrDao) {
     /**
      * Get all identity providers.
      */
-    suspend fun getAllIdentityProviders(): List<IdentityProvider> = dao.getIdentityProviders()
+    fun getAllIdentityProviders(): Flow<List<IdentityProvider>> = dao.getIdentityProviders()
     //endregion
 }

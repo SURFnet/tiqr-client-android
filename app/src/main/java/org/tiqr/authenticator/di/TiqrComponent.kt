@@ -29,17 +29,23 @@
 
 package org.tiqr.authenticator.di
 
-import android.content.Context
+import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import org.tiqr.data.module.RepositoryModule
-import org.tiqr.data.module.ViewModelModule
+import org.tiqr.authenticator.TiqrApplication
+import org.tiqr.data.module.DataModule
+import org.tiqr.data.viewmodel.ViewModelFactory
+import javax.inject.Singleton
 
-@Component(modules = [RepositoryModule::class, ViewModelModule::class])
+@Singleton
+@Component(modules = [DataModule::class])
 interface TiqrComponent {
+    fun inject(application: TiqrApplication)
+
+    val viewModeFactory: ViewModelFactory
 
     @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance applicationContext: Context): TiqrComponent
+    interface Builder {
+        fun create(@BindsInstance application: Application): TiqrComponent
     }
 }

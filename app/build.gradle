@@ -5,6 +5,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion Versions.compileSdkVersion
@@ -12,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
-        versionCode 18
-        versionName "3.0.1"  // TODO: check versions
+        versionCode 18 // TODO: check latest version and bump
+        versionName "4.0.0"  // TODO: check versions, probably 4.0.0
 
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
@@ -22,10 +23,20 @@ android {
 
         manifestPlaceholders.schemeEnroll = project.schemeEnroll
         manifestPlaceholders.schemeAuth = project.schemeAuth
-    }
 
-    dataBinding {
-        enabled = true
+        resConfigs "nl", "en" // TODO: add supported languages
+
+        dataBinding {
+            enabled = true
+        }
+
+        kapt {
+            correctErrorTypes = true
+            useBuildCache = true
+            javacOptions {
+                option("-Xmaxerrs", 1000)
+            }
+        }
     }
 
     lintOptions {
@@ -39,12 +50,8 @@ android {
         targetCompatibility = 1.8
     }
 
-    kapt {
-        correctErrorTypes = true
-        useBuildCache = true
-        javacOptions {
-            option("-Xmaxerrs", 1000)
-        }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -55,27 +62,44 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")  //TODO: check if analytics should be disabled completely
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
+            //TODO: check if analytics should be disabled completely
         }
     }
 }
 
 dependencies {
     implementation Libs.Kotlin.stdlib
+    implementation Libs.Kotlin.Coroutines.android
+    implementation Libs.Kotlin.Coroutines.playServices
+
     implementation Libs.AndroidX.activity
-    implementation Libs.AndroidX.appcompat
     implementation Libs.AndroidX.core
+    implementation Libs.AndroidX.browser
     implementation Libs.AndroidX.constraintLayout
-    implementation Libs.AndroidX.fragment
+    implementation Libs.AndroidX.futures
+    implementation Libs.AndroidX.CameraX.core
+    implementation Libs.AndroidX.CameraX.camera2
+    implementation Libs.AndroidX.CameraX.cameraView
+    implementation Libs.AndroidX.CameraX.lifecycle
+    implementation Libs.AndroidX.Navigation.fragment
+    implementation Libs.AndroidX.Navigation.ui
     implementation Libs.AndroidX.Lifecycle.liveData
+    implementation Libs.AndroidX.Lifecycle.commonJ8
     implementation Libs.Google.material
+    implementation Libs.Google.Firebase.vision
+    implementation Libs.Google.Firebase.barcode
 
     implementation project(':data')
 
     implementation Libs.Dagger.android
     kapt Libs.Dagger.compiler
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation Libs.Permission.kPermissions
+
+    testImplementation Libs.Testing.jUnit
+    androidTestImplementation Libs.Testing.jUnitAndroidx
+    androidTestImplementation Libs.Testing.epsresso
 }
+
+apply plugin: 'com.google.gms.google-services'

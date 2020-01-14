@@ -53,8 +53,11 @@ abstract class BaseActivity : AppCompatActivity() {
 /**
  * Base Activity for DataBinding.
  */
-abstract class BindingActivity<B : ViewDataBinding>(@LayoutRes protected val layout: Int) : BaseActivity() {
+abstract class BindingActivity<B : ViewDataBinding>() : BaseActivity() {
     protected lateinit var binding: B
+
+    @get:LayoutRes
+    protected abstract val layout: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

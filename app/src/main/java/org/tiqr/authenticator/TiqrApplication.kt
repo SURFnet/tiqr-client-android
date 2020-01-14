@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -30,11 +30,13 @@
 package org.tiqr.authenticator
 
 import android.app.Application
+import androidx.camera.camera2.Camera2Config
+import androidx.camera.core.CameraXConfig
 import org.tiqr.authenticator.di.DaggerTiqrComponent
 import org.tiqr.authenticator.di.TiqrComponent
 import timber.log.Timber
 
-class TiqrApplication : Application()  {
+class TiqrApplication : Application(), CameraXConfig.Provider  {
     private lateinit var component: TiqrComponent
 
     override fun onCreate() {
@@ -45,8 +47,7 @@ class TiqrApplication : Application()  {
             Timber.plant(Timber.DebugTree())
         }
 
-        component = DaggerTiqrComponent.factory()
-                .create(applicationContext)
+        component = DaggerTiqrComponent.factory().create(this)
     }
 
     override fun getSystemService(name: String): Any? {
@@ -56,4 +57,6 @@ class TiqrApplication : Application()  {
             super.getSystemService(name)
         }
     }
+
+    override fun getCameraXConfig(): CameraXConfig = Camera2Config.defaultConfig()
 }

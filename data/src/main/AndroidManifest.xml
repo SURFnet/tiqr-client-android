@@ -1,2 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.tiqr.data" />
+    package="org.tiqr.data" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

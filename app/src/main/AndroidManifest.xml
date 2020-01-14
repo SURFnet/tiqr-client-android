@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.tiqr.authenticator">
 
+    <!-- Permissions for QR code scanning   -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".TiqrApplication"
         android:allowBackup="true"

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="org.tiqr.data.viewmodel.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".start.StartFragment">
+
+        <TextView
+            android:id="@+id/main_text"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:lineSpacingMultiplier="1.1"
+            android:padding="24dp"
+            android:textAppearance="@style/AppTheme.TextAppearance.Main"
+            android:textColorHighlight="@color/primaryDarkColor"
+            android:textColorLink="@color/primaryColor"
+            app:enableLinks="@{true}"
+            app:htmlText="@{safeUnbox(viewModel.identityCount) > 0 ? @string/start_instructions : @string/start_welcome}"
+            app:layout_constraintBottom_toTopOf="@+id/scan_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/start_welcome" />
+
+
+        <Button
+            android:id="@+id/scan_button"
+            style="@style/AppTheme.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/scan_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

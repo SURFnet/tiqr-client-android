@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -37,11 +37,14 @@ import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.database.TiqrDatabase
 import javax.inject.Singleton
 
+/**
+ * Module which serves the persistence related dependencies,
+ * such as the database and shared preferences.
+ */
 @Module
-object PersistenceModule {
+internal object PersistenceModule {
     @Provides
     @Singleton
-    @JvmStatic
     internal fun provideTiqrDatabase(context: Context): TiqrDatabase =
             Room.databaseBuilder(context, TiqrDatabase::class.java, TiqrDatabase.DB_NAME)
                     .addMigrations(
@@ -53,6 +56,5 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     internal fun provideDao(database: TiqrDatabase): TiqrDao = database.tiqrDao()
 }

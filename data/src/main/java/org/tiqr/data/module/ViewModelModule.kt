@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -34,25 +34,28 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import org.tiqr.data.viewmodel.AuthenticationViewModel
-import org.tiqr.data.viewmodel.EnrollmentViewModel
-import org.tiqr.data.viewmodel.ViewModelFactory
-import org.tiqr.data.viewmodel.ViewModelKey
-import javax.inject.Singleton
+import org.tiqr.data.viewmodel.*
 
+/**
+ * Module which serves the viewmodels and its factory.
+ */
 @Module
-abstract class ViewModelModule {
+interface ViewModelModule {
     @Binds
-    @Singleton
-    internal abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+    fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(AuthenticationViewModel::class)
-    abstract fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
+    fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EnrollmentViewModel::class)
-    abstract fun bindEnrollmentViewModel(enrollmentViewModel: EnrollmentViewModel): ViewModel
+    fun bindEnrollmentViewModel(enrollmentViewModel: EnrollmentViewModel): ViewModel
 }

@@ -10,6 +10,7 @@ buildscript {
     dependencies {
         classpath Plugins.android
         classpath Plugins.kotlin
+        classpath Plugins.Navigation.safeArgs
         classpath Plugins.googleServices
     }
 }

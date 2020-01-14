@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -29,6 +29,7 @@
 
 package org.tiqr.data.module
 
+import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.Lazy
 import dagger.Module
@@ -38,6 +39,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.api.HeaderInjector
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.UserAgentInjector
 import org.tiqr.data.di.ApiScope
 import org.tiqr.data.di.BaseScope
 import org.tiqr.data.di.TokenScope
@@ -48,12 +50,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Module which serves the network related dependencies,
+ * such as the HTTP client or API connector.
+ */
 @Module
-object NetworkModule {
+internal object NetworkModule {
     //region OkHttp
     @Provides
     @Singleton
-    @JvmStatic
     @BaseScope
     internal fun provideOkHttpClientBuilder(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -63,15 +68,16 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     @ApiScope
     internal fun provideApiOkHttpClient(
             @BaseScope client: OkHttpClient,
+            userAgentInjector: UserAgentInjector,
             headerInjector: HeaderInjector,
             loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         val builder = client
                 .newBuilder()
+                .addInterceptor(userAgentInjector)
                 .addInterceptor(headerInjector)
 
         if (BuildConfig.DEBUG) {
@@ -83,13 +89,15 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     @TokenScope
     internal fun provideTokenOkHttpClient(
             @BaseScope client: OkHttpClient,
+            userAgentInjector: UserAgentInjector,
             loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        val builder = client.newBuilder()
+        val builder = client
+                .newBuilder()
+                .addInterceptor(userAgentInjector)
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
         }
@@ -99,12 +107,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     internal fun provideHeaderInjector(): HeaderInjector = HeaderInjector()
 
     @Provides
     @Singleton
-    @JvmStatic
+    internal fun provideUserAgentInjector(context: Context): UserAgentInjector = UserAgentInjector(context)
+
+    @Provides
+    @Singleton
     internal fun provideLoggingInterceptor(): HttpLoggingInterceptor =
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -114,12 +124,10 @@ object NetworkModule {
     //region Retrofit
     @Provides
     @Singleton
-    @JvmStatic
     internal fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     @Provides
     @Singleton
-    @JvmStatic
     @BaseScope
     internal fun provideBaseRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -129,7 +137,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     @ApiScope
     internal fun provideApiRetrofit(
             @BaseScope retrofit: Retrofit,
@@ -146,7 +153,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     @TokenScope
     internal fun provideTokenRetrofit(
             @BaseScope retrofit: Retrofit,
@@ -160,7 +166,6 @@ object NetworkModule {
     }
 
     @Provides
-    @JvmStatic
     @Singleton
     internal fun provideTiqrApi(@ApiScope retrofit: Retrofit): TiqrApi = retrofit.create(TiqrApi::class.java)
     //endregion

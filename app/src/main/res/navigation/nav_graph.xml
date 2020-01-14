@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="org.tiqr.authenticator.start.StartFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_mainFragment_to_scanFragment"
+            app:destination="@id/scanFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="org.tiqr.authenticator.scan.ScanFragment"
+        android:label="ScanFragment"
+        tools:layout="@layout/fragment_scan" />
+
+    <action
+        android:id="@+id/open_browser"
+        app:destination="@id/browser">
+
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false" />
+    </action>
+
+    <browser
+        android:id="@+id/browser"
+        android:label="Browser"
+        tools:layout="@layout/destination_browser" />
+
+    <action
+        android:id="@+id/open_about"
+        app:destination="@id/aboutFragment" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="org.tiqr.authenticator.about.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about" />
+</navigation>
