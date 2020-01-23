@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQueryBuilder
 import android.util.Log
+import androidx.core.database.getStringOrNull
 
 import java.util.ArrayList
 
@@ -378,7 +379,7 @@ class DbAdapter(private val _ctx: Context) {
                     id = cursor.getInt(rowIdColumn).toLong(),
                     identifier = cursor.getString(identifierColumn),
                     displayName = cursor.getString(displayNameColumn),
-                    logoURL = cursor.getString(logoColumn),
+                    logoURL = cursor.getStringOrNull(logoColumn),
                     authenticationURL = cursor.getString(authURLColumn),
                     infoURL = cursor.getString(infoURLColumn)
                 )
