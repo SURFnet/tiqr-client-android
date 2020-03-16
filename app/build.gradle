@@ -78,10 +78,10 @@ dependencies {
     implementation Libs.AndroidX.browser
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
-    implementation Libs.AndroidX.CameraX.core
-    implementation Libs.AndroidX.CameraX.camera2
-    implementation Libs.AndroidX.CameraX.cameraView
-    implementation Libs.AndroidX.CameraX.lifecycle
+    implementation Libs.AndroidX.Camera.core
+    implementation Libs.AndroidX.Camera.camera2
+    implementation Libs.AndroidX.Camera.view
+    implementation Libs.AndroidX.Camera.lifecycle
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.ui
     implementation Libs.AndroidX.Lifecycle.liveData

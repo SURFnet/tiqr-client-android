@@ -155,7 +155,7 @@ class ScanComponent(
                 .setTargetAspectRatio(screenAspectRatio)
                 .setTargetRotation(viewFinder.display.rotation)
                 .build().apply {
-                    previewSurfaceProvider = viewFinder.previewSurfaceProvider
+                    setSurfaceProvider(viewFinder.previewSurfaceProvider)
                 }
 
         cameraAnalysis = ImageAnalysis.Builder().build().apply {
@@ -164,8 +164,6 @@ class ScanComponent(
 
         cameraProvider.unbindAll()
         camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, cameraPreview, cameraAnalysis)
-
-        cameraPreview.previewSurfaceProvider.toString()
     }
 
     /**
