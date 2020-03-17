@@ -17,6 +17,8 @@
         <item name="colorSecondary">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <item name="android:colorBackground">@color/grey_50</item>
+
+        <item name="android:autofilledHighlight" tools:ignore="NewApi">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
     </style>
@@ -37,6 +39,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.TextAppearance.Pin">
+        <item name="android:fontFamily">@font/animals</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
     <!-- Widgets -->
     <style name="AppTheme.TextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">@style/AppTheme.TextAppearance</item>
@@ -51,6 +58,18 @@
     <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
+
+    <style name="AppTheme.Widget.Pin" parent="Widget.MaterialComponents.TextView">
+        <item name="android:background">@drawable/pin_input_background</item>
+        <item name="android:textAppearance">@style/AppTheme.TextAppearance.Pin</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">numberPassword</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

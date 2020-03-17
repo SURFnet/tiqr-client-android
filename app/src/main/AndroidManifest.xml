@@ -19,6 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/LaunchTheme"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
