@@ -39,4 +39,7 @@
     <string name="scan_permission_required_settings">Setări</string>
     <string name="scan_permission_required_dismiss">Anulare</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Eroare la lansarea browserului implicit</string>
+
 </resources>

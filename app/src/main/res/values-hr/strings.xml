@@ -38,4 +38,7 @@
     <string name="scan_permission_required_settings">Postavke</string>
     <string name="scan_permission_required_dismiss">Odustani</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Pokretanje zadanog preglednika nije uspjelo</string>
+
 </resources>

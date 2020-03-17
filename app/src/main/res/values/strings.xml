@@ -37,6 +37,9 @@
     <string name="scan_permission_required_settings">Settings</string>
     <string name="scan_permission_required_dismiss">Cancel</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Failed to launch the default browser</string>
+
     <!-- About -->
     <string name="about_label_version" translatable="false">%1s &#8226; v%2s</string>
     <string name="about_label_provided_by">Provided by:</string>

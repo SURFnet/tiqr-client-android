@@ -39,4 +39,7 @@
     <string name="scan_permission_required_settings">Innstillinger</string>
     <string name="scan_permission_required_dismiss">Avbryt</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Kunne ikke starte standard nettleseren</string>
+
 </resources>

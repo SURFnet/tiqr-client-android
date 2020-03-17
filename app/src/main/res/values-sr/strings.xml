@@ -38,4 +38,7 @@
     <string name="scan_permission_required_settings">Podešavanja</string>
     <string name="scan_permission_required_dismiss">Otkaži</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Nije uspeo pokretanje podrazumevanog pregledača</string>
+
 </resources>

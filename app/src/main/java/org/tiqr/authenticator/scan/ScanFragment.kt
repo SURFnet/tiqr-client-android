@@ -32,6 +32,7 @@ package org.tiqr.authenticator.scan
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.doOnLayout
 import androidx.navigation.fragment.findNavController
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
@@ -48,7 +49,7 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = binding ?: return
-        binding.viewFinder.post {
+        binding.viewFinder.doOnLayout {
             scanComponent = ScanComponent(
                     context = requireContext(),
                     lifecycleOwner = viewLifecycleOwner,

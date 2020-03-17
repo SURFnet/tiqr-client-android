@@ -38,4 +38,7 @@
     <string name="scan_permission_required_settings">Ynstellings</string>
     <string name="scan_permission_required_dismiss">Ofbrekke</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">De standertbrowser is net starte</string>
+
 </resources>

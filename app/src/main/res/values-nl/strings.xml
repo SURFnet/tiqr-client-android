@@ -39,4 +39,7 @@
     <string name="scan_permission_required_settings">Instellingen</string>
     <string name="scan_permission_required_dismiss">Annuleren</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Kan de standaardbrowser niet starten</string>
+
 </resources>

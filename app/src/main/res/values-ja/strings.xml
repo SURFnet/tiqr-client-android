@@ -36,4 +36,7 @@
     <string name="scan_permission_required_settings">設定</string>
     <string name="scan_permission_required_dismiss">キャンセル</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">デフォルトのブラウザを起動できませんでした</string>
+
 </resources>

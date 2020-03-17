@@ -35,6 +35,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
@@ -79,6 +80,7 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
                 } catch (e: ActivityNotFoundException) {
                     // Very unlikely, but better to guard against this
                     Timber.e(e, "Cannot open the browser")
+                    Toast.makeText(context, R.string.browser_error_launch, Toast.LENGTH_SHORT).show()
                 }
             }
         }

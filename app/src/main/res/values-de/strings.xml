@@ -39,4 +39,7 @@
     <string name="scan_permission_required_settings">Einstellungen</string>
     <string name="scan_permission_required_dismiss">Abbrechen</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Fehler beim Starten des Standardbrowsers</string>
+
 </resources>

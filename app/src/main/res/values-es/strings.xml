@@ -39,4 +39,7 @@
     <string name="scan_permission_required_settings">Configuración</string>
     <string name="scan_permission_required_dismiss">Cancelar</string>
 
+    <!-- Browser -->
+    <string name="browser_error_launch">Error al iniciar el navegador predeterminado</string>
+
 </resources>
