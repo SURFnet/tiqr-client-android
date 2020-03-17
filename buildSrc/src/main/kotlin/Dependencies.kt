@@ -41,11 +41,11 @@ object Libs {
     }
 
     object AndroidX {
-        const val activity = "androidx.activity:activity-ktx:1.2.0-alpha01"
-        const val appcompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha01"
-        const val core = "androidx.core:core-ktx:1.3.0-alpha01"
-        const val browser = "androidx.browser:browser:1.3.0-alpha01"
+        const val activity = "androidx.activity:activity-ktx:1.1.0"
+        const val appcompat = "androidx.appcompat:appcompat:1.1.0"
+        const val fragment = "androidx.fragment:fragment-ktx:1.2.2"
+        const val core = "androidx.core:core-ktx:1.2.0"
+        const val browser = "androidx.browser:browser:1.2.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
 
@@ -57,7 +57,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-alpha01"
+            private const val version = "2.2.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val commonJ8 = "androidx.lifecycle:lifecycle-common-java8:$version"
             const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -82,7 +82,7 @@ object Libs {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.2.0-alpha05"
+        const val material = "com.google.android.material:material:1.1.0"
 
         object Firebase {
             const val vision = "com.google.firebase:firebase-ml-vision:24.0.1"
