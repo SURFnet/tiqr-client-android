@@ -24,7 +24,8 @@ android {
         manifestPlaceholders.schemeEnroll = project.schemeEnroll
         manifestPlaceholders.schemeAuth = project.schemeAuth
 
-        resConfigs "nl", "en" // TODO: add supported languages
+        // only package supported languages
+        resConfigs "en", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr"
 
         dataBinding {
             enabled = true
@@ -55,15 +56,9 @@ android {
     }
 
     buildTypes {
-        debug {
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
-        }
-
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
-            //TODO: check if analytics should be disabled completely
         }
     }
 }
@@ -78,10 +73,10 @@ dependencies {
     implementation Libs.AndroidX.browser
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
-    implementation Libs.AndroidX.CameraX.core
-    implementation Libs.AndroidX.CameraX.camera2
-    implementation Libs.AndroidX.CameraX.cameraView
-    implementation Libs.AndroidX.CameraX.lifecycle
+    implementation Libs.AndroidX.Camera.core
+    implementation Libs.AndroidX.Camera.camera2
+    implementation Libs.AndroidX.Camera.view
+    implementation Libs.AndroidX.Camera.lifecycle
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.ui
     implementation Libs.AndroidX.Lifecycle.liveData
@@ -96,10 +91,18 @@ dependencies {
     kapt Libs.Dagger.compiler
 
     implementation Libs.Permission.kPermissions
+    implementation Libs.betterLink
 
     testImplementation Libs.Testing.jUnit
     androidTestImplementation Libs.Testing.jUnitAndroidx
     androidTestImplementation Libs.Testing.epsresso
+}
+
+// Disable analytics
+configurations.all {
+    exclude group: 'com.google.firebase', module: 'firebase-core'
+    exclude group: 'com.google.firebase', module: 'firebase-analytics'
+    exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
 }
 
 apply plugin: 'com.google.gms.google-services'

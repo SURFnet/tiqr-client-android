@@ -29,8 +29,6 @@
 
 package org.tiqr.authenticator.about
 
-import android.os.Bundle
-import android.view.View
 import androidx.annotation.LayoutRes
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
@@ -40,22 +38,6 @@ import org.tiqr.authenticator.databinding.FragmentAboutBinding
  * Fragment to show the about screen.
  */
 class AboutFragment : BindingFragment<FragmentAboutBinding>() {
-    companion object {
-        private const val URL_TIQR = "https://tiqr.org"
-        private const val URL_SURFNET = "https://www.surfnet.nl"
-        private const val URL_EGENIQ = "https://www.egeniq.com"
-        private const val URL_KEEN = "https://www.keen.design"
-    }
-
     @LayoutRes
     override val layout = R.layout.fragment_about
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.urlTiqr = URL_TIQR
-        binding.urlSurf = URL_SURFNET
-        binding.urlEgeniq = URL_EGENIQ
-        binding.urlKeen = URL_KEEN
-    }
 }

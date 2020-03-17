@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="280dp"
+    tools:context=".widget.PinView"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:constraint_referenced_ids="pin1, pin2, pin3, pin4, pin_ok"
+        app:flow_horizontalStyle="spread_inside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/pin1"
+        style="@style/AppTheme.Widget.Pin"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:ignore="MissingConstraints"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/pin2"
+        style="@style/AppTheme.Widget.Pin"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:ignore="MissingConstraints"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/pin3"
+        style="@style/AppTheme.Widget.Pin"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:ignore="MissingConstraints"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/pin4"
+        style="@style/AppTheme.Widget.Pin"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:fontFamily="@font/animals"
+        tools:ignore="MissingConstraints"
+        tools:inputType="text"
+        tools:text="4" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pin_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:minWidth="48dp"
+        android:padding="8dp"
+        android:text="@string/button_ok"
+        tools:enabled="true"
+        tools:ignore="MissingConstraints" />
+</merge>

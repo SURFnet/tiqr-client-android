@@ -63,6 +63,9 @@ interface TiqrDao {
     @Query(value = "UPDATE identity SET blocked = 1 WHERE _id = :id;")
     suspend fun blockIdentity(id: Long): Int
 
+    @Query(value = "SELECT COUNT(DISTINCT blocked) AS allblocked FROM identity WHERE blocked = 1;")
+    fun allIdentitiesBlocked(): Flow<Boolean>
+
     @Query(value = "UPDATE identity SET blocked = 1;")
     suspend fun blockAllIdentities(): Int
 

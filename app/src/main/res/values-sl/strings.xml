@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Spet</string>
+    <string name="button_cancel">Prekliči</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>tiqr na vašem pametnem telefonu lahko uporabite za enostavno in varno prijavo v številne spletne storitve.</b><br/>
+    <br/>
+    Predno lahko pričnete z uporabo aplikacije tiqr, ustvarite identiteto, registrirajte in aktivirajte račun.
+    Seznam ponudnikov identitet je dostopen na naslovu <a href=\"https://tiqr.org\">tiqr.org</a>.<br/>
+    <br/>
+    Po registraciji boste prejeli aktivacijsko kodo z navodili o postopku aktivacije.
+    Med postopkom aktivacije boste morali skenirati kodo QR, zato pritisnite na gumb <b>Skeniraj</b>, če bo program od vas to zahteval.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Pojite na izbrano spletno stran in se prijavite z naslednjimi koraki:</b><br/>
+    <br/>
+    1. Skenirajte kodo QR na prijavni strani spletne storitve.<br/>
+    <br/>
+    <i>če imate več identitet, izberite želeno.</i><br/>
+    <br/>
+    2. Potrdite svojo identiteto z vpisom PIN-a.<br/>
+    <br/>
+    3. Prijavljeni ste!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Kaj sedaj?</b><br/>
+    <br/>
+    Zaprosite svojega ponudnika identitete za novo aktivacijsko kodo.
+    Podrobnosti o vašem ponudniku identitete so vedno dostopne preko gumba desno zgoraj.<br/>
+    <br/>
+    Skupaj z novo aktivacijsko kodo boste prejeli tudi navodila za ponovno aktivacijo računa.
+    Pritisnite na gumb <b>Skeniraj</b>, če bo aplikacija to zahtevala od vas.]]></string>
+
+    <!-- Scan -->
+    <string name="scan_button">Skeniranj</string>
+    <string name="scan_permission_required_title">Potrebno je dovoljenje kamere</string>
+    <string name="scan_permission_required_message">Za skeniranje QR kode potrebuje tiqr dostop do kamere.</string>
+    <string name="scan_permission_required_settings">Nastavitve</string>
+    <string name="scan_permission_required_dismiss">Prekliči</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Zagon privzetega brskalnika ni uspel</string>
+
+</resources>

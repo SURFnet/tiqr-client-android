@@ -29,14 +29,17 @@
 
 package org.tiqr.authenticator.widget
 
+import android.animation.LayoutTransition
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageButton
+import androidx.core.content.withStyledAttributes
 import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
-import org.tiqr.authenticator.BrowserDirections
+import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
+import org.tiqr.authenticator.util.Urls.URL_SURFNET
 
 /**
  * Custom [BottomAppBar] to display and handle the Info and Surfnet actions.
@@ -44,35 +47,41 @@ import org.tiqr.authenticator.R
 class BottomBarView : BottomAppBar {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
-    companion object {
-        private const val URL_SURFNET = "https://www.surfnet.nl"
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        context.withStyledAttributes(attrs, R.styleable.BottomBarView) {
+            infoVisible = getBoolean(R.styleable.BottomBarView_showInfo, true)
+        }
     }
 
+    var infoVisible: Boolean = true
+        set(value) {
+            if (value) {
+                setNavigationIcon(R.drawable.ic_info)
+            } else {
+                navigationIcon = null
+            }
+
+            field = value
+        }
+
     init {
-        setNavigationIcon(R.drawable.ic_info)
+        layoutTransition = LayoutTransition() // = animateLayoutChanges
+
         setNavigationOnClickListener {
-            findNavController().navigate(R.id.open_about)
+            findNavController().navigate(MainNavDirections.openAbout())
         }
 
         LayoutInflater.from(context)
                 .inflate(R.layout.view_bottombar, this, true).run {
                     findViewById<ImageButton>(R.id.surfnet)
                 }.setOnClickListener {
-                    findNavController().navigate(BrowserDirections.openBrowser(URL_SURFNET))
+                    findNavController().navigate(MainNavDirections.openBrowser(URL_SURFNET))
                 }
     }
 
-    /**
-     * Toggle the left icon.
-     * By default it is visible.
-     */
-    fun toggleInfoIcon(show: Boolean) {
-        if (show) {
-            setNavigationIcon(R.drawable.ic_info)
-        } else {
-            navigationIcon = null
-        }
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        infoVisible = infoVisible
     }
 }

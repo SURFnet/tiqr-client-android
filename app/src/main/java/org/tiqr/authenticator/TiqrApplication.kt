@@ -30,13 +30,11 @@
 package org.tiqr.authenticator
 
 import android.app.Application
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
 import org.tiqr.authenticator.di.DaggerTiqrComponent
 import org.tiqr.authenticator.di.TiqrComponent
 import timber.log.Timber
 
-class TiqrApplication : Application(), CameraXConfig.Provider  {
+class TiqrApplication : Application()  {
     private lateinit var component: TiqrComponent
 
     override fun onCreate() {
@@ -57,6 +55,4 @@ class TiqrApplication : Application(), CameraXConfig.Provider  {
             super.getSystemService(name)
         }
     }
-
-    override fun getCameraXConfig(): CameraXConfig = Camera2Config.defaultConfig()
 }

@@ -38,12 +38,19 @@ import android.view.KeyEvent
 /**
  * Broadcast receiver to handle key events while scanning.
  */
-class KeyEventReceiver(private val torch: (enable: Boolean) -> Unit) : BroadcastReceiver() {
+class CameraKeyEventsReceiver(private val torch: (enable: Boolean) -> Unit) : BroadcastReceiver() {
     companion object {
+        private const val KEY_EVENT_ACTION = "key_event_action"
+        private const val KEY_EVENT_EXTRA = "key_event_extra"
+
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
 
-        const val KEY_EVENT_ACTION = "key_event_action"
-        const val KEY_EVENT_EXTRA = "key_event_extra"
+        /**
+         * Create the key event [Intent]
+         */
+        fun createEvent(keyCode: Int): Intent = Intent(KEY_EVENT_ACTION).apply {
+            putExtra(KEY_EVENT_EXTRA, keyCode)
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {

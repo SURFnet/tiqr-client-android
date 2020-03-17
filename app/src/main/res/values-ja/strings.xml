@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">再び</string>
+    <string name="button_cancel">キャンセル</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>tiqrを利用すれば、スマートフォンで簡単かつ安全に、オンラインサービスにログインすることができます。</b><br/>
+    <br/>
+    まず最初にアカウント登録を行ってください。tiqrが利用可能なIDプロバイダの一覧は <a href=\"https://tiqr.org\">tiqr.org</a>にあります。<br/>
+    登録後に、アカウントを有効化するためのコードとその方法の説明が通知されます。
+    有効化手続きの中でQRコードのスキャンを行う際には、
+    指示に従って<b>スキャン</b>のボタンを押してください。]]></string>
+    <string name="start_instructions"><![CDATA[<b>利用したいサービスにアクセスし、次の手順に従ってください：</b><br/>
+    <br/>
+    1. ログイン画面のQRコードをスキャンします。<br/>
+    <br/>
+    <i>複数のアカウントを登録している場合は、その中から利用したいアカウントを選択します。</i><br/>
+    <br/>
+    2. アカウントに対応するPINを入力します。<br/>
+    <br/>
+    3. ログイン完了!]]></string>
+    <string name="start_blocked"><![CDATA[<b>対応方法</b><br/>
+    <br/>
+    IDプロバイダから再有効化のためのコードを入手してください。
+    IDプロバイダへのリンクは、右上のIDから確認できます。<br/>
+    <br/>
+    有効化のためのコードを入力すれば、アカウントを再有効化するための説明が通知されます。
+    指示に従って<b>スキャン</b>してください。]]></string>
+
+    <!-- Scan -->              
+    <string name="scan_button">スキャン</string>
+    <string name="scan_permission_required_title">カメラの許可が必要です</string>
+    <string name="scan_permission_required_message">QRコードをスキャンするには、tiqrはカメラにアクセスする必要があります。</string>
+    <string name="scan_permission_required_settings">設定</string>
+    <string name="scan_permission_required_dismiss">キャンセル</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">デフォルトのブラウザを起動できませんでした</string>
+
+</resources>

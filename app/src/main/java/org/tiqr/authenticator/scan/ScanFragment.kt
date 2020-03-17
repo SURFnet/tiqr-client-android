@@ -32,6 +32,7 @@ package org.tiqr.authenticator.scan
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.doOnLayout
 import androidx.navigation.fragment.findNavController
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
@@ -47,11 +48,13 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewFinder.post {
+        val binding = binding ?: return
+        binding.viewFinder.doOnLayout {
             scanComponent = ScanComponent(
-                    requireContext(),
-                    viewLifecycleOwner,
-                    binding.viewFinder
+                    context = requireContext(),
+                    lifecycleOwner = viewLifecycleOwner,
+                    viewFinder = binding.viewFinder,
+                    viewFinderRatio = it.height.toFloat() / it.width.toFloat()
             ) { result ->
                 Toast.makeText(requireContext(), "QR Code:\n$result", Toast.LENGTH_LONG).show()
 

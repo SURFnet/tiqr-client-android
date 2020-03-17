@@ -52,7 +52,7 @@ class ScanOverlay : View {
         color = ColorUtils.setAlphaComponent(Color.BLACK, 0x99)
     }
 
-    private val frameBorderPaint = Paint().apply {
+    private val frameBorderPaint: Paint = Paint().apply {
         isAntiAlias = true
         strokeWidth = 0f // hairline
         style = Paint.Style.STROKE
@@ -137,6 +137,6 @@ class ScanOverlay : View {
             addRect(frameRect, Path.Direction.CW)
         }
 
-        maskPath = viewPath.minus(framePath)
+        maskPath = viewPath - framePath
     }
 }

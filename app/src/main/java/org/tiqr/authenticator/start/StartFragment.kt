@@ -38,18 +38,20 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentStartBinding
 import org.tiqr.authenticator.util.extensions.doOnCameraPermission
-import org.tiqr.data.viewmodel.MainViewModel
+import org.tiqr.data.viewmodel.StartViewModel
 import timber.log.Timber
 
 /**
  * Fragment to handle main screen and button to qr-scanner.
  */
+@ExperimentalCoroutinesApi
 class StartFragment : BindingFragment<FragmentStartBinding>() {
-    private val mainViewModel by activityViewModels<MainViewModel> { component.viewModeFactory }
+    private val viewModel by activityViewModels<StartViewModel> { component.viewModeFactory }
 
     @LayoutRes
     override val layout: Int = R.layout.fragment_start
@@ -62,17 +64,18 @@ class StartFragment : BindingFragment<FragmentStartBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = mainViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        val binding = binding ?: return
 
-        mainViewModel.identityCount.observe(viewLifecycleOwner) {
-            // rebuild options menu when count changes
-            requireActivity().invalidateOptionsMenu()
+        binding.viewModel = viewModel.apply {
+            identityCount.observe(viewLifecycleOwner) {
+                // rebuild options menu when count changes
+                requireActivity().invalidateOptionsMenu()
+            }
         }
 
         binding.scanButton.setOnClickListener {
             requireActivity().doOnCameraPermission {
-                findNavController().navigate(R.id.action_mainFragment_to_scanFragment)
+                findNavController().navigate(StartFragmentDirections.actionScan())
             }
         }
     }
@@ -83,7 +86,7 @@ class StartFragment : BindingFragment<FragmentStartBinding>() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.identity)?.apply {
-            isVisible = (mainViewModel.identityCount.value ?: 0) > 0
+            isVisible = viewModel.hasIdentities
         }
     }
 

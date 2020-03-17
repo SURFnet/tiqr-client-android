@@ -44,8 +44,8 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * Get the Dagger Component.
      */
-    @get:CheckResult
     protected val component: TiqrComponent
+        @CheckResult
         get() = applicationContext
                 .getSystemService(TiqrComponent::class.java.name) as TiqrComponent
 }
@@ -53,7 +53,7 @@ abstract class BaseActivity : AppCompatActivity() {
 /**
  * Base Activity for DataBinding.
  */
-abstract class BindingActivity<B : ViewDataBinding>() : BaseActivity() {
+abstract class BindingActivity<B : ViewDataBinding> : BaseActivity() {
     protected lateinit var binding: B
 
     @get:LayoutRes
@@ -61,11 +61,14 @@ abstract class BindingActivity<B : ViewDataBinding>() : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, layout)
+        binding.lifecycleOwner = this
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.unbind()
+
+        super.onDestroy()
     }
 }

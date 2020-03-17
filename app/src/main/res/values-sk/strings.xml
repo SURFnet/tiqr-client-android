@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Znovu</string>
+    <string name="button_cancel">Zrušiť</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>S tiqr možete použiť váš mobilný telefón na jednoduché a bezpečné prihlásenie k webovým službám.</b><br/>
+    <br/>
+    V aplikácii zatiaľ nemáte aktívny účet.
+    Pre použitie tiqr budete potrebovať účet.
+    Zoznam poskytovateľov identít nájdete na <a href=\"https://tiqr.org\">tiqr.org</a>.<br/>
+    <br/>
+    Po registrácii obdržíte aktivačný kód spolu s pokynmi, ako svoj účet aktivovať.
+    V priebehu aktivácie bude potrebné nasnímať QR kód.
+    Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Zvoľte želanú službu a postupujte nasledovne:</b><br/>
+    <br/>
+    1. Nasnímajte QR kód na prihlasovacej stránke služby.<br/>
+    <br/>
+    <i>Ak máte niekoľko identít, zvoľte si tú, s ktorou sa chcete prihlásiť.</i><br/>
+    <br/>
+    2. Potvrďte identitu (budete musieť zadať svoj PIN).<br/>
+    <br/>
+    3. Ste prihlásený/á!]]></string>
+    <string name="start_blocked"><![CDATA[<b>A čo teraz?</b><br/>
+    <br/>
+    Požiadajte vášho poskytovateľa identity o nový aktivačný kód. Odkaz na váško poskytovateľa identity nájdete v menu Identity (hore vľavo).<br/>
+    <br/>
+    Spolu s aktivačným kódom obdržíte pokyny ako znovu aktivovať váš účet.
+    Výzvu <b>Skenovať</b> potvrďte stlačením tlačítka.]]></string>
+
+    <!-- Scan -->    
+    <string name="scan_button">Skenovať</string>
+    <string name="scan_permission_required_title">Vyžaduje sa povolenie kamery</string>
+    <string name="scan_permission_required_message">Na skenovanie QR kódu potrebuje Tiqr prístup do kamery.</string>
+    <string name="scan_permission_required_settings">Nastavenie</string>
+    <string name="scan_permission_required_dismiss">Zrušiť</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Nepodarilo sa spustiť predvolený prehliadač</string>
+
+</resources>

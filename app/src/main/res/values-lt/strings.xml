@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">Taip</string>
+    <string name="button_retry">Vėl</string>
+    <string name="button_cancel">Atšaukti</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Naudokite "tiqr" savo išmaniajame telefone, kad prisijungtumėte prie svetainių lengvai ir saugiai.</b><br/>
+    <br/>
+    Užregistruokite savo naują tiqr paskyrą ir vykdykite aktyvavimo instrukcijas.<br/>
+    <br/>
+    Paspauskite <b>Skenuoti</b> kai būsite paprašytas.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Naudokite "tiqr" savo išmaniajame telefone, kad prisijungtumėte</b><br/>
+    <br/>
+    1. Spauskite <b>Skenuoti</b> ir nuskenuokite QR kodą.<br/>
+    <br/>
+    <i>Daugiau nei vienas ID? Pasirinkite tinkamą ID.</i><br/>
+    <br/>
+    2. Nuskaitykite savo piršto atspaudą arba įveskite PIN kodą ir paspauskite <b>Patvirtinti</b><br/>
+    <br/>
+    3. Jūs prisijungėte!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Toliau?</b><br/>
+    <br/>
+    Paprašykite savo tapatybės teikėjo(-ų) naujo aktyvavimo kodo.
+    Tapatybės teikėjo nuorodos ieškokite prie savo tapatybės (viršuje dešinėje).<br/>
+    <br/>
+    Kartu su nauju aktyvavimo kodu gausite instrukcijas kaip aktyvuoti savo paskyrą.
+    Paspauskite <b>Skenuoti</b> kai būsite paprašytas.]]></string>
+
+    <!-- Scan -->    
+    <string name="scan_button">Skenuoti</string>
+    <string name="scan_permission_required_title">Reikalinga kameros autorizacija</string>
+    <string name="scan_permission_required_message">tiqr reikia prieigos prie fotoaparato, norint nuskaityti QR kodą.</string>
+    <string name="scan_permission_required_settings">Nustatymai</string>
+    <string name="scan_permission_required_dismiss">Atšaukti</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Nepavyko paleisti numatytosios naršyklės</string>
+
+</resources>

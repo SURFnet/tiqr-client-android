@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Encore</string>
+    <string name="button_cancel">Cancelar</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Grâce à tiqr vous pouvez utilisez votre mobile pour vous connecter simplement et en sécurité à des service en ligne.<b><br/>
+    <br/>
+    L\'application n\'a pas encore de compte activé.
+    Vous devez avoir un compte activé pour utiliser tiqr.
+    Vous pouvez trouver une liste de fournisseurs de services sur <a ref=\"https://tiqr.org\">tiqr.org</a>.<br/>
+    <br/>
+    Après l\'enregistrement, vous recevrez un code d\'activation et les instructions pour activer votre compte.
+    Pendant l\'activation, vous devrez scanner un code QR.
+    Pressez <b>Scan</b> si demandé.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Allez sur le service ou vous voulez vous connecter and suivez ces instructions:</b><br/>
+    <br/>
+    1. Scannez le code QR sur la fenêtre de connexion du site web ou du service.<br/>
+    <br/>
+    <i>Si vous avez plusieurs identités, sélectionnez une identité.</i><br/>
+    <br/>
+    2. Confirmez votre identité (vous devrez entrer votre code PIN).<br/>
+    <br/>
+    3. Vous êtes connecté!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Et maintenant?</b><br/>
+    <br/>
+    Demandez à votre fournisseur de service un nouveau code d\'activation.
+    Pour trouver le lien vers votre fournisseur de service, consultez vos identités (accessibles en haut à droite).<br/>
+    <br/>
+    Lorsque vous recevrez votre nouveau code d\'activation, il vous sera aussi fourni les instructions pour ré-activer votre compte.
+    Appuyez sur <b>Scan</b> si demandé.]]></string>
+
+    <!-- Scan -->    
+    <string name="scan_button">Scan </string>
+    <string name="scan_permission_required_title">Autorisation de caméra requise</string>
+    <string name="scan_permission_required_message">Pour scanner un code QR, tiqr doit avoir accès à la caméra.</string>
+    <string name="scan_permission_required_settings">Paramètres</string>
+    <string name="scan_permission_required_dismiss">Annuler</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Impossible de lancer le navigateur par défaut</string>
+
+</resources>
