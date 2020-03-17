@@ -55,15 +55,9 @@ android {
     }
 
     buildTypes {
-        debug {
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
-        }
-
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
-            //TODO: check if analytics should be disabled completely
         }
     }
 }
@@ -101,6 +95,13 @@ dependencies {
     testImplementation Libs.Testing.jUnit
     androidTestImplementation Libs.Testing.jUnitAndroidx
     androidTestImplementation Libs.Testing.epsresso
+}
+
+// Disable analytics
+configurations.all {
+    exclude group: 'com.google.firebase', module: 'firebase-core'
+    exclude group: 'com.google.firebase', module: 'firebase-analytics'
+    exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
 }
 
 apply plugin: 'com.google.gms.google-services'
