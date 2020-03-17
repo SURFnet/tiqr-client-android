@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Din nou</string>
+    <string name="button_cancel">Anuleaza</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Folosind tiqr, puteti folosi smartphone-ul dumneavoastra pentru a va autentifica usor si in siguranta pe mai multe site-uri web.</b><br/>
+    <br/>
+    Aplicatia nu are inca un cont activ.
+    Aveti nevoie de un cont activ pentru a folosi tiqr.
+    Puteti gasi o lista a furnizorilor de identitate la <a href=\"https://tiqr.org\">tiqr.org</a>.<br/>
+    <br/>
+    Dupa inregistrare, veti primi un cod de activare si instructiuni pentru a va activa contul.
+    In timpul acestui proces, va trebui sa scanati un cod QR.
+    Apasati <b>Scaneaza</b> daca va este cerut.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Navigati la site-ul web la care vreti sa va autentificati si urmati acesti pasi:</b><br/>
+    <br/>
+    1. Scanati codul QR de pe ecranul de autentificare al site-ului web ori al serviciului.<br/>
+    <br/>
+    <i>Daca aveti mai multe identitati, selectati identitatea dumneavoastra.</i><br/>
+    <br/>
+    2. Confirmati identitatea dumneavoastra (va trebui sa introduceti codul dumneavoastra PIN).<br/>
+    <br/>
+    3. Sunteti autentificati!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Ce urmeaza?</b><br/>
+    <br/>
+    Intrebati providerul(i) dumneavoastra de identitate pentru un nou cod de activare.
+    Pentru un link spre providerul(i) dumneavoastra de identitate varificati identitatile dumneavoastra (accesibile in coltul din dreapta sus).<br/>
+    <br/>
+    Alaturi de noul cod de activare al dumneavoastra, veti primi instructiuni pentru reactivarea contului.
+    Apasati <b>Scanare</b> daca va este cerut.]]></string>
+
+    <!-- Scan -->    
+    <string name="scan_button">Scaneaza</string>
+    <string name="scan_permission_required_title">Este necesară permisiunea pentru cameră</string>
+    <string name="scan_permission_required_message">Pentru scanarea unui cod QR, tiqr are nevoie de acces la cameră.</string>
+    <string name="scan_permission_required_settings">Setări</string>
+    <string name="scan_permission_required_dismiss">Anulare</string>
+
+</resources>

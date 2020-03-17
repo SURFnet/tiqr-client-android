@@ -37,7 +37,7 @@ import android.widget.ImageButton
 import androidx.core.content.withStyledAttributes
 import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
-import org.tiqr.authenticator.BrowserDirections
+import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.util.Urls.URL_SURFNET
 
@@ -68,14 +68,14 @@ class BottomBarView : BottomAppBar {
         layoutTransition = LayoutTransition() // = animateLayoutChanges
 
         setNavigationOnClickListener {
-            findNavController().navigate(R.id.open_about)
+            findNavController().navigate(MainNavDirections.openAbout())
         }
 
         LayoutInflater.from(context)
                 .inflate(R.layout.view_bottombar, this, true).run {
                     findViewById<ImageButton>(R.id.surfnet)
                 }.setOnClickListener {
-                    findNavController().navigate(BrowserDirections.openBrowser(URL_SURFNET))
+                    findNavController().navigate(MainNavDirections.openBrowser(URL_SURFNET))
                 }
     }
 

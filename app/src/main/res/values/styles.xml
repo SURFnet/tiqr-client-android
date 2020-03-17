@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Special theme to use as Launch (a.k.a. Splash) -->
     <style name="LaunchTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
@@ -13,8 +13,12 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorSecondary">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <item name="android:colorBackground">@color/grey_50</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
     </style>
 
     <!-- Buttons -->
@@ -34,8 +38,19 @@
     </style>
 
     <!-- Widgets -->
+    <style name="AppTheme.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/AppTheme.TextAppearance</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
     <style name="AppTheme.Progress">
-        <item name="colorSecondary">@color/primaryDarkColor</item> <!-- TODO: check if we need a pinkish color from old code -->
+        <!-- TODO: check if we need a pinkish color from old code -->
+        <item name="colorSecondary">@color/primaryDarkColor</item>
+    </style>
+
+    <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+    </style>
     </style>
 
 </resources>

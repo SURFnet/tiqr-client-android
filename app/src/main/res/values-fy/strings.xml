@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Wer</string>
+    <string name="button_cancel">Annulearje</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Mei tiqr kinne jo mei jo mobile telefoan maklik en feilich ynloche by ferskillende Ynternetsides.</b> <br/>
+    <br/>
+    De tapassing hat noch net in aktyf akkount.
+    Jo hawwe in aktyf akkount noadich om tiqr brûke te kinne.
+    In list mei identiteit ferstrekkers kinne jo fine  by <a href=\"https://tiqr.org\">tiqr.org</a>. <br/>
+    <br/>
+    Nei registraasje krije jo in aktivaasje koade en ynstruksje hoe jo akkount te aktivearje.
+    Ûnder it aktivaasje proses moatte jo in QR koade scanne.
+    Druk op <b>Scan</b> as dêrom frege wurd.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Gie nei de Ynternetside wêr ’t jo ynloche wolle en trochrin de folgjende stappen:</b><br/>
+    <br/>
+    1. Scan de toande QR koade op it ynlochskerm fan de Ynternetside of tsjinst wêr ’t jo ynloche wolle.<br/>
+    <br/>
+    <i>As jo meardere identiteiten hawwe, selektear jo identiteit foar dizze tsjinst.</i><br/>
+    <br/>
+    2. Befêstigje jo identiteit (hjirbei wurd nei jo PIN frege).<br/>
+    <br/>
+    3. Jo binne ynlocht!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Wat no?</b><br/>
+    <br/>Freegje by jo identeitferstrekker(s) om in nije aktivaasjekoade.
+    In trochferwizing nei jo identiteitferstrekker(s) is beskikber út it akkount oersjoch (rjochts boppe).<br/>
+    <br/>
+    By jo nije aktivaasje koade krije jo ynstruksjes.
+    Druk op <b>Scan</b> wannear ’t jo dêrom freege wurd.]]></string>
+
+    <!-- Scan -->    
+    <string name="scan_button">Scan</string>
+    <string name="scan_permission_required_title">Kamerfergunning nedich</string>
+    <string name="scan_permission_required_message">Foar it scannen fan in QR-koade is tiqr tagong nedich ta de kamera.</string>
+    <string name="scan_permission_required_settings">Ynstellings</string>
+    <string name="scan_permission_required_dismiss">Ofbrekke</string>
+
+</resources>

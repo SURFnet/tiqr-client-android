@@ -46,8 +46,8 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
+    @ViewModelKey(StartViewModel::class)
+    fun bindStartViewModel(startViewModel: StartViewModel): ViewModel
 
     @Binds
     @IntoMap

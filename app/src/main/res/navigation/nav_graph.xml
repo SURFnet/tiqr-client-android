@@ -2,27 +2,27 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment"
-    tools:ignore="UnusedNavigation">
+    android:id="@+id/main_nav"
+    app:startDestination="@id/start">
 
     <fragment
-        android:id="@+id/startFragment"
+        android:id="@+id/start"
+        android:label="StartFragment"
         android:name="org.tiqr.authenticator.start.StartFragment"
-        android:label="MainFragment"
         tools:layout="@layout/fragment_start">
+
         <action
-            android:id="@+id/action_mainFragment_to_scanFragment"
-            app:destination="@id/scanFragment"
-            app:popUpTo="@id/startFragment"
+            android:id="@+id/action_scan"
+            app:destination="@id/scan"
+            app:popUpTo="@id/start"
             app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
-        android:id="@+id/scanFragment"
-        android:name="org.tiqr.authenticator.scan.ScanFragment"
+        android:id="@+id/scan"
         android:label="ScanFragment"
-        tools:layout="@layout/fragment_scan" />
+        android:name="org.tiqr.authenticator.scan.ScanFragment"
+        tools:layout="@layout/fragment_scan">
 
     <action
         android:id="@+id/open_browser"
@@ -41,11 +41,11 @@
 
     <action
         android:id="@+id/open_about"
-        app:destination="@id/aboutFragment" />
+        app:destination="@id/about" />
 
     <fragment
-        android:id="@+id/aboutFragment"
-        android:name="org.tiqr.authenticator.about.AboutFragment"
+        android:id="@+id/about"
         android:label="AboutFragment"
+        android:name="org.tiqr.authenticator.about.AboutFragment"
         tools:layout="@layout/fragment_about" />
 </navigation>

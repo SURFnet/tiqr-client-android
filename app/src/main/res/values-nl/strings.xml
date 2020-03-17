@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Nogmaals</string>
+    <string name="button_cancel">Annuleren</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Met tiqr kunt u met uw smartphone veilig en vertrouwd inloggen bij verschillende webdiensten.</b><br/>
+    <br/>
+    Deze applicatie bevat nog geen actief account.
+    Om gebruik te maken van tiqr hebt u een geactiveerd account nodig.
+    Op <a href=\"https://tiqr.org\">tiqr.org</a> vindt u een lijst met identiteitsverstrekkers.<br/>
+    <br/>
+    Na registratie ontvangt u een activatiecode en instructies voor de activatie.
+    Tijdens het activatieproces moet u een QR code scannen.
+    Druk op <b>Scan</> als u hier om gevraagd wordt.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Gebruik tiqr op uw smartphone om in te loggen</b> <br/>
+    <br/>
+    1. Druk op <b>Scan</b> en scan de QR-code op de website <br/>
+    <br/>
+    <i>Meer dan één ID? Selecteer het relevante ID.</i> <br/>
+    <br/>
+    2. Scan uw biometrie of vul uw PIN voor tiqr in en druk op <b>OK</b> <br/>
+    <br/>
+    3. U bent ingelogd!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Wat nu?</b><br/>
+    <br/>
+    Vraag bij uw identeitverstrekker(s) om een nieuwe activatiecode.
+    Een link naar uw identiteitverstrekker(s) is beschikbaar vanuit het account overzicht (rechtsboven).<br/>
+    <br/>
+    Bij uw nieuwe activatiecode ontvangt u instructies.
+    Zodra u daar om gevraagd wordt drukt u op <b>Scan</b>.]]></string>
+
+    <!-- Scan -->
+    <string name="scan_button">Scannen</string>
+    <string name="scan_permission_required_title">Camera permissie benodigd</string>
+    <string name="scan_permission_required_message">Voor het scannen van een QR code, heeft tiqr toegang nodig tot de camera.</string>
+    <string name="scan_permission_required_settings">Instellingen</string>
+    <string name="scan_permission_required_dismiss">Annuleren</string>
+
+</resources>

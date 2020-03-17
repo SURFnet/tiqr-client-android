@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".start.StartFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="org.tiqr.data.viewmodel.MainViewModel" />
+            type="org.tiqr.data.viewmodel.StartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".start.StartFragment">
+        android:padding="@dimen/default_padding">
 
         <TextView
-            android:id="@+id/main_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:lineSpacingMultiplier="1.1"
-            android:padding="24dp"
+            android:padding="8dp"
             android:textAppearance="@style/AppTheme.TextAppearance.Main"
-            android:textColorHighlight="@color/primaryDarkColor"
-            android:textColorLink="@color/primaryColor"
+            android:textColorHighlight="@color/primaryColor"
+            android:textColorLink="@color/primaryDarkColor"
             app:enableLinks="@{true}"
-            app:htmlText="@{safeUnbox(viewModel.identityCount) > 0 ? @string/start_instructions : @string/start_welcome}"
-            app:layout_constraintBottom_toTopOf="@+id/scan_button"
+            app:htmlText="@{viewModel.contentType}"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/start_welcome" />
 
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/scan_button"
-            style="@style/AppTheme.Button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:text="@string/scan_button"
+            app:icon="@drawable/ic_scan"
+            app:iconGravity="textEnd"
+            app:iconSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent=".5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/button_container_height" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

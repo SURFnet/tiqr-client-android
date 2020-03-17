@@ -30,10 +30,14 @@
 package org.tiqr.authenticator
 
 import android.os.Bundle
+import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.KeyEvent
 import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.transition.doOnEnd
+import androidx.core.transition.doOnStart
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.*
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -61,7 +65,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             setupActionBarWithNavController(this)
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
-            navController.addOnDestinationChangedListener(this@MainActivity)
+            addOnDestinationChangedListener(this@MainActivity)
 
             Navigation.setViewNavController(binding.bottombar, this)
         }
@@ -73,14 +77,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
         navController.removeOnDestinationChangedListener(this)
     }
 
-    override fun onSupportNavigateUp() = navController.navigateUp()
+    override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        when (destination.id) {
-            //TODO: add other destinations which need bottombar to be hidden
-            R.id.scanFragment,
-            R.id.aboutFragment -> toggleBottomBar(false)
-            else -> toggleBottomBar(true)
+        when (destination.id) { //TODO: add other destinations which needs bottombar setup or hiding
+            R.id.scan,
+            R.id.about -> toggleBottomBar(visible = false)
+            else -> toggleBottomBar(visible = true)
         }
     }
 
@@ -107,11 +110,32 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
     /**
      * Toggle the bottom bar visibility with slide animation.
      */
-    private fun toggleBottomBar(show: Boolean) {
+    private fun toggleBottomBar(visible: Boolean, infoVisible: Boolean = true) {
+        val transition = AutoTransition()
+
+        val params = binding.bottombar.layoutParams as ConstraintLayout.LayoutParams
+        val currentVisible = params.topToBottom == ConstraintLayout.LayoutParams.UNSET
+        val bottomBarHiding = currentVisible && !visible
+        val bottomBarShowing = !currentVisible && visible
+        val bottomBarUnchanged = currentVisible == visible
+
+        when {
+            bottomBarHiding || bottomBarUnchanged -> {
+                transition.doOnEnd {
+                    binding.bottombar.infoVisible = infoVisible
+                }
+            }
+            bottomBarShowing -> {
+                transition.doOnStart {
+                    binding.bottombar.infoVisible = infoVisible
+                }
+            }
+        }
+
         ConstraintSet().apply {
             clone(binding.container)
 
-            if (show) {
+            if (visible) {
                 clear(binding.bottombar.id, ConstraintSet.TOP)
                 connect(binding.bottombar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
             } else {
@@ -122,6 +146,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             applyTo(binding.container)
         }
 
-        TransitionManager.beginDelayedTransition(binding.container)
+        TransitionManager.beginDelayedTransition(binding.container, transition)
     }
 }

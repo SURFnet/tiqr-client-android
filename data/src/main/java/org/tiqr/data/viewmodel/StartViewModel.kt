@@ -32,18 +32,52 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import org.tiqr.data.R
 import org.tiqr.data.service.DatabaseService
-import timber.log.Timber
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val databaseService: DatabaseService) : ViewModel() {
+/**
+ * ViewModel for the start screen.
+ */
+class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
     @ExperimentalCoroutinesApi
-    val identityCount: LiveData<Int> = databaseService.getIdentityCount()
+    private val _identityCount: Flow<Int> = db.identityCount()
             .onStart { emit(value = 0) }
             .catch { emit(value = 0) }
-            .asLiveData()
 
+    @ExperimentalCoroutinesApi
+    private val _allIdentitiesBlocked: Flow<Boolean> = db.allIdentitiesBlocked()
+            .onStart { emit(value = false) }
+            .catch { emit(value = false) }
+
+    /**
+     * Current number of identities.
+     */
+    @ExperimentalCoroutinesApi
+    val identityCount: LiveData<Int> = _identityCount.asLiveData()
+
+    /**
+     * Are there any identities?
+     */
+    @ExperimentalCoroutinesApi
+    val hasIdentities
+        get() = (identityCount.value ?: 0) > 0
+
+    /**
+     * What content text to show based on identity blocked state and identity count.
+     */
+    @ExperimentalCoroutinesApi
+    val contentType: LiveData<Int> = _allIdentitiesBlocked
+            .zip(_identityCount) { blocked, count ->
+                when {
+                    blocked -> R.string.start_blocked
+                    count > 0 -> R.string.start_instructions
+                    else -> R.string.start_welcome
+                }
+            }
+            .onStart { emit(value = R.string.start_welcome) }
+            .catch { emit(value = R.string.start_welcome) }
+            .asLiveData()
 }

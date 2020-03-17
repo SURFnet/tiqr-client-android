@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
-    <string name="app_name">tiqr</string>
+    <string name="app_name" translatable="false">tiqr</string>
+
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Retry</string>
+    <string name="button_cancel">Cancel</string>
 
     <!-- Start -->
-    <string name="start_welcome"><![CDATA[<b>Use tiqr on your smartphone to log in to websites easily and secure.</b>
-    <br />
-    <br />
-    Register your new tiqr account and follow the instructions for activation.<br />
-    <br />
+    <string name="start_welcome"><![CDATA[<b>Use tiqr on your smartphone to log in to websites easily and secure.</b><br/>
+    <br/>
+    Register your new tiqr account and follow the instructions for activation.<br/>
+    <br/>
     Press <b>Scan</b> when asked.]]></string>
-    <string name="start_instructions"><![CDATA[<b>Use tiqr on your smartphone to log in</b> <br />
-    <br />
-    1. Press <b>Scan</b> and scan the QR-code on the website. <br />
-    <br />
-    <i>More than one ID? Select the relevant ID.</i> <br />
-    <br />
-    2. Scan your fingerprint or enter your PIN for tiqr and press <b>OK</b> <br />
-    <br />
+    <string name="start_instructions"><![CDATA[<b>Use tiqr on your smartphone to log in</b> <br/>
+    <br/>
+    1. Press <b>Scan</b> and scan the QR-code on the website.<br/>
+    <br/>
+    <i>More than one ID? Select the relevant ID.</i> <br/>
+    <br/>
+    2. Scan your biometric or enter your PIN for tiqr and press <b>OK</b> <br/>
+    <br/>
     3. You are logged in!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Now what?</b><br/>
+    <br/>
+    Ask your identity provider(s) for a new activation code.
+    For a link to your identity provider(s) check your identities (accessible from the top right).<br/>
+    <br />
+    Together with your new activation code you will receive instructions for reactivating your account.
+    Press <b>Scan</b> if asked.]]></string>
 
     <!-- Scan -->
     <string name="scan_button">Scan</string>
@@ -27,8 +38,8 @@
     <string name="scan_permission_required_dismiss">Cancel</string>
 
     <!-- About -->
-    <string name="about_label_version">%1s &#8226; v%2s</string>
-    <string name="about_label_provided_by">tiqr is provided by:</string>
+    <string name="about_label_version" translatable="false">%1s &#8226; v%2s</string>
+    <string name="about_label_provided_by">Provided by:</string>
     <string name="about_label_developed_by">Developed by:</string>
     <string name="about_label_interaction_by">Interaction design:</string>
 

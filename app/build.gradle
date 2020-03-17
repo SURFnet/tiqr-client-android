@@ -24,7 +24,8 @@ android {
         manifestPlaceholders.schemeEnroll = project.schemeEnroll
         manifestPlaceholders.schemeAuth = project.schemeAuth
 
-        resConfigs "nl", "en" // TODO: add supported languages
+        // only package supported languages
+        resConfigs "en", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr"
 
         dataBinding {
             enabled = true
