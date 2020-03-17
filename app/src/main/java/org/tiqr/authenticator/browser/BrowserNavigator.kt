@@ -30,6 +30,7 @@
 package org.tiqr.authenticator.browser
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -42,6 +43,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import org.tiqr.authenticator.R
+import timber.log.Timber
 
 /**
  * [Navigator] to add a browser [NavDestination]
@@ -56,11 +58,11 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
 
         if (destination.isChromeCustomTabSupported) {
             CustomTabsIntent.Builder()
+                    .setShowTitle(true)
                     .setToolbarColor(ContextCompat.getColor(context, R.color.primaryColor))
                     .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
                     .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
                     .addDefaultShareMenuItem()
-                    .setShowTitle(true)
                     .build()
                     .run {
                         intent.putExtra(Intent.EXTRA_REFERRER, referrer)
@@ -72,7 +74,12 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
                 putExtra(Intent.EXTRA_REFERRER, referrer)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }.run {
-                context.startActivity(this)
+                try {
+                    context.startActivity(this)
+                } catch (e: ActivityNotFoundException) {
+                    // Very unlikely, but better to guard against this
+                    Timber.e(e, "Cannot open the browser")
+                }
             }
         }
 

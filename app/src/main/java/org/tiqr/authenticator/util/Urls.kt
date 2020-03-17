@@ -27,17 +27,11 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.authenticator.about
+package org.tiqr.authenticator.util
 
-import androidx.annotation.LayoutRes
-import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
-import org.tiqr.authenticator.databinding.FragmentAboutBinding
-
-/**
- * Fragment to show the about screen.
- */
-class AboutFragment : BindingFragment<FragmentAboutBinding>() {
-    @LayoutRes
-    override val layout = R.layout.fragment_about
+object Urls {
+    const val URL_TIQR = "https://tiqr.org"
+    const val URL_SURFNET = "https://www.surfnet.nl"
+    const val URL_EGENIQ = "https://www.egeniq.com"
+    const val URL_KEEN = "https://www.keen.design"
 }
