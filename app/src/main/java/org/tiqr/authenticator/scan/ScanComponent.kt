@@ -31,6 +31,7 @@ package org.tiqr.authenticator.scan
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
 import android.os.VibrationEffect
@@ -63,6 +64,7 @@ class ScanComponent(
         private val context: Context,
         private val lifecycleOwner: LifecycleOwner,
         private val viewFinder: PreviewView,
+        private val viewFinderRatio: Float,
         private val scanResult: (result: String) -> Unit
 ) : DefaultLifecycleObserver {
     companion object {
@@ -78,7 +80,7 @@ class ScanComponent(
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
     private lateinit var cameraAnalysis: ImageAnalysis
-    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, this@ScanComponent::onDetected)
+    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, viewFinderRatio, this@ScanComponent::onDetected)
     //endregion
 
     //region Sound
@@ -90,26 +92,22 @@ class ScanComponent(
             .build()
     private val beepSound: Int = soundPool.load(context, R.raw.beep, 1)
     private val vibrator: Vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     //endregion
 
     private val lifecycleScope = lifecycleOwner.lifecycleScope
 
     private val broadcastManager: LocalBroadcastManager = LocalBroadcastManager.getInstance(context)
-    private val keyReceiver = KeyEventReceiver { enable -> camera.cameraControl.enableTorch(enable) }
+    private val keyReceiver = CameraKeyEventsReceiver { enable -> camera.cameraControl.enableTorch(enable) }
 
     init {
         lifecycleScope.launch {
             cameraProvider = initCameraProvider()
             startCamera(cameraProvider)
         }
-        // FIXME: sometimes (when you start the scanning immediately on app start),
-        //  there is a crash with `View resolution can not be zero sized`,
-        //  (when using TextureView) might be a bug in cameraX-lib,
-        //  temporarily switched to SurfaceView which works faster and doesn't have this issue.
-        //  SurfaceView could be a keeper.
 
         if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-            broadcastManager.registerReceiver(keyReceiver, KeyEventReceiver.filter)
+            broadcastManager.registerReceiver(keyReceiver, CameraKeyEventsReceiver.filter)
         }
     }
 
@@ -186,14 +184,18 @@ class ScanComponent(
      * Beep and vibrate to notify the user.
      */
     private fun alertDetection() {
+        if (audioManager.ringerMode != AudioManager.RINGER_MODE_NORMAL) {
+            // User has turned off sound and/or vibrations, so we should respect that
+            return
+        }
+
         soundPool.play(beepSound, BEEP_VOLUME, BEEP_VOLUME, 1, 0, 1f)
 
         if (vibrator.hasVibrator()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
-                // deprecated in API 26
-                @Suppress("DEPRECATION")
+                @Suppress("DEPRECATION") // deprecated in API 26
                 vibrator.vibrate(VIBRATE_DURATION)
             }
         }
@@ -202,7 +204,7 @@ class ScanComponent(
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
 
-        broadcastManager.registerReceiver(keyReceiver, KeyEventReceiver.filter)
+        broadcastManager.registerReceiver(keyReceiver, CameraKeyEventsReceiver.filter)
     }
 
     override fun onStop(owner: LifecycleOwner) {

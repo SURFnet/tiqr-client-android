@@ -50,9 +50,10 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
         val binding = binding ?: return
         binding.viewFinder.post {
             scanComponent = ScanComponent(
-                    requireContext(),
-                    viewLifecycleOwner,
-                    binding.viewFinder
+                    context = requireContext(),
+                    lifecycleOwner = viewLifecycleOwner,
+                    viewFinder = binding.viewFinder,
+                    viewFinderRatio = it.height.toFloat() / it.width.toFloat()
             ) { result ->
                 Toast.makeText(requireContext(), "QR Code:\n$result", Toast.LENGTH_LONG).show()
 

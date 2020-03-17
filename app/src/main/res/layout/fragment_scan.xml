@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".scan.ScanFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
             android:layout_height="match_parent"
             app:implementationMode="surfaceView"
             tools:visibility="gone" />
+        <!-- setting implementationMode to textureView does not work reliably -->
 
         <org.tiqr.authenticator.scan.ScanOverlay
             android:layout_width="match_parent"

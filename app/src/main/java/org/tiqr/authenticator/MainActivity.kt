@@ -29,7 +29,6 @@
 
 package org.tiqr.authenticator
 
-import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.KeyEvent
@@ -40,7 +39,7 @@ import androidx.navigation.*
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.tiqr.authenticator.base.BindingActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
-import org.tiqr.authenticator.scan.KeyEventReceiver
+import org.tiqr.authenticator.scan.CameraKeyEventsReceiver
 import org.tiqr.authenticator.scan.ScanFragment
 import org.tiqr.authenticator.util.extensions.currentNavigationFragment
 
@@ -92,9 +91,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (supportFragmentManager.currentNavigationFragment<ScanFragment>() != null) {
-                    Intent(KeyEventReceiver.KEY_EVENT_ACTION).apply {
-                        putExtra(KeyEventReceiver.KEY_EVENT_EXTRA, keyCode)
-                    }.run {
+                    CameraKeyEventsReceiver.createEvent(keyCode).run {
                         LocalBroadcastManager.getInstance(this@MainActivity)
                                 .sendBroadcast(this)
                     }

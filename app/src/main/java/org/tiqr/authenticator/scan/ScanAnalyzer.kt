@@ -30,6 +30,7 @@
 package org.tiqr.authenticator.scan
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.core.graphics.toRect
@@ -46,12 +47,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.lang.Exception
+import kotlin.math.roundToInt
 
 /**
  * Analyzer to detect QR codes using Firebase ML-Kit
  */
 class ScanAnalyzer(
         lifecycleOwner: LifecycleOwner,
+        private val viewFinderRatio: Float,
         private val result: (String) -> Unit
 ) : ImageAnalysis.Analyzer {
     private val lifecycleScope = lifecycleOwner.lifecycleScope
@@ -71,22 +74,30 @@ class ScanAnalyzer(
     override fun analyze(image: ImageProxy) {
         image.image?.let { scanned ->
             lifecycleScope.launch {
+                val rotation = image.imageInfo.rotationDegrees.toFirebaseRotation()
+                val isPortrait = rotation.isOrientationPortrait()
+                val width = if (isPortrait) scanned.height else scanned.width
+                val height = if (isPortrait) scanned.width else scanned.height
+
                 try {
-                    val rotation = image.imageInfo.rotationDegrees.toFirebaseRotation()
-                    val isPortrait = rotation.isOrientationPortrait()
-                    val detected = FirebaseVisionImage.fromMediaImage(scanned, rotation)
-                    detector.detectInImage(detected).await()
+                    detector.detectInImage(FirebaseVisionImage.fromMediaImage(scanned, rotation)).await()
                             .run {
                                 val barcode = firstOrNull() ?: return@run
-
-                                //FIXME: get the actual size of the cropped image, to calculate the centerbox properly
-                                val centerBox = if (isPortrait) {
-                                    getCenterBoxFrame(scanned.height, scanned.width, 0.5f)?.toRect()
+                                val barcodeBox = barcode.boundingBox
+                                val centerBox: Rect? = if (isPortrait) {
+                                    val cropped = (height / viewFinderRatio).roundToInt()
+                                    getCenterBoxFrame(cropped, height)?.toRect()?.apply {
+                                        offset((width - cropped) / 2, 0)
+                                    }
                                 } else {
-                                    getCenterBoxFrame(scanned.width, scanned.height, 0.5f)?.toRect()
+                                    val cropped = (width / viewFinderRatio).roundToInt()
+                                    getCenterBoxFrame(width, cropped)?.toRect()?.apply {
+                                        offset((height - cropped) / 2, 0)
+                                    }
                                 }
-                                if (centerBox != null && barcode.boundingBox != null) {
-                                    if (centerBox.contains(barcode.boundingBox!!)) {
+
+                                if (centerBox != null && barcodeBox != null) {
+                                    if (centerBox.contains(barcodeBox)) {
                                         // Only process barcode inside center box
                                         barcode.displayValue?.run(result)
                                     }
