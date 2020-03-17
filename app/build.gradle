@@ -96,6 +96,7 @@ dependencies {
     kapt Libs.Dagger.compiler
 
     implementation Libs.Permission.kPermissions
+    implementation Libs.betterLink
 
     testImplementation Libs.Testing.jUnit
     androidTestImplementation Libs.Testing.jUnitAndroidx

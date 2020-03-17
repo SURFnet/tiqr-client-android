@@ -62,8 +62,7 @@ class StartFragment : BindingFragment<FragmentStartBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = mainViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        val binding = binding ?: return
 
         mainViewModel.identityCount.observe(viewLifecycleOwner) {
             // rebuild options menu when count changes

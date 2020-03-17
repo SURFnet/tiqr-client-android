@@ -27,18 +27,19 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.authenticator.util
+package org.tiqr.authenticator.util.databinding
 
 import android.annotation.SuppressLint
-import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.text.parseAsHtml
 import androidx.databinding.BindingAdapter
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_about.view.*
-import org.tiqr.authenticator.BrowserDirections
+import androidx.navigation.findNavController
+import me.saket.bettermovementmethod.BetterLinkMovementMethod
+import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
 
 /**
@@ -62,10 +63,13 @@ fun TextView.htmlText(@StringRes html: Int) {
  */
 @BindingAdapter(value = ["enableLinks"])
 fun TextView.enableLinks(enable: Boolean) {
-    movementMethod = if (enable) {
-        LinkMovementMethod.getInstance()
-    } else {
-        null
+    if (enable) {
+        BetterLinkMovementMethod
+                .linkify(Linkify.WEB_URLS, this)
+                .setOnLinkClickListener { _, url ->
+                    findNavController().navigate(MainNavDirections.openBrowser(url))
+                    true
+                }
     }
 }
 
@@ -85,5 +89,5 @@ fun TextView.appName(appName: String) {
 @BindingAdapter(value = ["openBrowser"])
 fun View.openBrowser(url: String) {
     if (url.isEmpty()) return
-    setOnClickListener(Navigation.createNavigateOnClickListener(BrowserDirections.openBrowser(url)))
+    setOnClickListener(Navigation.createNavigateOnClickListener(MainNavDirections.openBrowser(url)))
 }

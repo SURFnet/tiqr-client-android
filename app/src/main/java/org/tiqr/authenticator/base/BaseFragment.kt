@@ -39,6 +39,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import org.tiqr.authenticator.di.TiqrComponent
+import org.tiqr.data.viewmodel.ViewModelFactory
 
 /**
  * Base Fragment.
@@ -47,30 +48,41 @@ abstract class BaseFragment : Fragment() {
     /**
      * Get the Dagger App Component.
      */
-    val component: TiqrComponent
+    protected val component: TiqrComponent
         @CheckResult
         get() = requireContext()
                 .applicationContext
                 .getSystemService(TiqrComponent::class.java.name) as TiqrComponent
+
+    /**
+     * Get the ViewModelFactory
+     */
+    protected val factory: ViewModelFactory
+        get() = component.viewModeFactory
 }
 
 /**
  * Base Fragment for DataBinding.
  */
 abstract class BindingFragment<B : ViewDataBinding> : BaseFragment() {
-    protected lateinit var binding: B
+    protected var binding: B? = null
 
     @get:LayoutRes
     protected abstract val layout: Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return DataBindingUtil.inflate<B>(inflater, layout, container, false).also {
-            binding = it
-        }.root
+        return DataBindingUtil.inflate<B>(inflater, layout, container, false)
+                .apply {
+                    lifecycleOwner = viewLifecycleOwner
+                    binding = this
+                }
+                .root
     }
 
     override fun onDestroyView() {
+        binding?.unbind()
+        binding = null
+
         super.onDestroyView()
-        binding.unbind()
     }
 }
