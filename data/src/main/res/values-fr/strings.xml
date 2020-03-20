@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Code QR inconnu</string>
+    <string name="error_qr_unknown">Ce code QR ne peut pas être traité.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Enregistrement échoué</string>
+    <string name="error_enroll_connection">Connexion au serveur d\'enregistrement impossible. Veuillez contacter l\'administrateur du site web.</string>
+    <string name="error_enroll_invalid_qr">Code QR d\'enregistrement invalide.</string>
+    <string name="error_enroll_invalid_response">Réponse du serveur d\'enregistrement invalide. Veuillez contacter l\'administrateur du site web.</string>
+    <string name="error_enroll_invalid_response_code">Code de réponse invalide (%s). Veuillez contacter l\'administrateur du site web.</string>
+    <string name="error_enroll_invalid_protocol">Protocole de réponse invalide (%s). Veuillez contacter l\'administrateur du site web.</string>
+    <string name="error_enroll_duplicate_identity">Vous êtes déjà enregistré avec l\'identité %s pour le service %s.</string>
+    <string name="error_enroll_saving_identity_provider">Impossible d\'enregistrer le fournisseur de service. Veuillez contacter le support.</string>
+    <string name="error_enroll_saving_identity">Impossible d\'enregistrer l\'identité. Veuillez contacter le support.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

@@ -42,28 +42,16 @@ class PreferenceService(private val context: Context) {
         private const val PREFERENCE_SETTINGS = ":preferences"
         private const val PREFERENCE_SECURITY = ":settings"
 
+        private const val PREFS_KEY_VERSION = "version"
         private const val PREFS_KEY_TOKEN = "notification_token"
         private const val PREFS_KEY_SALT = "salt"
-        private const val PREFS_KEY_DEVICE_ID = "device_id"
-        private const val PREFS_KEY_VERSION = "version"
+        private const val PREFS_KEY_DEVICE_KEY = "device_key"
 
         private const val PREFERENCE_CURRENT_VERSION = 2 // bump to migrate
     }
 
     private val settingsSharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SETTINGS, Context.MODE_PRIVATE)
     private val securitySharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SECURITY, Context.MODE_PRIVATE)
-
-    var notificationToken: String?
-        get() = settingsSharedPreferences.getString(PREFS_KEY_TOKEN, null)
-        set(value) = settingsSharedPreferences.edit { putString(PREFS_KEY_TOKEN, value) }
-
-    var salt: String?
-        get() = securitySharedPreferences.getString(PREFS_KEY_SALT, null)
-        set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_SALT, value) }
-
-    var deviceId: String?
-        get() = securitySharedPreferences.getString(PREFS_KEY_DEVICE_ID, null)
-        set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_DEVICE_ID, value) }
 
     private var prefsVersion: Int?
         get() {
@@ -77,6 +65,23 @@ class PreferenceService(private val context: Context) {
                 }
             }
         }
+
+    var notificationToken: String?
+        get() = settingsSharedPreferences.getString(PREFS_KEY_TOKEN, null)
+        set(value) = settingsSharedPreferences.edit { putString(PREFS_KEY_TOKEN, value) }
+
+    var salt: String?
+        get() = securitySharedPreferences.getString(PREFS_KEY_SALT, null)
+        set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_SALT, value) }
+
+    var deviceKey: String?
+        get() = securitySharedPreferences.getString(PREFS_KEY_DEVICE_KEY, null)
+        set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_DEVICE_KEY, value) }
+
+    init {
+        // Run the migration(s) as soon as this gets initialized
+        migratePreference()
+    }
 
     //region Migration
     /**
@@ -134,7 +139,7 @@ class PreferenceService(private val context: Context) {
                 if (oldPreferences.contains(oldDeviceKey)) {
                     val oldDevice = oldPreferences.getString(oldDeviceKey, null)
                     oldDevice?.let {
-                        deviceId = it
+                        deviceKey = it
                         oldPreferences.edit {
                             remove(oldDeviceKey)
                         }

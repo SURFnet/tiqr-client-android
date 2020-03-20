@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
+    <!-- Placeholders for Start -->
+    <string name="start_welcome" translatable="false">Welcome</string>
+    <string name="start_instructions" translatable="false">Instructions</string>
+    <string name="start_blocked" translatable="false">Blocked</string>
+
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Unknown QR code</string>
+    <string name="error_qr_unknown">This QR code cannot be processed.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Enrollment failed</string>
+    <string name="error_enroll_duplicate_identity">You already enrolled with the identity %s for the service %s.</string>
+    <string name="error_enroll_connection">Cannot connect to enrollment server. Please contact the website administrator.</string>
+    <string name="error_enroll_invalid_qr">Invalid enrollment QR code.</string>
+    <string name="error_enroll_invalid_response">Invalid enrollment server response. Please contact the website administrator.</string>
+    <string name="error_enroll_invalid_response_code">Invalid response code (%s). Please contact the website administrator.</string>
+    <string name="error_enroll_invalid_protocol">Invalid response protocol (%s). Please contact the website administrator.</string>
+
+    <string name="error_enroll_saving_identity_provider">Failed to store identity provider. Please contact support.</string>
+    <string name="error_enroll_saving_identity">Failed to store identity. Please contact support.</string>
+    <!-- Errors Authentication -->
+</resources>

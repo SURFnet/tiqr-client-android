@@ -31,16 +31,21 @@ package org.tiqr.data.module
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Module to pass the [Context] to the dependent modules.
+ * Module to pass the [Context] and [Resources] to the dependent modules.
  */
 @Module(includes = [NetworkModule::class, RepositoryModule::class, ServiceModule::class, ViewModelModule::class])
 object DataModule {
     @Provides
     @Singleton
     fun provideApplicationContext(application: Application): Context = application.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideResources(context: Context): Resources = context.resources
 }

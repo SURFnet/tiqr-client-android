@@ -77,8 +77,8 @@ internal object NetworkModule {
     ): OkHttpClient {
         val builder = client
                 .newBuilder()
-                .addInterceptor(userAgentInjector)
                 .addInterceptor(headerInjector)
+                .addInterceptor(userAgentInjector)
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
@@ -98,6 +98,7 @@ internal object NetworkModule {
         val builder = client
                 .newBuilder()
                 .addInterceptor(userAgentInjector)
+
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
         }

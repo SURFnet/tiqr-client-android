@@ -40,7 +40,7 @@ import java.io.IOException
 internal class HeaderInjector : Interceptor {
     companion object {
         const val HEADER_PROTOCOL = "X-TIQR-Protocol-Version"
-        private const val HEADER_ACCEPT = "ACCEPT"
+        private const val HEADER_ACCEPT = "Accept"
         private const val HEADER_ACCEPT_VALUE = "application/json"
     }
 

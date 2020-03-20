@@ -33,20 +33,23 @@ import android.os.Parcelable
 import androidx.room.*
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * Identity model and entity.
+ */
 @Entity(tableName = "identity",
         indices = [
-            Index(value = arrayOf("_id"), name = "id_idx", unique = true),
-            Index(value = arrayOf("identityProvider"), name = "identity_provider_idx"),
-            Index(value = arrayOf("identifier"), name = "identifier_idx")
+                Index(value = ["_id"], name = "id_idx", unique = true),
+                Index(value = ["identityProvider"], name = "identity_provider_idx"),
+                Index(value = ["identifier"], name = "identifier_idx")
         ],
         foreignKeys = [
-            ForeignKey(
-                entity = IdentityProvider::class,
-                childColumns = ["identityProvider"],
-                parentColumns = ["_id"],
-                onDelete = ForeignKey.CASCADE,
-                deferred = true
-            )
+                ForeignKey(
+                    entity = IdentityProvider::class,
+                    childColumns = ["identityProvider"],
+                    parentColumns = ["_id"],
+                    onDelete = ForeignKey.CASCADE,
+                    deferred = true
+                )
         ]
 )
 @Parcelize
@@ -74,5 +77,5 @@ data class Identity(
         val showFingerPrintUpgrade: Boolean = true,
 
         @ColumnInfo(name = "useFingerPrint")
-        val useFingerPrint: Boolean = false
+        val useFingerPrint: Boolean = false // TODO: rename to biometric
 ) : Parcelable

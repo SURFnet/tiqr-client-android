@@ -33,13 +33,18 @@ import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.KeyEvent
+import android.view.WindowManager
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.transition.doOnEnd
 import androidx.core.transition.doOnStart
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.tiqr.authenticator.base.BindingActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
@@ -62,7 +67,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
         navController = findNavController(R.id.nav_host_fragment)
         with(navController) {
             setSupportActionBar(binding.toolbar)
-            setupActionBarWithNavController(this)
+            setupActionBarWithNavController(this,
+                    AppBarConfiguration.Builder(
+                            // TODO: add other destinations which should hide toolbar back button
+                            setOf(R.id.start, R.id.enrollment_summary)
+                    ).build()
+            )
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
             addOnDestinationChangedListener(this@MainActivity)
@@ -80,9 +90,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
     override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+        when (destination.id) { // Toggle FLAG_SECURE
+            R.id.enrollment_pin,
+            R.id.enrollment_pin_verify -> window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            else -> window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        }
+
         when (destination.id) { //TODO: add other destinations which needs bottombar setup or hiding
             R.id.scan,
-            R.id.about -> toggleBottomBar(visible = false)
+            R.id.about,
+            R.id.enrollment_pin,
+            R.id.enrollment_pin_verify -> toggleBottomBar(visible = false)
+            R.id.enrollment_confirm,
+            R.id.enrollment_summary -> toggleBottomBar(visible = true, infoVisible = false)
             else -> toggleBottomBar(visible = true)
         }
     }

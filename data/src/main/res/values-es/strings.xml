@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Código QR desconocido</string>
+    <string name="error_qr_unknown">Código QR desconocido</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Registro fallido</string>
+    <string name="error_enroll_invalid_qr">Código QR de registro inválido</string>
+    <string name="error_enroll_connection">No se puede conectar al servidor de registro. Por favor, póngase en contacto con el administrador del sitio web.</string>
+    <string name="error_enroll_invalid_response">Respuesta invñaida del servidor. Por favor, póngase en contacto con el administrador del sitio web.</string>
+    <string name="error_enroll_invalid_response_code">Código de respuesta no válido (%s). Por favor, póngase en contacto con el administrador del sitio web.</string>
+    <string name="error_enroll_invalid_protocol">Protocolo de respuesta no válido (%s). Por favor, póngase en contacto con el administrador del sitio web.</string>
+    <string name="error_enroll_duplicate_identity" formatted="false">Ya está registrado como %s para el servicio %s.</string>
+    <string name="error_enroll_saving_identity_provider">No se ha podido guardar el proveedor de identidad. Mejor pida ayuda.</string>
+    <string name="error_enroll_saving_identity">No se ha podido guardar la identidad. Mejor pida ayuda.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

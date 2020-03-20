@@ -39,4 +39,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">デフォルトのブラウザを起動できませんでした</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">の提供元：</string>
+    <string name="about_label_developed_by">開発者：</string>
+    <string name="about_label_interaction_by">操作デザイン：</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">アカウント有効化の確認</string>
+    <string name="enroll_confirm_subtitle">このアカウントを有効化しますか？</string>
+    <string name="enroll_confirm_details">アカウントの詳細</string>
+    <string name="enroll_confirm_domain">次のドメインに対して登録します：</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">PINコードを設定してください</string>
+    <string name="enroll_pin_subtitle">PINを入力してください：</string>
+    <string name="enroll_pin_notice">PINは変更できません。PINを忘れないようにしてください。</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">PINコードの確認</string>
+    <string name="enroll_pin_verify_subtitle">確認のためPINコードを再入力してください：</string>
+    <string name="enroll_pin_verify_no_match_title">PINが一致しません</string>
+    <string name="enroll_pin_verify_no_match_message">PINが一致しません。再入力してください。記憶可能なPINを設定してください。</string>
+
+    <!-- Account -->
+    <string name="account_full_name">フルネーム</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">アカウントが有効化されました</string>
+
 </resources>

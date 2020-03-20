@@ -41,4 +41,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">De standertbrowser is net starte</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Oanbean troch:</string>
+    <string name="about_label_developed_by">Ûntwikkele troch:</string>
+    <string name="about_label_interaction_by">Interaksje ûntwerp:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Befêstigje akkount aktivaasje</string>
+    <string name="enroll_confirm_subtitle">Wolle jo it folgjende akkount aktivearje?</string>
+    <string name="enroll_confirm_details">Akkount details</string>
+    <string name="enroll_confirm_domain">Upisat ćete se na sljedeću domenu:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">PIN kieze</string>
+    <string name="enroll_pin_subtitle">Fier jo PIN yn:</string>
+    <string name="enroll_pin_notice">Ûnhâlt jo PIN, dizze kin net feroare wurde!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">PIN (ferifikaasje)</string>
+    <string name="enroll_pin_verify_subtitle">Befêstigje PIN:</string>
+    <string name="enroll_pin_verify_no_match_title">PINs komme net oerien.</string>
+    <string name="enroll_pin_verify_no_match_message">De 2 PIN koades komme net oerien mei inoar, besykje it op ‘e nij. Kieze in PIN koade dy’t jo ûnthâlde kinne.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Komplete namme</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Jo akkount is aktiveart!</string>
+
 </resources>

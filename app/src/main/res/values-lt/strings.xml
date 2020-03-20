@@ -38,4 +38,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Nepavyko paleisti numatytosios naršyklės</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">tiqr teikėjas:</string>
+    <string name="about_label_developed_by">Vystytojai:</string>
+    <string name="about_label_interaction_by">Interaktyvusis projektavimas:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Patvirtinkite paskyros aktyvavimą</string>
+    <string name="enroll_confirm_subtitle">Ar norite suaktyvinti šią paskyrą?</string>
+    <string name="enroll_confirm_details">Paskyros informacija</string>
+    <string name="enroll_confirm_domain">Jūs prisiregistruosite prie srities:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Pasirinkite unikalų PIN</string>
+    <string name="enroll_pin_subtitle">Įrašykite PIN</string>
+    <string name="enroll_pin_notice">Įsidėmekite šį PIN, jis negali būti keičiamas!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Patikrinkite unikalų PIN:</string>
+    <string name="enroll_pin_verify_subtitle">Pakartotinai įveskite PIN</string>
+    <string name="enroll_pin_verify_no_match_title">PIN nesutampa</string>
+    <string name="enroll_pin_verify_no_match_message">Įvesti PIN nesutampa. Pakartokite dar kartą. Pasirinkite tokį PIN, kurį lengvai įsiminsite.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Vardas Pavardė</string>
+    <string name="account_id">Tiqr paskyros id</string>
+    <string name="account_activated">Paskyra aktyvuota!</string>
+
 </resources>

@@ -31,17 +31,24 @@ package org.tiqr.authenticator.scan
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentScanBinding
 import org.tiqr.authenticator.util.extensions.hasCameraPermission
-import timber.log.Timber
+import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.ChallengeParseResult
+import org.tiqr.data.model.EnrollmentChallenge
+import org.tiqr.data.viewmodel.ScanViewModel
 
 class ScanFragment : BindingFragment<FragmentScanBinding>() {
     override val layout = R.layout.fragment_scan
+
+    private val viewModel by viewModels<ScanViewModel> { factory }
 
     private lateinit var scanComponent: ScanComponent
 
@@ -56,10 +63,37 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
                     viewFinder = binding.viewFinder,
                     viewFinderRatio = it.height.toFloat() / it.width.toFloat()
             ) { result ->
-                Toast.makeText(requireContext(), "QR Code:\n$result", Toast.LENGTH_LONG).show()
-
                 //TODO: show progress
-                //TODO: call api and verify
+                viewModel.parseChallenge(result)
+            }
+        }
+
+        viewModel.challenge.observe(viewLifecycleOwner, this::handleParse)
+    }
+
+    /**
+     * Parse the result after scanning the QR code.
+     */
+    private fun handleParse(result: ChallengeParseResult<*, *>) {
+        //TODO: hide progress
+        when (result) {
+            is ChallengeParseResult.Success -> {
+                when (result.value) {
+                    is EnrollmentChallenge -> findNavController().navigate(ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge))
+                    is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate())
+                }
+            }
+            is ChallengeParseResult.Failure -> {
+                AlertDialog.Builder(requireContext())
+                        .setTitle(result.failure.title)
+                        .setMessage(result.failure.message)
+                        .setCancelable(false)
+                        .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
+                        .setPositiveButton(R.string.button_retry) { dialog, _ ->
+                            dialog.dismiss()
+                            scanComponent.resumeScanning()
+                        }
+                        .show()
             }
         }
     }
@@ -67,7 +101,7 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
     override fun onResume() {
         super.onResume()
         // Check permission again, since user could have revoked it while in paused state.
-        if (!requireActivity().hasCameraPermission()) {
+        if (requireActivity().hasCameraPermission().not()) {
             findNavController().popBackStack()
         }
     }

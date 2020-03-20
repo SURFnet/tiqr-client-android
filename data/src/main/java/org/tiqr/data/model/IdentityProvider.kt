@@ -36,8 +36,13 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * IdentityProvider model and entity.
+ */
 @Entity(tableName = "identityprovider",
-        indices = [Index(value = arrayOf("identifier"), name = "ip_identifier_idx")]
+        indices = [
+                Index(value = ["identifier"], name = "ip_identifier_idx")
+        ]
 )
 @Parcelize
 data class IdentityProvider(

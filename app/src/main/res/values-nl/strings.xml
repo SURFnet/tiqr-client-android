@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Kan de standaardbrowser niet starten</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Aangeboden door:</string>
+    <string name="about_label_developed_by">Ontwikkeld door:</string>
+    <string name="about_label_interaction_by">Interactieontwerp:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Bevestig account activatie</string>
+    <string name="enroll_confirm_subtitle">Wilt u het volgende account activeren?</string>
+    <string name="enroll_confirm_details">Account details</string>
+    <string name="enroll_confirm_domain">U gaat zich aanmelden bij het volgende domein:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Kies een unieke PIN voor tiqr</string>
+    <string name="enroll_pin_subtitle">Voer je PIN in:</string>
+    <string name="enroll_pin_notice">Onthoud je PIN, deze kan niet veranderd worden!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Bevestig de unieke PIN</string>
+    <string name="enroll_pin_verify_subtitle">Voer uw PIN nogmaals in:</string>
+    <string name="enroll_pin_verify_no_match_title">PINs komen niet overeen.</string>
+    <string name="enroll_pin_verify_no_match_message">De 2 PIN codes komen niet met elkaar overeen, probeer het opnieuw. Kies een PIN code die je kunt onthouden.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Volledige naam</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Je account is geactiveerd!</string>
+
 </resources>

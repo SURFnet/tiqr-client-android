@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Fehler beim Starten des Standardbrowsers</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Zur Verfügung gestellt von:</string>
+    <string name="about_label_developed_by">Entwickelt von:</string>
+    <string name="about_label_interaction_by">Benutzerschnittstelle:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Aktivierung des Benutzerkontos bestätigen</string>
+    <string name="enroll_confirm_subtitle">Möchten Sie das folgende Benutzerkonto aktivieren?</string>
+    <string name="enroll_confirm_details">Details zum Benutzerkonto</string>
+    <string name="enroll_confirm_domain">Sie werden zur folgenden Domäne hinzugefügt:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Wählen Sie eine PIN</string>
+    <string name="enroll_pin_subtitle">Bitte geben Sie ihre PIN ein:</string>
+    <string name="enroll_pin_notice">Merken Sie sich Ihre PIN, sie kann nicht geändert werden!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Bitte bestätigen Sie Ihre PIN</string>
+    <string name="enroll_pin_verify_subtitle">Geben Sie zur Bestätigung ihren PIN Code erneut ein:</string>
+    <string name="enroll_pin_verify_no_match_title">PINs stimmen nicht überein</string>
+    <string name="enroll_pin_verify_no_match_message">Die eingegebenen PINs stimmen nicht überein. Versuchen Sie es noch einmal. Wählen Sie eine PIN die Sie sich merken können.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Vollständiger Name</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Benutzerkonto aktiviert!</string>
+
 </resources>

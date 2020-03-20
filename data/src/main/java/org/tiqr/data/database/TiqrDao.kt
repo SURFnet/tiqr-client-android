@@ -32,7 +32,6 @@ package org.tiqr.data.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
@@ -89,10 +88,4 @@ interface TiqrDao {
 
     @Insert
     suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long
-
-    @Transaction
-    suspend fun insertIdentityAndIdentityProvider(identity: Identity, identityProvider: IdentityProvider) {
-        insertIdentity(identity)
-        insertIdentityProvider(identityProvider)
-    }
 }

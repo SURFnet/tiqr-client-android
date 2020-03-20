@@ -33,9 +33,10 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.tiqr.data.database.TiqrDao
-import org.tiqr.data.database.TiqrDatabase
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
+import org.tiqr.data.service.SecretService
+
 import javax.inject.Singleton
 
 /**
@@ -50,4 +51,8 @@ internal object ServiceModule {
     @Provides
     @Singleton
     internal fun providePreferenceService(context: Context): PreferenceService = PreferenceService(context)
+
+    @Provides
+    @Singleton
+    internal fun provideSecretService(context: Context, preferenceService: PreferenceService) = SecretService(context, preferenceService)
 }

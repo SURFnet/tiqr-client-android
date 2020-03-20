@@ -39,16 +39,11 @@ import org.tiqr.data.model.IdentityProvider
  * Service to interact with the database.
  */
 class DatabaseService(private val dao: TiqrDao) {
-    /**
-     * Insert a identity and identityprovider
-     */
-    suspend fun insertIdentityAndIdentityProvider(identity: Identity, identityProvider: IdentityProvider) = dao.insertIdentityAndIdentityProvider(identity, identityProvider)
-
     //region Identity
     /**
      * Get the count of all identities
      */
-    fun getIdentityCount(): Flow<Int> = dao.identityCount()
+    fun identityCount(): Flow<Int> = dao.identityCount()
 
     /**
      * Get an identity by (row) id.
@@ -71,6 +66,16 @@ class DatabaseService(private val dao: TiqrDao) {
     suspend fun getAllIdentities(): List<Identity> = dao.getIdentities()
 
     /**
+     * Insert the [identity] and return the row ID of the newly inserted [identity].
+     */
+    suspend fun insertIdentity(identity: Identity): Long = dao.insertIdentity(identity)
+
+    /**
+     * Check if all identities are blocked.
+     */
+    fun allIdentitiesBlocked(): Flow<Boolean> = dao.allIdentitiesBlocked()
+
+    /**
      * Block all identities.
      */
     suspend fun blockAllIdentities(): Int = dao.blockAllIdentities()
@@ -91,5 +96,10 @@ class DatabaseService(private val dao: TiqrDao) {
      * Get all identity providers.
      */
     fun getAllIdentityProviders(): Flow<List<IdentityProvider>> = dao.getIdentityProviders()
+
+    /**
+     * Insert the [identityProvider] and return the row ID of the newly inserted [identityProvider].
+     */
+    suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long = dao.insertIdentityProvider(identityProvider)
     //endregion
 }

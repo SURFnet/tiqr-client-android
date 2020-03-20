@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Nepoznati KR kod</string>
+    <string name="error_qr_unknown">Ovaj KR kod se ne može obraditi.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Neuspešan upis</string>
+    <string name="error_enroll_connection">Nije moguće uspostaviti vezu sa serverom za upis. Kontaktirajte administratora web stranice.</string>
+    <string name="error_enroll_invalid_qr">Pogrešan QR kod za upis.</string>
+    <string name="error_enroll_invalid_response">Nevažeći odgovor. Kontaktirajte administratora web stranice.</string>
+    <string name="error_enroll_invalid_response_code">Nevažeći kod odgovora (%s). Kontaktirajte administratora web stranice.</string>
+    <string name="error_enroll_invalid_protocol">Nevažeći protokol odgovora (%s). Kontaktirajte administratora web stranice.</string>
+    <string name="error_enroll_duplicate_identity">Već ste upisani sa identitetom %s za uslugu %s.</string>
+    <string name="error_enroll_saving_identity_provider">Nije moguće pohraniti davatelja identiteta. Kontaktirajte podršku.</string>
+    <string name="error_enroll_saving_identity">Nije moguće sačuvati identitet. Kontaktirajte podršku.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

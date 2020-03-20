@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Onbekende QR-code</string>
+    <string name="error_qr_unknown">Deze QR-code kan niet worden verwerkt.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Registratie mislukt</string>
+    <string name="error_enroll_connection">Kan geen verbinding maken met de registratieserver. Neem contact op met de website beheerder.</string>
+    <string name="error_enroll_invalid_qr">Ongeldige registratie QR code.</string>
+    <string name="error_enroll_invalid_response">Ongeldig antwoord van de registratieserver. Neem contact op met de website beheerder.</string>
+    <string name="error_enroll_invalid_response_code">Ongeldige reactiecode (%s) van de registratieserver. Neem contact op met de website beheerder.</string>
+    <string name="error_enroll_invalid_protocol">Ongeldig responsprotocol (%s) van de registratieserver. Neem contact op met de website beheerder.</string>
+    <string name="error_enroll_duplicate_identity">Je hebt dit account %s reeds geregistreerd voor de dienst %s.</string>
+    <string name="error_enroll_saving_identity_provider">Opslaan dienst mislukt. Neem contact op met support.</string>
+    <string name="error_enroll_saving_identity">Opslaan account mislukt. Neem contact op met support.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

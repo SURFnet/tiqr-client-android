@@ -29,7 +29,14 @@
 
 package org.tiqr.data.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import org.tiqr.data.model.ChallengeCompleteFailure
+import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.repository.EnrollmentRepository
 import javax.inject.Inject
 
@@ -37,5 +44,27 @@ import javax.inject.Inject
  * ViewModel for Enrollment
  */
 class EnrollmentViewModel @Inject constructor(private val repository: EnrollmentRepository): ViewModel() {
-    // TODO
+    private val _challenge = MutableLiveData<EnrollmentChallenge>()
+    val challenge: LiveData<EnrollmentChallenge> = _challenge
+
+    private val _enroll = MutableLiveData<ChallengeCompleteResult<ChallengeCompleteFailure>>()
+    val enroll: LiveData<ChallengeCompleteResult<ChallengeCompleteFailure>> = _enroll
+
+    /**
+     * Set the [EnrollmentChallenge] to be used in this viewmodel.
+     */
+    fun setChallenge(challenge: EnrollmentChallenge) {
+        _challenge.value = challenge
+    }
+
+    /**
+     * Perform enroll
+     */
+    fun enroll(password: String) {
+        viewModelScope.launch {
+            challenge.value?.let {
+                _enroll.value = repository.completeChallenge(it, password)
+            }
+        }
+    }
 }

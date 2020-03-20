@@ -29,30 +29,45 @@
 
 package org.tiqr.data.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.tiqr.data.BuildConfig
 
+/**
+ * Sealed class for the possible [Challenge]'s
+ */
 sealed class Challenge {
     abstract val protocolVersion: String
     abstract val identityProvider: IdentityProvider
-    abstract val identity: Identity?
+    abstract val identity: Identity
     abstract val returnUrl: String?
 }
 
+/**
+ * The result for the [EnrollmentChallenge]
+ */
+@Parcelize
 data class EnrollmentChallenge(
         override val protocolVersion: String = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
-        override val identity: Identity?,
+        override val identity: Identity,
         override val returnUrl: String?,
-        val enrollmentUrl: String
-) : Challenge()
+        val enrollmentUrl: String,
+        val enrollmentHost: String
+) : Challenge(), Parcelable
 
+/**
+ * The result for the [AuthenticationChallenge]
+ */
+@Parcelize
 data class AuthenticationChallenge(
         override val protocolVersion: String = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
-        override val identity: Identity?,
+        override val identity: Identity,
         override val returnUrl: String?,
         val sessionKey: String,
         val challenge: String,
+        val isStepUpChallenge: Boolean = false, // url.userInfo != null && url.userInfo.length > 0
         val serviceProviderDisplayName: String,
         val serviceProviderIdentifier: String
-) : Challenge()
+) : Challenge(), Parcelable

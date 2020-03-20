@@ -51,11 +51,16 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(AuthenticationViewModel::class)
-    fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
+    @ViewModelKey(ScanViewModel::class)
+    fun bindScanViewModel(scanViewModel: ScanViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EnrollmentViewModel::class)
     fun bindEnrollmentViewModel(enrollmentViewModel: EnrollmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthenticationViewModel::class)
+    fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
 }
