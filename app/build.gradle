@@ -73,6 +73,7 @@ dependencies {
     implementation Libs.AndroidX.browser
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
+    implementation Libs.AndroidX.autofill
     implementation Libs.AndroidX.Camera.core
     implementation Libs.AndroidX.Camera.camera2
     implementation Libs.AndroidX.Camera.view

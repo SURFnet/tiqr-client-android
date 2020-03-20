@@ -48,6 +48,7 @@ object Libs {
         const val browser = "androidx.browser:browser:1.2.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
+        const val autofill = "androidx.autofill:autofill:1.0.0"
 
         object Room {
             private const val version = "2.2.4"
