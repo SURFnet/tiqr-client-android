@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Error al iniciar el navegador predeterminado</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Proporcionado por:</string>
+    <string name="about_label_developed_by">Desarrollado por:</string>
+    <string name="about_label_interaction_by">Interfaz de usuario:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Confirme la activación de su cuenta</string>
+    <string name="enroll_confirm_subtitle">¿Quiere activar la cuenta que sigue?</string>
+    <string name="enroll_confirm_details">Detalles de la cuenta</string>
+    <string name="enroll_confirm_domain">Se dará de alta con el siguiente dominio:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Elija un PIN</string>
+    <string name="enroll_pin_subtitle">Por favor, introduzca su PIN:</string>
+    <string name="enroll_pin_notice">Memorice su PIN, ¡no se puede cambiar!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Por favor, introduzca su PIN</string>
+    <string name="enroll_pin_verify_subtitle">Introduzca de nuevo su PIN para ser verificado:</string>
+    <string name="enroll_pin_verify_no_match_title">Los PIN no coinciden</string>
+    <string name="enroll_pin_verify_no_match_message">Los PIN que ha intruducido no coinciden. Inténtelo de nuevo. Escoja un PIN que pueda recordar.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Nombre y apellidos</string>
+    <string name="account_id">Identificador</string>
+    <string name="account_activated">¡Cuenta activada!</string>
+
 </resources>

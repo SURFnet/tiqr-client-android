@@ -50,9 +50,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.autofill.HintConstants
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.getSystemService
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.withStyledAttributes
 import androidx.core.os.postDelayed
 import org.tiqr.authenticator.R
 import org.tiqr.data.algorithm.Verhoeff.generateVerhoeff
@@ -72,8 +74,13 @@ class PinView : ConstraintLayout {
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        context.withStyledAttributes(attrs, R.styleable.PinView) {
+            isForNewPin = getInt(R.styleable.PinView_pinInputType, 0) == 1
+        }
+    }
 
+    private var isForNewPin: Boolean = false
     private val pinInput: Editable
     private val ok: Button
     private val pins: List<TextView>
@@ -147,13 +154,17 @@ class PinView : ConstraintLayout {
     /**
      * Clear pin.
      */
-    fun clear() {
+    fun clear(showKeyboard: Boolean = true) {
         fadeHandler.removeCallbacksAndMessages(null)
         pinInput.clear()
         pins.forEach {
             it.text = CHAR_EMPTY
         }
         ok.isEnabled = false
+
+        if (showKeyboard) {
+            focusAndShowKeyboard()
+        }
     }
 
     /**
@@ -252,7 +263,13 @@ class PinView : ConstraintLayout {
     override fun getAutofillType(): Int = View.AUTOFILL_TYPE_TEXT
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getAutofillHints(): Array<String> = arrayOf(View.AUTOFILL_HINT_PASSWORD)
+    override fun getAutofillHints(): Array<String> = arrayOf(
+            if (isForNewPin) {
+                HintConstants.AUTOFILL_HINT_NEW_PASSWORD
+            } else {
+                HintConstants.AUTOFILL_HINT_PASSWORD
+            }
+    )
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getAutofillValue(): AutofillValue = AutofillValue.forText(pinInput.toString())

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Unbekende QR-koade</string>
+    <string name="error_qr_unknown">Dizze QR-koade kin net ferwurke wurde.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Registraasje mislearre</string>
+    <string name="error_enroll_connection">Kin gjin ferbining meitsje mei de registraasjeserver. Nim kontakt op mei de ynternetside behearder.</string>
+    <string name="error_enroll_invalid_qr">Ûnjildiche QR registraasje koade.</string>
+    <string name="error_enroll_invalid_response">Ûnjildich antwurd fan de registraasjeserver. Nim kontakt op mei de ynternetside behearder.</string>
+    <string name="error_enroll_invalid_response_code">Ûnjildiche antwurdskoade (%s). Nim kontakt op mei de ynternetside behearder.</string>
+    <string name="error_enroll_invalid_protocol">Ûnjildich antwurdprotokol (%s). Nim kontakt op mei de ynternetside behearder.</string>
+    <string name="error_enroll_duplicate_identity">Jo hawwe de identiteit %s al ris registreart foar de tsjinst %s.</string>
+    <string name="error_enroll_saving_identity_provider">Opslaan tsjinst mislearre. Nim kontakt op mei support.</string>
+    <string name="error_enroll_saving_identity">Opslaan identeit mislearre. Nim kontakt op mei support.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

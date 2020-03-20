@@ -43,14 +43,15 @@ object Libs {
     object AndroidX {
         const val activity = "androidx.activity:activity-ktx:1.1.0"
         const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val fragment = "androidx.fragment:fragment-ktx:1.2.2"
+        const val fragment = "androidx.fragment:fragment-ktx:1.2.3"
         const val core = "androidx.core:core-ktx:1.2.0"
         const val browser = "androidx.browser:browser:1.2.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
+        const val autofill = "androidx.autofill:autofill:1.0.0"
 
         object Room {
-            private const val version = "2.2.4"
+            private const val version = "2.2.5"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
@@ -66,7 +67,7 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "2.3.0-alpha03"
+            private const val version = "2.3.0-alpha04"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
             const val ui = "androidx.navigation:navigation-ui-ktx:$version"
         }

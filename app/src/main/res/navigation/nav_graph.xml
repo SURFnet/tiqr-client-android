@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
+    android:label="Main"
     app:startDestination="@id/start">
 
     <fragment
         android:id="@+id/start"
-        android:label="StartFragment"
         android:name="org.tiqr.authenticator.start.StartFragment"
+        android:label="StartFragment"
         tools:layout="@layout/fragment_start">
 
         <action
@@ -20,9 +21,28 @@
 
     <fragment
         android:id="@+id/scan"
-        android:label="ScanFragment"
         android:name="org.tiqr.authenticator.scan.ScanFragment"
+        android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
+
+        <action
+            android:id="@+id/action_enroll"
+            app:destination="@id/enrollment_nav"
+            app:popUpTo="@id/start"
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
+        </action>
+
+        <action
+            android:id="@+id/action_authenticate"
+            app:destination="@id/authentication_nav"
+            app:popUpTo="@id/start"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <action
         android:id="@+id/open_browser"
@@ -45,7 +65,77 @@
 
     <fragment
         android:id="@+id/about"
-        android:label="AboutFragment"
         android:name="org.tiqr.authenticator.about.AboutFragment"
+        android:label="AboutFragment"
         tools:layout="@layout/fragment_about" />
+
+    <navigation
+        android:id="@+id/authentication_nav"
+        android:label="Authentication"
+        app:startDestination="@id/authentication_confirm">
+
+        <fragment
+            android:id="@+id/authentication_confirm"
+            android:name="org.tiqr.authenticator.authentication.AuthenticationConfirmFragment"
+            android:label="AuthenticationConfirmFragment"
+            tools:layout="@layout/fragment_authentication_confirm" />
+    </navigation>
+
+    <navigation
+        android:id="@+id/enrollment_nav"
+        android:label="Enrollment"
+        app:startDestination="@id/enrollment_confirm">
+
+        <fragment
+            android:id="@+id/enrollment_confirm"
+            android:name="org.tiqr.authenticator.enrollment.EnrollmentConfirmFragment"
+            android:label="EnrollConfirmFragment"
+            tools:layout="@layout/fragment_enrollment_confirm">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
+
+            <action
+                android:id="@+id/action_pin"
+                app:destination="@id/enrollment_pin" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_pin"
+            android:name="org.tiqr.authenticator.enrollment.EnrollmentPinFragment"
+            android:label="EnrollmentPinFragment"
+            tools:layout="@layout/fragment_enrollment_pin">
+
+            <action
+                android:id="@+id/action_pin_verify"
+                app:destination="@id/enrollment_pin_verify"
+                app:popUpTo="@id/enrollment_confirm" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_pin_verify"
+            android:name="org.tiqr.authenticator.enrollment.EnrollmentPinVerifyFragment"
+            android:label="EnrollmentPinConfirmFragment"
+            tools:layout="@layout/fragment_enrollment_pin_verify">
+
+            <argument
+                android:name="pin"
+                app:argType="string"
+                app:nullable="false" />
+
+            <action
+                android:id="@+id/action_summary"
+                app:destination="@id/enrollment_summary"
+                app:popUpTo="@id/enrollment_confirm"
+                app:popUpToInclusive="true"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_summary"
+            android:name="org.tiqr.authenticator.enrollment.EnrollmentSummaryFragment"
+            android:label="EnrollmentSumamryFragment"
+            tools:layout="@layout/fragment_enrollment_summary" />
+    </navigation>
 </navigation>

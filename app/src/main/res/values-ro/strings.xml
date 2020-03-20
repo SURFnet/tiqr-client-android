@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Eroare la lansarea browserului implicit</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Furnizat de:</string>
+    <string name="about_label_developed_by">Dezvoltat de:</string>
+    <string name="about_label_interaction_by">Design-ul interactiunii:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Confirmati activarea contului</string>
+    <string name="enroll_confirm_subtitle">Vrei sa activezi urmatorul cont?</string>
+    <string name="enroll_confirm_details">Detalii cont</string>
+    <string name="enroll_confirm_domain">Veti fi inregistrati la urmatorul domeniu:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Alegeti un cod PIN</string>
+    <string name="enroll_pin_subtitle">Va rugam introduceti codul PIN:</string>
+    <string name="enroll_pin_notice">Aminteste-ti PIN-ul, nu poate fi schimbat!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Va rugam verificati codul dumneavoastra PIN</string>
+    <string name="enroll_pin_verify_subtitle">Introduceti codul dumneavoastra PIN inca o data pentru verificare:</string>
+    <string name="enroll_pin_verify_no_match_title">Codurile PIN nu sunt aceleasi</string>
+    <string name="enroll_pin_verify_no_match_message">Codurile PIN introduse nu sunt aceleasi. Incercati din nou. Alegeti un cod PIN pe care vi-l puteti aminti.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Numele complet</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Cont activat!</string>
+
 </resources>

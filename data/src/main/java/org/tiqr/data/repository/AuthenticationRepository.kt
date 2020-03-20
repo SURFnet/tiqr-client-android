@@ -29,9 +29,21 @@
 
 package org.tiqr.data.repository
 
+import org.tiqr.data.model.*
+import org.tiqr.data.repository.base.ChallengeRepository
+
 /**
  * Repository to handle authentication challenges.
  */
-class AuthenticationRepository {
-    // TODO
+class AuthenticationRepository : ChallengeRepository<AuthenticationChallenge>() {
+    override val challengeScheme: String
+        get() = TODO("not implemented")
+
+    override suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<AuthenticationChallenge, ChallengeParseFailure> {
+        TODO("not implemented")
+    }
+
+    override suspend fun completeChallenge(challenge: AuthenticationChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
+        TODO("not implemented")
+    }
 }

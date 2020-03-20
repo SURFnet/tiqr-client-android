@@ -29,11 +29,16 @@
 
 package org.tiqr.data.module
 
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
 import org.tiqr.data.repository.TokenRepository
+import org.tiqr.data.service.DatabaseService
+import org.tiqr.data.service.PreferenceService
+import org.tiqr.data.service.SecretService
 import javax.inject.Singleton
 
 /**
@@ -47,7 +52,12 @@ internal object RepositoryModule {
 
     @Provides
     @Singleton
-    internal fun provideEnrollmentRepository() = EnrollmentRepository()
+    internal fun provideEnrollmentRepository(
+            api: TiqrApi,
+            resources: Resources,
+            database: DatabaseService,
+            secret: SecretService,
+            preferences: PreferenceService) = EnrollmentRepository(api, resources, database, secret, preferences)
 
     @Provides
     @Singleton

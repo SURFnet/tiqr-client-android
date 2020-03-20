@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Impossible de lancer le navigateur par défaut</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Fourni par:</string>
+    <string name="about_label_developed_by">Développé par:</string>
+    <string name="about_label_interaction_by">Conception des interactions:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Confirmez l\'activation du compte</string>
+    <string name="enroll_confirm_subtitle">Voulez-vous activer le compte suivant?</string>
+    <string name="enroll_confirm_details">Détails du compte</string>
+    <string name="enroll_confirm_domain">Vous allez vous enregistrer pour le domaine suivant:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Choisissez un code PIN</string>
+    <string name="enroll_pin_subtitle">Veuillez entrer votre code PIN:</string>
+    <string name="enroll_pin_notice">Souvenez-vous de votre code PIN, il ne peut pas être modifié!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Veuillez confirmer votre code PIN</string>
+    <string name="enroll_pin_verify_subtitle">Entrer votre code PIN à nouveau pour vérification:</string>
+    <string name="enroll_pin_verify_no_match_title">Les codes PIN ne correspondent pas</string>
+    <string name="enroll_pin_verify_no_match_message">Les codes PIN ne correspondent pas. Essayez à nouveau. Choisissez un code PIN que vous pouvez retenir.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Nom complet</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Compte activé!</string>
+
 </resources>

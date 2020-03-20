@@ -46,6 +46,28 @@
     <string name="about_label_developed_by">Developed by:</string>
     <string name="about_label_interaction_by">Interaction design:</string>
 
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Confirm account activation</string>
+    <string name="enroll_confirm_subtitle">Do you want to activate the following account?</string>
+    <string name="enroll_confirm_details">Account details</string>
+    <string name="enroll_confirm_domain">You will enroll to the following domain:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Choose a unique PIN for tiqr</string>
+    <string name="enroll_pin_subtitle">Enter the PIN:</string>
+    <string name="enroll_pin_notice">Please remember this PIN, it cannot be changed!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Verify the unique PIN</string>
+    <string name="enroll_pin_verify_subtitle">Re-enter the PIN:</string>
+    <string name="enroll_pin_verify_no_match_title">PINs don\'t match</string>
+    <string name="enroll_pin_verify_no_match_message">The entered PINs don\'t match. Try again.\nChoose a PIN you can remember.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Full name</string>
+    <string name="account_id">Tiqr account id</string>
+    <string name="account_activated">Account activated!</string>
+
 
     <string name="authentication_title">Login</string>
     <string name="identity_title">Identities</string>

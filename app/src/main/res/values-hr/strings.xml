@@ -41,4 +41,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Pokretanje zadanog preglednika nije uspjelo</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Omogućio:</string>
+    <string name="about_label_developed_by">Razvili:</string>
+    <string name="about_label_interaction_by">Dizajn sučelja:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Potvrdite aktivaciju korisničkog računa</string>
+    <string name="enroll_confirm_subtitle">Da li želite aktivirati sljedeći korisnički račun?</string>
+    <string name="enroll_confirm_details">Detalji korisničkog računa</string>
+    <string name="enroll_confirm_domain">Upisat ćete se na sljedeću domenu:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Odaberite PIN</string>
+    <string name="enroll_pin_subtitle">Molimo unesite PIN:</string>
+    <string name="enroll_pin_notice">PIN ne može biti naknadno promijenjen, upamtite ga!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Molimo potvrdite PIN</string>
+    <string name="enroll_pin_verify_subtitle">Ponovno unesite PIN kako biste ga potvrdili:</string>
+    <string name="enroll_pin_verify_no_match_title">PIN kodovi se ne poklapaju</string>
+    <string name="enroll_pin_verify_no_match_message">Uneseni PIN kodovi se ne poklapaju. Pokušajte ponovno. Odaberite PIN koji možete upamtiti.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Puno ime</string>
+    <string name="account_id">Identifikator</string>
+    <string name="account_activated">Korisnički račun je aktiviran!</string>
+
 </resources>

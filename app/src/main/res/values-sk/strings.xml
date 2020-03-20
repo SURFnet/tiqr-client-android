@@ -41,4 +41,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Nepodarilo sa spustiť predvolený prehliadač</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Poskytovateľom:</string>
+    <string name="about_label_developed_by">Vyvinuté v:</string>
+    <string name="about_label_interaction_by">Interakčný dizajn:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Potvrdiť aktiváciu účtu</string>
+    <string name="enroll_confirm_subtitle">Želáte si aktivovať nasledovný účet?</string>
+    <string name="enroll_confirm_details">Detaily účtu</string>
+    <string name="enroll_confirm_domain">Registrovať sa k:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Voľba PIN kódu</string>
+    <string name="enroll_pin_subtitle">Zadajte, prosím, váš PIN:</string>
+    <string name="enroll_pin_notice">PIN si dobre zapamätajte. Nie je možné ho zmeniť!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Potvrďte, prosím, váš PIN</string>
+    <string name="enroll_pin_verify_subtitle">Opakujte zadanie vášho PIN kódu kvôli kontrole:</string>
+    <string name="enroll_pin_verify_no_match_title">PIN kódy sa nezhodujú</string>
+    <string name="enroll_pin_verify_no_match_message">PIN kódy sa nezhodujú. Opakujte zadanie, prosím. Zvoľte PIN kód, ktorý si dokážete zapamätať.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Celé meno</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Účet aktivovaný!</string>
+
 </resources>

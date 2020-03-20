@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">不明なQRコード</string>
+    <string name="error_qr_unknown">このQRコードは処理できません。</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">登録に失敗しました</string>
+    <string name="error_enroll_connection">登録サーバに接続できません。ウェブサイトの管理者に連絡してください。</string>
+    <string name="error_enroll_invalid_qr">登録用QRコードが不正です</string>
+    <string name="error_enroll_invalid_response">登録サーバからの応答が不正です。ウェブサイトの管理者に連絡してください。</string>
+    <string name="error_enroll_invalid_response_code">無効な応答コード (%s)。ウェブサイトの管理者に連絡してください。</string>
+    <string name="error_enroll_invalid_protocol">無効な応答プロトコル (%s)。ウェブサイトの管理者に連絡してください。</string>
+    <string name="error_enroll_duplicate_identity">すでに %s というIDでサービス %s に登録されています</string>
+    <string name="error_enroll_saving_identity_provider">IDの登録に失敗しました。サポートに相談してください。</string>
+    <string name="error_enroll_saving_identity">IDの登録に失敗しました。サポートに相談してください。</string>
+
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

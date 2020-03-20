@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Ukjent QR kode</string>
+    <string name="error_qr_unknown">Denne QR koden kan ikke behandles.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Mislykket påmelding</string>
+    <string name="error_enroll_connection">Ingen forbindelse til påloggingstjener. Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_qr">Ugyldig QR kode.</string>
+    <string name="error_enroll_invalid_response">Ugyldig påloggingstjener respons. Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_response_code">Ugyldig påloggingstjener respons kode (%s). Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_protocol">Ugyldig påloggingstjener respons protokoll (%s). Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_duplicate_identity">Du er allerede påmeldt med identitet %s for tjenesten %s.</string>
+    <string name="error_enroll_saving_identity_provider">Kunne ikke lagre identitetstilbyder. Vennligst kontakt brukerstøtte.</string>
+    <string name="error_enroll_saving_identity">Kunne ikke lagre identitet. Vennligst kontakt brukerstøtte.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

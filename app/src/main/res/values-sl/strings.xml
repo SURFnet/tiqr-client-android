@@ -40,4 +40,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Zagon privzetega brskalnika ni uspel</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Omogoča:</string>
+    <string name="about_label_developed_by">Avtor:</string>
+    <string name="about_label_interaction_by">Načrtovanje:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Potrdite aktivacijo računa</string>
+    <string name="enroll_confirm_subtitle">Ali želite aktivirati ta račun?</string>
+    <string name="enroll_confirm_details">Podrobnosti računa</string>
+    <string name="enroll_confirm_domain">Registrirali se boste za naslednjo domeno:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Doličite PIN</string>
+    <string name="enroll_pin_subtitle">Vpišite svoj PIN:</string>
+    <string name="enroll_pin_notice">Zapomnite so svoj PIN, saj ga ni možno spremeniti!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Ponovno vpišite svoj PIN</string>
+    <string name="enroll_pin_verify_subtitle">Preverite ujemanje PIN-a tako, da ga ponovno vpišite:</string>
+    <string name="enroll_pin_verify_no_match_title">PIN-a se ne ujemata</string>
+    <string name="enroll_pin_verify_no_match_message">Vpisana PIN-a se ne ujemata. Poskusite ponovno. Določite si PIN, ki si ga boste lahko zapomnili.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Ime in priimek</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Račun aktiviran!</string>
+
 </resources>

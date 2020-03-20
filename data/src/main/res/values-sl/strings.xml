@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Neznana QR koda</string>
+    <string name="error_qr_unknown">Te kode QR ni mogoče obdelati.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Registracija je spodletela</string>
+    <string name="error_enroll_connection">Povezava do strežnika za registracijo je spodletela. Kontaktirajte skrbnika storitve.</string>
+    <string name="error_enroll_invalid_qr">Napačna registracijska koda QR.</string>
+    <string name="error_enroll_invalid_response">Neveljaven odziv strežnika za vpis. Prosimo kontaktirajte skrbnika storitve.</string>
+    <string name="error_enroll_invalid_response_code">Neveljavna koda odgovora (%s). Prosimo kontaktirajte skrbnika storitve.</string>
+    <string name="error_enroll_invalid_protocol">Neveljaven protokol odgovora (%s). Prosimo kontaktirajte skrbnika storitve.</string>
+    <string name="error_enroll_duplicate_identity">Registracijo z identiteto %s v storitev %s ste že opravili.</string>
+    <string name="error_enroll_saving_identity_provider">Napaka pri shranjevanju podatkov o ponudniku identitete. Prosimo kontaktirajte oddelek za pomoč uporabnikom.</string>
+    <string name="error_enroll_saving_identity">Napaka pri shranjevanju podatkov o identiteti. Konktaktirajte oddelek za pomoč uporabnikom.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>

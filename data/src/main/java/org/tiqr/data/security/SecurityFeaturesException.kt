@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,6 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.util.extension
+package org.tiqr.data.security
 
-import okhttp3.HttpUrl
-
-/**
- * Check if url is valid
- */
-internal fun HttpUrl.isHttpOrHttps() = scheme == "http" || scheme == "https"
+class SecurityFeaturesException(message: String? = null, cause: Exception? = null) : Exception(message, cause)

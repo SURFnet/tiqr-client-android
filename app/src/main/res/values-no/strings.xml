@@ -42,4 +42,31 @@
     <!-- Browser -->
     <string name="browser_error_launch">Kunne ikke starte standard nettleseren</string>
 
+    <!-- About -->
+    <string name="about_label_provided_by">Levert av:</string>
+    <string name="about_label_developed_by">Utviklet av:</string>
+    <string name="about_label_interaction_by">Interactiv design:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Bekreft konto aktivering</string>
+    <string name="enroll_confirm_subtitle">Ønkser du å aktivere følgende konto?</string>
+    <string name="enroll_confirm_details">Konto detaljer</string>
+    <string name="enroll_confirm_domain">Du vil meldes inn i følgende domene:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Velg pinkode</string>
+    <string name="enroll_pin_subtitle">Vennligst oppgi pinkode:</string>
+    <string name="enroll_pin_notice">Husk pinkoden, den kan ikke endres!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Vennligst verifiser din pinkode</string>
+    <string name="enroll_pin_verify_subtitle">Oppgi pinkoden igjen for verifikasjon:</string>
+    <string name="enroll_pin_verify_no_match_title">Pinkoder er forskjellige</string>
+    <string name="enroll_pin_verify_no_match_message">Oppgitte pinkoder er forskjellige. Prøv igjen. Velg en pinkode du kan huske.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Fullt navn</string>
+    <string name="account_id">ID</string>
+    <string name="account_activated">Konto er aktivert!</string>
+
 </resources>

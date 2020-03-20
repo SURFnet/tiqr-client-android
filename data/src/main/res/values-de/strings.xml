@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Unbekannter QR-Code</string>
+    <string name="error_qr_unknown">Dieser QR-Code kann nicht verarbeitet werden.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Anmeldefehler</string>
+    <string name="error_enroll_connection">Fehler beim kontaktieren des Registrierungsservers; bitte kontaktieren Sie den Webmaster.</string>
+    <string name="error_enroll_invalid_qr">Ungültiger QR Registrierungscode.</string>
+    <string name="error_enroll_invalid_response">Ungültiges Registrierungsantwort. Bitte kontaktieren Sie den Webmaster.</string>
+    <string name="error_enroll_invalid_response_code">Ungültiger Antwortcode (%s). Bitte kontaktieren Sie den Webmaster.</string>
+    <string name="error_enroll_invalid_protocol">Ungültiges Antwortprotokoll (%s). Bitte kontaktieren Sie den Webmaster.</string>
+    <string name="error_enroll_duplicate_identity">Sie haben sich mit der Identität %s bereits beim Dienst %s registriert.</string>
+    <string name="error_enroll_saving_identity_provider">Identitätsprovider konnte nicht gespeichert werden. Bitte wenden Sie sich an den Support.</string>
+    <string name="error_enroll_saving_identity">Identität konnte nicht gespeichert werden. Bitte wenden Sie sich an den Support.</string>
+
+    <!-- Errors Authentication -->
+    <!-- TODO -->
+</resources>
