@@ -381,7 +381,7 @@ class DbAdapter(private val _ctx: Context) {
                     displayName = cursor.getString(displayNameColumn),
                     logoURL = cursor.getStringOrNull(logoColumn),
                     authenticationURL = cursor.getString(authURLColumn),
-                    infoURL = cursor.getString(infoURLColumn)
+                    infoURL = cursor.getStringOrNull(infoURLColumn)
                 )
                 ip.ocraSuite = cursor.getString(ocraSuiteColumn)
                 identityproviders.add(ip)

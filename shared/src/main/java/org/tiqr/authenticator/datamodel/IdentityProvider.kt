@@ -19,7 +19,7 @@ class IdentityProvider (
     val displayName: String,
     val logoURL: String?,
     val authenticationURL: String,
-    val infoURL: String,
+    val infoURL: String?,
     var ocraSuite: String = DEFAULT_OCRA_SUITE
 
 ) : Parcelable {
