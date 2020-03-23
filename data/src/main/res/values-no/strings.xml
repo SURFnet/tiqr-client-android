@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Kunne ikke lagre identitet. Vennligst kontakt brukerstøtte.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Mislykket pålogging</string>
+    <string name="error_auth_empty_service_provider">Ukjent</string>
+    <string name="error_auth_invalid_qr">Ugyldig autentiserings QR kode.</string>
+    <string name="error_auth_unknown_identity_provider">Ukjent identitetstilbyder, vennligst registrer først.</string>
+    <string name="error_auth_unknown_identity">Ukjent identitet for tjenesten, vennligst registrer først.</string>
+    <string name="error_auth_no_identities">Ingen identiteter for denne leverandør, vennligst registrer først.</string>
+
 </resources>

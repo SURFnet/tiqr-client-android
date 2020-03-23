@@ -15,7 +15,12 @@
     <string name="error_enroll_saving_identity_provider">IDの登録に失敗しました。サポートに相談してください。</string>
     <string name="error_enroll_saving_identity">IDの登録に失敗しました。サポートに相談してください。</string>
 
-
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">ログインに失敗しました</string>
+    <string name="error_auth_empty_service_provider">不明</string>
+    <string name="error_auth_invalid_qr">無効な認証用QRコードです</string>
+    <string name="error_auth_unknown_identity_provider">アカウントが登録されているサーバが見つかりません。先にアカウントの登録をしてください。</string>
+    <string name="error_auth_unknown_identity">アカウントが見つかりません。先にアカウントの登録をしてください。</string>
+    <string name="error_auth_no_identities">アカウントが見つかりません。先にアカウントの登録をしてください。</string>
+
 </resources>

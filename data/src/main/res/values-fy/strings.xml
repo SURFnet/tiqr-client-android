@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Opslaan identeit mislearre. Nim kontakt op mei support.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Ynloch mislearre</string>
+    <string name="error_auth_empty_service_provider">Ûnbekend</string>
+    <string name="error_auth_invalid_qr">Ûnjildiche QR ynloch koade.</string>
+    <string name="error_auth_unknown_identity_provider">Ûnbekende tsjinst, registrear earst.</string>
+    <string name="error_auth_unknown_identity">Ûnbekende identiteit foar tsjinst, registrear earst.</string>
+    <string name="error_auth_no_identities">Gjin identiteiten fûn foar de tsjinst, registrear earst.</string>
+
 </resources>

@@ -68,4 +68,9 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Jo akkount is aktiveart!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Binne jo wis dat jo ynloche wolle?</string>
+    <string name="auth_confirm_subtitle">Jo wurde ynlocht as:</string>
+    <string name="auth_confirm_to">foar:</string>
+
 </resources>

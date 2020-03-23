@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Nepavyko išsaugoti tapatybės. Praneškite administratoriui.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Prisijungimas nepavyko</string>
+    <string name="error_auth_empty_service_provider">Nežinoma</string>
+    <string name="error_auth_invalid_qr">Neteisingas autentifikavimo QR kodas.</string>
+    <string name="error_auth_unknown_identity_provider">Nežinomas tapatybės teikėjas, prašome pirmiausia užregistruoti.</string>
+    <string name="error_auth_unknown_identity">Nežinomas paslaugos tapatumas, prašome priregistruoti.</string>
+    <string name="error_auth_no_identities">Nerasta tapatybės teikėjo tapatybė prašome priregistruoti.</string>
+
 </resources>

@@ -29,16 +29,24 @@
 
 package org.tiqr.data.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.repository.AuthenticationRepository
 import javax.inject.Inject
 
 /**
  * ViewModel for Authentication
  */
-class AuthenticationViewModel @Inject constructor(
-        private val repository: AuthenticationRepository
-): ViewModel() {
+class AuthenticationViewModel @Inject constructor(private val repository: AuthenticationRepository): ViewModel() {
+    private val _challenge = MutableLiveData<AuthenticationChallenge>()
+    val challenge: LiveData<AuthenticationChallenge> = _challenge
 
-    // TODO
+    /**
+     * Set the [AuthenticationChallenge] to be used in this viewmodel.
+     */
+    fun setChallenge(challenge: AuthenticationChallenge) {
+        _challenge.value = challenge
+    }
 }

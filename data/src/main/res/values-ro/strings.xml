@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Stocarea identitatii a esuat. Va rugam sa contactati echipa de suport.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Autentificare esuata</string>
+    <string name="error_auth_empty_service_provider">Necunoscut</string>
+    <string name="error_auth_invalid_qr">Cod QR de autentificare invalid.</string>
+    <string name="error_auth_unknown_identity_provider">Furnizor de identitate necunoscuta; va rugam inregistrati-va mai intai.</string>
+    <string name="error_auth_unknown_identity">Identitate necunoscuta pt serviciu; va rugam inregistrati-va mai intai.</string>
+    <string name="error_auth_no_identities">Nici o identitate nu a fost gasita pentru furnizorul de identitate; va rugam inregistrati-va mai intai.</string>
+
 </resources>

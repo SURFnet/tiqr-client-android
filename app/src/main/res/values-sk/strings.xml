@@ -68,4 +68,9 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Účet aktivovaný!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Skutočne sa chcete prihlásiť?</string>
+    <string name="auth_confirm_subtitle">Budete prihlásený/á ako:</string>
+    <string name="auth_confirm_to">k:</string>
+
 </resources>

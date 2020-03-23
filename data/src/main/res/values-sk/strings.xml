@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Zlyhalo uloženie identity. Kotaktujte, prosím, používateľskú podporu.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Prihlásenie neúspešné</string>
+    <string name="error_auth_empty_service_provider">Nešpecifikovaný</string>
+    <string name="error_auth_invalid_qr">Neplatný QR kód.</string>
+    <string name="error_auth_unknown_identity_provider">Neznámy poskytovateľ identity. Najskôr sa, prosím, registrujte.</string>
+    <string name="error_auth_unknown_identity">Neznáma identita pre službu. Najskôr sa, prosím, registrujte.</string>
+    <string name="error_auth_no_identities">U tohto poskytovateľa identít nemáte vytvorenú identitu. Najskôr sa, prosím, registrujte. </string>
+
 </resources>

@@ -48,7 +48,13 @@ import javax.inject.Singleton
 internal object RepositoryModule {
     @Provides
     @Singleton
-    internal fun provideAuthenticationRepository() = AuthenticationRepository()
+    internal fun provideAuthenticationRepository(
+            api: TiqrApi,
+            resources: Resources,
+            database: DatabaseService,
+            secret: SecretService,
+            preferences: PreferenceService
+    ) = AuthenticationRepository(api, resources, database, secret, preferences)
 
     @Provides
     @Singleton
@@ -57,7 +63,8 @@ internal object RepositoryModule {
             resources: Resources,
             database: DatabaseService,
             secret: SecretService,
-            preferences: PreferenceService) = EnrollmentRepository(api, resources, database, secret, preferences)
+            preferences: PreferenceService
+    ) = EnrollmentRepository(api, resources, database, secret, preferences)
 
     @Provides
     @Singleton

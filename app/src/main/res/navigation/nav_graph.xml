@@ -41,7 +41,13 @@
             android:id="@+id/action_authenticate"
             app:destination="@id/authentication_nav"
             app:popUpTo="@id/start"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
+        </action>
     </fragment>
 
     <action
@@ -78,7 +84,13 @@
             android:id="@+id/authentication_confirm"
             android:name="org.tiqr.authenticator.authentication.AuthenticationConfirmFragment"
             android:label="AuthenticationConfirmFragment"
-            tools:layout="@layout/fragment_authentication_confirm" />
+            tools:layout="@layout/fragment_authentication_confirm" >
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
+        </fragment>
     </navigation>
 
     <navigation

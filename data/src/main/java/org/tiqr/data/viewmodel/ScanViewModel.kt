@@ -49,29 +49,27 @@ import javax.inject.Inject
  */
 class ScanViewModel @Inject constructor(
         private val resources: Resources,
-        private val enrollmentRepository: EnrollmentRepository,
-        private val authenticationRepository: AuthenticationRepository
+        private val enroll: EnrollmentRepository,
+        private val auth: AuthenticationRepository
 ): ViewModel() {
     private val _challenge = MutableLiveData<ChallengeParseResult<Challenge, ChallengeParseFailure>>()
     val challenge : LiveData<ChallengeParseResult<Challenge, ChallengeParseFailure>> = _challenge
 
+    /**
+     * Parse the [rawChallenge] and send the result to [_challenge]
+     */
     fun parseChallenge(rawChallenge: String) {
         viewModelScope.launch {
-            when {
-                enrollmentRepository.isValidChallenge(rawChallenge) -> {
-                    _challenge.value = enrollmentRepository.parseChallenge(rawChallenge)
-                }
-                authenticationRepository.isValidChallenge(rawChallenge) -> {
-                    TODO()
-                }
-                else -> {
-                    _challenge.value = ChallengeParseResult.failure(
+            _challenge.value = when {
+                enroll.isValidChallenge(rawChallenge) -> enroll.parseChallenge(rawChallenge)
+                auth.isValidChallenge(rawChallenge) -> auth.parseChallenge(rawChallenge)
+                else ->
+                    ChallengeParseResult.failure(
                             ParseFailure(
                                     title = resources.getString(R.string.error_qr_unknown_title),
                                     message = resources.getString(R.string.error_qr_unknown)
                             )
                     )
-                }
             }
         }
     }
