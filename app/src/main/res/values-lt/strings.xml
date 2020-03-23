@@ -65,4 +65,10 @@
     <string name="account_id">Tiqr paskyros id</string>
     <string name="account_activated">Paskyra aktyvuota!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Ar tikrai norite prisijungti?</string>
+    <string name="auth_confirm_subtitle">Jūs būsite prisijungęs kaip:</string>
+    <string name="auth_confirm_to">iki:</string>
+
+
 </resources>

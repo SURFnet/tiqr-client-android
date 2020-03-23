@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Opslaan account mislukt. Neem contact op met support.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Login mislukt</string>
+    <string name="error_auth_empty_service_provider">Onbekend</string>
+    <string name="error_auth_invalid_qr">Ongeldige login QR code.</string>
+    <string name="error_auth_unknown_identity_provider">Onbekende dienst, registreer eerst.</string>
+    <string name="error_auth_unknown_identity">Onbekend account voor dienst, registreer eerst.</string>
+    <string name="error_auth_no_identities">Geen accounts gevonden voor de dienst, registreer eerst.</string>
+
 </resources>

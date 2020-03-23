@@ -67,15 +67,15 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
     // TODO: check access modifiers
 
     /**
-     * Add this new [secret] to our [secrets] collection.
+     * Create a new secret and ad it to the [secrets] collection.
      * Only to be used for enrollment.
      */
-    fun addSecret(secret: SecretKey, identity: Identity, type: Type = Type.PIN_CODE) {
-        addSecret(identity.toId(type), secret)
+    fun createSecret(identity: Identity, type: Type = Type.PIN_CODE) {
+        addSecret(identity.toId(type), encryption.randomSecretKey())
     }
 
     /**
-     * Add this new [secret] to our [secrets] collection.
+     * Add this new [secret] to the [secrets] collection.
      */
     private fun addSecret(id: String, secret: SecretKey) {
         secrets.put(id, secret)
@@ -87,7 +87,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
      * @throws InvalidKeyException when key cannot be found
      * @throws SecurityFeaturesException when upgrading to new key fails
      */
-    fun getSecret(identity: Identity, type: Type, sessionKey: SecretKey): SecretKey {
+    private fun getSecret(identity: Identity, type: Type, sessionKey: SecretKey): SecretKey {
         return secrets[identity.toId(type)] ?: load(identity, type, sessionKey)
     }
 

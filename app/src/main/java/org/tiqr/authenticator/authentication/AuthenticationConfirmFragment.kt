@@ -29,13 +29,42 @@
 
 package org.tiqr.authenticator.authentication
 
+import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
+import org.tiqr.data.viewmodel.AuthenticationViewModel
 
+/**
+ * Fragment to review and confirm the authentication
+ */
 class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfirmBinding>() {
+    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
+    private val args by navArgs<AuthenticationConfirmFragmentArgs>()
+
     @LayoutRes
     override val layout = R.layout.fragment_authentication_confirm
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val binding = binding ?: return
+        with(viewModel) {
+            binding.viewModel = this
+            setChallenge(args.challenge)
+        }
+
+        binding.buttonCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.buttonOk.setOnClickListener {
+            // TODO: open pin or biometric
+        }
+    }
 }

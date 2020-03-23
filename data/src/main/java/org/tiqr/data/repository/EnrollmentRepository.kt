@@ -62,7 +62,7 @@ class EnrollmentRepository(
         private val secretService: SecretService,
         private val preferences: PreferenceService
 ) : ChallengeRepository<EnrollmentChallenge>() {
-    override val challengeScheme = BuildConfig.TIQR_ENROLL_SCHEME
+    override val challengeScheme: String = BuildConfig.TIQR_ENROLL_SCHEME
 
     /**
      * Validate the [rawChallenge] and request enrollment.
@@ -77,6 +77,7 @@ class EnrollmentRepository(
                     title = resources.getString(R.string.error_enroll_title),
                     message = resources.getString(R.string.error_enroll_invalid_qr)
             ).run {
+                Timber.e("Invalid QR: $url")
                 ChallengeParseResult.failure(this)
             }
         }
@@ -234,9 +235,8 @@ class EnrollmentRepository(
                     val identity = challenge.identity.copy(id = identityId, identityProvider = identityProviderId)
 
                     // Save secrets
-                    val secret = secretService.encryption.randomSecretKey()
-                    secretService.addSecret(secret, identity)
                     val sessionKey = secretService.encryption.keyFromPassword(password)
+                    secretService.createSecret(identity)
                     secretService.save(identity, sessionKey)
 
                     ChallengeCompleteResult.success()

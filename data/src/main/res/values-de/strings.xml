@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Identität konnte nicht gespeichert werden. Bitte wenden Sie sich an den Support.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Anmeldefehler</string>
+    <string name="error_auth_empty_service_provider">Unbekannt</string>
+    <string name="error_auth_invalid_qr">Ungültiger QR Code für die Authentifizierung.</string>
+    <string name="error_auth_unknown_identity_provider">Unbekannter Identitätsprovider; bitte registrieren Sie sich zuerst.</string>
+    <string name="error_auth_unknown_identity">Unbekannte Identität; bitte registrieren Sie sich zuerst.</string>
+    <string name="error_auth_no_identities">Für diesen Identitätsprovider wurden keine Nutzerdaten gefunden. Bitte registrieren Sie sich zuerst.</string>
+
 </resources>

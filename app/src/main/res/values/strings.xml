@@ -68,6 +68,11 @@
     <string name="account_id">Tiqr account id</string>
     <string name="account_activated">Account activated!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Are you sure you want to log in?</string>
+    <string name="auth_confirm_subtitle">You will be logged in as:</string>
+    <string name="auth_confirm_to">to:</string>
+    
 
     <string name="authentication_title">Login</string>
     <string name="identity_title">Identities</string>

@@ -29,18 +29,96 @@
 
 package org.tiqr.data.repository
 
+import android.content.res.Resources
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import org.tiqr.data.BuildConfig
+import org.tiqr.data.R
+import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.model.*
 import org.tiqr.data.repository.base.ChallengeRepository
+import org.tiqr.data.service.DatabaseService
+import org.tiqr.data.service.PreferenceService
+import org.tiqr.data.service.SecretService
+import timber.log.Timber
 
 /**
  * Repository to handle authentication challenges.
  */
-class AuthenticationRepository : ChallengeRepository<AuthenticationChallenge>() {
-    override val challengeScheme: String
-        get() = TODO("not implemented")
+class AuthenticationRepository(
+        private val api: TiqrApi,
+        private val resources: Resources,
+        private val database: DatabaseService,
+        private val secretService: SecretService,
+        private val preferences: PreferenceService
+) : ChallengeRepository<AuthenticationChallenge>() {
+    override val challengeScheme: String = BuildConfig.TIQR_AUTH_SCHEME
 
-    override suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<AuthenticationChallenge, ChallengeParseFailure> {
-        TODO("not implemented")
+    /**
+     * Validate the [rawChallenge] and request authentication.
+     */
+    override suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<AuthenticationChallenge, AuthenticationParseFailure> {
+        // Check challenge validity
+        val isValid = isValidChallenge(rawChallenge)
+        val url = rawChallenge.replaceFirst(challengeScheme, "http://").toHttpUrlOrNull()
+
+        if (isValid.not() || url == null || url.pathSize < 3) {
+            return AuthenticationParseFailure(
+                    reason = AuthenticationParseFailure.Reason.INVALID_CHALLENGE,
+                    title = resources.getString(R.string.error_auth_title),
+                    message = resources.getString(R.string.error_auth_invalid_qr)
+            ).run {
+                Timber.e("Invalid QR: $url")
+                ChallengeParseResult.failure(this)
+            }
+        }
+
+        // Check if identity provider is known
+        val identityProvider = database.getIdentityProviderByIdentifier(url.host)
+                ?: return AuthenticationParseFailure(
+                        reason = AuthenticationParseFailure.Reason.INVALID_IDENTITY_PROVIDER,
+                        title = resources.getString(R.string.error_auth_title),
+                        message = resources.getString(R.string.error_auth_unknown_identity_provider)
+                ).run {
+                    Timber.e("Unknown identity provider: ${url.host}")
+                    ChallengeParseResult.failure(this)
+                }
+
+        // Check if identity is known
+        val identity = if (url.username.isNotBlank()) {
+            database.getIdentity(url.username, identityProvider.identifier)
+                    ?: return AuthenticationParseFailure(
+                            reason = AuthenticationParseFailure.Reason.INVALID_IDENTITY,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_unknown_identity)
+                    ).run {
+                        Timber.e("Unknown identity: ${url.username}")
+                        ChallengeParseResult.failure(this)
+                    }
+        } else {
+            database.getIdentity(identityProvider.identifier)
+                    ?: return AuthenticationParseFailure(
+                            reason = AuthenticationParseFailure.Reason.NO_IDENTITIES,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_no_identities)
+                    ).run {
+                        Timber.e("No identities for identity provider: ${identityProvider.identifier}")
+                        ChallengeParseResult.failure(this)
+                    }
+        }
+
+        return AuthenticationChallenge(
+                protocolVersion = url.pathSegments.getOrNull(4) ?: "1",
+                identityProvider = identityProvider,
+                identity = identity,
+                returnUrl = url.query?.toHttpUrlOrNull()?.toString(),
+                sessionKey = url.pathSegments[1],
+                challenge = url.pathSegments[2],
+                isStepUpChallenge = url.username.isNotEmpty(),
+                serviceProviderDisplayName = url.pathSegments.getOrNull(3) ?: resources.getString(R.string.error_auth_empty_service_provider),
+                serviceProviderIdentifier = ""
+        ).run {
+            ChallengeParseResult.success(this)
+        }
     }
 
     override suspend fun completeChallenge(challenge: AuthenticationChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {

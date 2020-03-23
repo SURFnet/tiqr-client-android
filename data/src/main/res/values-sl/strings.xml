@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Napaka pri shranjevanju podatkov o identiteti. Konktaktirajte oddelek za pomoč uporabnikom.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Prijava je spodletela</string>
+    <string name="error_auth_empty_service_provider">Neznan(a)</string>
+    <string name="error_auth_invalid_qr">Napaka, neveljavna avtentikacijska koda QR.</string>
+    <string name="error_auth_unknown_identity_provider">Neznan ponudnik identitet, prosim najprej opravite registracijo.</string>
+    <string name="error_auth_unknown_identity">Nepoznana identiteta za izbrano storitev. Najprej se registrirajte.</string>
+    <string name="error_auth_no_identities">Za izbranega ponudnika identitet ne obstaja nobena identiteta. Najprej opravite registracijo.</string>
+
 </resources>

@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Impossible d\'enregistrer l\'identité. Veuillez contacter le support.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Connexion échouée</string>
+    <string name="error_auth_empty_service_provider">Inconnu</string>
+    <string name="error_auth_invalid_qr">Code QR d\'authentification invalide.</string>
+    <string name="error_auth_unknown_identity_provider">Fournisseur de service inconnu, veuillez d\'abord vous enregistrer.</string>
+    <string name="error_auth_unknown_identity">Identité inconnue, veuillez d\'abord vous enregistrer.</string>
+    <string name="error_auth_no_identities">Aucune identité n\'est associé à ce fournisseur de service, veuillez d\'abord vous enregistrer.</string>
+
 </resources>

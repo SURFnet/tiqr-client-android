@@ -69,4 +69,10 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Je account is geactiveerd!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Weet je zeker dat je wilt inloggen?</string>
+    <string name="auth_confirm_subtitle">Je wordt ingelogd als:</string>
+    <string name="auth_confirm_to">voor:</string>
+
+
 </resources>

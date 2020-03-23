@@ -80,7 +80,7 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
             is ChallengeParseResult.Success -> {
                 when (result.value) {
                     is EnrollmentChallenge -> findNavController().navigate(ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge))
-                    is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate())
+                    is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate(result.value as AuthenticationChallenge))
                 }
             }
             is ChallengeParseResult.Failure -> {

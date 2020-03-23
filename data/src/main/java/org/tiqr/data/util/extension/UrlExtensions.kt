@@ -37,7 +37,7 @@ import java.net.URLDecoder
 /**
  * Check if url is valid
  */
-internal fun HttpUrl.isHttpOrHttps() = scheme == "http" || scheme == "https"
+internal fun HttpUrl.isHttpOrHttps() = scheme.equals("http", ignoreCase = true) || scheme.equals("https", ignoreCase = true)
 
 /**
  * Convert a url from a [String] representation into a [URL]

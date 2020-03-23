@@ -67,7 +67,7 @@ data class AuthenticationChallenge(
         override val returnUrl: String?,
         val sessionKey: String,
         val challenge: String,
-        val isStepUpChallenge: Boolean = false, // url.userInfo != null && url.userInfo.length > 0
+        val isStepUpChallenge: Boolean = false,
         val serviceProviderDisplayName: String,
         val serviceProviderIdentifier: String
 ) : Challenge(), Parcelable

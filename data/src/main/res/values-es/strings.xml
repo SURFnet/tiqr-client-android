@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">No se ha podido guardar la identidad. Mejor pida ayuda.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Acceso fallido</string>
+    <string name="error_auth_empty_service_provider">Ni idea</string>
+    <string name="error_auth_invalid_qr">Código QR de autenticación erróneo.</string>
+    <string name="error_auth_unknown_identity_provider">Proveedor de identidad desconocido. Registrese primero, por favor.</string>
+    <string name="error_auth_unknown_identity">Identidad desconocida para el servicio. Registrese primero, por favor.</string>
+    <string name="error_auth_no_identities">No hay identidades para el proveedor de identidad. Registrese primero, por favor.</string>
+
 </resources>

@@ -69,4 +69,10 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Konto er aktivert!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Sikker på du vil logge inn?</string>
+    <string name="auth_confirm_subtitle">Du blir logget inn som:</string>
+    <string name="auth_confirm_to">til:</string>
+
+
 </resources>

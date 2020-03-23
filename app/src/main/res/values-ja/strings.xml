@@ -66,4 +66,10 @@
     <string name="account_id">ID</string>
     <string name="account_activated">アカウントが有効化されました</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">本当にログインしますか？</string>
+    <string name="auth_confirm_subtitle">次のユーザとしてログインします：</string>
+    <string name="auth_confirm_to">ログイン先：</string>
+
+
 </resources>

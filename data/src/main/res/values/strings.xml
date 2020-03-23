@@ -20,5 +20,14 @@
 
     <string name="error_enroll_saving_identity_provider">Failed to store identity provider. Please contact support.</string>
     <string name="error_enroll_saving_identity">Failed to store identity. Please contact support.</string>
+
     <!-- Errors Authentication -->
+    <string name="error_auth_title">Login failed</string>
+    <string name="error_auth_invalid_qr">Invalid authentication QR code.</string>
+    <string name="error_auth_unknown_identity_provider">Unknown identity provider, please enroll first.</string>
+    <string name="error_auth_unknown_identity">Unknown identity for service, please enroll first.</string>
+    <string name="error_auth_no_identities">No identities found for identity provider, please enroll first.</string>
+    <string name="error_auth_empty_service_provider">Unknown</string>
+
+
 </resources>

@@ -69,4 +69,10 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Cont activat!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Sunteti sigur ca vreti sa va autentificati?</string>
+    <string name="auth_confirm_subtitle">Veti fi autentificat drept:</string>
+    <string name="auth_confirm_to">catre:</string>
+
+
 </resources>

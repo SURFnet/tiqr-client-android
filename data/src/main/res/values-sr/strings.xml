@@ -16,5 +16,11 @@
     <string name="error_enroll_saving_identity">Nije moguće sačuvati identitet. Kontaktirajte podršku.</string>
 
     <!-- Errors Authentication -->
-    <!-- TODO -->
+    <string name="error_auth_title">Neuspešna prijava</string>
+    <string name="error_auth_empty_service_provider">Nepoznato</string>
+    <string name="error_auth_invalid_qr">Neispravan autentifikacioni QR kod.</string>
+    <string name="error_auth_unknown_identity_provider">Nepoznat Davalac Identiteta, molimo vas da se prvo upišete.</string>
+    <string name="error_auth_unknown_identity">Nepoznat identitet za servis, molimo vas da se prvo upišete.</string>
+    <string name="error_auth_no_identities">Nije pronađen identitet za ovog Davaoca Identiteta, molimo vas da se prvo upišete.</string>
+
 </resources>

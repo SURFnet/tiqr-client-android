@@ -68,4 +68,10 @@
     <string name="account_id">Identifikator</string>
     <string name="account_activated">Korisnički račun je aktiviran!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Jeste li sigurni da se želite prijaviti?</string>
+    <string name="auth_confirm_subtitle">Bit ćete prijavljeni kao:</string>
+    <string name="auth_confirm_to">za:</string>
+
+
 </resources>

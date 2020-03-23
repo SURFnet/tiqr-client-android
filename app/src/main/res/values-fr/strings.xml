@@ -69,4 +69,10 @@
     <string name="account_id">ID</string>
     <string name="account_activated">Compte activé!</string>
 
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Etes-vous certain de vouloir vous connecter?</string>
+    <string name="auth_confirm_subtitle">Vous serez connecté en tant que:</string>
+    <string name="auth_confirm_to">vers:</string>
+
+
 </resources>
