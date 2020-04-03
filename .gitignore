@@ -15,6 +15,9 @@
 # generated files
 bin/
 gen/
+captures/
+distribution/
+fastlane/report.xml
 
 # Ignore gradle files
 .gradle/
