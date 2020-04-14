@@ -152,16 +152,18 @@ class ScanComponent(
                 .setTargetName("tiqr QR scanner")
                 .setTargetAspectRatio(screenAspectRatio)
                 .setTargetRotation(viewFinder.display.rotation)
-                .build().apply {
-                    setSurfaceProvider(viewFinder.previewSurfaceProvider)
-                }
+                .build()
 
         cameraAnalysis = ImageAnalysis.Builder().build().apply {
             setAnalyzer(ContextCompat.getMainExecutor(context), cameraAnalyzer)
         }
 
-        cameraProvider.unbindAll()
-        camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, cameraPreview, cameraAnalysis)
+        camera = cameraProvider.run {
+            unbindAll()
+            bindToLifecycle(lifecycleOwner, cameraSelector, cameraPreview, cameraAnalysis)
+        }.apply {
+            cameraPreview.setSurfaceProvider(viewFinder.createSurfaceProvider(cameraInfo))
+        }
     }
 
     /**
