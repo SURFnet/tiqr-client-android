@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,57 +27,33 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.api
+package org.tiqr.data.api.interceptor
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.tiqr.data.BuildConfig
+import java.io.IOException
 
 /**
- * OkHttp interceptor to add a custom UserAgent with following example format:
- * tiqr/4.0 (Pixel; 4 XL; SDK 29; Android 10) okhttp/4.2.2
+ * OkHttp interceptor to inject headers
  */
-internal class UserAgentInjector(private val context: Context) : Interceptor {
+internal class HeaderInjector : Interceptor {
     companion object {
-        private const val HEADER_USER_AGENT = "User-Agent"
+        const val HEADER_PROTOCOL = "X-TIQR-Protocol-Version"
+        private const val HEADER_ACCEPT = "Accept"
+        private const val HEADER_ACCEPT_VALUE = "application/json"
     }
 
-    private val userAgent: String by lazy {
-        "$appData $androidData $networkData"
-    }
-
-    private val appData: String
-    private val androidData: String
-    private val networkData: String
-
-    init {
-        with(context.packageManager) {
-            val appName = getApplicationLabel(context.applicationInfo) as String?
-                    ?: context.getString(context.applicationInfo.labelRes)
-            val appVersion = try {
-                getPackageInfo(context.packageName, 0).versionName
-            } catch (e: PackageManager.NameNotFoundException) {
-                null
-            }
-
-            appData = if (appVersion != null) "$appName/$appVersion" else appName
-        }
-
-        androidData = "(${Build.MANUFACTURER}; ${Build.MODEL}; SDK ${Build.VERSION.SDK_INT}; Android ${Build.VERSION.RELEASE})"
-        networkData = okhttp3.internal.userAgent
-    }
-
+    @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.request()
                 .newBuilder()
                 .apply {
-                    header(name = HEADER_USER_AGENT, value = userAgent)
+                    header(HEADER_ACCEPT, HEADER_ACCEPT_VALUE)
+                    header(HEADER_PROTOCOL, BuildConfig.PROTOCOL_VERSION)
                 }
                 .run {
                     chain.proceed(this.build())
                 }
     }
-
 }

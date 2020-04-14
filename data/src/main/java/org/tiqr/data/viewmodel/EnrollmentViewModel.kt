@@ -63,7 +63,7 @@ class EnrollmentViewModel @Inject constructor(private val repository: Enrollment
     fun enroll(password: String) {
         viewModelScope.launch {
             challenge.value?.let {
-                _enroll.value = repository.completeChallenge(it, password)
+                _enroll.value = repository.completeEnrollmentChallenge(it, password)
             }
         }
     }

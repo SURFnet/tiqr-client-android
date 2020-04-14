@@ -29,37 +29,51 @@
 
 package org.tiqr.data.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.tiqr.data.api.adapter.ValueEnum
 
 /**
- * Model for mapping response for enrollment-request.
+ * Model for mapping response for challenges.
  */
-@JsonClass(generateAdapter = true)
-data class Enroll(
-        val service: Service,
-        val identity: Identity
-) {
-
-    @JsonClass(generateAdapter = true)
-    data class Service(
-            val displayName: String,
-            val identifier: String,
-            val logoUrl: String,
-            val infoUrl: String,
-            val authenticationUrl: String,
-            val ocraSuite: String,
-            val enrollmentUrl: String
-    )
-
-    @JsonClass(generateAdapter = true)
-    data class Identity(
-            val identifier: String,
-            val displayName: String
-    )
+sealed class ChallengeResponse<T> {
+    abstract val code: T
 }
 
 /**
- * Model for mapping response for enrollment-confirm.
+ * Model for mapping response for  enrollment challenges.
  */
 @JsonClass(generateAdapter = true)
-data class EnrollConfirm(val responseCode: Int)
+data class EnrollmentResponse(
+        @Json(name = "responseCode")
+        override val code: Code
+) : ChallengeResponse<EnrollmentResponse.Code>() {
+    enum class Code(override val value: Int) : ValueEnum {
+        ENROLL_RESULT_SUCCESS(1),
+        ENROLL_RESULT_INVALID_RESPONSE(101);
+
+        override fun toString(): String = value.toString()
+    }
+}
+
+/**
+ * Model for mapping response for authentication challenges.
+ */
+@JsonClass(generateAdapter = true)
+data class AuthenticationResponse(
+        @Json(name = "responseCode")
+        override val code: Code,
+        val attemptsLeft: Int? = null,
+        val duration: Int? = null
+) : ChallengeResponse<AuthenticationResponse.Code>() {
+    enum class Code(override val value: Int) : ValueEnum {
+        AUTH_RESULT_SUCCESS(1),
+        AUTH_RESULT_INVALID_RESPONSE(201),
+        AUTH_RESULT_INVALID_REQUEST(202),
+        AUTH_RESULT_INVALID_CHALLENGE(203),
+        AUTH_RESULT_ACCOUNT_BLOCKED(204),
+        AUTH_RESULT_INVALID_USER_ID(205);
+
+        override fun toString(): String = value.toString()
+    }
+}

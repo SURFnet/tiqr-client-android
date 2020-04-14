@@ -37,12 +37,15 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tiqr.data.BuildConfig
-import org.tiqr.data.api.HeaderInjector
+import org.tiqr.data.api.interceptor.HeaderInjector
 import org.tiqr.data.api.TiqrApi
-import org.tiqr.data.api.UserAgentInjector
+import org.tiqr.data.api.adapter.addValueEnum
+import org.tiqr.data.api.interceptor.UserAgentInjector
 import org.tiqr.data.di.ApiScope
 import org.tiqr.data.di.BaseScope
 import org.tiqr.data.di.TokenScope
+import org.tiqr.data.model.AuthenticationResponse
+import org.tiqr.data.model.EnrollmentResponse
 import org.tiqr.data.util.extension.callFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -125,7 +128,10 @@ internal object NetworkModule {
     //region Retrofit
     @Provides
     @Singleton
-    internal fun provideMoshi(): Moshi = Moshi.Builder().build()
+    internal fun provideMoshi(): Moshi = Moshi.Builder()
+            .addValueEnum(EnrollmentResponse.Code::class, EnrollmentResponse.Code.ENROLL_RESULT_INVALID_RESPONSE)
+            .addValueEnum(AuthenticationResponse.Code::class, AuthenticationResponse.Code.AUTH_RESULT_INVALID_RESPONSE)
+            .build()
 
     @Provides
     @Singleton

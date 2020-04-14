@@ -121,7 +121,7 @@ class AuthenticationRepository(
         }
     }
 
-    override suspend fun completeChallenge(challenge: AuthenticationChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
+    override suspend fun completeAuthenticationChallenge(challenge: AuthenticationChallenge, password: String, type: SecretService.Type): ChallengeCompleteResult<ChallengeCompleteFailure> {
         TODO("not implemented")
     }
 }

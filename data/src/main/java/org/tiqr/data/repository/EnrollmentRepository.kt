@@ -37,8 +37,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.R
-import org.tiqr.data.api.HeaderInjector.Companion.HEADER_PROTOCOL
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.interceptor.HeaderInjector.Companion.HEADER_PROTOCOL
 import org.tiqr.data.model.*
 import org.tiqr.data.repository.base.ChallengeRepository
 import org.tiqr.data.service.DatabaseService
@@ -175,7 +175,7 @@ class EnrollmentRepository(
     /**
      * Complete the [challenge] and store the Identity.
      */
-    override suspend fun completeChallenge(challenge: EnrollmentChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
+    override suspend fun completeEnrollmentChallenge(challenge: EnrollmentChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
         return try {
             // Perform API call and return result
             api.enroll(

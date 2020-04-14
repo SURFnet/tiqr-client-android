@@ -29,4 +29,4 @@
 
 package org.tiqr.data.security
 
-class SecurityFeaturesException(message: String? = null, cause: Exception? = null) : Exception(message, cause)
+internal class SecurityFeaturesException(message: String? = null, cause: Exception? = null) : Exception(message, cause)
