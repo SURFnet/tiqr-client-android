@@ -99,8 +99,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
         when (destination.id) { //TODO: add other destinations which needs bottombar setup or hiding
             R.id.scan,
             R.id.about,
+            R.id.authentication_pin,
             R.id.enrollment_pin,
             R.id.enrollment_pin_verify -> toggleBottomBar(visible = false)
+            R.id.authentication_summary,
             R.id.enrollment_confirm,
             R.id.enrollment_summary -> toggleBottomBar(visible = true, infoVisible = false)
             else -> toggleBottomBar(visible = true)

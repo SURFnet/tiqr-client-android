@@ -74,5 +74,12 @@
     <string name="auth_confirm_subtitle">Du blir logget inn som:</string>
     <string name="auth_confirm_to">til:</string>
 
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Vennligst angi pinkode</string>
+    <string name="auth_pin_subtitle">Du må oppgi din 4-talls pinkode for å logge på:</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Du er pålogget!</string>
+    <string name="auth_summary_to">til:</string>
 
 </resources>

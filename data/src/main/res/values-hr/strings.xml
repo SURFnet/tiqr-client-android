@@ -4,6 +4,11 @@
     <string name="error_qr_unknown_title">Nepoznati QR kod</string>
     <string name="error_qr_unknown">Ovaj se QR kod ne može obraditi.</string>
 
+    <!-- Errors -->
+    <string name="error_title_unknown">Nepoznata pogreška</string>
+    <string name="error_security_standards">Uređaj nije kompatibilan sa zahtjevanim sigurnosnim normama.</string>
+
+
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Neuspješan upis</string>
     <string name="error_enroll_connection">Nije moguće uspostaviti vezu sa poslužiteljem za upis. Kontaktirajte administratora web stranice.</string>
@@ -19,8 +24,36 @@
     <string name="error_auth_title">Neuspješna prijava</string>
     <string name="error_auth_empty_service_provider">Nepoznato</string>
     <string name="error_auth_invalid_qr">Neispravan autentikacijski QR kod.</string>
+    <string name="error_auth_invalid_response">Neispravan autentikacijski odgovor. Netočan PIN kod? Pokušajte ponovno.</string>
+    <string name="error_auth_unknown_error">Dogodila se nepoznata pogreška. Kontaktirajte podršku.</string>
+    <string name="error_auth_connect_error">Nije moguće uspostaviti vezu sa poslužitelja za provjeru autentičnosti.</string>
+
+    <string name="error_auth_invalid_key">Prijava nije moguća. Neispravan ključ.</string>
+    <string name="error_auth_invalid_challenge">Prijava nije moguća. Neispravan sigurnosni izazov</string>
+
+    <string name="error_auth_invalid_protocol">Nevažeći protokol odgovora (%s). Kontaktirajte administratora web stranice.</string>
     <string name="error_auth_unknown_identity_provider">Nepoznat davatelj identiteta, obavite proces upisa.</string>
     <string name="error_auth_unknown_identity">Nepoznat identitet za uslugu, obavite proces upisa.</string>
     <string name="error_auth_no_identities">Nije pronađen identitet za ovog davatelja identiteta, molimo obavite proces upisa.</string>
+
+    <string name="error_auth_title_pin">Neispravan PIN</string>
+    <string name="error_auth_pin_x_attempts_left">Unijeli ste neispravan PIN. Preostalo je %d pokušaja. Molimo ponovno unesite PIN kod. Provjerite verifikacijsku ikonu za zadnju znamenku.</string>
+    <string name="error_auth_pin_one_attempt_left">Preostao je još jedan pokušaj. Ukoliko ponovno unesete krivi PIN, svi korisnički računi na ovom uređaju bit će blokirani.</string>
+    <string name="error_auth_title_biometric">Pogrešno biometrijski</string>
+    <string name="error_auth_biometric_x_attempts_left">Dali ste pogrešan biometrijski. Imate još %d pokušaja. Ponovno potvrdite svoj biometrijski podatak.</string>
+    <string name="error_auth_biometric_one_attempt_left">Ostao vam je još jedan posljednji pokušaj. Ako ponovo pošaljete neispravnu biometrijsku vrijednost, svi korisnički računi na ovom uređaju bit će blokirani.</string>
+
+    <string name="error_auth_title_blocked">Blokiran korisnički račun</string>
+    <string name="error_auth_blocked">Ovaj korisnički račun više se ne može koristiti.</string>
+    <string name="error_auth_title_blocked_temporary">Ovaj korisnički račun privremeno je zablokiran.</string>
+    <string name="error_auth_blocked_temporary">Ovaj korisnički račun zablokiran je na %d minuta.</string>
+
+    <string name="error_auth_title_challenge">Neispravan sigurnosni izazov</string>
+    <string name="error_auth_challenge_invalid">Skenirani QR kod je neispravan ili je istekao. Molimo pokušajte ponovno.</string>
+    <string name="error_auth_title_request">Neispravan zahtjev</string>
+    <string name="error_auth_request_invalid">Poslužitelj ne prepoznaje zahtjev za prijavom. Kontaktirajte podršku.</string>
+
+    <string name="error_auth_title_account">Neispravan korisnički račun</string>
+    <string name="error_auth_account_invalid">Pokušali ste se prijaviti sa neispravnim ili nepoznatim korisničkim računom. Ponovno aktivirajte Vaš korisnički račun prije novog pokušaja prijave.</string>
 
 </resources>

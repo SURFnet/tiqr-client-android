@@ -4,6 +4,11 @@
     <string name="error_qr_unknown_title">Neznámy QR kód</string>
     <string name="error_qr_unknown">Tento QR kód nie je možné spracovať.</string>
 
+    <!-- Errors -->
+    <string name="error_title_unknown">Nešpecifikovaná chyba</string>
+    <string name="error_security_standards">Zariadenie nie je kompatibilné s požadovanými bezpečnostnými normami.</string>
+
+
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registrácia zlyhala</string>
     <string name="error_enroll_connection">Nemožno sa pripojiť k registračnému serveru. Kontaktujte, prosím, správcu web servera.</string>
@@ -19,8 +24,36 @@
     <string name="error_auth_title">Prihlásenie neúspešné</string>
     <string name="error_auth_empty_service_provider">Nešpecifikovaný</string>
     <string name="error_auth_invalid_qr">Neplatný QR kód.</string>
+    <string name="error_auth_invalid_response">Neplatná overovacia odozva. Chybný PIN kód? Skúste znova, prosím.</string>
+    <string name="error_auth_unknown_error">Nešpecifikovaná chyba. Kontaktujte, prosím, používateľskú podporu.</string>
+    <string name="error_auth_connect_error">Nemožno sa pripojiť k autentifikačný serveru.</string>
+
+    <string name="error_auth_invalid_key">Prihlásenie nemožné. Neplatný kľúč.</string>
+    <string name="error_auth_invalid_challenge">Prihlásenie nemožné. Neplatná výzva. </string>
+
+    <string name="error_auth_invalid_protocol">Neplatný protokol odozvy (%s). Kontaktujte, prosím, správcu web servera.</string>
     <string name="error_auth_unknown_identity_provider">Neznámy poskytovateľ identity. Najskôr sa, prosím, registrujte.</string>
     <string name="error_auth_unknown_identity">Neznáma identita pre službu. Najskôr sa, prosím, registrujte.</string>
     <string name="error_auth_no_identities">U tohto poskytovateľa identít nemáte vytvorenú identitu. Najskôr sa, prosím, registrujte. </string>
+
+    <string name="error_auth_title_pin">Nesprávny PIN</string>
+    <string name="error_auth_pin_x_attempts_left">Nesprávny PIN. Zostáva vám %d pokusov. Prosím, zadajte svoj PIN. Overte kontrolný piktogram každej práve zadanej číslice.</string>
+    <string name="error_auth_pin_one_attempt_left">Máte posledný pokus. Ak opäť zadáte nesprávny PIN, všetky účty na tomto zariadení budú zablokované.</string>
+    <string name="error_auth_title_biometric">Nesprávny biometrický</string>
+    <string name="error_auth_biometric_x_attempts_left">Zadali ste nesprávny biometrický údaj. Zostali vám %d pokusy. Potvrďte znova svoju biometrickú charakteristiku.</string>
+    <string name="error_auth_biometric_one_attempt_left">Máte ešte jeden posledný pokus. Ak znova zadáte nesprávnu biometriku, všetky účty na tomto zariadení budú zablokované.</string>
+
+    <string name="error_auth_title_blocked">Účet blokovaný</string>
+    <string name="error_auth_blocked">Tento účet nie je možné naďalej používať.</string>
+    <string name="error_auth_title_blocked_temporary">This account has been blocked temporarily.</string>
+    <string name="error_auth_blocked_temporary">This account has been blocked for %d minutes.</string>
+
+    <string name="error_auth_title_challenge">Neplatná výzva</string>
+    <string name="error_auth_challenge_invalid">Nasnímaný QR kód nie je platný alebo expiroval. Skúste znova, prosím.</string>
+    <string name="error_auth_title_request">Neplatná požiadavka</string>
+    <string name="error_auth_request_invalid">Server nerozpoznal prihlasovaciu požiadavku. Kontaktujte, prosím, používateľskú podporu.</string>
+
+    <string name="error_auth_title_account">Neplatný účet</string>
+    <string name="error_auth_account_invalid">Pokus o prihlásenie s neplatným alebo neznámym účtom. Prosím, (re-)aktivujte svoj účet.</string>
 
 </resources>

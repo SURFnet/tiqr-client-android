@@ -16,6 +16,7 @@
 bin/
 gen/
 captures/
+distribution/
 
 # Ignore gradle files
 .gradle/

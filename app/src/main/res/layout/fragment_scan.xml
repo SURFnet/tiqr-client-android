@@ -12,10 +12,7 @@
         <androidx.camera.view.PreviewView
             android:id="@+id/view_finder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:implementationMode="surfaceView"
-            tools:visibility="gone" />
-        <!-- setting implementationMode to textureView does not work reliably -->
+            android:layout_height="match_parent" />
 
         <org.tiqr.authenticator.scan.ScanOverlay
             android:layout_width="match_parent"

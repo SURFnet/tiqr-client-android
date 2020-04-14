@@ -4,6 +4,11 @@
     <string name="error_qr_unknown_title">Code QR inconnu</string>
     <string name="error_qr_unknown">Ce code QR ne peut pas être traité.</string>
 
+    <!-- Errors -->
+    <string name="error_title_unknown">Erreur inconnue</string>
+    <string name="error_security_standards">Le périphérique n\'est pas compatible avec les standards de sécurité requis.</string>
+
+
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Enregistrement échoué</string>
     <string name="error_enroll_connection">Connexion au serveur d\'enregistrement impossible. Veuillez contacter l\'administrateur du site web.</string>
@@ -19,8 +24,37 @@
     <string name="error_auth_title">Connexion échouée</string>
     <string name="error_auth_empty_service_provider">Inconnu</string>
     <string name="error_auth_invalid_qr">Code QR d\'authentification invalide.</string>
+    <string name="error_auth_invalid_response">Demande d\'authentification échouée. Mauvais code PIN? Essayez à nouveau.</string>
+    <string name="error_auth_unknown_error">Un erreur inconnue est survenue. Veuillez contacter le support.</string>
+    <string name="error_auth_connect_error">onnexion au serveur d\'authentification impossible.</string>
+
+    <string name="error_auth_invalid_key">Connexion impossible. Clé incorrecte.</string>
+    <string name="error_auth_invalid_challenge">Connexion impossible. Challenge invalide.</string>
+
+
+    <string name="error_auth_invalid_protocol">Protocole de réponse invalide (%s). Veuillez contacter l\'administrateur du site web.</string>
     <string name="error_auth_unknown_identity_provider">Fournisseur de service inconnu, veuillez d\'abord vous enregistrer.</string>
     <string name="error_auth_unknown_identity">Identité inconnue, veuillez d\'abord vous enregistrer.</string>
     <string name="error_auth_no_identities">Aucune identité n\'est associé à ce fournisseur de service, veuillez d\'abord vous enregistrer.</string>
+
+    <string name="error_auth_title_pin">Code PIN incorrecte</string>
+    <string name="error_auth_pin_x_attempts_left">Vous avez entré un code PIN incorrect. Il vous reste encore %d essais. Entrez votre code PIN à nouveau. Utilisez l\'icône de vérification pour le dernier chiffre.</string>
+    <string name="error_auth_pin_one_attempt_left">Il vous reste un dernier essai. Si vous entrer encore un code PIN incorrecte, tous les comptes sur cet appareil vont être bloqués.</string>
+    <string name="error_auth_title_biometric">Biométrique incorrect</string>
+    <string name="error_auth_biometric_x_attempts_left">Vous avez fourni une information biométrique incorrecte. Il vous reste encore %d essais. Veuillez confirmer à nouveau vos données biométriques.</string>
+    <string name="error_auth_biometric_one_attempt_left">Il vous reste une dernière essai. Si vous fournissez à nouveau une information biométrique incorrecte, tous les comptes sur cet appareil vont être bloqués.</string>
+
+    <string name="error_auth_title_blocked">Compte bloqué</string>
+    <string name="error_auth_blocked">Ce compte ne peut plus être utilisé.</string>
+    <string name="error_auth_title_blocked_temporary">Ce compte a été bloqué temporairement.</string>
+    <string name="error_auth_blocked_temporary">Ce compte a été bloqué pendant %d minutes.</string>
+
+    <string name="error_auth_title_challenge">Challenge invalide</string>
+    <string name="error_auth_challenge_invalid">Le code QR scanné est invalide ou a expiré. Veuillez essayer à nouveau.</string>
+    <string name="error_auth_title_request">Demande invalide</string>
+    <string name="error_auth_request_invalid">Le serveur ne reconnait pas la demande de connexion. Veuillez contacter le support.</string>
+
+    <string name="error_auth_title_account">Compte invalide</string>
+    <string name="error_auth_account_invalid">Vous avez essayé de vous connecter avec un compte invalide ou inconnu. Veuillez d\'abord (re-)activer votre compte.</string>
 
 </resources>

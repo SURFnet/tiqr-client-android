@@ -74,5 +74,12 @@
     <string name="auth_confirm_subtitle">Je wordt ingelogd als:</string>
     <string name="auth_confirm_to">voor:</string>
 
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Voer uw PIN voor tiqr in</string>
+    <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Inloggen geslaagd!</string>
+    <string name="auth_summary_to">voor:</string>
 
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,37 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.viewmodel
+package org.tiqr.authenticator.authentication
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import org.tiqr.data.model.AuthenticationChallenge
-import org.tiqr.data.model.ChallengeCompleteFailure
-import org.tiqr.data.model.ChallengeCompleteResult
-import org.tiqr.data.repository.AuthenticationRepository
-import org.tiqr.data.service.SecretService
-import javax.inject.Inject
+import android.os.Bundle
+import android.view.View
+import androidx.annotation.LayoutRes
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import org.tiqr.authenticator.R
+import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.databinding.FragmentAuthenticationSummaryBinding
+import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
- * ViewModel for Authentication
+ * Fragment to summarize the authorisation
  */
-class AuthenticationViewModel @Inject constructor(private val repository: AuthenticationRepository): ViewModel() {
-    private val _challenge = MutableLiveData<AuthenticationChallenge>()
-    val challenge: LiveData<AuthenticationChallenge> = _challenge
+class AuthenticationSummaryFragment : BindingFragment<FragmentAuthenticationSummaryBinding>() {
+    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
 
-    private val _authenticate = MutableLiveData<ChallengeCompleteResult<ChallengeCompleteFailure>>()
-    val authenticate: LiveData<ChallengeCompleteResult<ChallengeCompleteFailure>> = _authenticate
+    @LayoutRes
+    override val layout = R.layout.fragment_authentication_summary
 
-    /**
-     * Set the [AuthenticationChallenge] to be used in this viewmodel.
-     */
-    fun setChallenge(challenge: AuthenticationChallenge) {
-        _challenge.value = challenge
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    fun authenticate(password: String, type: SecretService.Type = SecretService.Type.PIN_CODE) {
-        viewModelScope.launch {
-            challenge.value?.let {
-                _authenticate.value = repository.completeAuthenticationChallenge(it, password, type)
-            }
+        val binding = binding ?: return
+        binding.viewModel = viewModel
+
+        binding.buttonOk.setOnClickListener {
+            findNavController().popBackStack()
         }
+
+        // TODO: biometric upgrade
     }
 }
