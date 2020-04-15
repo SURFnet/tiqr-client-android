@@ -74,5 +74,12 @@
     <string name="auth_confirm_subtitle">Accederá como:</string>
     <string name="auth_confirm_to">a:</string>
 
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Por favor, introduzca su PIN</string>
+    <string name="auth_pin_subtitle">Necesita introducir un PIN de 4 dígitos para acceder:</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">¡Ha accedido!</string>
+    <string name="auth_summary_to">a:</string>
 
 </resources>

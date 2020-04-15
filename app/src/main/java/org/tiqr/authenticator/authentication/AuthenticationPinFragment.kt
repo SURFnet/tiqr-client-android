@@ -32,42 +32,43 @@ package org.tiqr.authenticator.authentication
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
-import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
+import org.tiqr.authenticator.databinding.FragmentAuthenticationPinBinding
+import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
- * Fragment to review and confirm the authentication
+ * Fragment to enter the PIN code for the authentication
  */
-class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfirmBinding>() {
+class AuthenticationPinFragment : BindingFragment<FragmentAuthenticationPinBinding>() {
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
-    private val args by navArgs<AuthenticationConfirmFragmentArgs>()
 
     @LayoutRes
-    override val layout = R.layout.fragment_authentication_confirm
+    override val layout = R.layout.fragment_authentication_pin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = binding ?: return
-        with(viewModel) {
-            binding.viewModel = this
-            setChallenge(args.challenge)
+        binding.pin.setConfirmListener { pin ->
+            viewModel.authenticate(pin)
         }
 
-        binding.buttonCancel.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        binding.buttonOk.setOnClickListener {
-            if (viewModel.challenge.value?.identity?.useFingerPrint == true) {
-                // TODO: open biometric
-            } else {
-                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+        viewModel.authenticate.observe(viewLifecycleOwner) {
+            when (it) {
+                is ChallengeCompleteResult.Success -> findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(null)) // TODO: pass PIN to upgrade to biometric
+                is ChallengeCompleteResult.Failure -> {
+                    AlertDialog.Builder(requireContext())
+                            .setTitle(it.failure.title)
+                            .setMessage(it.failure.message)
+                            .show()
+                    // TODO: handle errors
+                }
             }
         }
     }

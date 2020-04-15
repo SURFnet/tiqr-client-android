@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,44 +27,18 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository.base
+package org.tiqr.data.util.extension
 
-import org.tiqr.data.model.*
-import org.tiqr.data.service.SecretService
+import com.squareup.moshi.JsonReader
 
 /**
- * Base Repository for handling [Challenge]'s
+ * Runs this [JsonReader] in [JsonReader.lenient] mode while processing this [block]
  */
-abstract class ChallengeRepository<T: Challenge> {
-    /**
-     * The scheme to distinguish between challenge types.
-     */
-    protected abstract val challengeScheme: String
-
-    /**
-     * Contains a valid challenge?
-     */
-    fun isValidChallenge(rawChallenge: String) = rawChallenge.startsWith(challengeScheme)
-
-    /**
-     * Parse the raw challenge.
-     */
-    abstract suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<T, ChallengeParseFailure>
-
-    /**
-     * Complete the enrollment challenge
-     */
-    open suspend fun completeEnrollmentChallenge(
-            challenge: T,
-            password: String
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
-
-    /**
-     * Complete the authentication challenge
-     */
-    open suspend fun completeAuthenticationChallenge(
-            challenge: T,
-            password: String,
-            type: SecretService.Type
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
+inline fun <T> JsonReader.inLenient(block: JsonReader.() -> T): T {
+    try {
+        isLenient = true
+        return block()
+    } finally {
+        isLenient = false
+    }
 }

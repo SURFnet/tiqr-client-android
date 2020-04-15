@@ -48,7 +48,6 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * Service to securely save and retrieve secrets
  */
-@Suppress("MemberVisibilityCanBePrivate")
 class SecretService(context: Context, preferenceService: PreferenceService) {
     companion object {
         private const val BIOMETRIC_SUFFIX = "org.tiqr.FP"
@@ -67,11 +66,11 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
     // TODO: check access modifiers
 
     /**
-     * Create a new secret and ad it to the [secrets] collection.
+     * Create a new secret and add it to the [secrets] collection.
      * Only to be used for enrollment.
      */
-    fun createSecret(identity: Identity, type: Type = Type.PIN_CODE) {
-        addSecret(identity.toId(type), encryption.randomSecretKey())
+    fun createSecret(identity: Identity, secret: SecretKey, type: Type = Type.PIN_CODE) {
+        addSecret(identity.toId(type), secret)
     }
 
     /**
@@ -87,10 +86,9 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
      * @throws InvalidKeyException when key cannot be found
      * @throws SecurityFeaturesException when upgrading to new key fails
      */
-    private fun getSecret(identity: Identity, type: Type, sessionKey: SecretKey): SecretKey {
+    fun getSecret(identity: Identity, type: Type = Type.PIN_CODE, sessionKey: SecretKey): SecretKey {
         return secrets[identity.toId(type)] ?: load(identity, type, sessionKey)
     }
-
 
     /**
      * Save the key
@@ -257,11 +255,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
 
         private val random = SecureRandom.getInstance(ALGORITHM_RANDOM)
         private val factory = SecretKeyFactory.getInstance(ALGORITHM_PASSWORD_KEY)
-        private val generator = KeyGenerator.getInstance(ALGORITHM_MASTER_KEY)
-
-        init {
-            generator.init(SecureRandom())
-        }
+        private val generator = KeyGenerator.getInstance(ALGORITHM_MASTER_KEY).apply { init(random) }
 
         /**
          * Get the saved device key, or generate (and save) one randomly
@@ -282,7 +276,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         /**
          * Get the saved salt, or generate (and save) one randomly
          */
-        internal fun salt(): ByteArray {
+        private fun salt(): ByteArray {
             val value = preferenceService.salt
             return if (value != null) {
                 Base64.decode(value, Base64.DEFAULT)

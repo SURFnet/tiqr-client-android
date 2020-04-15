@@ -1,6 +1,6 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.3.70"
+private const val kotlinVersion = "1.3.71"
 
 object Versions {
     // Android
@@ -43,7 +43,7 @@ object Libs {
     object AndroidX {
         const val activity = "androidx.activity:activity-ktx:1.1.0"
         const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val fragment = "androidx.fragment:fragment-ktx:1.2.3"
+        const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
         const val core = "androidx.core:core-ktx:1.2.0"
         const val browser = "androidx.browser:browser:1.2.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
@@ -73,12 +73,12 @@ object Libs {
         }
 
         object Camera {
-            private const val version = "1.0.0-beta01"
+            private const val version = "1.0.0-beta02"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha08"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha08"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha09"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha09"
         }
     }
 
@@ -86,8 +86,8 @@ object Libs {
         const val material = "com.google.android.material:material:1.1.0"
 
         object Firebase {
-            const val vision = "com.google.firebase:firebase-ml-vision:24.0.1"
-            const val barcode = "com.google.firebase:firebase-ml-vision-barcode-model:16.0.2"
+            const val vision = "com.google.firebase:firebase-ml-vision:24.0.2"
+            const val barcode = "com.google.firebase:firebase-ml-vision-barcode-model:16.1.0"
         }
     }
 
@@ -98,13 +98,13 @@ object Libs {
     }
 
     object OkHttp {
-        private const val version = "4.4.1"
+        private const val version = "4.5.0"
         const val okhttp = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
     }
 
     object Retrofit {
-        private const val version = "2.7.2"
+        private const val version = "2.8.1"
         const val retrofit = "com.squareup.retrofit2:retrofit:$version"
         const val converterScalars = "com.squareup.retrofit2:converter-scalars:$version"
         const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$version"

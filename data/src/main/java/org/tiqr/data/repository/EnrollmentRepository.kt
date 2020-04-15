@@ -37,8 +37,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.R
-import org.tiqr.data.api.HeaderInjector.Companion.HEADER_PROTOCOL
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.interceptor.HeaderInjector.Companion.HEADER_PROTOCOL
 import org.tiqr.data.model.*
 import org.tiqr.data.repository.base.ChallengeRepository
 import org.tiqr.data.service.DatabaseService
@@ -175,16 +175,28 @@ class EnrollmentRepository(
     /**
      * Complete the [challenge] and store the Identity.
      */
-    override suspend fun completeChallenge(challenge: EnrollmentChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
+    override suspend fun completeEnrollmentChallenge(challenge: EnrollmentChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
         return try {
+            val secret = secretService.encryption.randomSecretKey()
+
             // Perform API call and return result
             api.enroll(
                     url = challenge.enrollmentUrl,
-                    secret = secretService.encryption.randomSecretKey().encoded.toHexString(),
+                    secret = secret.encoded.toHexString(),
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
             ).run {
                 if (isSuccessful) {
+                    val response = body()
+                            ?: return EnrollmentCompleteFailure(
+                                    reason = EnrollmentCompleteFailure.Reason.INVALID_RESPONSE,
+                                    title = resources.getString(R.string.error_enroll_title),
+                                    message = resources.getString(R.string.error_enroll_invalid_response)
+                            ).run {
+                                Timber.e("Error completing enrollment, API response is empty")
+                                ChallengeCompleteResult.failure(this)
+                            }
+
                     when (val protocol = headers()[HEADER_PROTOCOL]) {
                         null, "1" -> { // Unsupported Ascii-response
                             return EnrollmentCompleteFailure(
@@ -198,11 +210,11 @@ class EnrollmentRepository(
                         }
                     }
 
-                    if (body()?.responseCode != 1) {
+                    if (response.code != EnrollmentResponse.Code.ENROLL_RESULT_SUCCESS) {
                         return EnrollmentCompleteFailure(
                                 reason = EnrollmentCompleteFailure.Reason.INVALID_RESPONSE,
                                 title = resources.getString(R.string.error_enroll_title),
-                                message = resources.getString(R.string.error_enroll_invalid_response_code, body()?.responseCode.toString())
+                                message = resources.getString(R.string.error_enroll_invalid_response_code, response.code)
                         ).run {
                             Timber.e("Error completing enrollment, unexpected response code")
                             ChallengeCompleteResult.failure(this)
@@ -236,7 +248,7 @@ class EnrollmentRepository(
 
                     // Save secrets
                     val sessionKey = secretService.encryption.keyFromPassword(password)
-                    secretService.createSecret(identity)
+                    secretService.createSecret(identity, secret)
                     secretService.save(identity, sessionKey)
 
                     ChallengeCompleteResult.success()

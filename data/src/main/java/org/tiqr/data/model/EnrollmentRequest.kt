@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,44 +27,33 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository.base
+package org.tiqr.data.model
 
-import org.tiqr.data.model.*
-import org.tiqr.data.service.SecretService
+import com.squareup.moshi.JsonClass
 
 /**
- * Base Repository for handling [Challenge]'s
+ * Model for mapping response for enrollment-request.
  */
-abstract class ChallengeRepository<T: Challenge> {
-    /**
-     * The scheme to distinguish between challenge types.
-     */
-    protected abstract val challengeScheme: String
+@JsonClass(generateAdapter = true)
+data class EnrollmentRequest(
+        val service: Service,
+        val identity: Identity
+) {
 
-    /**
-     * Contains a valid challenge?
-     */
-    fun isValidChallenge(rawChallenge: String) = rawChallenge.startsWith(challengeScheme)
+    @JsonClass(generateAdapter = true)
+    data class Service(
+            val displayName: String,
+            val identifier: String,
+            val logoUrl: String,
+            val infoUrl: String,
+            val authenticationUrl: String,
+            val ocraSuite: String,
+            val enrollmentUrl: String
+    )
 
-    /**
-     * Parse the raw challenge.
-     */
-    abstract suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<T, ChallengeParseFailure>
-
-    /**
-     * Complete the enrollment challenge
-     */
-    open suspend fun completeEnrollmentChallenge(
-            challenge: T,
-            password: String
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
-
-    /**
-     * Complete the authentication challenge
-     */
-    open suspend fun completeAuthenticationChallenge(
-            challenge: T,
-            password: String,
-            type: SecretService.Type
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
+    @JsonClass(generateAdapter = true)
+    data class Identity(
+            val identifier: String,
+            val displayName: String
+    )
 }

@@ -72,5 +72,12 @@
     <string name="auth_confirm_subtitle">Prijavili se boste kot:</string>
     <string name="auth_confirm_to">za:</string>
 
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Vpišite svoj PIN</string>
+    <string name="auth_pin_subtitle">Za prijavo vpišite vaš 4-številčni PIN:</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Prijava je uspela!</string>
+    <string name="auth_summary_to">za:</string>
 
 </resources>

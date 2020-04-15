@@ -103,7 +103,8 @@ data class AuthenticationCompleteFailure(
         val reason: Reason = Reason.UNKNOWN,
         override val title: String,
         override val message: String,
-        val extras: Bundle? = null
+        val remainingAttempts: Int? = null,
+        val duration: Int? = null
 ) : ChallengeCompleteFailure() {
     enum class Reason {
         UNKNOWN, CONNECTION, INVALID_CHALLENGE, INVALID_REQUEST, INVALID_RESPONSE,

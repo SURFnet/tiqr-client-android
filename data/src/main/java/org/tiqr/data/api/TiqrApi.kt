@@ -30,8 +30,9 @@
 package org.tiqr.data.api
 
 import org.tiqr.data.BuildConfig
-import org.tiqr.data.model.Enroll
-import org.tiqr.data.model.EnrollConfirm
+import org.tiqr.data.model.AuthenticationResponse
+import org.tiqr.data.model.EnrollmentRequest
+import org.tiqr.data.model.EnrollmentResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -67,7 +68,7 @@ interface TiqrApi {
     ): String
 
     @GET
-    suspend fun requestEnroll(@Url url: String): Response<Enroll>
+    suspend fun requestEnroll(@Url url: String): Response<EnrollmentRequest>
 
     @POST
     @FormUrlEncoded
@@ -78,7 +79,7 @@ interface TiqrApi {
             @Field(FIELD_NOTIFICATION_ADDRESS_KEY) notificationAddress: String? = null,
             @Field(FIELD_NOTIFICATION_TYPE_KEY) notificationType: String? = if (notificationAddress == null) null else FIELD_NOTIFICATION_TYPE_VALUE,
             @Field(FIELD_OPERATION_KEY) operation: String = FIELD_OPERATION_VALUE_REGISTER
-    ): Response<EnrollConfirm>
+    ): Response<EnrollmentResponse>
 
     @POST
     @FormUrlEncoded
@@ -91,5 +92,5 @@ interface TiqrApi {
             @Field(FIELD_NOTIFICATION_ADDRESS_KEY) notificationAddress: String?,
             @Field(FIELD_NOTIFICATION_TYPE_KEY) notificationType: String? = if (notificationAddress == null) null else FIELD_NOTIFICATION_TYPE_VALUE,
             @Field(FIELD_OPERATION_KEY) operation: String = FIELD_OPERATION_VALUE_LOGIN
-    ): Response<String>
+    ): Response<AuthenticationResponse>
 }

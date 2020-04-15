@@ -32,8 +32,13 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.ChallengeCompleteFailure
+import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.repository.AuthenticationRepository
+import org.tiqr.data.service.SecretService
 import javax.inject.Inject
 
 /**
@@ -43,10 +48,21 @@ class AuthenticationViewModel @Inject constructor(private val repository: Authen
     private val _challenge = MutableLiveData<AuthenticationChallenge>()
     val challenge: LiveData<AuthenticationChallenge> = _challenge
 
+    private val _authenticate = MutableLiveData<ChallengeCompleteResult<ChallengeCompleteFailure>>()
+    val authenticate: LiveData<ChallengeCompleteResult<ChallengeCompleteFailure>> = _authenticate
+
     /**
      * Set the [AuthenticationChallenge] to be used in this viewmodel.
      */
     fun setChallenge(challenge: AuthenticationChallenge) {
         _challenge.value = challenge
+    }
+
+    fun authenticate(password: String, type: SecretService.Type = SecretService.Type.PIN_CODE) {
+        viewModelScope.launch {
+            challenge.value?.let {
+                _authenticate.value = repository.completeAuthenticationChallenge(it, password, type)
+            }
+        }
     }
 }

@@ -71,5 +71,12 @@
     <string name="auth_confirm_subtitle">次のユーザとしてログインします：</string>
     <string name="auth_confirm_to">ログイン先：</string>
 
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">PINコードを入力してください</string>
+    <string name="auth_pin_subtitle">ログインするには4桁のPINコードが必要です：</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">ログインに成功しました！</string>
+    <string name="auth_summary_to">ログイン先：</string>
 
 </resources>

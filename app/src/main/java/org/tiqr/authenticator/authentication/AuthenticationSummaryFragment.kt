@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,44 +27,37 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository.base
+package org.tiqr.authenticator.authentication
 
-import org.tiqr.data.model.*
-import org.tiqr.data.service.SecretService
+import android.os.Bundle
+import android.view.View
+import androidx.annotation.LayoutRes
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import org.tiqr.authenticator.R
+import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.databinding.FragmentAuthenticationSummaryBinding
+import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
- * Base Repository for handling [Challenge]'s
+ * Fragment to summarize the authorisation
  */
-abstract class ChallengeRepository<T: Challenge> {
-    /**
-     * The scheme to distinguish between challenge types.
-     */
-    protected abstract val challengeScheme: String
+class AuthenticationSummaryFragment : BindingFragment<FragmentAuthenticationSummaryBinding>() {
+    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
 
-    /**
-     * Contains a valid challenge?
-     */
-    fun isValidChallenge(rawChallenge: String) = rawChallenge.startsWith(challengeScheme)
+    @LayoutRes
+    override val layout = R.layout.fragment_authentication_summary
 
-    /**
-     * Parse the raw challenge.
-     */
-    abstract suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<T, ChallengeParseFailure>
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    /**
-     * Complete the enrollment challenge
-     */
-    open suspend fun completeEnrollmentChallenge(
-            challenge: T,
-            password: String
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
+        val binding = binding ?: return
+        binding.viewModel = viewModel
 
-    /**
-     * Complete the authentication challenge
-     */
-    open suspend fun completeAuthenticationChallenge(
-            challenge: T,
-            password: String,
-            type: SecretService.Type
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
+        binding.buttonOk.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // TODO: biometric upgrade
+    }
 }
