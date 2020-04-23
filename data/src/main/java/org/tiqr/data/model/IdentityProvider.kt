@@ -41,7 +41,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Entity(tableName = "identityprovider",
         indices = [
-                Index(value = ["identifier"], name = "ip_identifier_idx")
+                Index(value = ["identifier"], name = "index_identityprovider_identifier")
         ]
 )
 @Parcelize

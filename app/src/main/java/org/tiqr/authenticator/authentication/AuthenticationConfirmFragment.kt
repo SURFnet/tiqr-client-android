@@ -64,7 +64,7 @@ class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfi
         }
 
         binding.buttonOk.setOnClickListener {
-            if (viewModel.challenge.value?.identity?.useFingerPrint == true) {
+            if (args.challenge.identity.biometricInUse) {
                 // TODO: open biometric
             } else {
                 findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())

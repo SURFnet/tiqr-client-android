@@ -55,6 +55,7 @@ object Libs {
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
+            const val sqlite = "androidx.sqlite:sqlite-ktx:2.1.0"
         }
 
         object Lifecycle {

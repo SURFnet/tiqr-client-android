@@ -89,6 +89,7 @@ dependencies {
 
     api Libs.AndroidX.Room.runtime
     implementation Libs.AndroidX.Room.ktx
+    implementation Libs.AndroidX.Room.sqlite
     kapt Libs.AndroidX.Room.compiler
 
     api Libs.Timber.timber
