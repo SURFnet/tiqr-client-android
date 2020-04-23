@@ -30,12 +30,20 @@
 package org.tiqr.authenticator
 
 import android.app.Application
+import coil.Coil
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.util.CoilUtils
+import okhttp3.OkHttpClient
 import org.tiqr.authenticator.di.DaggerTiqrComponent
 import org.tiqr.authenticator.di.TiqrComponent
 import timber.log.Timber
+import javax.inject.Inject
 
-class TiqrApplication : Application()  {
+class TiqrApplication : Application(), ImageLoaderFactory {
     private lateinit var component: TiqrComponent
+    @Inject
+    internal lateinit var imageOkHttpClient: OkHttpClient.Builder
 
     override fun onCreate() {
         super.onCreate()
@@ -46,6 +54,10 @@ class TiqrApplication : Application()  {
         }
 
         component = DaggerTiqrComponent.factory().create(this)
+        component.inject(this)
+
+        // Set the Coil's singleton instance
+        Coil.setImageLoader(this)
     }
 
     override fun getSystemService(name: String): Any? {
@@ -54,5 +66,19 @@ class TiqrApplication : Application()  {
         } else {
             super.getSystemService(name)
         }
+    }
+
+    /**
+     * Use our own okHttp to share pools
+     */
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(context = this)
+                .crossfade(enable = true)
+                .okHttpClient {
+                    imageOkHttpClient
+                            .cache(CoilUtils.createDefaultCache(context = this))
+                            .build()
+                }
+                .build()
     }
 }

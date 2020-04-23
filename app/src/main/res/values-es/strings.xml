@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">De nuevo</string>
+    <string name="button_delete">Borrar</string>
     <string name="button_cancel">Cancelar</string>
 
     <!-- Start -->
@@ -67,6 +68,7 @@
     <!-- Account -->
     <string name="account_full_name">Nombre y apellidos</string>
     <string name="account_id">Identificador</string>
+    <string name="account_information">Información</string>
     <string name="account_activated">¡Cuenta activada!</string>
 
     <!-- Authentication (Confirm) -->
@@ -81,5 +83,15 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">¡Ha accedido!</string>
     <string name="auth_summary_to">a:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identidades</string>
+    <string name="identity_blocked">Bloqueado</string>
+    <string name="identity_blocked_message">Atención: esta cuenta está bloqueada y debe reactivarla</string>
+    <string name="identity_delete_title">¿Estás seguro?</string>
+    <string name="identity_delete_message">Esta cuenta ya no se puede usar cuando se elimina.</string>
+    <string name="identity_biometric_usage">Usar biometría </string>
+    <string name="identity_biometric_upgrade">Actualizar al uso de biometría</string>
+
 
 </resources>

@@ -30,15 +30,11 @@
 package org.tiqr.authenticator
 
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.transition.doOnEnd
-import androidx.core.transition.doOnStart
+import androidx.core.view.children
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -46,6 +42,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.transition.AutoTransition
+import androidx.transition.Transition
+import androidx.transition.TransitionListenerAdapter
+import androidx.transition.TransitionManager
 import org.tiqr.authenticator.base.BindingActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
 import org.tiqr.authenticator.scan.CameraKeyEventsReceiver
@@ -96,15 +96,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             else -> window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         }
 
-        when (destination.id) { //TODO: add other destinations which needs bottombar setup or hiding
+        when (destination.id) {
             R.id.scan,
             R.id.about,
             R.id.authentication_pin,
             R.id.enrollment_pin,
-            R.id.enrollment_pin_verify -> toggleBottomBar(visible = false)
+            R.id.enrollment_pin_verify -> toggleBottomBar(visible = false, infoVisible = false)
             R.id.authentication_summary,
             R.id.enrollment_confirm,
-            R.id.enrollment_summary -> toggleBottomBar(visible = true, infoVisible = false)
+            R.id.enrollment_summary,
+            R.id.identity_list,
+            R.id.identity_detail -> toggleBottomBar(visible = true, infoVisible = false)
             else -> toggleBottomBar(visible = true)
         }
     }
@@ -133,26 +135,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
      * Toggle the bottom bar visibility with slide animation.
      */
     private fun toggleBottomBar(visible: Boolean, infoVisible: Boolean = true) {
-        val transition = AutoTransition()
-
-        val params = binding.bottombar.layoutParams as ConstraintLayout.LayoutParams
-        val currentVisible = params.topToBottom == ConstraintLayout.LayoutParams.UNSET
-        val bottomBarHiding = currentVisible && !visible
-        val bottomBarShowing = !currentVisible && visible
-        val bottomBarUnchanged = currentVisible == visible
-
-        when {
-            bottomBarHiding || bottomBarUnchanged -> {
-                transition.doOnEnd {
-                    binding.bottombar.infoVisible = infoVisible
-                }
-            }
-            bottomBarShowing -> {
-                transition.doOnStart {
-                    binding.bottombar.infoVisible = infoVisible
-                }
-            }
+        TransitionManager.endTransitions(binding.container)
+        binding.bottombar.children.forEach {
+            it.clearAnimation()
         }
+
+        val transition = AutoTransition()
+        transition.addListener(object : TransitionListenerAdapter() {
+            override fun onTransitionEnd(transition: Transition) {
+                if (infoVisible.not()) binding.bottombar.infoVisible = infoVisible
+            }
+
+            override fun onTransitionStart(transition: Transition) {
+                if (infoVisible) binding.bottombar.infoVisible = infoVisible
+            }
+        })
 
         ConstraintSet().apply {
             clone(binding.container)

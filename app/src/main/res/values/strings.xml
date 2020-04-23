@@ -5,6 +5,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Retry</string>
+    <string name="button_delete">Delete</string>
     <string name="button_cancel">Cancel</string>
 
     <!-- Start -->
@@ -66,6 +67,7 @@
     <!-- Account -->
     <string name="account_full_name">Full name</string>
     <string name="account_id">Tiqr account id</string>
+    <string name="account_information">Information</string>
     <string name="account_activated">Account activated!</string>
 
     <!-- Authentication (Confirm) -->
@@ -81,8 +83,17 @@
     <string name="auth_summary_title">You have successfully logged in!</string>
     <string name="auth_summary_to">to:</string>
 
+    <!-- Identity -->
+    <string name="identity_title">Identities</string>
+    <string name="identity_blocked">Blocked</string>
+    <string name="identity_blocked_message">Warning: this account is blocked\nand needs to be reactivated.</string>
+    <string name="identity_delete_title">Are you sure?</string>
+    <string name="identity_delete_message">This account can no longer be used when deleted.</string>
+    <string name="identity_biometric_usage">Use biometry</string>
+    <string name="identity_biometric_upgrade">Upgrade to biometry usage</string>
+
+
 
 
     <string name="authentication_title">Login</string>
-    <string name="identity_title">Identities</string>
 </resources>

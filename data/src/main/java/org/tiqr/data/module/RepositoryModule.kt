@@ -35,6 +35,7 @@ import dagger.Provides
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
+import org.tiqr.data.repository.IdentityRepository
 import org.tiqr.data.repository.TokenRepository
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
@@ -65,6 +66,13 @@ internal object RepositoryModule {
             secret: SecretService,
             preferences: PreferenceService
     ) = EnrollmentRepository(api, resources, database, secret, preferences)
+
+    @Provides
+    @Singleton
+    internal fun provideIdentityRepository(
+            database: DatabaseService,
+            secret: SecretService
+    ) = IdentityRepository(database, secret)
 
     @Provides
     @Singleton

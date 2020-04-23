@@ -92,6 +92,12 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    internal fun provideImageOkHttpClientBuilder(
+            @BaseScope client: OkHttpClient
+    ): OkHttpClient.Builder = client.newBuilder()
+
+    @Provides
+    @Singleton
     @TokenScope
     internal fun provideTokenOkHttpClient(
             @BaseScope client: OkHttpClient,

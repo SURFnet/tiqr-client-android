@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,20 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.module
+package org.tiqr.data.model
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import dagger.Binds
-import dagger.Module
-import dagger.multibindings.IntoMap
-import org.tiqr.data.viewmodel.*
+import android.os.Parcelable
+import androidx.room.Embedded
+import androidx.room.Relation
+import kotlinx.android.parcel.Parcelize
 
 /**
- * Module which serves the viewmodels and its factory.
+ * [Identity] with its associated [IdentityProvider]
  */
-@Module
-interface ViewModelModule {
-    @Binds
-    fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(StartViewModel::class)
-    fun bindStartViewModel(startViewModel: StartViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ScanViewModel::class)
-    fun bindScanViewModel(scanViewModel: ScanViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(EnrollmentViewModel::class)
-    fun bindEnrollmentViewModel(enrollmentViewModel: EnrollmentViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(AuthenticationViewModel::class)
-    fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
-
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(IdentityViewModel::class)
-    fun bindIdentityViewModel(identityViewModel: IdentityViewModel): ViewModel
-}
+@Parcelize
+data class IdentityWithProvider(
+        @Embedded
+        val identity: Identity,
+        @Relation(parentColumn = "identityProvider", entityColumn = "_id")
+        val identityProvider: IdentityProvider
+) : Parcelable

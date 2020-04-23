@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Znovu</string>
+    <string name="button_delete">Odstrániť</string>
     <string name="button_cancel">Zrušiť</string>
 
     <!-- Start -->
@@ -66,6 +67,7 @@
     <!-- Account -->
     <string name="account_full_name">Celé meno</string>
     <string name="account_id">ID</string>
+    <string name="account_information">Informácie</string>
     <string name="account_activated">Účet aktivovaný!</string>
 
     <!-- Authentication (Confirm) -->
@@ -80,5 +82,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Prihlásenie úspešné!</string>
     <string name="auth_summary_to">k:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identity</string>
+    <string name="identity_blocked">Blokovaný</string>
+    <string name="identity_blocked_message">Upozornenie: tento účet je zablokovaný a musí byť znova aktivovaný.</string>
+    <string name="identity_delete_title">Si si istý?</string>
+    <string name="identity_delete_message">Tento účet už nie je možné po odstránení použiť.</string>
+    <string name="identity_biometric_usage">Použiť biometriu</string>
+    <string name="identity_biometric_upgrade">Inovácia na využitie biometrie</string>
 
 </resources>

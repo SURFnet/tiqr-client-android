@@ -80,7 +80,7 @@ class ScanComponent(
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
     private lateinit var cameraAnalysis: ImageAnalysis
-    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, viewFinderRatio, this@ScanComponent::onDetected)
+    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, viewFinderRatio, ::onDetected)
     //endregion
 
     //region Sound

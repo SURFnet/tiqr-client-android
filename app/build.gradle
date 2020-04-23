@@ -71,6 +71,8 @@ dependencies {
     implementation Libs.AndroidX.activity
     implementation Libs.AndroidX.core
     implementation Libs.AndroidX.browser
+    implementation Libs.AndroidX.biometric
+    implementation Libs.AndroidX.recyclerView
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
     implementation Libs.AndroidX.autofill
@@ -92,6 +94,7 @@ dependencies {
     kapt Libs.Dagger.compiler
 
     implementation Libs.Permission.kPermissions
+    implementation Libs.Image.coil
     implementation Libs.betterLink
 
     testImplementation Libs.Testing.jUnit

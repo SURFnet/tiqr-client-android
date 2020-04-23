@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">再び</string>
+    <string name="button_delete">削除</string>
     <string name="button_cancel">キャンセル</string>
 
     <!-- Start -->
@@ -64,6 +65,7 @@
     <!-- Account -->
     <string name="account_full_name">フルネーム</string>
     <string name="account_id">ID</string>
+    <string name="account_information">情報</string>
     <string name="account_activated">アカウントが有効化されました</string>
 
     <!-- Authentication (Confirm) -->
@@ -78,5 +80,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">ログインに成功しました！</string>
     <string name="auth_summary_to">ログイン先：</string>
+
+    <!-- Identity -->
+    <string name="identity_title">ID一覧</string>
+    <string name="identity_blocked">利用停止中</string>
+    <string name="identity_blocked_message">警告：このアカウントは利用停止中で、再有効化が必要です</string>
+    <string name="identity_delete_title">本気ですか？</string>
+    <string name="identity_delete_message">削除すると、このアカウントは使用できなくなります。</string>
+    <string name="identity_biometric_usage">バイオメトリを使用する</string>
+    <string name="identity_biometric_upgrade">バイオメトリ使用にアップグレード</string>
 
 </resources>

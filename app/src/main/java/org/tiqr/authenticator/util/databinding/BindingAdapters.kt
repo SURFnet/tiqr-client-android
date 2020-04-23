@@ -31,16 +31,24 @@ package org.tiqr.authenticator.util.databinding
 
 import android.annotation.SuppressLint
 import android.text.util.Linkify
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.text.parseAsHtml
 import androidx.databinding.BindingAdapter
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
+import org.tiqr.authenticator.widget.recyclerview.HeaderViewDecoration
+import org.tiqr.authenticator.widget.recyclerview.DividerDecoration
+import timber.log.Timber
 
 /**
  * Parse the string to html
@@ -59,10 +67,10 @@ fun TextView.htmlText(@StringRes html: Int) {
 }
 
 /**
- * Enable (or disable) clickable links
+ * Enable (or disable) clickable web links
  */
-@BindingAdapter(value = ["enableLinks"])
-fun TextView.enableLinks(enable: Boolean) {
+@BindingAdapter(value = ["linkifyWeb"])
+fun TextView.linkifyWeb(enable: Boolean) {
     if (enable) {
         BetterLinkMovementMethod
                 .linkify(Linkify.WEB_URLS, this)
@@ -71,6 +79,22 @@ fun TextView.enableLinks(enable: Boolean) {
                     true
                 }
     }
+}
+
+/**
+ * Set the [text] and linkify.
+ * Use this if text can change (or is null on initial bind).
+ */
+@BindingAdapter(value = ["linkifyWebWith"])
+fun TextView.linkifyWebWith(text: String?) {
+    setText(text)
+
+    BetterLinkMovementMethod
+            .linkify(Linkify.WEB_URLS, this)
+            .setOnLinkClickListener { _, url ->
+                findNavController().navigate(MainNavDirections.openBrowser(url))
+                true
+            }
 }
 
 /**
@@ -90,4 +114,43 @@ fun TextView.appName(appName: String) {
 fun View.openBrowser(url: String) {
     if (url.isEmpty()) return
     setOnClickListener(Navigation.createNavigateOnClickListener(MainNavDirections.openBrowser(url)))
+}
+
+/**
+ * Add dividers
+ */
+@BindingAdapter(value = ["dividers"])
+fun RecyclerView.dividers(enable: Boolean) {
+    if (enable) {
+        addItemDecoration(DividerDecoration(context))
+    }
+}
+
+/**
+ * Add a (non-interactive) header
+ */
+@BindingAdapter(value = ["header"])
+fun RecyclerView.header(@LayoutRes view: Int) {
+    LayoutInflater.from(context).inflate(view, null).apply {
+        addItemDecoration(HeaderViewDecoration(this))
+    }
+}
+
+/**
+ * Load the [url] into this [ImageView]
+ */
+@BindingAdapter(value = ["loadImage"])
+fun ImageView.loadImage(url: String?) {
+    load(url) {
+        crossfade(true)
+        listener(onError = { _, e -> Timber.e(e, "Error loading image from $url") })
+    }
+}
+
+/**
+ * Show or hide this [View]
+ */
+@BindingAdapter(value = ["showIf"])
+fun View.showIf(predicate: Boolean) {
+    visibility = if (predicate) View.VISIBLE else View.GONE
 }

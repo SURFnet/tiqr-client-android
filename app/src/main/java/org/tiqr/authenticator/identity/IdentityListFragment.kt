@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,76 +27,74 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.authenticator.start
+package org.tiqr.authenticator.identity
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
-import org.tiqr.authenticator.databinding.FragmentStartBinding
+import org.tiqr.authenticator.databinding.FragmentIdentityListBinding
 import org.tiqr.authenticator.util.extensions.doOnCameraPermission
-import org.tiqr.data.viewmodel.StartViewModel
-import timber.log.Timber
+import org.tiqr.data.model.IdentityWithProvider
+import org.tiqr.data.viewmodel.IdentityViewModel
 
 /**
- * Fragment to handle main screen and button to qr-scanner.
+ * Fragment to displays the list of identities.
  */
-@ExperimentalCoroutinesApi
-class StartFragment : BindingFragment<FragmentStartBinding>() {
-    private val viewModel by activityViewModels<StartViewModel> { component.viewModeFactory }
+class IdentityListFragment : BindingFragment<FragmentIdentityListBinding>() {
+    private val viewModel by navGraphViewModels<IdentityViewModel>(R.id.identity_nav) { factory }
+    private val listAdapter = IdentityListAdapter(::onItemClick, ::onItemDelete)
+
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     @LayoutRes
-    override val layout: Int = R.layout.fragment_start
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    override val layout = R.layout.fragment_identity_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = binding ?: return
+        binding.list.apply {
+            adapter = listAdapter
 
-        binding.viewModel = viewModel.apply {
-            identityCount.observe(viewLifecycleOwner) {
-                // rebuild options menu when count changes
-                requireActivity().invalidateOptionsMenu()
+            IdentityListAdapter.SwipeCallback(requireContext(), listAdapter) { viewHolder ->
+                itemTouchHelper.startSwipe(viewHolder)
+            }.run {
+                itemTouchHelper = ItemTouchHelper(this)
+                itemTouchHelper.attachToRecyclerView(this@apply)
             }
         }
 
-        binding.scanButton.setOnClickListener {
+        binding.add.setOnClickListener {
             requireActivity().doOnCameraPermission {
-                findNavController().navigate(StartFragmentDirections.actionScan())
+                findNavController().navigate(IdentityListFragmentDirections.actionIdentityAdd())
             }
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_identity, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.identity)?.apply {
-            isVisible = viewModel.hasIdentities
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.identity -> {
-                findNavController().navigate(StartFragmentDirections.actionIdentity())
-                true
+        viewModel.identities.observe(viewLifecycleOwner) { identities ->
+            if (identities.isNullOrEmpty()) {
+                findNavController().popBackStack()
             }
-            else -> super.onOptionsItemSelected(item)
+            listAdapter.submitList(identities)
         }
+    }
+
+    /**
+     * Handle the [item] selection
+     */
+    private fun onItemClick(item: IdentityWithProvider) {
+        findNavController().navigate(IdentityListFragmentDirections.actionIdentityDetail(item))
+    }
+
+    /**
+     * Handle the [item] deletion
+     */
+    private fun onItemDelete(item: IdentityWithProvider) {
+        viewModel.deleteIdentity(item.identity)
     }
 }

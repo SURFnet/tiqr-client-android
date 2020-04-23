@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="org.tiqr.data.model.IdentityWithProvider" />
+
+        <variable
+            name="hasBiometric"
+            type="boolean" />
+
+        <variable
+            name="hasBiometricSecret"
+            type="boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_padding">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.identityProvider.displayName}"
+            android:textAppearance="@style/AppTheme.TextAppearance.Title"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="&lt;identityprovider displayname&gt;" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.identityProvider.identifier}"
+            app:layout_constraintEnd_toStartOf="@+id/logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="&lt;identityprovider identifier&gt;" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_tiqr_small"
+            app:layout_constraintBottom_toBottomOf="@+id/subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:loadImage="@{model.identityProvider.logo}"
+            tools:ignore="ContentDescription" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/table"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="label_name, name, label_id, id, label_info, info,
+                                            label_biometric, biometric,
+                                            label_biometric_upgrade, biometric_upgrade, blocked"
+            app:flow_horizontalGap="4dp"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_maxElementsWrap="2"
+            app:flow_verticalGap="4dp"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/label_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:labelFor="@id/name"
+            android:paddingVertical="6dp"
+            android:text="@string/account_full_name"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHeight_default="spread"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:gravity="end"
+            android:paddingVertical="6dp"
+            android:text="@{model.identity.displayName}"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintWidth_default="spread"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            tools:text="&lt;identity displayname&gt;" />
+
+        <TextView
+            android:id="@+id/label_id"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:labelFor="@id/id"
+            android:paddingVertical="6dp"
+            android:text="@string/account_id"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHeight_default="spread"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:gravity="end"
+            android:paddingVertical="6dp"
+            android:text="@{model.identity.identifier}"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintWidth_default="spread"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            tools:text="&lt;identity identifier&gt;" />
+
+        <TextView
+            android:id="@+id/label_info"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:labelFor="@id/info"
+            android:paddingVertical="6dp"
+            android:text="@string/account_information"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHeight_default="spread"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:gravity="end"
+            android:paddingVertical="6dp"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintWidth_default="spread"
+            app:linkifyWebWith="@{model.identityProvider.infoUrl}"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            tools:text="&lt;identityprovider url&gt;"
+            tools:textColor="@color/linkColor" />
+
+        <TextView
+            android:id="@+id/label_biometric"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:labelFor="@id/biometric"
+            android:paddingVertical="6dp"
+            android:text="@string/identity_biometric_usage"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintWidth_default="spread"
+            app:showIf="@{hasBiometric &amp;&amp; (model.identity.biometricInUse || hasBiometricSecret)}"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/biometric"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:checked="@{model.identity.biometricInUse}"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_default="spread"
+            app:showIf="@{hasBiometric &amp;&amp; (model.identity.biometricInUse || hasBiometricSecret)}"
+            app:useMaterialThemeColors="false"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/label_biometric_upgrade"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:labelFor="@id/biometric_upgrade"
+            android:paddingVertical="6dp"
+            android:text="@string/identity_biometric_upgrade"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintWidth_default="spread"
+            app:showIf="@{hasBiometric &amp;&amp; !model.identity.biometricInUse}"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/biometric_upgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:checked="@{model.identity.biometricOfferUpgrade}"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_default="spread"
+            app:showIf="@{hasBiometric &amp;&amp; !model.identity.biometricInUse}"
+            app:useMaterialThemeColors="false"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/blocked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:breakStrategy="balanced"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:text="@string/identity_blocked_message"
+            android:textAppearance="@style/AppTheme.TextAppearance.Error"
+            app:showIf="@{model.identity.blocked}"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete"
+            style="@style/AppTheme.Button.Red"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_delete"
+            android:theme="@style/AppTheme.Button.Red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_button"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintWidth_percent=".5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/button_container_height" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

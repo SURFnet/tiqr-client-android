@@ -47,6 +47,8 @@ object Libs {
         const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
         const val core = "androidx.core:core-ktx:1.2.0"
         const val browser = "androidx.browser:browser:1.2.0"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+        const val biometric = "androidx.biometric:biometric:1.0.1"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
         const val autofill = "androidx.autofill:autofill:1.0.0"
@@ -114,6 +116,7 @@ object Libs {
     object Moshi {
         private const val version = "1.9.2"
         const val moshi = "com.squareup.moshi:moshi:$version"
+        const val adapters = "com.squareup.moshi:moshi-adapters:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
 
@@ -134,6 +137,10 @@ object Libs {
 
     object Permission {
         const val kPermissions = "com.github.fondesa:kpermissions:2.0.2"
+    }
+
+    object Image {
+        const val coil = "io.coil-kt:coil:0.10.0"
     }
 
     const val betterLink = "me.saket:better-link-movement-method:2.2.0"

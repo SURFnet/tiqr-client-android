@@ -36,7 +36,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.transaction
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
-
 import timber.log.Timber
 
 @Database(entities = [Identity::class, IdentityProvider::class], version = 9, exportSchema = true)

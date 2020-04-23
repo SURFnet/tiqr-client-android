@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Spet</string>
+    <string name="button_delete">Izbriši</string>
     <string name="button_cancel">Prekliči</string>
 
     <!-- Start -->
@@ -65,6 +66,7 @@
     <!-- Account -->
     <string name="account_full_name">Ime in priimek</string>
     <string name="account_id">ID</string>
+    <string name="account_information">Informacije</string>
     <string name="account_activated">Račun aktiviran!</string>
 
     <!-- Authentication (Confirm) -->
@@ -79,5 +81,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Prijava je uspela!</string>
     <string name="auth_summary_to">za:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identitete</string>
+    <string name="identity_blocked">Blokiran</string>
+    <string name="identity_blocked_message">Pozor: ta račun je blokiran. Potrebno ga je ponovno aktivirati.</string>
+    <string name="identity_delete_title">Ali si prepričan?</string>
+    <string name="identity_delete_message">Ko je izbrisan, tega računa ni več mogoče uporabljati.</string>
+    <string name="identity_biometric_usage">Uporabi biometrijo</string>
+    <string name="identity_biometric_upgrade">Nadgradnja na uporabo biometrije</string>
 
 </resources>

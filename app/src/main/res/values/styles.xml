@@ -16,10 +16,12 @@
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
         <item name="colorSecondary">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorError">@color/errorColor</item>
         <item name="android:colorBackground">@color/grey_50</item>
 
         <item name="android:autofilledHighlight" tools:ignore="NewApi">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorLink">@color/linkColor</item>
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
     </style>
 
@@ -30,10 +32,28 @@
         <item name="backgroundTint">@color/white</item>
     </style>
 
+    <style name="AppTheme.Button.Red">
+        <item name="backgroundTint">?attr/colorError</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
     <!-- TextAppearance -->
     <style name="AppTheme.TextAppearance" parent="TextAppearance.MaterialComponents.Body2" />
 
+    <style name="AppTheme.TextAppearance.Label">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Error">
+        <item name="android:textColor">?attr/colorError</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="AppTheme.TextAppearance.Main" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="AppTheme.TextAppearance.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="AppTheme.TextAppearance.About" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textStyle">bold</item>

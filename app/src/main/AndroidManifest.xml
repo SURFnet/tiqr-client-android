@@ -4,6 +4,7 @@
     tools:ignore="UnusedAttribute"
     package="org.tiqr.authenticator">
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Permissions for QR code scanning -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
