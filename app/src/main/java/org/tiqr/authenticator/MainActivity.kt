@@ -69,8 +69,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             setSupportActionBar(binding.toolbar)
             setupActionBarWithNavController(this,
                     AppBarConfiguration.Builder(
-                            // TODO: add other destinations which should hide toolbar back button
-                            setOf(R.id.start, R.id.enrollment_summary)
+                            setOf(R.id.start, R.id.enrollment_summary, R.id.authentication_summary)
                     ).build()
             )
             supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -92,7 +91,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
         when (destination.id) { // Toggle FLAG_SECURE
             R.id.enrollment_pin,
-            R.id.enrollment_pin_verify -> window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            R.id.enrollment_pin_verify,
+            R.id.authentication_pin -> window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
             else -> window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         }
 

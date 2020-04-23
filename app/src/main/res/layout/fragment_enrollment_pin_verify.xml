@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/enroll_pin_verify_title"
-            android:textStyle="bold" />
+            android:textAppearance="@style/AppTheme.TextAppearance.Title" />
 
         <TextView
             android:id="@+id/description"
