@@ -34,6 +34,8 @@ import dagger.BindsInstance
 import dagger.Component
 import org.tiqr.authenticator.TiqrApplication
 import org.tiqr.data.module.DataModule
+import org.tiqr.data.viewmodel.AuthenticationViewModel
+import org.tiqr.data.viewmodel.EnrollmentViewModel
 import org.tiqr.data.viewmodel.ViewModelFactory
 import javax.inject.Singleton
 
@@ -43,6 +45,9 @@ interface TiqrComponent {
     fun inject(application: TiqrApplication)
 
     val viewModeFactory: ViewModelFactory
+
+    val enrollmentViewModelFactory: EnrollmentViewModel.Factory
+    val authenticationViewModelFactory: AuthenticationViewModel.Factory
 
     @Component.Factory
     interface Builder {

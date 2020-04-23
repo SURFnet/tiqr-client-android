@@ -175,13 +175,13 @@ class EnrollmentRepository(
     /**
      * Complete the [challenge] and store the Identity.
      */
-    override suspend fun completeEnrollmentChallenge(challenge: EnrollmentChallenge, password: String): ChallengeCompleteResult<ChallengeCompleteFailure> {
+    override suspend fun completeChallenge(request: ChallengeCompleteRequest<EnrollmentChallenge>): ChallengeCompleteResult<ChallengeCompleteFailure> {
         return try {
             val secret = secretService.encryption.randomSecretKey()
 
             // Perform API call and return result
             api.enroll(
-                    url = challenge.enrollmentUrl,
+                    url = request.challenge.enrollmentUrl,
                     secret = secret.encoded.toHexString(),
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
@@ -222,7 +222,7 @@ class EnrollmentRepository(
                     }
 
                     // Insert the IdentityProvider first
-                    val identityProviderId = database.insertIdentityProvider(challenge.identityProvider)
+                    val identityProviderId = database.insertIdentityProvider(request.challenge.identityProvider)
                     if (identityProviderId == -1L) {
                         Timber.e("Error completing enrollment, saving identity provider failed")
                         return EnrollmentCompleteFailure(
@@ -233,7 +233,7 @@ class EnrollmentRepository(
                         }
                     }
                     // Then insert the Identity using the id from above
-                    val identityId = database.insertIdentity(challenge.identity.copy(identityProvider = identityProviderId))
+                    val identityId = database.insertIdentity(request.challenge.identity.copy(identityProvider = identityProviderId))
                     if (identityId == -1L) {
                         Timber.e("Error completing enrollment, saving identity failed")
                         return EnrollmentCompleteFailure(
@@ -244,10 +244,10 @@ class EnrollmentRepository(
                         }
                     }
                     // Copy identity with inserted id's
-                    val identity = challenge.identity.copy(id = identityId, identityProvider = identityProviderId)
+                    val identity = request.challenge.identity.copy(id = identityId, identityProvider = identityProviderId)
 
                     // Save secrets
-                    val sessionKey = secretService.encryption.keyFromPassword(password)
+                    val sessionKey = secretService.encryption.keyFromPassword(request.password)
                     secretService.createSecret(identity, secret)
                     secretService.save(identity, sessionKey)
 

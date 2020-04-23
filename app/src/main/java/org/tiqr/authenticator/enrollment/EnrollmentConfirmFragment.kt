@@ -38,14 +38,17 @@ import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentConfirmBinding
+import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.viewmodel.EnrollmentViewModel
 
 /**
  * Fragment to review and confirm the enrollment
  */
 class EnrollmentConfirmFragment : BindingFragment<FragmentEnrollmentConfirmBinding>() {
-    private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) { factory }
     private val args by navArgs<EnrollmentConfirmFragmentArgs>()
+    private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) {
+        component.challengeViewModel(args.challenge)
+    }
 
     @LayoutRes
     override val layout = R.layout.fragment_enrollment_confirm
@@ -56,7 +59,6 @@ class EnrollmentConfirmFragment : BindingFragment<FragmentEnrollmentConfirmBindi
         val binding = binding ?: return
         with(viewModel) {
             binding.viewModel = this
-            setChallenge(args.challenge)
         }
 
         binding.buttonCancel.setOnClickListener {

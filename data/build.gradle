@@ -74,6 +74,9 @@ dependencies {
     api Libs.Dagger.dagger
     kapt Libs.Dagger.compiler
 
+    implementation Libs.Assisted.inject
+    kapt Libs.Assisted.compiler
+
     api Libs.OkHttp.okhttp
     api Libs.OkHttp.logging
 

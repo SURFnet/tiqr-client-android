@@ -130,6 +130,12 @@ object Libs {
         const val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
     }
 
+    object Assisted {
+        private const val version = "0.5.2"
+        const val inject = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
+        const val compiler = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
+    }
+
     object Timber {
         private const val version = "4.7.1"
         const val timber = "com.jakewharton.timber:timber:$version"

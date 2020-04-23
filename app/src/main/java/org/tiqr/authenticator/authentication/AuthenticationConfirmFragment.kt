@@ -38,14 +38,17 @@ import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
+import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
  * Fragment to review and confirm the authentication
  */
 class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfirmBinding>() {
-    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
     private val args by navArgs<AuthenticationConfirmFragmentArgs>()
+    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) {
+        component.challengeViewModel(args.challenge)
+    }
 
     @LayoutRes
     override val layout = R.layout.fragment_authentication_confirm
@@ -56,7 +59,6 @@ class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfi
         val binding = binding ?: return
         with(viewModel) {
             binding.viewModel = this
-            setChallenge(args.challenge)
         }
 
         binding.buttonCancel.setOnClickListener {

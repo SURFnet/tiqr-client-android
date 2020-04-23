@@ -31,6 +31,7 @@ package org.tiqr.data.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -39,34 +40,24 @@ import org.tiqr.data.viewmodel.*
 /**
  * Module which serves the viewmodels and its factory.
  */
-@Module
-interface ViewModelModule {
+@AssistedModule
+@Module(includes = [AssistedInject_ViewModelModule::class])
+abstract class ViewModelModule {
     @Binds
-    fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(StartViewModel::class)
-    fun bindStartViewModel(startViewModel: StartViewModel): ViewModel
+    abstract fun bindStartViewModel(startViewModel: StartViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ScanViewModel::class)
-    fun bindScanViewModel(scanViewModel: ScanViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(EnrollmentViewModel::class)
-    fun bindEnrollmentViewModel(enrollmentViewModel: EnrollmentViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(AuthenticationViewModel::class)
-    fun bindAuthenticationViewModel(authenticationViewModel: AuthenticationViewModel): ViewModel
-
+    abstract fun bindScanViewModel(scanViewModel: ScanViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(IdentityViewModel::class)
-    fun bindIdentityViewModel(identityViewModel: IdentityViewModel): ViewModel
+    abstract fun bindIdentityViewModel(identityViewModel: IdentityViewModel): ViewModel
 }

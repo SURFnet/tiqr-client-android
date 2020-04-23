@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,45 +27,27 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.viewmodel
+package org.tiqr.authenticator.util.extensions
 
-import androidx.lifecycle.*
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import org.tiqr.authenticator.di.TiqrComponent
 import org.tiqr.data.model.AuthenticationChallenge
-import org.tiqr.data.model.AuthenticationCompleteRequest
-import org.tiqr.data.model.ChallengeCompleteFailure
-import org.tiqr.data.model.ChallengeCompleteResult
-import org.tiqr.data.repository.AuthenticationRepository
-import org.tiqr.data.service.SecretService
-import javax.inject.Inject
+import org.tiqr.data.model.Challenge
+import org.tiqr.data.model.EnrollmentChallenge
 
 /**
- * ViewModel for Authentication
+ * Create a viewModel for [challenge].
  */
-class AuthenticationViewModel @AssistedInject constructor(
-        @Assisted override val challenge: AuthenticationChallenge,
-        override val repository: AuthenticationRepository
-) : ChallengeViewModel<AuthenticationChallenge, AuthenticationRepository>() {
-    private val authenticationComplete = MutableLiveData<AuthenticationCompleteRequest<AuthenticationChallenge>>()
-    val authenticate = authenticationComplete.switchMap {
-        liveData {
-            emit(repository.completeChallenge(it))
+fun <C : Challenge> TiqrComponent.challengeViewModel(challenge: C) : ViewModelProvider.Factory {
+    return object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return when (challenge) {
+                is AuthenticationChallenge -> authenticationViewModelFactory.create(challenge) as T
+                is EnrollmentChallenge -> enrollmentViewModelFactory.create(challenge) as T
+                else -> throw IllegalArgumentException("Sealed class should not require an else block")
+            }
         }
-    }
-
-    /**
-     * Perform authenticate
-     */
-    fun authenticate(password: String, type: SecretService.Type = SecretService.Type.PIN_CODE) {
-        authenticationComplete.value = AuthenticationCompleteRequest(challenge, password, type)
-    }
-
-    /**
-     * Factory to inject the [challenge] at runtime
-     */
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(challenge: AuthenticationChallenge): AuthenticationViewModel
     }
 }
