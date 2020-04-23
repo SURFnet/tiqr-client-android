@@ -1,6 +1,7 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.3.71"
+private const val kotlinVersion = "1.3.72"
+private const val navigationVersion = "2.3.0-alpha05"
 
 object Versions {
     // Android
@@ -16,14 +17,14 @@ object Versions {
 
 object Plugins {
     private val gradleAndroidVersion
-        get() = Properties.gradleAndroidPluginVersion ?: "3.6.1"
+        get() = Properties.gradleAndroidPluginVersion ?: "3.6.3"
 
     val android = "com.android.tools.build:gradle:$gradleAndroidVersion"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val googleServices = "com.google.gms:google-services:4.3.3"
 
     object Navigation {
-        const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0-alpha03"
+        const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
 
@@ -68,18 +69,17 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "2.3.0-alpha04"
-            const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val ui = "androidx.navigation:navigation-ui-ktx:$version"
+            const val fragment = "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+            const val ui = "androidx.navigation:navigation-ui-ktx:$navigationVersion"
         }
 
         object Camera {
-            private const val version = "1.0.0-beta02"
+            private const val version = "1.0.0-beta03"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha09"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha09"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha10"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha10"
         }
     }
 

@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
-        versionCode 18 // TODO: check latest version and bump
+        versionCode 21 // TODO: check latest version and bump
         versionName "4.0.0"  // TODO: check versions, probably 4.0.0
 
         minSdkVersion Versions.minSdkVersion

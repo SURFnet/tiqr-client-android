@@ -43,4 +43,5 @@ Thumbs.db
 *.iml
 # whitelist copyright
 !.idea/copyright/
-
+# whitelist dictionaries
+!.idea/dictionaries/
