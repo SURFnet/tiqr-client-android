@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- TODO: check excludes -->
-    <!-- Exclude all shared preferences -->
-    <exclude domain="sharedpref" path="."/>
-
+    <include domain="sharedpref"/>
+    <!-- Exclude notification token shared pref -->
+    <exclude domain="sharedpref" path="org.tiqr.authenticator:preferences.xml"/>
 </full-backup-content>

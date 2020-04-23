@@ -41,6 +41,7 @@ class PreferenceService(private val context: Context) {
     companion object {
         private const val PREFERENCE_SETTINGS = ":preferences"
         private const val PREFERENCE_SECURITY = ":settings"
+        private const val PREFERENCE_VERSION = ":version"
 
         private const val PREFS_KEY_VERSION = "version"
         private const val PREFS_KEY_TOKEN = "notification_token"
@@ -52,19 +53,7 @@ class PreferenceService(private val context: Context) {
 
     private val settingsSharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SETTINGS, Context.MODE_PRIVATE)
     private val securitySharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SECURITY, Context.MODE_PRIVATE)
-
-    private var prefsVersion: Int?
-        get() {
-            val current = settingsSharedPreferences.getInt(PREFS_KEY_VERSION, 0)
-            return if (current > 0) current else null
-        }
-        set(value) {
-            value?.let {
-                settingsSharedPreferences.edit {
-                    putInt(PREFS_KEY_VERSION, it)
-                }
-            }
-        }
+    private val versionSharedPreference = context.getSharedPreferences(context.packageName + PREFERENCE_VERSION, Context.MODE_PRIVATE)
 
     var notificationToken: String?
         get() = settingsSharedPreferences.getString(PREFS_KEY_TOKEN, null)
@@ -78,6 +67,19 @@ class PreferenceService(private val context: Context) {
         get() = securitySharedPreferences.getString(PREFS_KEY_DEVICE_KEY, null)
         set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_DEVICE_KEY, value) }
 
+    private var prefsVersion: Int?
+        get() {
+            val current = versionSharedPreference.getInt(PREFS_KEY_VERSION, 0)
+            return if (current > 0) current else null
+        }
+        set(value) {
+            value?.let {
+                versionSharedPreference.edit {
+                    putInt(PREFS_KEY_VERSION, it)
+                }
+            }
+        }
+
     init {
         // Run the migration(s) as soon as this gets initialized
         migratePreference()
@@ -87,13 +89,14 @@ class PreferenceService(private val context: Context) {
     /**
      * Migrate old shared preference to new structure.
      */
-    fun migratePreference() {
+    private fun migratePreference() {
         val currentVersion = prefsVersion
         if (currentVersion == null || currentVersion < PREFERENCE_CURRENT_VERSION) {
             Timber.d("Migration needed for preferences")
             migratePreferencesToV2()
         } else {
-            Timber.d("No migration needed for preferences")
+            Timber.d("No migration needed for preferences, but try to cleanup dangling files")
+            cleanupOldFiles()
         }
     }
 
@@ -115,8 +118,9 @@ class PreferenceService(private val context: Context) {
                     }
                 }
 
-                oldFile.delete()
                 Timber.d("Preference file %s migrated", oldFile.name)
+                val deleteResult = oldFile.delete()
+                Timber.d("Preference file deleted $deleteResult")
             }
         }
 
@@ -146,15 +150,39 @@ class PreferenceService(private val context: Context) {
                     }
                 }
 
-                oldFile.delete()
                 Timber.d("Preference file %s migrated", oldFile.name)
+                val deleteResult = oldFile.delete()
+                Timber.d("Preference file deleted $deleteResult")
             }
         }
 
         migrateSetting()
         migrateSecurity()
 
+        cleanupOldFiles()
+
         prefsVersion = 2
+    }
+
+    /**
+     * Cleanup the old dangling files.
+     */
+    private fun cleanupOldFiles() {
+        fun deleteFile(file: File) {
+            if (file.exists()) {
+                val name = file.name
+                val deleteResult = file.delete()
+                Timber.d("File $name deleted: $deleteResult")
+            }
+        }
+
+        // Migrated preference files
+        listOf(
+                File("${context.filesDir.parent}/shared_prefs/SA_PREFS.xml"),
+                File("${context.filesDir.parent}/shared_prefs/securitySettings.xml")
+        ).forEach {
+            deleteFile(it)
+        }
     }
     //endregion
 }
