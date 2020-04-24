@@ -42,7 +42,6 @@ import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinVerifyBinding
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.EnrollmentViewModel
-import timber.log.Timber
 
 /**
  * Fragment to confirm the PIN for the enrollment
@@ -77,7 +76,7 @@ class EnrollmentPinVerifyFragment : BindingFragment<FragmentEnrollmentPinVerifyB
             }
         }
 
-        viewModel.enroll.observe(viewLifecycleOwner) {
+        viewModel.enrollment.observe(viewLifecycleOwner) {
             when(it) {
                 ChallengeCompleteResult.Success -> {
                     findNavController().navigate(EnrollmentPinVerifyFragmentDirections.actionSummary())

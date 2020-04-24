@@ -131,27 +131,32 @@ class AuthenticationRepository(
         }
     }
 
-    /**
-     * Complete the [challenge].
-     */
-    override suspend fun completeAuthenticationChallenge(challenge: AuthenticationChallenge, password: String, type: SecretService.Type): ChallengeCompleteResult<ChallengeCompleteFailure> {
+    override suspend fun completeChallenge(request: ChallengeCompleteRequest<AuthenticationChallenge>): ChallengeCompleteResult<ChallengeCompleteFailure> {
+        if (request !is AuthenticationCompleteRequest) {
+            return ChallengeCompleteResult.failure(AuthenticationCompleteFailure(
+                    reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                    title = resources.getString(R.string.error_auth_title),
+                    message = resources.getString(R.string.error_auth_invalid_response)
+            ))
+        }
+
         try {
             val secret: SecretKey = secretService.getSecret(
-                    identity = challenge.identity,
-                    sessionKey = secretService.encryption.keyFromPassword(password)
+                    identity = request.challenge.identity,
+                    sessionKey = secretService.encryption.keyFromPassword(request.password)
             )
 
             val otp: String = Ocra.generate(
-                    suite = challenge.identityProvider.ocraSuite,
+                    suite = request.challenge.identityProvider.ocraSuite,
                     key = secret.encoded,
-                    question = challenge.challenge,
-                    session = challenge.sessionKey
+                    question = request.challenge.challenge,
+                    session = request.challenge.sessionKey
             )
 
             api.authenticate(
-                    url = challenge.identityProvider.authenticationUrl,
-                    sessionKey = challenge.sessionKey,
-                    userId = challenge.identity.identifier,
+                    url = request.challenge.identityProvider.authenticationUrl,
+                    sessionKey = request.challenge.sessionKey,
+                    userId = request.challenge.identity.identifier,
                     response = otp,
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
@@ -185,7 +190,7 @@ class AuthenticationRepository(
                             val remainingAttempts = result.attemptsLeft ?: 0
                             when {
                                 remainingAttempts > 1 -> {
-                                    if (type == SecretService.Type.BIOMETRIC) {
+                                    if (request.type == SecretService.Type.BIOMETRIC) {
                                         AuthenticationCompleteFailure(
                                                 AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
                                                 title = resources.getString(R.string.error_auth_title_biometric),
@@ -202,7 +207,7 @@ class AuthenticationRepository(
                                     }
                                 }
                                 remainingAttempts == 1 -> {
-                                    if (type == SecretService.Type.BIOMETRIC) {
+                                    if (request.type == SecretService.Type.BIOMETRIC) {
                                         AuthenticationCompleteFailure(
                                                 AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
                                                 title = resources.getString(R.string.error_auth_title_biometric),

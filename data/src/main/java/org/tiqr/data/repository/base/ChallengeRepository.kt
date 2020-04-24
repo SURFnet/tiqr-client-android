@@ -30,7 +30,6 @@
 package org.tiqr.data.repository.base
 
 import org.tiqr.data.model.*
-import org.tiqr.data.service.SecretService
 
 /**
  * Base Repository for handling [Challenge]'s
@@ -52,19 +51,7 @@ abstract class ChallengeRepository<T: Challenge> {
     abstract suspend fun parseChallenge(rawChallenge: String): ChallengeParseResult<T, ChallengeParseFailure>
 
     /**
-     * Complete the enrollment challenge
+     * Complete the challenge.
      */
-    open suspend fun completeEnrollmentChallenge(
-            challenge: T,
-            password: String
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
-
-    /**
-     * Complete the authentication challenge
-     */
-    open suspend fun completeAuthenticationChallenge(
-            challenge: T,
-            password: String,
-            type: SecretService.Type
-    ): ChallengeCompleteResult<ChallengeCompleteFailure> = throw NotImplementedError()
+    abstract suspend fun completeChallenge(request: ChallengeCompleteRequest<T>) : ChallengeCompleteResult<ChallengeCompleteFailure>
 }

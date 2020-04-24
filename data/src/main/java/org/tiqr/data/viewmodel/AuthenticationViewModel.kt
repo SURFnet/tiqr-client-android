@@ -29,12 +29,11 @@
 
 package org.tiqr.data.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.*
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.AuthenticationCompleteRequest
 import org.tiqr.data.model.ChallengeCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.repository.AuthenticationRepository
@@ -44,25 +43,29 @@ import javax.inject.Inject
 /**
  * ViewModel for Authentication
  */
-class AuthenticationViewModel @Inject constructor(private val repository: AuthenticationRepository): ViewModel() {
-    private val _challenge = MutableLiveData<AuthenticationChallenge>()
-    val challenge: LiveData<AuthenticationChallenge> = _challenge
-
-    private val _authenticate = MutableLiveData<ChallengeCompleteResult<ChallengeCompleteFailure>>()
-    val authenticate: LiveData<ChallengeCompleteResult<ChallengeCompleteFailure>> = _authenticate
-
-    /**
-     * Set the [AuthenticationChallenge] to be used in this viewmodel.
-     */
-    fun setChallenge(challenge: AuthenticationChallenge) {
-        _challenge.value = challenge
+class AuthenticationViewModel @AssistedInject constructor(
+        @Assisted override val challenge: AuthenticationChallenge,
+        override val repository: AuthenticationRepository
+) : ChallengeViewModel<AuthenticationChallenge, AuthenticationRepository>() {
+    private val authenticationComplete = MutableLiveData<AuthenticationCompleteRequest<AuthenticationChallenge>>()
+    val authenticate = authenticationComplete.switchMap {
+        liveData {
+            emit(repository.completeChallenge(it))
+        }
     }
 
+    /**
+     * Perform authenticate
+     */
     fun authenticate(password: String, type: SecretService.Type = SecretService.Type.PIN_CODE) {
-        viewModelScope.launch {
-            challenge.value?.let {
-                _authenticate.value = repository.completeAuthenticationChallenge(it, password, type)
-            }
-        }
+        authenticationComplete.value = AuthenticationCompleteRequest(challenge, password, type)
+    }
+
+    /**
+     * Factory to inject the [challenge] at runtime
+     */
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(challenge: AuthenticationChallenge): AuthenticationViewModel
     }
 }

@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Igjen</string>
+    <string name="button_delete">Slett</string>
     <string name="button_cancel">Annuller</string>
 
     <!-- Start -->
@@ -67,6 +68,7 @@
     <!-- Account -->
     <string name="account_full_name">Fullt navn</string>
     <string name="account_id">ID</string>
+    <string name="account_information">Informasjon</string>
     <string name="account_activated">Konto er aktivert!</string>
 
     <!-- Authentication (Confirm) -->
@@ -81,5 +83,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Du er pålogget!</string>
     <string name="auth_summary_to">til:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identiteter</string>
+    <string name="identity_blocked">Blokkert</string>
+    <string name="identity_blocked_message">Advarsel: konto er blokkert og må reaktiveres.</string>
+    <string name="identity_delete_title">Er du sikker?</string>
+    <string name="identity_delete_message">Denne kontoen kan ikke lenger brukes når den blir slettet.</string>
+    <string name="identity_biometric_usage">Bruk biometri</string>
+    <string name="identity_biometric_upgrade">Oppgradering til bruk av biometri</string>
 
 </resources>

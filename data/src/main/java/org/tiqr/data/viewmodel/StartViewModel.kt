@@ -32,6 +32,7 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import org.tiqr.data.R
@@ -56,7 +57,7 @@ class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
      * Current number of identities.
      */
     @ExperimentalCoroutinesApi
-    val identityCount: LiveData<Int> = _identityCount.asLiveData()
+    val identityCount: LiveData<Int> = _identityCount.asLiveData(viewModelScope.coroutineContext)
 
     /**
      * Are there any identities?
@@ -79,5 +80,5 @@ class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
             }
             .onStart { emit(value = R.string.start_welcome) }
             .catch { emit(value = R.string.start_welcome) }
-            .asLiveData()
+            .asLiveData(viewModelScope.coroutineContext)
 }

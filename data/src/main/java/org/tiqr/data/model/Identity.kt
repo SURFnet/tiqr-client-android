@@ -38,17 +38,16 @@ import kotlinx.android.parcel.Parcelize
  */
 @Entity(tableName = "identity",
         indices = [
-                Index(value = ["_id"], name = "id_idx", unique = true),
-                Index(value = ["identityProvider"], name = "identity_provider_idx"),
-                Index(value = ["identifier"], name = "identifier_idx")
+                Index(value = ["_id"], name = "index_identity__id", unique = true),
+                Index(value = ["identifier"], name = "index_identity_identifier"),
+                Index(value = ["identityProvider"], name = "index_identity_identityProvider")
         ],
         foreignKeys = [
                 ForeignKey(
                     entity = IdentityProvider::class,
                     childColumns = ["identityProvider"],
                     parentColumns = ["_id"],
-                    onDelete = ForeignKey.CASCADE,
-                    deferred = true
+                    onDelete = ForeignKey.CASCADE
                 )
         ]
 )
@@ -58,24 +57,24 @@ data class Identity(
         @ColumnInfo(name = "_id")
         val id: Long = 0L,
 
-        @ColumnInfo(name = "identifier")
-        val identifier: String,
-
         @ColumnInfo(name = "displayName")
         val displayName: String,
 
-        @ColumnInfo(name = "sortIndex")
-        val sortIndex: Int = 0,
-
-        @ColumnInfo(name = "blocked")
-        val blocked: Boolean = false,
+        @ColumnInfo(name = "identifier")
+        val identifier: String,
 
         @ColumnInfo(name = "identityProvider")
         val identityProvider: Long = -1L,
 
-        @ColumnInfo(name = "showFingerPrintUpgrade")
-        val showFingerPrintUpgrade: Boolean = true,
+        @ColumnInfo(name = "blocked", defaultValue = "0")
+        val blocked: Boolean = false,
 
-        @ColumnInfo(name = "useFingerPrint")
-        val useFingerPrint: Boolean = false // TODO: rename to biometric
+        @ColumnInfo(name = "sortIndex")
+        val sortIndex: Int = 0,
+
+        @ColumnInfo(name = "biometricInUse", defaultValue = "0")
+        val biometricInUse: Boolean = false,
+
+        @ColumnInfo(name = "biometricOfferUpgrade", defaultValue = "1")
+        val biometricOfferUpgrade: Boolean = true
 ) : Parcelable

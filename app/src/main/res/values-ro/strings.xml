@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Din nou</string>
+    <string name="button_delete">Sterge</string>
     <string name="button_cancel">Anuleaza</string>
 
     <!-- Start -->
@@ -67,6 +68,7 @@
     <!-- Account -->
     <string name="account_full_name">Numele complet</string>
     <string name="account_id">ID</string>
+    <string name="account_information">Informatie</string>
     <string name="account_activated">Cont activat!</string>
 
     <!-- Authentication (Confirm) -->
@@ -81,5 +83,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">V-ati autentificat corect!</string>
     <string name="auth_summary_to">catre:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identitati</string>
+    <string name="identity_blocked">Blocat</string>
+    <string name="identity_blocked_message">Avertisment: acest cont este blocat si necesita reactivare.</string>
+    <string name="identity_delete_title">Esti sigur?</string>
+    <string name="identity_delete_message">Acest cont nu mai poate fi utilizat atunci când este șters.</string>
+    <string name="identity_biometric_usage">Utilizați biometrie</string>
+    <string name="identity_biometric_upgrade">Actualizare la utilizarea biometriei</string>
 
 </resources>

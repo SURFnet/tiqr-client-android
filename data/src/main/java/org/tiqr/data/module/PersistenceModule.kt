@@ -50,7 +50,8 @@ internal object PersistenceModule {
                     .addMigrations(
                             TiqrDatabase.FROM_4_TO_5,
                             TiqrDatabase.FROM_5_TO_7,
-                            TiqrDatabase.FROM_7_TO_8
+                            TiqrDatabase.FROM_7_TO_8,
+                            TiqrDatabase.FROM_8_TO_9
                     )
                     .build()
 

@@ -11,9 +11,6 @@ android {
     buildToolsVersion Versions.buildToolsVersion
 
     defaultConfig {
-        versionCode 1
-        versionName "1.0"
-
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
 
@@ -77,6 +74,9 @@ dependencies {
     api Libs.Dagger.dagger
     kapt Libs.Dagger.compiler
 
+    implementation Libs.Assisted.inject
+    kapt Libs.Assisted.compiler
+
     api Libs.OkHttp.okhttp
     api Libs.OkHttp.logging
 
@@ -89,6 +89,7 @@ dependencies {
 
     api Libs.AndroidX.Room.runtime
     implementation Libs.AndroidX.Room.ktx
+    implementation Libs.AndroidX.Room.sqlite
     kapt Libs.AndroidX.Room.compiler
 
     api Libs.Timber.timber

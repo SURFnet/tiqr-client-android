@@ -1,6 +1,7 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.3.71"
+private const val kotlinVersion = "1.3.72"
+private const val navigationVersion = "2.3.0-alpha05"
 
 object Versions {
     // Android
@@ -16,14 +17,14 @@ object Versions {
 
 object Plugins {
     private val gradleAndroidVersion
-        get() = Properties.gradleAndroidPluginVersion ?: "3.6.1"
+        get() = Properties.gradleAndroidPluginVersion ?: "3.6.3"
 
     val android = "com.android.tools.build:gradle:$gradleAndroidVersion"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val googleServices = "com.google.gms:google-services:4.3.3"
 
     object Navigation {
-        const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0-alpha03"
+        const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }
 }
 
@@ -46,6 +47,8 @@ object Libs {
         const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
         const val core = "androidx.core:core-ktx:1.2.0"
         const val browser = "androidx.browser:browser:1.2.0"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+        const val biometric = "androidx.biometric:biometric:1.0.1"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
         const val autofill = "androidx.autofill:autofill:1.0.0"
@@ -55,6 +58,7 @@ object Libs {
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
+            const val sqlite = "androidx.sqlite:sqlite-ktx:2.1.0"
         }
 
         object Lifecycle {
@@ -67,18 +71,17 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "2.3.0-alpha04"
-            const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val ui = "androidx.navigation:navigation-ui-ktx:$version"
+            const val fragment = "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+            const val ui = "androidx.navigation:navigation-ui-ktx:$navigationVersion"
         }
 
         object Camera {
-            private const val version = "1.0.0-beta02"
+            private const val version = "1.0.0-beta03"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha09"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha09"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha10"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha10"
         }
     }
 
@@ -113,6 +116,7 @@ object Libs {
     object Moshi {
         private const val version = "1.9.2"
         const val moshi = "com.squareup.moshi:moshi:$version"
+        const val adapters = "com.squareup.moshi:moshi-adapters:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
 
@@ -126,6 +130,12 @@ object Libs {
         const val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
     }
 
+    object Assisted {
+        private const val version = "0.5.2"
+        const val inject = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
+        const val compiler = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
+    }
+
     object Timber {
         private const val version = "4.7.1"
         const val timber = "com.jakewharton.timber:timber:$version"
@@ -133,6 +143,10 @@ object Libs {
 
     object Permission {
         const val kPermissions = "com.github.fondesa:kpermissions:2.0.2"
+    }
+
+    object Image {
+        const val coil = "io.coil-kt:coil:0.10.0"
     }
 
     const val betterLink = "me.saket:better-link-movement-method:2.2.0"

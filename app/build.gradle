@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
-        versionCode 18 // TODO: check latest version and bump
+        versionCode 21 // TODO: check latest version and bump
         versionName "4.0.0"  // TODO: check versions, probably 4.0.0
 
         minSdkVersion Versions.minSdkVersion
@@ -71,6 +71,8 @@ dependencies {
     implementation Libs.AndroidX.activity
     implementation Libs.AndroidX.core
     implementation Libs.AndroidX.browser
+    implementation Libs.AndroidX.biometric
+    implementation Libs.AndroidX.recyclerView
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
     implementation Libs.AndroidX.autofill
@@ -92,6 +94,7 @@ dependencies {
     kapt Libs.Dagger.compiler
 
     implementation Libs.Permission.kPermissions
+    implementation Libs.Image.coil
     implementation Libs.betterLink
 
     testImplementation Libs.Testing.jUnit

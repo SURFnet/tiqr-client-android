@@ -93,8 +93,7 @@ class StartFragment : BindingFragment<FragmentStartBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.identity -> {
-                Timber.i("Identities clicked")
-                // TODO: open IdentityList
+                findNavController().navigate(StartFragmentDirections.actionIdentity())
                 true
             }
             else -> super.onOptionsItemSelected(item)

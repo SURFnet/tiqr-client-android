@@ -34,6 +34,7 @@ import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.database.TiqrDatabase
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
+import org.tiqr.data.model.IdentityWithProvider
 
 /**
  * Service to interact with the database.
@@ -71,6 +72,16 @@ class DatabaseService(private val dao: TiqrDao) {
     suspend fun insertIdentity(identity: Identity): Long = dao.insertIdentity(identity)
 
     /**
+     * Update the [identity].
+     */
+    suspend fun updateIdentity(identity: Identity) = dao.updateIdentity(identity)
+
+    /**
+     * Delete the [identity].
+     */
+    suspend fun deleteIdentity(identity: Identity) = dao.deleteIdentity(identity)
+
+    /**
      * Check if all identities are blocked.
      */
     fun allIdentitiesBlocked(): Flow<Boolean> = dao.allIdentitiesBlocked()
@@ -102,4 +113,14 @@ class DatabaseService(private val dao: TiqrDao) {
      */
     suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long = dao.insertIdentityProvider(identityProvider)
     //endregion
+
+    /**
+     * Get all identities with the associated provider
+     */
+    fun getIdentitiesWithProviders(): Flow<List<IdentityWithProvider>> = dao.identitiesWithProvider()
+
+    /**
+     * Get the identity with the associated provider for given identifier
+     */
+    fun getIdentityWithProvider(identifier: String): Flow<IdentityWithProvider?> = dao.identityWithProvider(identifier)
 }

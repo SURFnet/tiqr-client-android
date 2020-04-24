@@ -58,18 +58,16 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
 
     private val secrets = SimpleArrayMap<String, SecretKey>()
 
-    enum class Type {
-        PIN_CODE,
-        BIOMETRIC
+    enum class Type(val key: String) {
+        PIN_CODE(key = "org.tiqr.authentication.pincode"),
+        BIOMETRIC(key = "org.tiqr.authentication.fingerprint")
     }
-
-    // TODO: check access modifiers
 
     /**
      * Create a new secret and add it to the [secrets] collection.
      * Only to be used for enrollment.
      */
-    fun createSecret(identity: Identity, secret: SecretKey, type: Type = Type.PIN_CODE) {
+    internal fun createSecret(identity: Identity, secret: SecretKey, type: Type = Type.PIN_CODE) {
         addSecret(identity.toId(type), secret)
     }
 
@@ -86,14 +84,14 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
      * @throws InvalidKeyException when key cannot be found
      * @throws SecurityFeaturesException when upgrading to new key fails
      */
-    fun getSecret(identity: Identity, type: Type = Type.PIN_CODE, sessionKey: SecretKey): SecretKey {
+    internal fun getSecret(identity: Identity, type: Type = Type.PIN_CODE, sessionKey: SecretKey): SecretKey {
         return secrets[identity.toId(type)] ?: load(identity, type, sessionKey)
     }
 
     /**
      * Save the key
      */
-    fun save(identity: Identity, sessionKey: SecretKey, type: Type = Type.PIN_CODE) {
+    internal fun save(identity: Identity, sessionKey: SecretKey, type: Type = Type.PIN_CODE) {
         val secret = getSecret(identity, type, sessionKey)
         val civ = encryption.encrypt(secret.encoded, sessionKey)
         store.setSecretKey(identity.toId(type), civ, encryption.deviceKey())
@@ -162,6 +160,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
                         }
                     }
                 }
+                //FIXME: 'KeyStore integrity check failed' when using data from older versions.
             }
         }
 
@@ -186,7 +185,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        fun getSecretKey(identity: String, sessionKey: SecretKey): CipherPayload? {
+        internal fun getSecretKey(identity: String, sessionKey: SecretKey): CipherPayload? {
             var ctEntry: KeyStore.SecretKeyEntry?
             var ivEntry: KeyStore.SecretKeyEntry?
             var migrateKeys = false
@@ -218,7 +217,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        fun setSecretKey(identity: String, payload: CipherPayload, sessionKey: SecretKey) {
+        internal fun setSecretKey(identity: String, payload: CipherPayload, sessionKey: SecretKey) {
             val ctEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.cipherText, "RAW"))
             val ivEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.iv, "RAW"))
 
@@ -302,7 +301,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         /**
          * Generate a random byte
          */
-        internal fun randomBytes(size: Int = 20): ByteArray = ByteArray(size).also { random.nextBytes(it) }
+        private fun randomBytes(size: Int = 20): ByteArray = ByteArray(size).also { random.nextBytes(it) }
 
         /**
          * Generate a random secret key
@@ -312,12 +311,12 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         /**
          * Generate a random key
          */
-        internal fun randomKey(): Key = generator.generateKey()
+        private fun randomKey(): Key = generator.generateKey()
 
         /**
          * Generate a Initialisation Vector
          */
-        internal fun generateIv(): ByteArray = randomBytes(IV_LENGTH)
+        private fun generateIv(): ByteArray = randomBytes(IV_LENGTH)
 
         /**
          * Encrypt a plaintext using the method defined in [CIPHER_TRANSFORMATION]

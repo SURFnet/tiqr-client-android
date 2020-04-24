@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enroll_confirm_title"
-            android:textStyle="bold"
+            android:textAppearance="@style/AppTheme.TextAppearance.Title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,39 +37,41 @@
             android:id="@+id/details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="13dp"
             android:text="@string/enroll_confirm_details"
             android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle" />
+            app:layout_constraintBottom_toTopOf="@id/table"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/table"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
-            app:constraint_referenced_ids="label_name, name, label_id, id"
+            app:constraint_referenced_ids="label_name, name, label_id, id, spacer, label_domain, domain"
             app:flow_horizontalGap="4dp"
             app:flow_horizontalStyle="spread_inside"
             app:flow_maxElementsWrap="2"
+            app:flow_verticalGap="4dp"
             app:flow_verticalStyle="packed"
             app:flow_wrapMode="chain"
             app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toTopOf="@id/label_name"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/details"
-            app:layout_constraintVertical_bias="0"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_bias="0" />
 
         <TextView
             android:id="@+id/label_name"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="@string/account_full_name"
-            android:textStyle="bold"
-            app:layout_constraintHeight_default="spread"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
             app:layout_constrainedWidth="true"
+            app:layout_constraintHeight_default="spread"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -89,9 +91,9 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="@string/account_id"
-            android:textStyle="bold"
-            app:layout_constraintHeight_default="spread"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
             app:layout_constrainedWidth="true"
+            app:layout_constraintHeight_default="spread"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -100,29 +102,32 @@
             android:layout_height="wrap_content"
             android:breakStrategy="balanced"
             android:gravity="end"
-            android:text="@{viewModel.challenge.identityProvider.displayName}"
+            android:text="@{viewModel.challenge.identity.identifier}"
             app:layout_constraintHeight_default="spread"
             app:layout_constraintWidth_default="spread"
             tools:ignore="MissingConstraints,UnusedAttribute"
-            tools:text="&lt;identity provider display name&gt;" />
+            tools:text="&lt;identity identifier&gt;" />
+
+        <Space
+            android:id="@+id/spacer"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/label_domain"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="@string/enroll_confirm_domain"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/table" />
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/domain"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.challenge.enrollmentHost}"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_domain"
+            android:textAppearance="@style/AppTheme.TextAppearance.Label"
+            tools:ignore="MissingConstraints"
             tools:text="&lt;enrollment url domain&gt;" />
 
         <com.google.android.material.button.MaterialButton

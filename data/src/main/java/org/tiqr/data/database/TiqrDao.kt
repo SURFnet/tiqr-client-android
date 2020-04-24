@@ -29,16 +29,24 @@
 
 package org.tiqr.data.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
+import org.tiqr.data.model.IdentityWithProvider
 
 @Dao
 interface TiqrDao {
     //region Identity
+    @Insert
+    suspend fun insertIdentity(identity: Identity): Long
+
+    @Update
+    suspend fun updateIdentity(identity: Identity)
+
+    @Delete
+    suspend fun deleteIdentity(identity: Identity)
+
     @Query(value = "SELECT * FROM identity ORDER BY sortIndex;")
     suspend fun getIdentities(): List<Identity>
 
@@ -73,6 +81,9 @@ interface TiqrDao {
     //endregion
 
     //region IdentityProvider
+    @Insert
+    suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long
+
     @Query("SELECT * FROM identityprovider")
     fun getIdentityProviders(): Flow<List<IdentityProvider>>
 
@@ -83,9 +94,11 @@ interface TiqrDao {
     suspend fun getIdentityProvider(identifier: String): IdentityProvider?
     //endregion
 
-    @Insert
-    suspend fun insertIdentity(identity: Identity): Long
+    @Transaction
+    @Query(value = "SELECT * FROM identity")
+    fun identitiesWithProvider(): Flow<List<IdentityWithProvider>>
 
-    @Insert
-    suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long
+    @Transaction
+    @Query(value = "SELECT * FROM identity WHERE identifier = :identifier")
+    fun identityWithProvider(identifier: String): Flow<IdentityWithProvider?>
 }

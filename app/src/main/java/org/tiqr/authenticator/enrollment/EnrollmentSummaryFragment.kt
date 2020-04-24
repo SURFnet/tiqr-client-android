@@ -32,7 +32,6 @@ package org.tiqr.authenticator.enrollment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R

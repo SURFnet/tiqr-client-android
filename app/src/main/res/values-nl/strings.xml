@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">OK</string>
     <string name="button_retry">Nogmaals</string>
+    <string name="button_delete">Verwijder</string>
     <string name="button_cancel">Annuleren</string>
 
     <!-- Start -->
@@ -67,6 +68,7 @@
     <!-- Account -->
     <string name="account_full_name">Volledige naam</string>
     <string name="account_id">ID</string>
+    <string name="account_information">Informatie</string>
     <string name="account_activated">Je account is geactiveerd!</string>
 
     <!-- Authentication (Confirm) -->
@@ -81,5 +83,15 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Inloggen geslaagd!</string>
     <string name="auth_summary_to">voor:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Accounts</string>
+    <string name="identity_blocked">Geblokkeerd</string>
+    <string name="identity_blocked_message">Waarschuwing: dit account is geblokkeerd\nen moet opnieuw geactiveerd worden.</string>
+    <string name="identity_delete_title">Weet u het zeker?</string>
+    <string name="identity_delete_message">Dit account kan niet meer gebruikt worden nadat deze verwijderd is.</string>
+    <string name="identity_biometric_usage">Gebruik biometrie</string>
+    <string name="identity_biometric_upgrade">Upgrade naar biometriegebruik</string>
+
 
 </resources>

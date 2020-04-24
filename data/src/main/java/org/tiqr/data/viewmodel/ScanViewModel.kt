@@ -30,14 +30,11 @@
 package org.tiqr.data.viewmodel
 
 import android.content.res.Resources
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import org.tiqr.data.R
-import org.tiqr.data.model.Challenge
-import org.tiqr.data.model.ChallengeParseFailure
 import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.ParseFailure
 import org.tiqr.data.repository.AuthenticationRepository
@@ -51,16 +48,11 @@ class ScanViewModel @Inject constructor(
         private val resources: Resources,
         private val enroll: EnrollmentRepository,
         private val auth: AuthenticationRepository
-): ViewModel() {
-    private val _challenge = MutableLiveData<ChallengeParseResult<Challenge, ChallengeParseFailure>>()
-    val challenge : LiveData<ChallengeParseResult<Challenge, ChallengeParseFailure>> = _challenge
-
-    /**
-     * Parse the [rawChallenge] and send the result to [_challenge]
-     */
-    fun parseChallenge(rawChallenge: String) {
-        viewModelScope.launch {
-            _challenge.value = when {
+) : ViewModel() {
+    private val rawChallengeObserver = MutableLiveData<String>()
+    val challenge = rawChallengeObserver.switchMap { rawChallenge ->
+        liveData {
+            when {
                 enroll.isValidChallenge(rawChallenge) -> enroll.parseChallenge(rawChallenge)
                 auth.isValidChallenge(rawChallenge) -> auth.parseChallenge(rawChallenge)
                 else ->
@@ -70,7 +62,16 @@ class ScanViewModel @Inject constructor(
                                     message = resources.getString(R.string.error_qr_unknown)
                             )
                     )
+            }.run {
+                emit(this)
             }
         }
+    }
+
+    /**
+     * Parse the [rawChallenge]
+     */
+    fun parseChallenge(rawChallenge: String) {
+        rawChallengeObserver.value = rawChallenge
     }
 }

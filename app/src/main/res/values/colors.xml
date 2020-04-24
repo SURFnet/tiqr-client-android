@@ -5,6 +5,9 @@
     <color name="primaryDarkColor">#788d00</color>
     <color name="primaryTextColor">#000000</color>
 
+    <color name="linkColor">#0288D1</color>
+    <color name="errorColor">#F44336</color>
+
     <color name="white">#FFFFFF</color>
     <color name="grey_50">#FAFAFA</color>
 </resources>

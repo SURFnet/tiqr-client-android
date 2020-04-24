@@ -3,6 +3,7 @@
     <!-- General buttons -->
     <string name="button_ok">Taip</string>
     <string name="button_retry">Vėl</string>
+    <string name="button_delete">Ištrinti</string>
     <string name="button_cancel">Atšaukti</string>
 
     <!-- Start -->
@@ -63,6 +64,7 @@
     <!-- Account -->
     <string name="account_full_name">Vardas Pavardė</string>
     <string name="account_id">Tiqr paskyros id</string>
+    <string name="account_information">Informacija</string>
     <string name="account_activated">Paskyra aktyvuota!</string>
 
     <!-- Authentication (Confirm) -->
@@ -77,5 +79,14 @@
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Jūs sėkmingai prisijugėte!</string>
     <string name="auth_summary_to">iki:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Tapatybės</string>
+    <string name="identity_blocked">Užblokuota</string>
+    <string name="identity_blocked_message">Įspėjimas: paskyra yra užblokuota, turite ją aktyvuoti iš naujo.</string>
+    <string name="identity_delete_title">Ar tikrai norite ištrinti?</string>
+    <string name="identity_delete_message">Ištrynus paskyrą, ja naudotis nebegalėsite.</string>
+    <string name="identity_biometric_usage">Naudokite biometriją</string>
+    <string name="identity_biometric_upgrade">Atnaujinkite į biometrijos naudojimą</string>
 
 </resources>
