@@ -6,17 +6,7 @@ tiqr client for Android
 
 To create a release build intented to be released on the play store, follow these steps:
 1. Bump the app version
-2. Set enviroment variables:
-
-Environment variables for the Android SDK
-```bash
-export ANDROID_HOME=~/Library/Android/sdk
-export PATH=$ANDROID_HOME/platform-tools:$PATH
-export PATH=$ANDROID_HOME/tools:$PATH
-export PATH=$ANDROID_HOME/build-tools/29.0.3/:$PATH
-```
-*Note: change `build-tools` to the (latest) version installed*
-
+2. Set environment variables:
 
 Environment variables for Fastlane
 ```bash
