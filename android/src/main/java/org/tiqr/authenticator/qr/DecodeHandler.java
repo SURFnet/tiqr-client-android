@@ -29,6 +29,7 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.journeyapps.barcodescanner.MixedDecoder;
 
 import org.tiqr.authenticator.R;
 
@@ -41,12 +42,13 @@ final class DecodeHandler extends Handler {
     private static final String TAG = DecodeHandler.class.getSimpleName();
 
     private final CaptureActivity activity;
-    private final MultiFormatReader multiFormatReader;
+    private final MixedDecoder mixedDecoder;
     private boolean running = true;
 
     DecodeHandler(CaptureActivity activity, Map<DecodeHintType,Object> hints) {
-        multiFormatReader = new MultiFormatReader();
+        MultiFormatReader multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
+        mixedDecoder = new MixedDecoder(multiFormatReader);
         this.activity = activity;
     }
 
@@ -79,14 +81,7 @@ final class DecodeHandler extends Handler {
         Result rawResult = null;
         PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
         if (source != null) {
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-            try {
-                rawResult = multiFormatReader.decodeWithState(bitmap);
-            } catch (ReaderException re) {
-                // continue
-            } finally {
-                multiFormatReader.reset();
-            }
+            rawResult = mixedDecoder.decode(source);
         }
 
         Handler handler = activity.getHandler();
