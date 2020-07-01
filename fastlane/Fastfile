@@ -13,8 +13,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-require 'fileutils'
-
 default_platform(:android)
 
 platform :android do
@@ -40,8 +38,8 @@ platform :android do
     )
 
     copy_artifacts(
-      artifacts: [Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], File.absolute_path "../app/build/outputs/mapping/release/mapping.txt"],
-      target_path: File.absolute_path "../distribution/"
+      artifacts: [Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], File.absolute_path("../app/build/outputs/mapping/release/mapping.txt")],
+      target_path: File.absolute_path("../distribution/")
     )
   end
 end
