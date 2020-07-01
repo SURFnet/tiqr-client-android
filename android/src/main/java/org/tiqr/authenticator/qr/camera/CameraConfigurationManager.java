@@ -139,7 +139,7 @@ final class CameraConfigurationManager {
         CameraConfigurationUtils.setFocus(
                 parameters,
                 true,
-                true,
+                false,
                 safeMode);
 
         if (!safeMode) {
@@ -147,6 +147,10 @@ final class CameraConfigurationManager {
             CameraConfigurationUtils.setVideoStabilization(parameters);
             CameraConfigurationUtils.setFocusArea(parameters);
             CameraConfigurationUtils.setMetering(parameters);
+
+            //SetRecordingHint to true also a workaround for low framerate on Nexus 4
+            //https://stackoverflow.com/questions/14131900/extreme-camera-lag-on-nexus-4
+            parameters.setRecordingHint(true);
         }
 
         parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
@@ -190,9 +194,9 @@ final class CameraConfigurationManager {
             Camera.Parameters parameters = camera.getParameters();
             if (parameters != null) {
                 String flashMode = parameters.getFlashMode();
-                return flashMode != null &&
-                        (Camera.Parameters.FLASH_MODE_ON.equals(flashMode) ||
-                                Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode));
+                return
+                        Camera.Parameters.FLASH_MODE_ON.equals(flashMode) ||
+                        Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode);
             }
         }
         return false;

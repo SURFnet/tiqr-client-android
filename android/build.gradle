@@ -50,7 +50,7 @@ dependencies {
 
     implementation project(':shared')
 
-    implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 }
 
 configurations.all {
