@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">tiqr</string>
+    <string name="scan_button">Skan</string>
+    <string name="authentication_title">Log ind</string>
+    <string name="identity_title">Identiteter</string>
+    <string name="identity_blocked">Spærret</string>
+    <string name="identity_blocked_message">Advarsel: Kontoen her er spærret\nog skal genaktiveres.</string>
+    <string name="confirm_enrollment_title">Bekræft oprettelse</string>
+    <string name="confirm_authentication_title">Bekræft indlogning</string>
+    <string name="select_identity_title">Vælg identitet</string>
+    <string name="about_title">Om tiqr</string>
+    <string name="authentication_confirm_button">OK</string>
+    <string name="authentication_fallback_button">OK</string>
+    <string name="authentication_failure_title">Indlogning slog fejl</string>
+    <string name="authentication_success_title">Indlogning lykkedes</string>
+    <string name="authentication_success_message" formatted="false">Du er blevet logget ind som %s på %s</string>
+    <string name="account_ready">Din konto er klar til brug</string>
+    <string name="account_activated">Konto aktiveret!</string>
+    <string name="enrollment_confirm_button">OK</string>
+    <string name="enrollment_cancel_button">Fortryd</string>
+    <string name="enter_the_following">Angiv følgende:</string>
+    <string name="full_name">Fulde navn</string>
+    <string name="id">ID</string>
+    <string name="tiqr_id">tiqr-konto-ID</string>
+    <string name="information">Oplysninger</string>
+    <string name="information_with_host">Oplysninger (%s)</string>
+    <string name="cancel_button">Fortryd</string>
+    <string name="ok_button">OK</string>
+    <string name="retry_button">Prøv igen</string>
+    <string name="delete_button">Slet</string>
+    <string name="delete_confirm_title">Er du sikker?</string>
+    <string name="delete_confirm">Kontoen her kan altså ikke bruges længere hvis den slettes.</string>
+    <string name="identifier_label">Bruger-ID:</string>
+    <string name="fallback_identifier_label">Dit ID er:</string>
+    <string name="note_pin_not_verified_title">Bemærk: Din PIN-kode er ikke blevet bekræftet endnu.</string>
+    <string name="note_pin_not_verified">Hvis du ikke får adgang med akkreditiverne herover, skal du skanne på ny og angive den rigtige PIN-kode.</string>
+    <string name="otp_label">Engangskode:</string>
+    <string name="return_button">Retur</string>
+    <string name="unknown">Ukendt</string>
+    <string name="unknown_error">Ukendt fejl</string>
+    <string name="no_identities">Du har ingen konto endnu\n\nOpret en ved at vælge <b>menu</b>.</string>
+    <string name="to_service_provider">til:</string>
+    <string name="for_identity_provider">For:</string>
+    <string name="confirm_authentication">Sikker på du vil logge ind?</string>
+    <string name="you_will_be_logged_in_as">Du vil blive logget ind som:</string>
+    <string name="to_login_as">For at logge ind som:</string>
+    <string name="menu_enroll_label">Tilføj identitet</string>
+    <string name="main_title_welcome">Velkommen til tiqr</string>
+    <string name="main_title_instructions">Vejledning</string>
+    <string name="main_title_blocked">tiqr er spærret</string>
+    <string name="confirm_account_activation">Bekræft kontoaktivering</string>
+    <string name="activate_following_account">Vil du aktivere kontoen herunder?</string>
+    <string name="enroll_account_details">Kontooplysninger</string>
+    <string name="enroll_following_domain">Vil du oprette en konto til domænet her:</string>
+    <string name="menu_enroll_shortcut">a</string>
+    <string name="menu_rearrange_label">Organiser</string>
+    <string name="menu_rearrange_shortcut">r</string>
+    <string name="menu_delete_label">Slet</string>
+    <string name="menu_delete_shortcut">d</string>
+    <string name="password_label">PIN-kode: </string>
+    <string name="password_verify_label">PIN-kode (til bekræftelse): </string>
+    <string name="verification_label">Bekræftelse:</string>
+    <string name="login_title">Log ind</string>
+    <string name="login_pin_title">Angiv din PIN-kode til tiqr</string>
+    <string name="entroll_pin_title">Vælg en unik PIN-kode til tiqr</string>
+    <string name="entroll_pin_verify_title">Bekræft den unikke PIN-kode</string>
+    <string name="login_intro">Angiv PIN-koden og tryk <b>OK</b></string>
+    <string name="login_verify_intro">Gentag PIN-koden og tryk <b>OK</b></string>
+    <string name="remember_pincode_notice">Glem ikke den her PIN-kode; den kan ikke ændres!</string>
+    <string name="successfully_logged_in">Din indlogning lykkedes!</string>
+    <string name="loggedin_with_account">Du er logget ind med den her konto:</string>
+    <string name="choose_password_title">Vælg en PIN-kode</string>
+    <string name="choose_password_intro">Vælg en PIN-kode at beskytte den her identitet med.</string>
+    <string name="passwords_dont_match_title">PIN-koderne er forskellige</string>
+    <string name="passwords_dont_match">De angivne PIN-koder er forskellige. Prøv igen.\nVælge en PIN-kode du kan huske.</string>
+    <string name="password_incorrect">Forkert PIN.</string>
+    <string name="enrolling">Opretter</string>
+    <string name="authenticating">Logger ind</string>
+    <string name="provided_by_title">tiqr leveres af:</string>
+    <string name="developed_by_title">Udviklet af:</string>
+    <string name="powered_by_title">Støttet af:</string>
+    <string name="interaction_by_title">Interaktionsdesign:</string>
+    <string name="acknowledgements_title">Tak til:</string>
+    <string name="acknowledgements">ZXing -<a href="http://code.google.com/p/zxing/">http://code.google.com/p/zxing/</a>\n\nGlyphish -<a href="http://glyphish.com">http://glyphish.com</a></string>
+    <string name="msg_default_status">Før rektanglet hen over en QR-kode for at skanne den.</string>
+    <string name="authentication_confirmation_title">Sikker på du vil logge ind?</string>
+    <string name="authentication_confirmation_description">Du bliver logget ind som:</string>
+    <string name="authentication_pincode_title">Log ind</string>
+    <string name="authentication_fallback_title">Det ser ud til du er offline</string>
+    <string name="authentication_fallback_description">Bare rolig! Klik på QR-koden på\nwebsitet. Du vil blive bedt om at angive\nfølgende engangsakkreditiver:</string>
+    <string name="error_auth_invalid_qr_code">QR-koden dur ikke til indlogning.</string>
+    <string name="error_auth_unknown_identity_provider">Ukendt identitetsudbyder. Opret først konto.</string>
+    <string name="error_auth_unknown_identity">Tjenesten kender ikke den identitet. Opret først konto.</string>
+    <string name="error_auth_no_identities_for_identity_provider">Ingen konti for den identitetsudbyder. Opret først konto.</string>
+    <string name="error_auth_invalid_key">Kan ikke logge ind. Ugyldig nøgle.</string>
+    <string name="error_auth_invalid_challenge">Kan ikke logge ind. Ugyldig challenge.</string>
+    <string name="error_auth_unknown_error">Der skete en ukendt fejl. Kontakt supporten.</string>
+    <string name="error_auth_invalid_request">Ugyldig autentifikationsforespørgsel. Kontakt supporten.</string>
+    <string name="error_auth_invalid_response">Ugyldigt autentifikationssvar. Forkert PIN-kode? Prøv igen.</string>
+    <string name="error_auth_invalid_userid">Ukendt eller ugyldig bruger.</string>
+    <string name="error_auth_invalid_account">Ugyldig konto</string>
+    <string name="error_auth_invalid_account_message">Du forsøgte at logge ind med en ugyldig eller ukendt konto. Aktiver først din konto (på ny).</string>
+    <string name="error_auth_account_blocked_title">Konto spærret</string>
+    <string name="error_auth_account_blocked_message">Kontoen her kan ikke længere bruges.</string>
+    <string name="error_auth_account_blocked_temporary_title">Kontoen her er midlertidigt spærret.</string>
+    <string name="error_auth_account_blocked_temporary_message">Kontoen her er spærret i %d minutter.</string>
+    <string name="error_auth_invalid_challenge_title">Ugyldig challenge</string>
+    <string name="error_auth_invalid_challenge_message">Den skannede QR-kode er ugyldig eller udløbet. Prøv igen.</string>
+    <string name="error_auth_invalid_request_title">Ugyldig forespørgsel</string>
+    <string name="error_auth_invalid_request_message">Serveren anerkender ikke autentifikationsforespørgslen. Kontakt supporten.</string>
+    <string name="error_auth_wrong_pin">Forkert PIN</string>
+    <string name="error_auth_infinite_attempts_left">Du har angivet en forkert PIN-kode. Angiv din PIN-kode igen. Tjek bekræftelsesikonen for det sidste ciffer.</string>
+    <string name="error_auth_x_attempts_left" formatted="false">Du har angivet en forkert PIN-kode. Du har %d forsøg tilbage. Angiv din PIN-kode igen. Tjek bekræftelsesikonen for det sidste ciffer.</string>
+    <string name="error_auth_one_attempt_left">Du har ét sidste forsøg. Hvis du en gang til angiver en forkert PIN-kode, vil samtlige konti her på enheden blive spærret.</string>
+    <string name="error_auth_server_incompatible">Serveren fungerer ikke sammen med den her udgave af tiqr.</string>
+    <string name="enrollment_confirmation_header_title">Kontoaktivering</string>
+    <string name="enrollment_confirmation_title">Bekræft aktivering af konto</string>
+    <string name="enrollment_confirmation_description">Vil du aktivere kontoen herunder?</string>
+    <string name="enrollment_success_title">Oprettelse gennemført</string>
+    <string name="enrollment_success_message" formatted="false">Du er nu blevet oprettet som %s ved %s</string>
+    <string name="enrollment_failure_title">Oprettelse slog fejl</string>
+    <string name="enrollment_failure_message">Der skete en fejl under oprettelsen</string>
+    <string name="error_enroll_invalid_qr_code">QR-koden dur ikke til oprettelse.</string>
+    <string name="error_enroll_connect_error">Kan ikke få forbindelse til oprettelsesserver. Kontakt websitets administrator.</string>
+    <string name="error_enroll_invalid_response">Ugyldigt svar fra oprettelsesserver. Kontakt websitets administrator.</string>
+    <string name="error_enroll_logo_error">Kan ikke hente tjenestelogo. Kontakt websitets administrator.</string>
+    <string name="error_enroll_already_enrolled" formatted="false">Du er allerede blevet oprettet med identiteten %s ved tjenesten %s.</string>
+    <string name="error_enroll_failed_to_store_identity_provider">Kunne ikke gemme identitetsudbyder. Kontakt supporten.</string>
+    <string name="error_enroll_failed_to_store_identity">Kunne ikke gemme identiteten. Kontakt supporten.</string>
+    <string name="error_enroll_failed_to_generate_secret">Kunne ikke danne identitetshemmelighed. Kontakt supporten.</string>
+    <string name="error_device_incompatible_with_security_standards">Enheden her opfylder ikke sikkerhedskravene.</string>
+    <string name="provided_by">leveret af:</string>
+    <string name="main_text_welcome"><Data><![CDATA[<b>Brug tiqr på din smartphone til at logge ind nemt og sikkert.</b> <br />
+<br />
+Registrer din nye tiqr-konto og følg aktiveringsvejledningen.<br />
+<br />
+Tryk på <b>Skan</b> når du bliver bedt om det.</html> ]]> </Data></string>
+    <string name="main_text_instructions"><Data><![CDATA[<b>Brug tiqr på din smartphone til at logge ind</b> <br />
+    <br />
+    1. Tryk på <b>Skan</b> og skan QR-koden på websitet. <br />
+    <br />
+    <i>Mere end ét ID? Vælg det relevante ID.</i> <br />
+    <br />
+    2. Skan dit fingeraftryk eller angiv din PIN-kode til tiqr og tryk <b>OK</b> <br />
+    <br />
+    3. Du er logget ind!]]> </Data></string>
+    <string name="main_text_blocked"><b>Now what?</b>
+<br />
+Bed din identitetsudbyder om en ny aktiveringskode. Find et link til din identitetsudbyder under dine identiteter (øverste højre hjørne). <br />
+<br />
+Sammen med din nye aktiveringskode får du vejledning i genaktivering af din konto. Tryk på <b>Skan</b> hvis du bliver bedt om det.</string>
+    <string name="upgrade_to_touch_id_title">Opgrader konto</string>
+    <string name="upgrade_to_touch_id_message">Vil du logge ind på den her konto med fingeraftryk i stedet for med PIN-kode?</string>
+    <string name="upgrade_button">Opgrader</string>
+    <string name="fingerprint_intro">Bekræft fingeraftryk for at fortsætte</string>
+    <string name="touch_sensor">Fingeraftrykslæser</string>
+    <string name="error_auth_wrong_fingerprint">Forkert fingeraftryk</string>
+    <string name="error_fingerprint_auth_x_attempts_left" formatted="false">Du skannede et forkert fingeraftryk. Du har %d forsøg tilbage. Skan dit fingeraftryk igen.</string>
+    <string name="error_fingerprint_auth_one_attempt_left">Du har ét sidste forsøg tilbage. Hvis du en gang til skanner et forkert fingeraftryk, vil samtlige konti her på enheden blive spærret.</string>
+    <string name="notification_channel_name">Meddelelser</string>
+    <string name="notification_channel_description">Underretninger om meddelelser fra tiqr</string>
+    <string name="use_pincode">Brug PIN-kode</string>
+    <string name="identity_uses_fingerprint">Bruger fingeraftryk</string>
+    <string name="identity_upgrade_to_fingerprint">Opgrader til fingeraftryk efter næste indlogning</string>
+    <string name="error_show_technical_details">Vis tekniske detaljer</string>
+    <string name="error_browser_not_available">Der skal installeres en browser før URL\'en her kan åbnes.</string>
+</resources>
