@@ -38,7 +38,7 @@ dependencies {
 
     // Dependency injection
     implementation "com.google.dagger:dagger:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     api 'com.google.zxing:core:3.4.0'
 
