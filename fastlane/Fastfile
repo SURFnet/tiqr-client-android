@@ -37,9 +37,13 @@ platform :android do
       }
     )
 
+    artifacts = []
+    artifacts << lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    artifacts << lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH] if lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
+
     copy_artifacts(
-      artifacts: [Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], [Actions.lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]]],
-      target_path: File.absolute_path("../distribution/")
+        target_path: File.absolute_path("../distribution/"),
+        artifacts: artifacts
     )
   end
 end
