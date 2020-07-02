@@ -38,7 +38,7 @@ platform :android do
     )
 
     copy_artifacts(
-      artifacts: [Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], [Actions.lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]],
+      artifacts: [Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], [Actions.lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]]],
       target_path: File.absolute_path("../distribution/")
     )
   end
