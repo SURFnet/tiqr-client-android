@@ -22,7 +22,9 @@ public abstract class AbstractAuthenticationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        disableAutoFill();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            disableAutoFill();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)

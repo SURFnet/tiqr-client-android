@@ -1,5 +1,6 @@
 package org.tiqr.authenticator
 
+import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import org.tiqr.authenticator.inject.ApplicationModule
 import org.tiqr.authenticator.inject.DaggerTiqrComponent
@@ -25,16 +26,22 @@ class TiqrApplication : android.app.Application() {
                     it.inject(this)
                 }
 
-        Thread(Runnable {
-            val token = FirebaseInstanceId.getInstance().getToken(getString(R.string.gcm_defaultSenderId), "FCM")
-            if (!token.isNullOrEmpty()) {
-                notificationService.requestNewToken(token)
+        Thread {
+            try {
+                val token = FirebaseInstanceId.getInstance().getToken(getString(R.string.gcm_defaultSenderId), "FCM")
+                if (!token.isNullOrEmpty()) {
+                    notificationService.requestNewToken(token)
+                }
+            } catch (ex: Exception) {
+                Log.w(TAG, "Unable to determine Firebase token of the user", ex)
             }
-        }).start()
+        }.start()
     }
 
     companion object {
         private lateinit var component: TiqrComponent
+
+        private val TAG = TiqrApplication::class.simpleName
 
         @JvmStatic
         fun component(): TiqrComponent {
