@@ -6,6 +6,7 @@ import org.tiqr.service.Token
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URLEncoder
+import kotlin.experimental.and
 
 object Utils {
 
@@ -65,28 +66,21 @@ object Utils {
         val value: CharArray
         val offset = 0
         val byteCount = data.size
-
         val v = CharArray(byteCount)
         var idx = offset
         val last = offset + byteCount
         var s = 0
         outer@ while (idx < last) {
             val b0 = data[idx++]
-            if (b0.toInt().and(0x80) == 0) {
+            if (b0 and 0x80.toByte() == 0.toByte()) {
                 // 0xxxxxxx
                 // Range:  U-00000000 - U-0000007F
-                val `val` = b0.toInt().and(0xff)
+                val `val`: Int = (b0 and 0xff.toByte()).toInt()
                 v[s++] = `val`.toChar()
-            } else if (b0.toInt().and(0xe0) == 0xc0 || (b0.toInt().and(0xf0) == 0xe0) ||
-                    b0.toInt().and(0xf8) == 0xf0 || b0.toInt().and(0xfc) == 0xf8 || b0.toInt().and(0xfe) == 0xfc) {
+            } else if (b0 and 0xe0.toByte() == 0xc0.toByte() || b0 and 0xf0.toByte() == 0xe0.toByte() ||
+                    b0 and 0xf8.toByte() == 0xf0.toByte() || b0 and 0xfc.toByte() == 0xf8.toByte() || b0 and 0xfe.toByte() == 0xfc.toByte()) {
                 var utfCount = 1
-                if (b0.toInt().and(0xf0) == 0xe0)
-                    utfCount = 2
-                else if (b0.toInt().and(0xf8) == 0xf0)
-                    utfCount = 3
-                else if (b0.toInt().and(0xfc) == 0xf8)
-                    utfCount = 4
-                else if (b0.toInt().and(0xfe) == 0xfc) utfCount = 5
+                if (b0 and 0xf0.toByte() == 0xe0.toByte()) utfCount = 2 else if (b0 and 0xf8.toByte() == 0xf0.toByte()) utfCount = 3 else if (b0 and 0xfc.toByte() == 0xf8.toByte()) utfCount = 4 else if (b0 and 0xfe.toByte() == 0xfc.toByte()) utfCount = 5
                 // 110xxxxx (10xxxxxx)+
                 // Range:  U-00000080 - U-000007FF (count == 1)
                 // Range:  U-00000800 - U-0000FFFF (count == 2)
@@ -98,17 +92,17 @@ object Utils {
                     continue
                 }
                 // Extract usable bits from b0
-                var `val` = (b0.toInt().and(0x1f.shr(utfCount - 1).toInt())).toByte()
+                var `val`: Int = b0.toInt() and (0x1f shr utfCount - 1)
                 for (i in 0 until utfCount) {
                     val b = data[idx++]
-                    if (b.toInt().and(0xc0) != 0x80) {
+                    if (b and 0xc0.toByte() != 0x80.toByte()) {
                         v[s++] = REPLACEMENT_CHAR
                         idx-- // Put the input char back
                         continue@outer
                     }
                     // Push new bits in from the right side
-                    `val` = `val`.toInt().shl(6).toByte()
-                    `val` = (`val`.toInt().or(b.toInt().and(0x3f).toInt())).toByte()
+                    `val` = `val` shl 6
+                    `val` = `val` or (b and 0x3f.toByte()).toInt()
                 }
                 // Note: Java allows overlong char
                 // specifications To disallow, check that val
@@ -137,11 +131,11 @@ object Utils {
                 if (`val` < 0x10000) {
                     v[s++] = `val`.toChar()
                 } else {
-                    val x = `val`.toInt().and(0xffff)
-                    val u = `val`.toInt().shr(16).and(0x1f)
-                    val w = (u - 1).and(0xffff)
-                    val hi = 0xd800.or(w.shl(6).or(x.shr(10)))
-                    val lo = 0xdc00.or(x.and(0x3ff))
+                    val x = `val` and 0xffff
+                    val u = `val` shr 16 and 0x1f
+                    val w = u - 1 and 0xffff
+                    val hi = 0xd800 or (w shl 6) or (x shr 10)
+                    val lo = 0xdc00 or (x and 0x3ff)
                     v[s++] = hi.toChar()
                     v[s++] = lo.toChar()
                 }
