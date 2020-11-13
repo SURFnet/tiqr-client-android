@@ -63,6 +63,17 @@ constructor(private val ctx: Context) {
         return String(sessionKey.encoded).toCharArray()
     }
 
+    /**
+     * This method is just an upgrade path for 3.0.6 users which had a faulty char array conversion
+     * algorithm, which resulted in an incorrect password for 50% of the users.
+     * We keep the old code to enable the upgrade path, so they don't have to go through
+     * enrollment again.
+     */
+    private fun sessionKeyToCharArrayAlternative306Version(sessionKey: SecretKey): CharArray {
+        @Suppress("DEPRECATION")
+        return Utils.byteArrayToCharArray306Wrong(sessionKey.encoded)
+    }
+
 
     @Throws(IOException::class, CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class)
     private fun saveKeyStore(sessionKey: SecretKey) {
@@ -90,11 +101,19 @@ constructor(private val ctx: Context) {
             ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
             ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
         } catch (ex: UnrecoverableKeyException) {
-            // The keystore is still using the old keys?
-            ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
-            ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
-            // If we got this far, then yes.
-            migrateKeys = true
+            try {
+                // The keystore is still using the old keys?
+                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
+                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
+                // If we got this far, then yes.
+                migrateKeys = true
+            } catch (ex: UnrecoverableKeyException) {
+                // The keystore might be  created in version 3.0.6, which had a wrong char array conversion algorithm
+                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as SecretKeyEntry
+                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as SecretKeyEntry
+                // If we got this far, then yes.
+                migrateKeys = true
+            }
         }
 
         val ivBytes: ByteArray?
@@ -177,12 +196,25 @@ constructor(private val ctx: Context) {
                 } catch (ex2: Exception) { /* Unhandled */
                 }
 
-                input = ctx.openFileInput(filenameKeyStore)
-                keyStore = KeyStore.getInstance("BKS")
-                keyStore.load(input, sessionKeyToCharArrayAlternative(sessionKey))
+                try {
+                    input = ctx.openFileInput(filenameKeyStore)
+                    keyStore = KeyStore.getInstance("BKS")
+                    keyStore.load(input, sessionKeyToCharArrayAlternative(sessionKey))
+                } catch (ex3: IOException) {
+                    // Last try: keystore was created with 3.0.6 version, which had a wrong char array
+                    // conversion algorithm
+                    try {
+                        input!!.close()
+                    } catch (ex2: Exception) { /* Unhandled */
+                    }
+                    input = ctx.openFileInput(filenameKeyStore)
+                    keyStore = KeyStore.getInstance("BKS")
+                    keyStore.load(input, sessionKeyToCharArrayAlternative306Version(sessionKey))
+                }
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "Opened keystore with alternative password.")
                 }
+
             }
 
             initialized = true
