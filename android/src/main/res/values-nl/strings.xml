@@ -109,8 +109,8 @@ Kies een PIN code die je kunt onthouden.</string>
   <string name="error_auth_invalid_request_title">Ongeldige aanroep</string>
   <string name="error_auth_invalid_request_message">De server herkent het login verzoek niet. Neem contact op met support.</string>
   <string name="error_auth_wrong_pin">Verkeerde PIN</string>
-  <string name="error_auth_infinite_attempts_left">De opgegeven PIN is onjuist. Voer je PIN opnieuw in. Controleer het verificatieteken bij het laatste cijfer.</string>
-  <string name="error_auth_x_attempts_left" formatted="false">De opgegeven PIN is onjuist. Je hebt nog %d pogingen. Voer nogmaals je PIN in. Let hierbij op het controle teken bij het laatste cijfer.</string>
+  <string name="error_auth_infinite_attempts_left">De opgegeven PIN is onjuist. Voer je PIN opnieuw in.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">De opgegeven PIN is onjuist. Je hebt nog %d pogingen. Voer nogmaals je PIN in.</string>
   <string name="error_auth_one_attempt_left">Je hebt nog één laatste poging. Als je weer een foute PIN invoert zullen alle tiqr accounts op dit toestel geblokkeerd worden.</string>
   <string name="error_auth_server_incompatible">De server is niet geschikt voor deze versie van tiqr.</string>
   <string name="enrollment_confirmation_header_title">Account activering</string>

@@ -110,8 +110,8 @@ følgende engangsopplysninger:</string>
   <string name="error_auth_invalid_request_title">Ugyldig forespørsel</string>
   <string name="error_auth_invalid_request_message">Tjeneren gjenkjenner ikke påloggingsforespørsel. Vennligst kontakt brukerstøtte.</string>
   <string name="error_auth_wrong_pin">Feil pinkode</string>
-  <string name="error_auth_infinite_attempts_left">Du oppga feil pinkode. Oppgi pinkode igjen. Se verifikasjonsikon for det siste sifferet.</string>
-  <string name="error_auth_x_attempts_left" formatted="false">Du oppga feil pinkode. Du har %d forsøk igjen. Oppgi pinkode igjen. Se verifikasjonsikon for det siste sifferet.</string>
+  <string name="error_auth_infinite_attempts_left">Du oppga feil pinkode. Oppgi pinkode igjen.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">Du oppga feil pinkode. Du har %d forsøk igjen. Oppgi pinkode igjen.</string>
   <string name="error_auth_one_attempt_left">Du har ett siste forsøk igjen. Om du angir feil pinkode igjen vil alle konti på denne enheten bli blokkert.</string>
   <string name="error_auth_server_incompatible">Tjeneren er inkompatibel med denne versjonen av tiqr.</string>
   <string name="enrollment_confirmation_header_title">Konto aktivering</string>

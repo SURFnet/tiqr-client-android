@@ -110,8 +110,8 @@
     <string name="error_auth_invalid_request_title">Ugyldig forespørgsel</string>
     <string name="error_auth_invalid_request_message">Serveren anerkender ikke autentifikationsforespørgslen. Kontakt supporten.</string>
     <string name="error_auth_wrong_pin">Forkert PIN</string>
-    <string name="error_auth_infinite_attempts_left">Du har angivet en forkert PIN-kode. Angiv din PIN-kode igen. Tjek bekræftelsesikonen for det sidste ciffer.</string>
-    <string name="error_auth_x_attempts_left" formatted="false">Du har angivet en forkert PIN-kode. Du har %d forsøg tilbage. Angiv din PIN-kode igen. Tjek bekræftelsesikonen for det sidste ciffer.</string>
+    <string name="error_auth_infinite_attempts_left">Du har angivet en forkert PIN-kode. Angiv din PIN-kode igen.</string>
+    <string name="error_auth_x_attempts_left" formatted="false">Du har angivet en forkert PIN-kode. Du har %d forsøg tilbage. Angiv din PIN-kode igen.</string>
     <string name="error_auth_one_attempt_left">Du har ét sidste forsøg. Hvis du en gang til angiver en forkert PIN-kode, vil samtlige konti her på enheden blive spærret.</string>
     <string name="error_auth_server_incompatible">Serveren fungerer ikke sammen med den her udgave af tiqr.</string>
     <string name="enrollment_confirmation_header_title">Kontoaktivering</string>

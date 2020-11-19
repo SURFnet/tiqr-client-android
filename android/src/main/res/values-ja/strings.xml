@@ -107,8 +107,8 @@ Glyphish -&lt;a href="http://glyphish.com"&gt;http://glyphish.com&lt;/a&gt;</str
   <string name="error_auth_invalid_request_title">無効なリクエストです</string>
   <string name="error_auth_invalid_request_message">サーバはログイン要求を認識できませんでした。サポートに相談してください。</string>
   <string name="error_auth_wrong_pin">PINが間違っています</string>
-  <string name="error_auth_infinite_attempts_left">PINが間違っています。もう一度PINを入力してください。最後の数字を入力した際の動物アイコンが同じかどうか確認してください。</string>
-  <string name="error_auth_x_attempts_left" formatted="false">PINが間違っています。あと%d回PINを入力することができます。もう一度PINを入力してください。最後の数字を入力した際に表示される動物アイコンが同じかどうか確認してください。</string>
+  <string name="error_auth_infinite_attempts_left">PINが間違っています。もう一度PINを入力してください。</string>
+  <string name="error_auth_x_attempts_left" formatted="false">PINが間違っています。あと%d回PINを入力することができます。もう一度PINを入力してください。</string>
   <string name="error_auth_one_attempt_left">PINが入力できるのはあと１回だけです。間違ったPINを入力すると、このデバイス上のアカウントは利用できなくなります。</string>
   <string name="error_auth_server_incompatible">サーバがこのtiqrのバージョンに対応していません</string>
   <string name="enrollment_confirmation_header_title">アカウントの有効化</string>

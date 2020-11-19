@@ -110,8 +110,8 @@
     <string name="error_auth_invalid_request_title">Neteisinga užklausa</string>
     <string name="error_auth_invalid_request_message">Serveris neatpažįsta prisijungimo užklausos. Praneškite administratoriui.</string>
     <string name="error_auth_wrong_pin">Neteisingas PIN</string>
-    <string name="error_auth_infinite_attempts_left">Jūs pateikėte netinkamą PIN. Įveskite PIN pakartotinai. Patikrinkite paskutinio skaitmens patvirtinimo piktogramą.</string>
-    <string name="error_auth_x_attempts_left" formatted="false">Jūs pateikėte netinkamą PIN. Jums liko %d bandymai. Pašome įveskite PIN pakartotinai. Patikrinkite paskutinio skaitmens patvirtinimo piktogramą.</string>
+    <string name="error_auth_infinite_attempts_left">Jūs pateikėte netinkamą PIN. Įveskite PIN pakartotinai.</string>
+    <string name="error_auth_x_attempts_left" formatted="false">Jūs pateikėte netinkamą PIN. Jums liko %d bandymai. Pašome įveskite PIN pakartotinai.</string>
     <string name="error_auth_one_attempt_left">Jums liko paskutinis bandymas. Jei vėl įvesite neteisingą PIN kodą, visos šio įrenginio paskyros bus užblokuotos.</string>
     <string name="error_auth_server_incompatible">Serveris nesuderinamas su šia tiqr versija.</string>
     <string name="enrollment_confirmation_header_title">Paskyros aktyvavimas</string>

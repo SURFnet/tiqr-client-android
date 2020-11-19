@@ -109,8 +109,8 @@ nur einmalig gültigen Daten einzugeben:</string>
   <string name="error_auth_invalid_request_title">Ungültiger Anmeldeversuch</string>
   <string name="error_auth_invalid_request_message">Der Server erkennt diesen Anmeldeversuch nicht an. Bitte wenden Sie sich an den Support.</string>
   <string name="error_auth_wrong_pin">Falsche PIN</string>
-  <string name="error_auth_infinite_attempts_left">Sie haben eine falsche PIN eingegeben. Bitte geben Sie Ihre richtige PIN ein. Überprüfen Sie das Bestätigungssymbol für die letzte Ziffer.</string>
-  <string name="error_auth_x_attempts_left" formatted="false">Sie haben eine falsche PIN eingegeben. Sie haben noch %d Versuche. Bitte geben Sie Ihre richtige PIN ein. Überprüfen Sie das Bestätigungssymbol für die letzte Ziffer.</string>
+  <string name="error_auth_infinite_attempts_left">Sie haben eine falsche PIN eingegeben. Bitte geben Sie Ihre richtige PIN ein.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">Sie haben eine falsche PIN eingegeben. Sie haben noch %d Versuche. Bitte geben Sie Ihre richtige PIN ein.</string>
   <string name="error_auth_one_attempt_left">Sie haben nur noch einen weiteren Versuch. Wenn Sie noch einmal eine falsche PIN eingeben, werden sämtliche Benutzerkonten auf diesem Gerät gesperrt.</string>
   <string name="error_auth_server_incompatible">Der Server verwendet eine inkompatible Version von tiqr.</string>
   <string name="enrollment_confirmation_header_title">Aktivierung des Benutzerkontos</string>

@@ -105,8 +105,8 @@
   <string name="error_auth_invalid_request_title">Petición errónea.</string>
   <string name="error_auth_invalid_request_message">El servidor no reconoce la petición de acceso. Por favor, busque ayuda.</string>
   <string name="error_auth_wrong_pin">PIN erróneo</string>
-  <string name="error_auth_infinite_attempts_left">Proporcionó un PIN incorrecto. Por favor introduzca su PIN nuevamente. Use el icono de verificación para el último dígito.</string>
-  <string name="error_auth_x_attempts_left" formatted="false">Ha proporcionado un PIN incorrecto. Le quedan %d intentos. Por favor, vuelva a introducir su PIN. Compruebe el último dígito del icono de verificación. </string>
+  <string name="error_auth_infinite_attempts_left">Proporcionó un PIN incorrecto. Por favor introduzca su PIN nuevamente.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">Ha proporcionado un PIN incorrecto. Le quedan %d intentos. Por favor, vuelva a introducir su PIN.</string>
   <string name="error_auth_one_attempt_left">Solo le queda un intento. Si vuelve a usar un PIN incorrecto se bloquearán todas las cuentas en este dispositivo.</string>
   <string name="error_auth_server_incompatible">El servidor es incompatible con esta versión de tiqr.</string>
   <string name="enrollment_confirmation_header_title">Acctivación de la cuenta</string>

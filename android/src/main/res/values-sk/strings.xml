@@ -110,7 +110,7 @@ tieto jednorázové prístupové údaje:</string>
   <string name="error_auth_invalid_request_message">Server nerozpoznal prihlasovaciu požiadavku. Kontaktujte, prosím, používateľskú podporu.</string>
   <string name="error_auth_wrong_pin">Nesprávny PIN</string>
   <string name="error_auth_infinite_attempts_left">Nesprávny PIN. Prosím, zadajte PIN. </string>
-  <string name="error_auth_x_attempts_left" formatted="false">Nesprávny PIN. Zostáva vám %d pokusov. Prosím, zadajte svoj PIN. Overte kontrolný piktogram každej práve zadanej číslice.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">Nesprávny PIN. Zostáva vám %d pokusov. Prosím, zadajte svoj PIN.</string>
   <string name="error_auth_one_attempt_left">Máte posledný pokus. Ak opäť zadáte nesprávny PIN, všetky účty na tomto zariadení budú zablokované.</string>
   <string name="error_auth_server_incompatible">Server nepodporuje túto verziu tiqr.</string>
   <string name="enrollment_confirmation_header_title">Aktivácia účtu</string>

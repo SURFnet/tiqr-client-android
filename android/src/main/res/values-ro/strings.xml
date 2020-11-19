@@ -108,8 +108,8 @@ urmatoarele informatii de acreditare de singura folosinta:</string>
   <string name="error_auth_invalid_request_title">Cerere invalida</string>
   <string name="error_auth_invalid_request_message">Serverul nu recunoaste cererea de autentificare. Va rugam contactati echipa de suport.</string>
   <string name="error_auth_wrong_pin">Cod PIN gresit</string>
-  <string name="error_auth_infinite_attempts_left">Ati furnizat un cod PIN incorect. Va rugam introduceti codul dumneavoastra PIN din nou. Controlati icon-ul de verificare pentru ultima cifra.</string>
-  <string name="error_auth_x_attempts_left" formatted="false">Ati furnizat un cod PIN incorect. Mai aveti %d incercari. Va rugam introduceti codul dumneavoastra PIN din nou. Controlati icon-ul de verificare pentru ultima cifra.</string>
+  <string name="error_auth_infinite_attempts_left">Ati furnizat un cod PIN incorect. Va rugam introduceti codul dumneavoastra PIN din nou.</string>
+  <string name="error_auth_x_attempts_left" formatted="false">Ati furnizat un cod PIN incorect. Mai aveti %d incercari. Va rugam introduceti codul dumneavoastra PIN din nou.</string>
   <string name="error_auth_one_attempt_left">Mai aveti o singura incercare. Daca introduceti un cod PIN incorect din nou, toate conturile de pe acest dispozitiv vor fi blocate.</string>
   <string name="error_auth_server_incompatible">Serverul este incompatibil cu versiunea de tiqr.</string>
   <string name="enrollment_confirmation_header_title">Activarea contului</string>
