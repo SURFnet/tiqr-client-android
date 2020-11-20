@@ -13,6 +13,6 @@ import org.tiqr.authenticator.datamodel.IdentityProvider
 open class Challenge(
         open val protocolVersion: String?,
         open val identityProvider: IdentityProvider,
-        open var identity: Identity,
+        open val identity: Identity?,
         open val returnURL: String?
 ): Parcelable

@@ -35,7 +35,7 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
         // Update the text.
         title.setText(R.string.login_pin_title);
         setIntoText(R.string.login_intro);
-        pintHint.setVisibility(View.GONE);
+        pinHint.setVisibility(View.GONE);
     }
 
     /**
@@ -93,7 +93,6 @@ public class AuthenticationPincodeActivity extends AbstractPincodeActivity {
             case INVALID_RESPONSE:
                 if (!error.getExtras().containsKey("attemptsLeft") || error.getExtras().getInt("attemptsLeft") > 0) {
                     _clear();
-                    _initHiddenPincodeField();
                     new ErrorActivity.ErrorBuilder()
                             .setTitle(error.getTitle())
                             .setMessage(error.getMessage())

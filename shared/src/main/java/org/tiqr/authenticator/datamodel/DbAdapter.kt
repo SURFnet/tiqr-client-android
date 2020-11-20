@@ -304,11 +304,11 @@ class DbAdapter(private val _ctx: Context) {
      * @return result array
      */
     fun findIdentitiesByIdentityProviderIdentifierAsObjects(identityProviderIdentifier: String): Array<Identity> {
-        try {
-            return _createIdentityObjectsForCursor(findIdentitiesByIdentityProviderIdentifier(identityProviderIdentifier)!!)
+        return try {
+            _createIdentityObjectsForCursor(findIdentitiesByIdentityProviderIdentifier(identityProviderIdentifier)!!)
         } catch (ex: Exception) {
             ex.printStackTrace()
-            return arrayOf<Identity>()
+            emptyArray()
         }
 
     }

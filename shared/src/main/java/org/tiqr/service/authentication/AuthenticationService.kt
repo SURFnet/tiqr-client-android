@@ -3,12 +3,11 @@ package org.tiqr.service.authentication
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
-
 import org.json.JSONException
 import org.json.JSONObject
 import org.tiqr.Constants
-import org.tiqr.Utils
 import org.tiqr.R
+import org.tiqr.Utils
 import org.tiqr.authenticator.auth.AuthenticationChallenge
 import org.tiqr.authenticator.datamodel.DbAdapter
 import org.tiqr.authenticator.datamodel.Identity
@@ -21,7 +20,6 @@ import org.tiqr.authenticator.security.OCRAWrapper_v1
 import org.tiqr.authenticator.security.Secret
 import org.tiqr.service.authentication.AuthenticationError.Type
 import org.tiqr.service.notification.NotificationService
-
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
@@ -93,7 +91,7 @@ class AuthenticationService(private val context: Context, private val notificati
                 val ip = dbAdapter.getIdentityProviderByIdentifierAsObject(url.host)
                         ?: return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity_provider))
 
-                var identity: Identity?
+                val identity: Identity?
 
                 if (url.userInfo != null) {
                     var userInfo = url.userInfo
@@ -111,14 +109,15 @@ class AuthenticationService(private val context: Context, private val notificati
                 } else {
                     val identities = dbAdapter.findIdentitiesByIdentityProviderIdentifierAsObjects(ip.identifier)
 
-                    if (identities.size == 0) {
+                    if (identities.isEmpty()) {
                         return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.NO_IDENTITIES, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_no_identities_for_identity_provider))
                     }
 
-                    identity = if (identities.size >= 1) identities[0] else null
+                    identity = if (identities.size == 1) identities[0] else null
                 }
 
                 val identityProvider = if (identity == null) ip else dbAdapter.getIdentityProviderForIdentityId(identity.id)
+                        ?: return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity_provider))
                 val isStepUpChallenge = url.userInfo != null && url.userInfo.length > 0
 
                 val serviceProviderDisplayName = when {
@@ -140,24 +139,17 @@ class AuthenticationService(private val context: Context, private val notificati
                     }
 
                 }
-
-                if (identityProvider != null && identity != null) {
-                    return AuthenticationChallenge(
-                            sessionKey = pathComponents[1],
-                            challenge = pathComponents[2],
-                            serviceProviderDisplayName = serviceProviderDisplayName,
-                            serviceProviderIdentifier = "",
-                            isStepUpChallenge = isStepUpChallenge,
-                            protocolVersion = protocolVersion,
-                            identityProvider = identityProvider,
-                            identity = identity,
-                            returnURL = returnURL
-                    )
-                } else if (identity == null) {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity))
-                } else {
-                    return ParseAuthenticationChallengeError(ParseAuthenticationChallengeError.Type.INVALID_IDENTITY_PROVIDER, context.getString(R.string.authentication_failure_title), context.getString(R.string.error_auth_unknown_identity_provider))
-                }
+                return AuthenticationChallenge(
+                        sessionKey = pathComponents[1],
+                        challenge = pathComponents[2],
+                        serviceProviderDisplayName = serviceProviderDisplayName,
+                        serviceProviderIdentifier = "",
+                        isStepUpChallenge = isStepUpChallenge,
+                        protocolVersion = protocolVersion,
+                        identityProvider = identityProvider,
+                        identity = identity,
+                        returnURL = returnURL
+                )
             }
 
             override fun onPostExecute(result: Any) {
@@ -186,11 +178,10 @@ class AuthenticationService(private val context: Context, private val notificati
     fun authenticate(challenge: AuthenticationChallenge, password: String, type: Secret.Type, listener: OnAuthenticationListener): AsyncTask<*, *, *> {
         val task = object : AsyncTask<Void, Void, AuthenticationError>() {
             override fun doInBackground(vararg voids: Void): AuthenticationError? {
-                var otp: String?
 
                 try {
                     val sessionKey = Encryption.keyFromPassword(context, password)
-                    val secret = Secret.secretForIdentity(challenge.identity, context)
+                    val secret = Secret.secretForIdentity(challenge.identity!!, context)
                     val secretKey = secret.getSecret(sessionKey, type)
 
                     val ocra: OCRAProtocol
@@ -200,12 +191,12 @@ class AuthenticationService(private val context: Context, private val notificati
                         ocra = OCRAWrapper()
                     }
 
-                    otp = ocra.generateOCRA(challenge.identityProvider.ocraSuite, secretKey!!.encoded, challenge.challenge, challenge.sessionKey)
+                    val otp = ocra.generateOCRA(challenge.identityProvider.ocraSuite, secretKey!!.encoded, challenge.challenge, challenge.sessionKey)
 
                     // Add your dNameValuePair
                     val nameValuePairs = HashMap<String, String>()
                     nameValuePairs["sessionKey"] = challenge.sessionKey
-                    nameValuePairs["userId"] = challenge.identity.identifier
+                    nameValuePairs["userId"] = challenge.identity!!.identifier
                     nameValuePairs["response"] = otp
                     nameValuePairs["language"] = Locale.getDefault().language
 
@@ -264,8 +255,8 @@ class AuthenticationService(private val context: Context, private val notificati
                     listener.onAuthenticationSuccess()
                 } else {
                     if (error.type === Type.ACCOUNT_BLOCKED) {
-                        challenge.identity.isBlocked = true
-                        dbAdapter.updateIdentity(challenge.identity)
+                        challenge.identity!!.isBlocked = true
+                        dbAdapter.updateIdentity(challenge.identity!!)
                     } else if (error.type === Type.INVALID_RESPONSE) {
                         if (error.extras.containsKey("attemptsLeft") && error.extras.getInt("attemptsLeft") == 0) {
                             dbAdapter.blockAllIdentities()

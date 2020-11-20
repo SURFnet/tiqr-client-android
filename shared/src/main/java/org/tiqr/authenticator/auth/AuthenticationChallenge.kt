@@ -26,7 +26,7 @@ class AuthenticationChallenge (
 
         override val protocolVersion: String?,
         override val identityProvider: IdentityProvider,
-        override var identity: Identity,
+        override var identity: Identity?,
         override val returnURL: String?
 
 ) : Challenge(protocolVersion, identityProvider, identity, returnURL), Parcelable
