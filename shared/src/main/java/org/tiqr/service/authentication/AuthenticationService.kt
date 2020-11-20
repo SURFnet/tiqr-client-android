@@ -186,7 +186,6 @@ class AuthenticationService(private val context: Context, private val notificati
     fun authenticate(challenge: AuthenticationChallenge, password: String, type: Secret.Type, listener: OnAuthenticationListener): AsyncTask<*, *, *> {
         val task = object : AsyncTask<Void, Void, AuthenticationError>() {
             override fun doInBackground(vararg voids: Void): AuthenticationError? {
-                var otp: String?
 
                 try {
                     val sessionKey = Encryption.keyFromPassword(context, password)
@@ -200,7 +199,7 @@ class AuthenticationService(private val context: Context, private val notificati
                         ocra = OCRAWrapper()
                     }
 
-                    otp = ocra.generateOCRA(challenge.identityProvider.ocraSuite, secretKey!!.encoded, challenge.challenge, challenge.sessionKey)
+                    val otp = ocra.generateOCRA(challenge.identityProvider.ocraSuite, secretKey!!.encoded, challenge.challenge, challenge.sessionKey)
 
                     // Add your dNameValuePair
                     val nameValuePairs = HashMap<String, String>()

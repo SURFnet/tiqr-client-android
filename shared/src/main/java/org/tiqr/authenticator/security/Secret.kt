@@ -48,17 +48,18 @@ private constructor(val identity: Identity, val context: Context) {
     }
 
     @Throws(SecurityFeaturesException::class, InvalidKeyException::class, CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class, IOException::class, UnrecoverableEntryException::class)
-    private fun loadFromKeyStore(sessionKey: SecretKey, type: Type): SecretKey {
+    private fun loadFromKeyStore(sessionKey: SecretKey, type: Type): SecretKey? {
         val deviceKey = Encryption.getDeviceKey(context)
         val civ = store.getSecretKey(getId(type), deviceKey)
 
         secret = SecretKeySpec(Encryption.decrypt(civ, sessionKey), "RAW")
 
-        // Old keys didn't store the iv, so upgrade it to a new key.
-        Log.i("encryption", "Found old style key; upgrading to new key.")
-        storeInKeyStore(sessionKey, type)
-
-        return secret!!
+        if (civ.iv == null) {
+            // Old keys didn't store the iv, so upgrade it to a new key.
+            Log.i("encryption", "Found old style key; upgrading to new key.")
+            storeInKeyStore(sessionKey, type)
+        }
+        return secret
     }
 
     @Throws(SecurityFeaturesException::class, CertificateException::class, NoSuchAlgorithmException::class, KeyStoreException::class, IOException::class)
