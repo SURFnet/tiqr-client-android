@@ -26,7 +26,7 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
 
     protected TextView title;
     protected TextView intro;
-    protected TextView pintHint;
+    protected TextView pinHint;
 
     protected EditText pincode;
     protected TextView pin1;
@@ -75,23 +75,18 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
         pin3 = findViewById(R.id.pin3Field);
         pin4 = findViewById(R.id.pin4Field);
         btn_ok = findViewById(R.id.ok_button);
-        pintHint = findViewById(R.id.pinHint);
+        pinHint = findViewById(R.id.pinHint);
         pincodes  = Arrays.asList(pin1, pin2, pin3, pin4);
 
-        HeaderView headerView = findViewById(R.id.headerView);
-        headerView.setOnLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        // Also show keyboard when clicked on a fake pincode field, if it wouldn't show automatically
+        for (View pincodeView : pincodes) {
+            pincodeView.setOnClickListener(v -> _initHiddenPincodeField());
+        }
 
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                process();
-            }
-        });
+        HeaderView headerView = findViewById(R.id.headerView);
+        headerView.setOnLeftClickListener(v -> onBackPressed());
+
+        btn_ok.setOnClickListener(v -> process());
     }
 
     private void _updateFakePins() {
@@ -126,13 +121,11 @@ abstract public class AbstractPincodeActivity extends AbstractAuthenticationActi
     }
 
     protected void _initHiddenPincodeField() {
-        pincode.post(new Runnable() {
-            public void run() {
-                pincode.requestFocusFromTouch();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(pincode, InputMethodManager.SHOW_IMPLICIT);
-            }
-        });
+        pincode.postDelayed(() -> {
+            pincode.requestFocusFromTouch();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(pincode, InputMethodManager.SHOW_IMPLICIT);
+        }, 200L);
     }
 
     protected void _hideSoftKeyboard(View v) {
