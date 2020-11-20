@@ -60,7 +60,7 @@ public class EnrollmentPincodeVerificationActivity extends AbstractPincodeActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
 
         firstPin = getIntent().getStringExtra("org.tiqr.firstPin");
 

@@ -33,7 +33,7 @@ public class AuthenticationConfirmationActivity extends AbstractConfirmationActi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
 
         setTitleText(R.string.authentication_confirmation_title);
         setDescriptionText(R.string.authentication_confirmation_description);

@@ -1,5 +1,6 @@
 package org.tiqr.authenticator
 
+import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.iid.FirebaseInstanceId
@@ -18,14 +19,11 @@ class TiqrApplication : MultiDexApplication() {
     @Inject
     internal lateinit var notificationService: NotificationService
 
+    private var component: TiqrComponent? = null
+
     override fun onCreate() {
         super.onCreate()
-        component = DaggerTiqrComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-                .also {
-                    it.inject(this)
-                }
+        initComponent(this)
 
         Thread {
             try {
@@ -39,14 +37,32 @@ class TiqrApplication : MultiDexApplication() {
         }.start()
     }
 
+    private fun initComponent(application: TiqrApplication) : TiqrComponent {
+        component = DaggerTiqrComponent.builder()
+                .applicationModule(ApplicationModule(this))
+                .build()
+                .also {
+                    it.inject(this)
+                }
+        return component!!
+    }
+
     companion object {
-        private lateinit var component: TiqrComponent
 
         private val TAG = TiqrApplication::class.java.simpleName
 
         @JvmStatic
-        fun component(): TiqrComponent {
-            return component
+        fun component(context: Context): TiqrComponent {
+            return (context.applicationContext as TiqrApplication).let {app ->
+                app.component?.let {
+                    return it
+                }
+                // Although this should never happen, because Activity.onCreate() is guaranteed to
+                // be called after Application.onCreate().
+                // Still, we got crashes where the Activity tried to access the component, and it was
+                // not initialized yet, so just to be safe, we add this step again.
+                return app.initComponent(app)
+            }
         }
     }
 

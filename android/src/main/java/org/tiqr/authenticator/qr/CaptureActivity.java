@@ -99,7 +99,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TiqrApplication.component().inject(this);
+        TiqrApplication.component(this).inject(this);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

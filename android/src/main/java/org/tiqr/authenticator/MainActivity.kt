@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      */
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TiqrApplication.component().inject(this)
+        TiqrApplication.component(this).inject(this)
 
         binding.header.hideLeftButton()
 
