@@ -1,6 +1,7 @@
 package org.tiqr.authenticator
 
 import android.util.Log
+import androidx.multidex.MultiDexApplication
 import com.google.firebase.iid.FirebaseInstanceId
 import org.tiqr.authenticator.inject.ApplicationModule
 import org.tiqr.authenticator.inject.DaggerTiqrComponent
@@ -12,7 +13,7 @@ import javax.inject.Inject
 /**
  * Tiqr Application base.
  */
-class TiqrApplication : android.app.Application() {
+class TiqrApplication : MultiDexApplication() {
 
     @Inject
     internal lateinit var notificationService: NotificationService
