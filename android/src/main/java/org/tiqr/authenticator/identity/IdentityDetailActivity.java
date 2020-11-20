@@ -51,7 +51,7 @@ public class IdentityDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.identity_detail);
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
 
         HeaderView headerView = (HeaderView)findViewById(R.id.headerView);
         headerView.setOnLeftClickListener(new View.OnClickListener() {

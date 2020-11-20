@@ -46,7 +46,7 @@ public class AuthenticationFingerprintActivity extends AbstractAuthenticationAct
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
 
         _fingerprintManager = FingerprintManagerCompat.from(this);
 

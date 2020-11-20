@@ -62,7 +62,7 @@ public class AuthenticationSummaryActivity extends AbstractActivityGroup {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
 
         setContentView(R.layout.authentication_summary);
 

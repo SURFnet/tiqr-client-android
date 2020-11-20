@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.tiqr.authenticator.auth.AuthenticationChallenge;
 import org.tiqr.authenticator.auth.Challenge;
 
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         }
 
         String id = _ids.get(size - 1);
-        Intent intent = getLocalActivityManager().getActivity(id).getIntent();
         getLocalActivityManager().destroyActivity(id, true);
         _ids.remove(id);
         String idBehind = _ids.get(_ids.size() - 1);
@@ -113,13 +111,6 @@ public abstract class AbstractActivityGroup extends ActivityGroup {
         }
         _inOnOptionsItemSelected = false;
         return result;
-    }
-
-    /**
-     * Finish the current activity.
-     */
-    public void goBack() {
-        goBack(1);
     }
 
     /**

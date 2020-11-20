@@ -66,7 +66,7 @@ public class TiqrFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
-        TiqrApplication.Companion.component().inject(this);
+        TiqrApplication.Companion.component(this).inject(this);
     }
 
     @Override
