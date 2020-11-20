@@ -139,17 +139,17 @@ class AuthenticationService(private val context: Context, private val notificati
                     }
 
                 }
-                    return AuthenticationChallenge(
-                            sessionKey = pathComponents[1],
-                            challenge = pathComponents[2],
-                            serviceProviderDisplayName = serviceProviderDisplayName,
-                            serviceProviderIdentifier = "",
-                            isStepUpChallenge = isStepUpChallenge,
-                            protocolVersion = protocolVersion,
-                            identityProvider = identityProvider,
-                            identity = identity,
-                            returnURL = returnURL
-                    )
+                return AuthenticationChallenge(
+                        sessionKey = pathComponents[1],
+                        challenge = pathComponents[2],
+                        serviceProviderDisplayName = serviceProviderDisplayName,
+                        serviceProviderIdentifier = "",
+                        isStepUpChallenge = isStepUpChallenge,
+                        protocolVersion = protocolVersion,
+                        identityProvider = identityProvider,
+                        identity = identity,
+                        returnURL = returnURL
+                )
             }
 
             override fun onPostExecute(result: Any) {
