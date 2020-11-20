@@ -98,19 +98,19 @@ constructor(private val ctx: Context) {
         var migrateKeys = false
 
         try {
-            ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
-            ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as SecretKeyEntry
+            ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as? SecretKeyEntry
+            ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArray(sessionKey))) as? SecretKeyEntry
         } catch (ex: UnrecoverableKeyException) {
             try {
                 // The keystore is still using the old keys?
-                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
-                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as SecretKeyEntry
+                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as? SecretKeyEntry
+                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative(sessionKey))) as? SecretKeyEntry
                 // If we got this far, then yes.
                 migrateKeys = true
             } catch (ex: UnrecoverableKeyException) {
                 // The keystore might be  created in version 3.0.6, which had a wrong char array conversion algorithm
-                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as SecretKeyEntry
-                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as SecretKeyEntry
+                ctEntry = keyStore.getEntry(identity, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as? SecretKeyEntry
+                ivEntry = keyStore.getEntry(identity + IV_SUFFIX, KeyStore.PasswordProtection(sessionKeyToCharArrayAlternative306Version(sessionKey))) as? SecretKeyEntry
                 // If we got this far, then yes.
                 migrateKeys = true
             }
