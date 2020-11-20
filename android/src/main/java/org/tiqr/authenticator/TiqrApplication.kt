@@ -42,7 +42,7 @@ class TiqrApplication : MultiDexApplication() {
     companion object {
         private lateinit var component: TiqrComponent
 
-        private val TAG = TiqrApplication::class.simpleName
+        private val TAG = TiqrApplication::class.java.simpleName
 
         @JvmStatic
         fun component(): TiqrComponent {
