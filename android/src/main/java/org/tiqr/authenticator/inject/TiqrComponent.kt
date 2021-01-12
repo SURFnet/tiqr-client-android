@@ -10,7 +10,7 @@ import org.tiqr.authenticator.authentication.AuthenticationSummaryActivity
 import org.tiqr.authenticator.enrollment.EnrollmentPincodeVerificationActivity
 import org.tiqr.authenticator.identity.IdentityDetailActivity
 import org.tiqr.authenticator.messaging.TiqrFirebaseMessagingService
-import org.tiqr.authenticator.qr.CaptureActivity
+import org.tiqr.authenticator.scan.ScanActivity
 import javax.inject.Singleton
 
 @Component(modules = [ApplicationModule::class])
@@ -24,6 +24,7 @@ interface TiqrComponent {
     fun inject(enrollmentPincodeVerificationActivity: EnrollmentPincodeVerificationActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(identityDetailActivity: IdentityDetailActivity)
-    fun inject(captureActivity: CaptureActivity)
+    fun inject(scanActivity: ScanActivity)
+
     fun inject(tiqrApplication: TiqrApplication)
 }
