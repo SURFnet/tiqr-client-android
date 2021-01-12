@@ -32,8 +32,6 @@ android {
     }
 
     compileOptions {
-        // Flag to enable support for the new language APIs.
-        // This is required to keep on using the latest version of ZXing: https://github.com/zxing/zxing/issues/1170#issuecomment-555860273
         coreLibraryDesugaringEnabled true
 
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -74,8 +72,6 @@ dependencies {
 
 
     implementation project(':shared')
-
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 }
 
 configurations.all {

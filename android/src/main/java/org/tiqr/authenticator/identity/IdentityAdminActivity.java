@@ -20,7 +20,6 @@ import org.tiqr.authenticator.datamodel.Identity;
 import org.tiqr.authenticator.datamodel.IdentityProvider;
 import org.tiqr.authenticator.general.FooterView;
 import org.tiqr.authenticator.general.HeaderView;
-import org.tiqr.authenticator.qr.CaptureActivity;
 
 public class IdentityAdminActivity extends AbstractIdentityListActivity {
     @Override
@@ -123,7 +122,6 @@ public class IdentityAdminActivity extends AbstractIdentityListActivity {
      * Start enrolling a new identity.
      */
     private void _enrollNewIdentity() {
-        Intent intent = new Intent().setClass(this, CaptureActivity.class);
-        startActivity(intent);
+        // TODO: open scan activity
     }
 }
