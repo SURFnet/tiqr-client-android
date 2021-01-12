@@ -42,6 +42,8 @@
 		<activity android:name=".authentication.AuthenticationActivityGroup"
 			android:screenOrientation="portrait">
 		</activity>
+		<activity
+			android:name=".scan.ScanActivity"
 			android:screenOrientation="portrait">
 		</activity>
 		<activity android:name=".authentication.AuthenticationIdentitySelectActivity"
