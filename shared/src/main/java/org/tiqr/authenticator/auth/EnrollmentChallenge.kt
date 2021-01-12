@@ -1,7 +1,7 @@
 package org.tiqr.authenticator.auth
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.tiqr.authenticator.datamodel.Identity
 import org.tiqr.authenticator.datamodel.IdentityProvider
 
