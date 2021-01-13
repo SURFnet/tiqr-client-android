@@ -76,21 +76,20 @@ object Libs {
         }
 
         object Camera {
-            private const val version = "1.0.0-beta03"
+            private const val version = "1.0.0-rc01"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha10"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha10"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha20"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha20"
         }
     }
 
     object Google {
         const val material = "com.google.android.material:material:1.1.0"
 
-        object Firebase {
-            const val vision = "com.google.firebase:firebase-ml-vision:24.0.2"
-            const val barcode = "com.google.firebase:firebase-ml-vision-barcode-model:16.1.0"
+        object MlKit {
+            const val barcode = "com.google.mlkit:barcode-scanning:16.1.0"
         }
     }
 

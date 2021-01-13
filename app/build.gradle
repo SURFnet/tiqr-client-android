@@ -85,8 +85,7 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.liveData
     implementation Libs.AndroidX.Lifecycle.commonJ8
     implementation Libs.Google.material
-    implementation Libs.Google.Firebase.vision
-    implementation Libs.Google.Firebase.barcode
+    implementation Libs.Google.MlKit.barcode
 
     implementation project(':data')
 

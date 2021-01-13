@@ -44,7 +44,6 @@ import androidx.camera.view.PreviewView
 import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -98,16 +97,14 @@ class ScanComponent(
     private val lifecycleScope = lifecycleOwner.lifecycleScope
 
     private val broadcastManager: LocalBroadcastManager = LocalBroadcastManager.getInstance(context)
-    private val keyReceiver = CameraKeyEventsReceiver { enable -> camera.cameraControl.enableTorch(enable) }
+    private val keyReceiver = ScanKeyEventsReceiver { enable -> camera.cameraControl.enableTorch(enable) }
 
     init {
+        lifecycleOwner.lifecycle.addObserver(this)
+
         lifecycleScope.launch {
             cameraProvider = initCameraProvider()
             startCamera(cameraProvider)
-        }
-
-        if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-            broadcastManager.registerReceiver(keyReceiver, CameraKeyEventsReceiver.filter)
         }
     }
 
@@ -154,7 +151,9 @@ class ScanComponent(
                 .setTargetRotation(viewFinder.display.rotation)
                 .build()
 
-        cameraAnalysis = ImageAnalysis.Builder().build().apply {
+        cameraAnalysis = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build().apply {
             setAnalyzer(ContextCompat.getMainExecutor(context), cameraAnalyzer)
         }
 
@@ -162,7 +161,7 @@ class ScanComponent(
             unbindAll()
             bindToLifecycle(lifecycleOwner, cameraSelector, cameraPreview, cameraAnalysis)
         }.apply {
-            cameraPreview.setSurfaceProvider(viewFinder.createSurfaceProvider(cameraInfo))
+            cameraPreview.setSurfaceProvider(viewFinder.surfaceProvider)
         }
     }
 
@@ -186,19 +185,34 @@ class ScanComponent(
      * Beep and vibrate to notify the user.
      */
     private fun alertDetection() {
-        if (audioManager.ringerMode != AudioManager.RINGER_MODE_NORMAL) {
-            // User has turned off sound and/or vibrations, so we should respect that
-            return
+        fun beep() {
+            soundPool.play(beepSound, BEEP_VOLUME, BEEP_VOLUME, 1, 0, 1f)
         }
 
-        soundPool.play(beepSound, BEEP_VOLUME, BEEP_VOLUME, 1, 0, 1f)
+        fun vibrate() {
+            if (vibrator.hasVibrator()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
+                } else {
+                    @Suppress("DEPRECATION") // deprecated in API 26
+                    vibrator.vibrate(VIBRATE_DURATION)
+                }
+            }
+        }
 
-        if (vibrator.hasVibrator()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
-            } else {
-                @Suppress("DEPRECATION") // deprecated in API 26
-                vibrator.vibrate(VIBRATE_DURATION)
+        // Try to respect user settings for silencing
+        when (audioManager.ringerMode) {
+            AudioManager.RINGER_MODE_NORMAL -> {
+                // Beep and vibrate
+                beep()
+                vibrate()
+            }
+            AudioManager.RINGER_MODE_VIBRATE -> {
+                // No beep, only vibrate
+                vibrate()
+            }
+            AudioManager.RINGER_MODE_SILENT -> {
+                // No beep nor vibrate
             }
         }
     }
@@ -206,7 +220,7 @@ class ScanComponent(
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
 
-        broadcastManager.registerReceiver(keyReceiver, CameraKeyEventsReceiver.filter)
+        broadcastManager.registerReceiver(keyReceiver, ScanKeyEventsReceiver.filter)
     }
 
     override fun onStop(owner: LifecycleOwner) {

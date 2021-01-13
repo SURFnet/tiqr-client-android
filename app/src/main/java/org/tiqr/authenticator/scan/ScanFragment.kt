@@ -31,13 +31,14 @@ package org.tiqr.authenticator.scan
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.delay
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentScanBinding
 import org.tiqr.authenticator.util.extensions.hasCameraPermission
 import org.tiqr.data.model.AuthenticationChallenge
@@ -45,7 +46,7 @@ import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.viewmodel.ScanViewModel
 
-class ScanFragment : BindingFragment<FragmentScanBinding>() {
+class ScanFragment : BaseFragment<FragmentScanBinding>() {
     override val layout = R.layout.fragment_scan
 
     private val viewModel by viewModels<ScanViewModel> { factory }
@@ -55,7 +56,7 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
+        val binding = requireBinding()
         binding.viewFinder.doOnLayout {
             scanComponent = ScanComponent(
                     context = requireContext(),
@@ -78,13 +79,16 @@ class ScanFragment : BindingFragment<FragmentScanBinding>() {
         //TODO: hide progress
         when (result) {
             is ChallengeParseResult.Success -> {
-                when (result.value) {
-                    is EnrollmentChallenge -> findNavController().navigate(ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge))
-                    is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate(result.value as AuthenticationChallenge))
+                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                    delay(200L) // delay a bit, otherwise beep sound is cutoff
+                    when (result.value) {
+                        is EnrollmentChallenge -> findNavController().navigate(ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge))
+                        is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate(result.value as AuthenticationChallenge))
+                    }
                 }
             }
             is ChallengeParseResult.Failure -> {
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                         .setTitle(result.failure.title)
                         .setMessage(result.failure.message)
                         .setCancelable(false)
