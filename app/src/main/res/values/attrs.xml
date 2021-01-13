@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BottomBarView">
+        <!-- Show the info icon. (<b>false</b> by default) -->
         <attr name="showInfo" format="boolean"/>
     </declare-styleable>
 

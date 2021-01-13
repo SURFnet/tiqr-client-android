@@ -47,6 +47,7 @@
         android:theme="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         app:backgroundTint="@color/primaryColor"
         app:contentInsetEnd="8dp"
+        app:contentInsetEndWithActions="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
