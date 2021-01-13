@@ -39,7 +39,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.transition.AutoTransition
@@ -51,6 +50,7 @@ import org.tiqr.authenticator.databinding.ActivityMainBinding
 import org.tiqr.authenticator.scan.ScanKeyEventsReceiver
 import org.tiqr.authenticator.scan.ScanFragment
 import org.tiqr.authenticator.util.extensions.currentNavigationFragment
+import org.tiqr.authenticator.util.extensions.getNavController
 
 class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
     private lateinit var navController: NavController
@@ -64,7 +64,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
 
         super.onCreate(savedInstanceState)
 
-        navController = findNavController(R.id.nav_host_fragment)
+        navController = getNavController(R.id.nav_host_fragment)
         with(navController) {
             setSupportActionBar(binding.toolbar)
             setupActionBarWithNavController(this,

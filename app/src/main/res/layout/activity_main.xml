@@ -8,11 +8,12 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        tools:theme="@style/AppTheme">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +27,7 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="org.tiqr.authenticator.base.TiqrNavHostFragment"
             android:layout_width="0dp"
