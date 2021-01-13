@@ -44,7 +44,13 @@ import org.tiqr.data.viewmodel.ViewModelFactory
 /**
  * Base Fragment.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding> : Fragment(), BindingProvider<B> {
+    final override var _binding: B? = null
+        private set
+
+    @get:LayoutRes
+    protected abstract val layout: Int
+
     /**
      * Get the Dagger App Component.
      */
@@ -59,29 +65,19 @@ abstract class BaseFragment : Fragment() {
      */
     protected val factory: ViewModelFactory
         get() = component.viewModeFactory
-}
-
-/**
- * Base Fragment for DataBinding.
- */
-abstract class BindingFragment<B : ViewDataBinding> : BaseFragment() {
-    protected var binding: B? = null
-
-    @get:LayoutRes
-    protected abstract val layout: Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return DataBindingUtil.inflate<B>(inflater, layout, container, false)
                 .apply {
                     lifecycleOwner = viewLifecycleOwner
-                    binding = this
+                    _binding = this
                 }
                 .root
     }
 
     override fun onDestroyView() {
-        binding?.unbind()
-        binding = null
+        _binding?.unbind()
+        _binding = null
 
         super.onDestroyView()
     }

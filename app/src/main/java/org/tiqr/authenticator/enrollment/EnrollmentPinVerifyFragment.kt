@@ -33,12 +33,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinVerifyBinding
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.EnrollmentViewModel
@@ -46,7 +45,7 @@ import org.tiqr.data.viewmodel.EnrollmentViewModel
 /**
  * Fragment to confirm the PIN for the enrollment
  */
-class EnrollmentPinVerifyFragment : BindingFragment<FragmentEnrollmentPinVerifyBinding>() {
+class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBinding>() {
     private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) { factory }
     private val args by navArgs<EnrollmentPinVerifyFragmentArgs>()
 
@@ -56,7 +55,6 @@ class EnrollmentPinVerifyFragment : BindingFragment<FragmentEnrollmentPinVerifyB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.pin.setConfirmListener { pin ->
             if (pin != args.pin) {
                 AlertDialog.Builder(requireContext())

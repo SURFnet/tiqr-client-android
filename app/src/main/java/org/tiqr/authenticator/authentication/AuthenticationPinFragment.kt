@@ -33,11 +33,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationPinBinding
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.AuthenticationViewModel
@@ -45,7 +44,7 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
 /**
  * Fragment to enter the PIN code for the authentication
  */
-class AuthenticationPinFragment : BindingFragment<FragmentAuthenticationPinBinding>() {
+class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>() {
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
 
     @LayoutRes
@@ -54,7 +53,6 @@ class AuthenticationPinFragment : BindingFragment<FragmentAuthenticationPinBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.pin.setConfirmListener { pin ->
             viewModel.authenticate(pin)
         }

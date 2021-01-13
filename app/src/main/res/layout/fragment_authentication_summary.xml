@@ -40,7 +40,7 @@
             app:flow_verticalStyle="packed"
             app:flow_wrapMode="chain"
             app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_button"
+            app:layout_constraintBottom_toTopOf="@id/guideline_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
@@ -121,7 +121,7 @@
             tools:text="&lt;service provider identifier&gt;"
             tools:ignore="MissingConstraints" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_ok"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

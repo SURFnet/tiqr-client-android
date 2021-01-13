@@ -32,12 +32,11 @@ package org.tiqr.authenticator.identity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentIdentityListBinding
 import org.tiqr.authenticator.util.extensions.doOnCameraPermission
 import org.tiqr.data.model.IdentityWithProvider
@@ -46,7 +45,7 @@ import org.tiqr.data.viewmodel.IdentityViewModel
 /**
  * Fragment to displays the list of identities.
  */
-class IdentityListFragment : BindingFragment<FragmentIdentityListBinding>() {
+class IdentityListFragment : BaseFragment<FragmentIdentityListBinding>() {
     private val viewModel by navGraphViewModels<IdentityViewModel>(R.id.identity_nav) { factory }
     private val listAdapter = IdentityListAdapter(::onItemClick, ::onItemDelete)
 
@@ -58,7 +57,6 @@ class IdentityListFragment : BindingFragment<FragmentIdentityListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.list.apply {
             adapter = listAdapter
 

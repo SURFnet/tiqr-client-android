@@ -41,11 +41,11 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * [RecyclerView] decoration which draws the divider on top, bottom and middle.
  */
-class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
+class DividerDecoration(context: Context, private val topDivider: Boolean = true) : RecyclerView.ItemDecoration() {
     private var divider: Drawable? = null
 
     init {
-        context.withStyledAttributes(attrs = intArrayOf(android.R.attr.listDivider)) {
+        context.withStyledAttributes(attrs = intArrayOf(android.R.attr.dividerHorizontal)) {
             divider = getDrawable(0)
         }
     }
@@ -60,7 +60,7 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
         parent.children.forEach { child ->
             val position = parent.getChildLayoutPosition(child)
-            if (position == 0) {
+            if (position == 0 && topDivider) {
                 divider.setBounds(dividerLeft, child.top, dividerRight, child.top + divider.intrinsicHeight)
                 divider.draw(c)
             }

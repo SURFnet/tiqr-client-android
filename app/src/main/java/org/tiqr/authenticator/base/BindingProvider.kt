@@ -27,17 +27,18 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.authenticator.about
+package org.tiqr.authenticator.base
 
-import androidx.annotation.LayoutRes
-import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BaseFragment
-import org.tiqr.authenticator.databinding.FragmentAboutBinding
+import androidx.databinding.ViewDataBinding
 
-/**
- * Fragment to show the about screen.
- */
-class AboutFragment : BaseFragment<FragmentAboutBinding>() {
-    @LayoutRes
-    override val layout = R.layout.fragment_about
+interface BindingProvider<B : ViewDataBinding> {
+    @Suppress("PropertyName")
+    val _binding: B?
+
+    /**
+     * Get the generated binding.
+     *
+     * @throws IllegalStateException if this class doesn't have a generated binding attached.
+     */
+    val binding: B get() = _binding ?: throw IllegalStateException("$this does not have a binding attached")
 }

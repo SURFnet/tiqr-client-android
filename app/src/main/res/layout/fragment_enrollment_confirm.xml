@@ -37,31 +37,32 @@
             android:id="@+id/details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="32dp"
             android:text="@string/enroll_confirm_details"
             android:textStyle="italic"
-            app:layout_constraintBottom_toTopOf="@id/table"
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/table"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             app:constraint_referenced_ids="label_name, name, label_id, id, spacer, label_domain, domain"
             app:flow_horizontalGap="4dp"
             app:flow_horizontalStyle="spread_inside"
             app:flow_maxElementsWrap="2"
+            app:flow_verticalAlign="baseline"
+            app:flow_firstVerticalStyle="spread"
             app:flow_verticalGap="4dp"
             app:flow_verticalStyle="packed"
             app:flow_wrapMode="chain"
             app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_button"
+            app:layout_constraintBottom_toTopOf="@id/guideline_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/details"
             app:layout_constraintVertical_bias="0" />
 
         <TextView
@@ -130,7 +131,7 @@
             tools:ignore="MissingConstraints"
             tools:text="&lt;enrollment url domain&gt;" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_cancel"
             style="@style/AppTheme.Button.White"
             android:layout_width="0dp"
@@ -143,7 +144,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".4" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_ok"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

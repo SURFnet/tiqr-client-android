@@ -37,18 +37,17 @@ import androidx.biometric.BiometricManager
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
 import org.tiqr.authenticator.databinding.FragmentIdentityDetailBinding
 import org.tiqr.data.viewmodel.IdentityViewModel
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityWithProvider
 
 /**
  * Fragment to display the [Identity] details
  */
-class IdentityDetailFragment : BindingFragment<FragmentIdentityDetailBinding>() {
+class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
     private val viewModel by navGraphViewModels<IdentityViewModel>(R.id.identity_nav) { factory }
     private val args by navArgs<IdentityDetailFragmentArgs>()
 
@@ -58,7 +57,6 @@ class IdentityDetailFragment : BindingFragment<FragmentIdentityDetailBinding>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.model = args.identity
 
         viewModel.getIdentity(args.identity.identity.identifier) // Get again to have the flow-livedata active

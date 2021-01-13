@@ -35,14 +35,14 @@ import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentSummaryBinding
 import org.tiqr.data.viewmodel.EnrollmentViewModel
 
 /**
  * Fragment to summarize the enrollment
  */
-class EnrollmentSummaryFragment : BindingFragment<FragmentEnrollmentSummaryBinding>() {
+class EnrollmentSummaryFragment : BaseFragment<FragmentEnrollmentSummaryBinding>() {
     private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) { factory }
 
     @LayoutRes
@@ -51,7 +51,6 @@ class EnrollmentSummaryFragment : BindingFragment<FragmentEnrollmentSummaryBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.viewModel = viewModel
         binding.buttonOk.setOnClickListener {
             findNavController().popBackStack()

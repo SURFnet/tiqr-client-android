@@ -21,7 +21,6 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:padding="8dp"
-            android:textAppearance="@style/AppTheme.TextAppearance.Main"
             app:htmlText="@{viewModel.contentType}"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +29,7 @@
             app:linkifyWeb="@{true}"
             tools:text="@string/start_welcome" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/scan_button"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="0dp"

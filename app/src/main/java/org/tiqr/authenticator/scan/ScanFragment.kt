@@ -56,7 +56,6 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = requireBinding()
         binding.viewFinder.doOnLayout {
             scanComponent = ScanComponent(
                     context = requireContext(),

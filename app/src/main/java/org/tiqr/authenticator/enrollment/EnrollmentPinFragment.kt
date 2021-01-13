@@ -34,20 +34,19 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinBinding
 
 /**
  * Fragment to enter the PIN code for the enrollment
  */
-class EnrollmentPinFragment : BindingFragment<FragmentEnrollmentPinBinding>() {
+class EnrollmentPinFragment : BaseFragment<FragmentEnrollmentPinBinding>() {
     @LayoutRes
     override val layout = R.layout.fragment_enrollment_pin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.pin.setConfirmListener { pin ->
             findNavController().navigate(EnrollmentPinFragmentDirections.actionPinVerify(pin))
         }
