@@ -50,7 +50,7 @@ internal class HeaderInjector : Interceptor {
                 .newBuilder()
                 .apply {
                     header(HEADER_ACCEPT, HEADER_ACCEPT_VALUE)
-                    header(HEADER_PROTOCOL, BuildConfig.PROTOCOL_VERSION)
+                    header(HEADER_PROTOCOL, BuildConfig.PROTOCOL_VERSION.toString())
                 }
                 .run {
                     chain.proceed(this.build())

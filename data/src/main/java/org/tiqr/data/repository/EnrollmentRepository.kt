@@ -197,8 +197,9 @@ class EnrollmentRepository(
                                 ChallengeCompleteResult.failure(this)
                             }
 
-                    when (val protocol = headers()[HEADER_PROTOCOL]) {
-                        null, "1" -> { // Unsupported Ascii-response
+                    if (!BuildConfig.PROTOCOL_COMPATIBILTY_MODE) {
+                        val protocol = headers()[HEADER_PROTOCOL]?.toIntOrNull() ?: 0
+                        if (protocol <= BuildConfig.PROTOCOL_VERSION) {
                             return EnrollmentCompleteFailure(
                                     reason = EnrollmentCompleteFailure.Reason.INVALID_RESPONSE,
                                     title = resources.getString(R.string.error_enroll_title),

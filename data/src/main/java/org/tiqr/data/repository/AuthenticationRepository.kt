@@ -171,12 +171,13 @@ class AuthenticationRepository(
                         ChallengeCompleteResult.failure(this)
                     }
 
-                    when (val protocol = headers()[HeaderInjector.HEADER_PROTOCOL]) {
-                        null, "1" -> { // Unsupported Ascii-response
+                    if (!BuildConfig.PROTOCOL_COMPATIBILTY_MODE) {
+                        val protocol = headers()[HeaderInjector.HEADER_PROTOCOL]?.toIntOrNull() ?: 0
+                        if (protocol <= BuildConfig.PROTOCOL_VERSION) {
                             return AuthenticationCompleteFailure(
                                     reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
                                     title = resources.getString(R.string.error_auth_title),
-                                    message = resources.getString(R.string.error_auth_invalid_protocol, protocol)
+                                    message = resources.getString(R.string.error_auth_invalid_protocol, "v$protocol")
                             ).run {
                                 Timber.e("Error completing authentication, unsupported protocol version: v$protocol")
                                 ChallengeCompleteResult.failure(this)

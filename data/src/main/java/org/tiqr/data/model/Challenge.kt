@@ -37,7 +37,7 @@ import org.tiqr.data.BuildConfig
  * Sealed class for the possible [Challenge]'s
  */
 sealed class Challenge {
-    abstract val protocolVersion: String
+    abstract val protocolVersion: Int
     abstract val identityProvider: IdentityProvider
     abstract val identity: Identity
     abstract val returnUrl: String?
@@ -48,9 +48,9 @@ sealed class Challenge {
  */
 @Parcelize
 data class EnrollmentChallenge(
-        override val protocolVersion: String = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
         override val identity: Identity,
+        override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
         override val returnUrl: String?,
         val enrollmentUrl: String,
         val enrollmentHost: String
@@ -61,7 +61,7 @@ data class EnrollmentChallenge(
  */
 @Parcelize
 data class AuthenticationChallenge(
-        override val protocolVersion: String = BuildConfig.PROTOCOL_VERSION,
+        override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
         override val identity: Identity,
         override val returnUrl: String?,
