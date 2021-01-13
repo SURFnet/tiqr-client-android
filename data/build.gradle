@@ -3,7 +3,7 @@ import org.tiqr.authenticator.buildsrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -63,10 +63,6 @@ android {
             freeCompilerArgs = ["-Xinline-classes"]
         }
     }
-}
-
-androidExtensions {
-    features = ["parcelize"]
 }
 
 dependencies {

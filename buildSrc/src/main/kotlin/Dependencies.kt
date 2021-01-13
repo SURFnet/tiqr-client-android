@@ -1,14 +1,14 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.3.72"
-private const val navigationVersion = "2.3.0-alpha05"
+private const val kotlinVersion = "1.4.20"
+private const val navigationVersion = "2.3.2"
 
 object Versions {
     // Android
-    const val compileSdkVersion = 29
-    const val targetSdkVersion = 29
+    const val compileSdkVersion = 30
+    const val targetSdkVersion = 30
     const val minSdkVersion = 21
-    const val buildToolsVersion = "29.0.3"
+    const val buildToolsVersion = "30.0.3"
 
     // Libs
     const val firebaseCore = "17.2.0"
@@ -17,7 +17,7 @@ object Versions {
 
 object Plugins {
     private val gradleAndroidVersion
-        get() = Properties.gradleAndroidPluginVersion ?: "3.6.3"
+        get() = Properties.gradleAndroidPluginVersion ?: "4.1.1"
 
     val android = "com.android.tools.build:gradle:$gradleAndroidVersion"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -33,7 +33,7 @@ object Libs {
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
         object Coroutines {
-            private const val version = "1.3.4"
+            private const val version = "1.4.2"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$version"
@@ -43,18 +43,19 @@ object Libs {
 
     object AndroidX {
         const val activity = "androidx.activity:activity-ktx:1.1.0"
-        const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
-        const val core = "androidx.core:core-ktx:1.2.0"
-        const val browser = "androidx.browser:browser:1.2.0"
+        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+        const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
+        const val core = "androidx.core:core-ktx:1.3.2"
+        const val browser = "androidx.browser:browser:1.3.0"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-        const val biometric = "androidx.biometric:biometric:1.0.1"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
-        const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0-alpha01"
+        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha01" //contains important changes
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+        const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
         const val autofill = "androidx.autofill:autofill:1.0.0"
+        const val localBroadcastManager = "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.2.6"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
@@ -86,7 +87,7 @@ object Libs {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.1.0"
+        const val material = "com.google.android.material:material:1.2.1"
 
         object MlKit {
             const val barcode = "com.google.mlkit:barcode-scanning:16.1.0"
@@ -100,27 +101,27 @@ object Libs {
     }
 
     object OkHttp {
-        private const val version = "4.5.0"
+        private const val version = "4.9.0"
         const val okhttp = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
     }
 
     object Retrofit {
-        private const val version = "2.8.1"
+        private const val version = "2.9.0"
         const val retrofit = "com.squareup.retrofit2:retrofit:$version"
         const val converterScalars = "com.squareup.retrofit2:converter-scalars:$version"
         const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$version"
     }
 
     object Moshi {
-        private const val version = "1.9.2"
+        private const val version = "1.11.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
         const val adapters = "com.squareup.moshi:moshi-adapters:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
 
     object Dagger {
-        private const val version = "2.27"
+        private const val version = "2.30.1"
         const val dagger = "com.google.dagger:dagger:$version"
         const val android = "com.google.dagger:dagger-android:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -130,7 +131,7 @@ object Libs {
     }
 
     object Assisted {
-        private const val version = "0.5.2"
+        private const val version = "0.6.0"
         const val inject = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
         const val compiler = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
     }
@@ -141,11 +142,13 @@ object Libs {
     }
 
     object Permission {
-        const val kPermissions = "com.github.fondesa:kpermissions:2.0.2"
+        private const val version = "3.1.3"
+        const val kPermissions = "com.github.fondesa:kpermissions:$version"
+        const val kPermissionsCoroutines = "com.github.fondesa:kpermissions-coroutines:$version"
     }
 
     object Image {
-        const val coil = "io.coil-kt:coil:0.10.0"
+        const val coil = "io.coil-kt:coil:1.1.1"
     }
 
     const val betterLink = "me.saket:better-link-movement-method:2.2.0"
