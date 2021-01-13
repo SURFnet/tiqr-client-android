@@ -33,17 +33,15 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.annotation.CheckResult
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.fondesa.kpermissions.extension.onAccepted
-import com.fondesa.kpermissions.extension.onDenied
-import com.fondesa.kpermissions.extension.onPermanentlyDenied
-import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.anyDenied
+import com.fondesa.kpermissions.anyGranted
+import com.fondesa.kpermissions.anyPermanentlyDenied
+import com.fondesa.kpermissions.extension.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import timber.log.Timber
 
@@ -53,15 +51,15 @@ import timber.log.Timber
  * @param permission A permission from [android.Manifest.permission]
  */
 @CheckResult
-fun Context.hasPermission(permission: String): Boolean {
-    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+fun FragmentActivity.hasPermission(permission: String): Boolean {
+    return checkPermissionsStatus(permission).anyGranted()
 }
 
 /**
  * Check for camera permission
  */
 @CheckResult
-fun Context.hasCameraPermission() = hasPermission(Manifest.permission.CAMERA)
+fun FragmentActivity.hasCameraPermission() = hasPermission(Manifest.permission.CAMERA)
 
 /**
  * Open the app settings for this app.
@@ -87,17 +85,17 @@ fun Context.openAppSystemSettings() {
  * otherwise ask the permission and handle the user interaction.
  */
 inline fun FragmentActivity.doOnCameraPermission(crossinline onGranted: () -> Unit) {
-    if (hasPermission(Manifest.permission.CAMERA)) {
-        onGranted.invoke()
-    } else {
-        permissionsBuilder(Manifest.permission.CAMERA)
-                .build()
-                .apply {
-                    onAccepted { onGranted.invoke() }
-                    onDenied { Timber.i("User has denied Camera permission") }
-                    onPermanentlyDenied {
+    with(permissionsBuilder(Manifest.permission.CAMERA).build()) {
+        if (checkStatus().anyGranted()) {
+            onGranted.invoke()
+        } else {
+            send { result ->
+                when {
+                    result.anyGranted() -> onGranted.invoke()
+                    result.anyDenied() -> Timber.i("User has denied Camera permission")
+                    result.anyPermanentlyDenied() -> {
                         Timber.e("User has denied Camera permission permanently")
-                        AlertDialog.Builder(this@doOnCameraPermission)
+                        MaterialAlertDialogBuilder(this@doOnCameraPermission)
                                 .setTitle(R.string.scan_permission_required_title)
                                 .setMessage(R.string.scan_permission_required_message)
                                 .setPositiveButton(R.string.scan_permission_required_settings) { _, _ ->
@@ -107,8 +105,8 @@ inline fun FragmentActivity.doOnCameraPermission(crossinline onGranted: () -> Un
                                 .setNegativeButton(R.string.scan_permission_required_dismiss, null)
                                 .show()
                     }
-                }.run {
-                    send()
                 }
+            }
+        }
     }
 }

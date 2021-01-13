@@ -48,7 +48,7 @@ import androidx.transition.TransitionListenerAdapter
 import androidx.transition.TransitionManager
 import org.tiqr.authenticator.base.BindingActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
-import org.tiqr.authenticator.scan.CameraKeyEventsReceiver
+import org.tiqr.authenticator.scan.ScanKeyEventsReceiver
 import org.tiqr.authenticator.scan.ScanFragment
 import org.tiqr.authenticator.util.extensions.currentNavigationFragment
 
@@ -118,13 +118,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDes
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (supportFragmentManager.currentNavigationFragment<ScanFragment>() != null) {
-                    CameraKeyEventsReceiver.createEvent(keyCode).run {
+                    ScanKeyEventsReceiver.createEvent(keyCode).run {
                         LocalBroadcastManager.getInstance(this@MainActivity)
                                 .sendBroadcast(this)
                     }
                     true // Mark as handled since we sent the broadcast because currently scanning
                 } else {
-                    false
+                    super.onKeyDown(keyCode, event)
                 }
             }
             else -> super.onKeyDown(keyCode, event)

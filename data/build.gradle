@@ -27,18 +27,6 @@ android {
 
         buildConfigField "String", "TIQR_ENROLL_SCHEME", "\"${project.schemeEnroll}://\""
         buildConfigField "String", "TIQR_AUTH_SCHEME", "\"${project.schemeAuth}://\""
-
-        kapt {
-            correctErrorTypes = true
-            useBuildCache = true
-            javacOptions {
-                option("-Xmaxerrs", 1000)
-            }
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-                arg("room.incremental", "true")
-            }
-        }
     }
 
     buildTypes {
@@ -48,13 +36,32 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
+
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+
+        javacOptions {
+            option("-Xmaxerrs", 1000)
+        }
+
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+            arg("room.incremental", "true")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
-    }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = ["-Xinline-classes"]
+        }
     }
 }
 
