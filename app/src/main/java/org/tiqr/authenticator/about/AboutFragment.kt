@@ -31,13 +31,13 @@ package org.tiqr.authenticator.about
 
 import androidx.annotation.LayoutRes
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAboutBinding
 
 /**
  * Fragment to show the about screen.
  */
-class AboutFragment : BindingFragment<FragmentAboutBinding>() {
+class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     @LayoutRes
     override val layout = R.layout.fragment_about
 }

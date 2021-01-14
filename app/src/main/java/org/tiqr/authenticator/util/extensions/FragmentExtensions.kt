@@ -29,8 +29,25 @@
 
 package org.tiqr.authenticator.util.extensions
 
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+
+/**
+ * Get the [NavController] when using FragmentContainerView
+ */
+fun FragmentActivity.getNavController(@IdRes viewId: Int): NavController {
+    val fragment = supportFragmentManager.findFragmentById(viewId)
+    return if (fragment is NavHostFragment) {
+        fragment.navController
+    } else {
+        findNavController(viewId)
+    }
+}
 
 /**
  * Get the current fragment in navigation

@@ -31,7 +31,7 @@ package org.tiqr.data.model
 
 import android.os.Parcelable
 import androidx.room.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Identity model and entity.

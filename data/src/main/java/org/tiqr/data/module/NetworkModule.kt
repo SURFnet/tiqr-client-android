@@ -39,14 +39,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.api.interceptor.HeaderInjector
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.adapter.AuthenticationResponseAdapter
+import org.tiqr.data.api.adapter.EnrollmentResponseAdapter
 import org.tiqr.data.api.adapter.addValueEnum
 import org.tiqr.data.api.interceptor.UserAgentInjector
 import org.tiqr.data.di.ApiScope
 import org.tiqr.data.di.BaseScope
 import org.tiqr.data.di.TokenScope
 import org.tiqr.data.model.AuthenticationResponse
+import org.tiqr.data.model.EnrollmentRequestJsonAdapter
 import org.tiqr.data.model.EnrollmentResponse
-import org.tiqr.data.util.extension.callFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -135,6 +137,8 @@ internal object NetworkModule {
     @Provides
     @Singleton
     internal fun provideMoshi(): Moshi = Moshi.Builder()
+            .add(EnrollmentResponseAdapter.create())
+            .add(AuthenticationResponseAdapter.create())
             .addValueEnum(EnrollmentResponse.Code::class, EnrollmentResponse.Code.ENROLL_RESULT_INVALID_RESPONSE)
             .addValueEnum(AuthenticationResponse.Code::class, AuthenticationResponse.Code.AUTH_RESULT_INVALID_RESPONSE)
             .build()
@@ -159,7 +163,7 @@ internal object NetworkModule {
         return retrofit.newBuilder()
                 .callFactory { client.get().newCall(it) }
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(if (BuildConfig.PROTOCOL_COMPATIBILTY_MODE) MoshiConverterFactory.create(moshi).asLenient() else MoshiConverterFactory.create(moshi))
                 .baseUrl(BuildConfig.BASE_URL) //Dummy base URL, since each api call uses its own url
                 .build()
     }

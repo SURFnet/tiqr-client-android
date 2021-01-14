@@ -37,7 +37,7 @@
             android:id="@+id/table"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="48dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             app:constraint_referenced_ids="label_name, name, label_id, id, spacer, label_to, service_provider_name, service_provider_identifier"
@@ -48,10 +48,10 @@
             app:flow_verticalStyle="packed"
             app:flow_wrapMode="chain"
             app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_button"
+            app:layout_constraintBottom_toTopOf="@id/guideline_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
             app:layout_constraintVertical_bias="0"
             tools:ignore="MissingConstraints" />
 
@@ -129,7 +129,7 @@
             tools:ignore="MissingConstraints"
             tools:text="&lt;service provider identifier&gt;" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_cancel"
             style="@style/AppTheme.Button.White"
             android:layout_width="0dp"
@@ -142,7 +142,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent=".4" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button_ok"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

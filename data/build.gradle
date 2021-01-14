@@ -3,7 +3,7 @@ import org.tiqr.authenticator.buildsrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -23,22 +23,11 @@ android {
         buildConfigField "String", "TOKEN_EXCHANGE_APP_ID", "\"tiqr\""
 
         buildConfigField "String", "BASE_URL", "\"https://demo.tiqr.org\""
-        buildConfigField "String", "PROTOCOL_VERSION", "\"2\""
+        buildConfigField "int", "PROTOCOL_VERSION", "2"
+        buildConfigField "boolean", "PROTOCOL_COMPATIBILTY_MODE", "true"
 
         buildConfigField "String", "TIQR_ENROLL_SCHEME", "\"${project.schemeEnroll}://\""
         buildConfigField "String", "TIQR_AUTH_SCHEME", "\"${project.schemeAuth}://\""
-
-        kapt {
-            correctErrorTypes = true
-            useBuildCache = true
-            javacOptions {
-                option("-Xmaxerrs", 1000)
-            }
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-                arg("room.incremental", "true")
-            }
-        }
     }
 
     buildTypes {
@@ -48,18 +37,33 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
+
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+
+        javacOptions {
+            option("-Xmaxerrs", 1000)
+        }
+
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+            arg("room.incremental", "true")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
-    }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = ["-Xinline-classes"]
+        }
     }
-}
-
-androidExtensions {
-    features = ["parcelize"]
 }
 
 dependencies {

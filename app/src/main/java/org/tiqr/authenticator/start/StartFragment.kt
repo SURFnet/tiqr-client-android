@@ -36,21 +36,19 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentStartBinding
 import org.tiqr.authenticator.util.extensions.doOnCameraPermission
 import org.tiqr.data.viewmodel.StartViewModel
-import timber.log.Timber
 
 /**
  * Fragment to handle main screen and button to qr-scanner.
  */
 @ExperimentalCoroutinesApi
-class StartFragment : BindingFragment<FragmentStartBinding>() {
+class StartFragment : BaseFragment<FragmentStartBinding>() {
     private val viewModel by activityViewModels<StartViewModel> { component.viewModeFactory }
 
     @LayoutRes
@@ -63,8 +61,6 @@ class StartFragment : BindingFragment<FragmentStartBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val binding = binding ?: return
 
         binding.viewModel = viewModel.apply {
             identityCount.observe(viewLifecycleOwner) {

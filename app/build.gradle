@@ -3,8 +3,8 @@ import org.tiqr.authenticator.buildsrc.Versions
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
@@ -26,33 +26,6 @@ android {
 
         // only package supported languages
         resConfigs "en", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr"
-
-        dataBinding {
-            enabled = true
-        }
-
-        kapt {
-            correctErrorTypes = true
-            useBuildCache = true
-            javacOptions {
-                option("-Xmaxerrs", 1000)
-            }
-        }
-    }
-
-    lintOptions {
-        // TODO: reset lintOptions to default
-        //checkReleaseBuilds false
-        abortOnError false
-    }
-
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -60,6 +33,33 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = true
+        javacOptions {
+            option("-Xmaxerrs", 1000)
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    lintOptions {
+        // TODO: reset lintOptions to default
+        //checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -76,6 +76,7 @@ dependencies {
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.futures
     implementation Libs.AndroidX.autofill
+    implementation Libs.AndroidX.localBroadcastManager
     implementation Libs.AndroidX.Camera.core
     implementation Libs.AndroidX.Camera.camera2
     implementation Libs.AndroidX.Camera.view
@@ -85,8 +86,7 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.liveData
     implementation Libs.AndroidX.Lifecycle.commonJ8
     implementation Libs.Google.material
-    implementation Libs.Google.Firebase.vision
-    implementation Libs.Google.Firebase.barcode
+    implementation Libs.Google.MlKit.barcode
 
     implementation project(':data')
 

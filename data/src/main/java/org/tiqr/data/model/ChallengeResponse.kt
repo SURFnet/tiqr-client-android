@@ -41,7 +41,7 @@ sealed class ChallengeResponse<T> {
 }
 
 /**
- * Model for mapping response for  enrollment challenges.
+ * Model for mapping response for enrollment challenges.
  */
 @JsonClass(generateAdapter = true)
 data class EnrollmentResponse(

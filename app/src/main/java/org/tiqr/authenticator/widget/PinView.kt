@@ -31,12 +31,11 @@ package org.tiqr.authenticator.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.text.*
 import android.text.method.PasswordTransformationMethod
-import android.text.method.SingleLineTransformationMethod
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.KeyEvent
@@ -53,11 +52,9 @@ import androidx.annotation.RequiresApi
 import androidx.autofill.HintConstants
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.getSystemService
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.os.postDelayed
 import org.tiqr.authenticator.R
-import org.tiqr.data.algorithm.Verhoeff.generateVerhoeff
 
 /**
  * This composite view advertises itself as a text editor,
@@ -65,11 +62,10 @@ import org.tiqr.data.algorithm.Verhoeff.generateVerhoeff
  */
 class PinView : ConstraintLayout {
     companion object {
-        private const val CHAR_X = "X"
         private const val CHAR_EMPTY = ""
 
         private const val PIN_LENGTH = 4
-        private const val PIN_FADE_DURATION = 1_500L
+        private const val PIN_FADE_DURATION = 300L
     }
 
     constructor(context: Context) : this(context, null)
@@ -84,16 +80,20 @@ class PinView : ConstraintLayout {
     private val pinInput: Editable
     private val ok: Button
     private val pins: List<TextView>
-
-    private val fadeHandler = Handler()
-    private val typefaceDefault = Typeface.defaultFromStyle(Typeface.NORMAL)
-    private val typefaceAnimals = if (isInEditMode) typefaceDefault else ResourcesCompat.getFont(context, R.font.animals)
+    private val fadeHandler = Handler(Looper.getMainLooper())
 
     private val inputMethodManager = context.getSystemService<InputMethodManager>()
     private val gestureDetector = GestureDetector(context, PinGestureDetector { focusAndShowKeyboard() })
     private val inputWatcher = PinInputWatcher { updatePinDisplay() }
     private var showKeyboardDelayed = false
+    private var pinLength: Int = 0
     private var onConfirmListener: ((String) -> Unit)? = null
+
+    /**
+     * Get the current pin
+     */
+    val currentPin: String
+        get() = pinInput.toString()
 
     init {
         View.inflate(context, R.layout.view_pin, this)
@@ -178,45 +178,33 @@ class PinView : ConstraintLayout {
      * Update the pins after text changes.
      */
     private fun updatePinDisplay() {
-        fun verificationCharForPin(pin: String): String {
-            val table = "$',^onljDP"
-            val location = pin.generateVerhoeff()
-            return table.substring(location, location + 1)
-        }
-
         fadeHandler.removeCallbacksAndMessages(null)
 
-        val pin = pinInput.toString()
-        val animalIndex = pin.lastIndex
-
         pins.forEachIndexed { index, textView ->
-            when {
-                index == animalIndex -> {
+            textView.text = pinInput.getOrNull(index)?.toString()
+            textView.transformationMethod = PasswordTransformationMethod.getInstance()
+
+            when (index) {
+                pinInput.lastIndex -> {
                     textView.isSelected = false
-                    textView.text = verificationCharForPin(pin)
-                    textView.typeface = typefaceAnimals
-                    textView.transformationMethod = SingleLineTransformationMethod.getInstance()
-                    fadeHandler.postDelayed(PIN_FADE_DURATION) {
-                        textView.text = CHAR_X
-                        textView.typeface = typefaceDefault
+                    textView.transformationMethod = null
+                    if (pinLength < pinInput.length) {
+                        fadeHandler.postDelayed(PIN_FADE_DURATION) {
+                            textView.transformationMethod = PasswordTransformationMethod.getInstance()
+                        }
+                    } else {
                         textView.transformationMethod = PasswordTransformationMethod.getInstance()
                     }
                 }
-                index < pin.length -> {
-                    textView.isSelected = false
-                    textView.text = CHAR_X
-                    textView.typeface = typefaceDefault
-                    textView.transformationMethod = PasswordTransformationMethod.getInstance()
-
-                }
                 else -> {
-                    textView.text = CHAR_EMPTY
-                    textView.isSelected = index == animalIndex + 1
+                    textView.isSelected = index == pinInput.lastIndex + 1
+                    textView.transformationMethod = PasswordTransformationMethod.getInstance()
                 }
             }
         }
 
-        ok.isEnabled = pin.length == PIN_LENGTH
+        ok.isEnabled = pinInput.length == PIN_LENGTH
+        pinLength = pinInput.length
     }
 
     /**

@@ -47,12 +47,11 @@
         style="@style/AppTheme.Widget.Pin"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        tools:fontFamily="@font/animals"
         tools:ignore="MissingConstraints"
         tools:inputType="text"
         tools:text="4" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/pin_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

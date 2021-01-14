@@ -42,7 +42,7 @@ import androidx.databinding.BindingAdapter
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
@@ -119,10 +119,10 @@ fun View.openBrowser(url: String) {
 /**
  * Add dividers
  */
-@BindingAdapter(value = ["dividers"])
-fun RecyclerView.dividers(enable: Boolean) {
+@BindingAdapter(value = ["dividers", "topDivider"], requireAll = false)
+fun RecyclerView.dividers(enable: Boolean, topDivider: Boolean = true) {
     if (enable) {
-        addItemDecoration(DividerDecoration(context))
+        addItemDecoration(DividerDecoration(context, topDivider))
     }
 }
 

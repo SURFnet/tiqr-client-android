@@ -101,7 +101,10 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
          */
         private fun Context.isChromeCustomTabSupported(): Boolean {
             // Get default VIEW intent handler that can view a web url.
-            val activityIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+            val activityIntent = Intent()
+                    .setAction(Intent.ACTION_VIEW)
+                    .addCategory(Intent.CATEGORY_BROWSABLE)
+                    .setData(Uri.fromParts("http", "", null))
 
             // Get all apps that can handle VIEW intents.
             val pm = packageManager

@@ -36,12 +36,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableBottom="@drawable/logo_tiqr_small"
                     android:drawablePadding="@dimen/default_padding"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/default_padding"
-                    android:textAppearance="@style/AppTheme.TextAppearance.About"
+                    android:textAppearance="@style/AppTheme.TextAppearance.Label"
                     app:appName="@{@string/app_name}"
+                    app:drawableBottomCompat="@drawable/logo_tiqr_small"
                     tools:text="tiqr &#8226; v4.0.0" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -57,12 +57,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableBottom="@drawable/ic_surfnet"
                     android:drawablePadding="@dimen/default_padding"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/default_padding"
                     android:text="@string/about_label_provided_by"
-                    android:textAppearance="@style/AppTheme.TextAppearance.About" />
+                    android:textAppearance="@style/AppTheme.TextAppearance.Label"
+                    app:drawableBottomCompat="@drawable/ic_surfnet" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -77,12 +77,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableBottom="@drawable/logo_egeniq"
                     android:drawablePadding="@dimen/default_padding"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/default_padding"
                     android:text="@string/about_label_developed_by"
-                    android:textAppearance="@style/AppTheme.TextAppearance.About" />
+                    android:textAppearance="@style/AppTheme.TextAppearance.Label"
+                    app:drawableBottomCompat="@drawable/logo_egeniq" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -97,12 +97,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableBottom="@drawable/logo_keen_design"
                     android:drawablePadding="@dimen/default_padding"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/default_padding"
                     android:text="@string/about_label_interaction_by"
-                    android:textAppearance="@style/AppTheme.TextAppearance.About" />
+                    android:textAppearance="@style/AppTheme.TextAppearance.Label"
+                    app:drawableBottomCompat="@drawable/logo_keen_design" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

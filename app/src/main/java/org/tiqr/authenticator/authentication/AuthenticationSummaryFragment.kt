@@ -33,17 +33,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationSummaryBinding
+import org.tiqr.authenticator.util.extensions.biometricUsable
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
- * Fragment to summarize the authorisation
+ * Fragment to summarize the authentication
  */
-class AuthenticationSummaryFragment : BindingFragment<FragmentAuthenticationSummaryBinding>() {
+class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummaryBinding>() {
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
+    private val args by navArgs<AuthenticationSummaryFragmentArgs>()
 
     @LayoutRes
     override val layout = R.layout.fragment_authentication_summary
@@ -51,7 +55,6 @@ class AuthenticationSummaryFragment : BindingFragment<FragmentAuthenticationSumm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
         binding.viewModel = viewModel
 
         binding.buttonOk.setOnClickListener {

@@ -36,12 +36,11 @@ import androidx.camera.core.ImageProxy
 import androidx.core.graphics.toRect
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
+import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -58,15 +57,14 @@ class ScanAnalyzer(
         private val result: (String) -> Unit
 ) : ImageAnalysis.Analyzer {
     private val lifecycleScope = lifecycleOwner.lifecycleScope
-    private val detector: FirebaseVisionBarcodeDetector
+    private val detector: BarcodeScanner
 
     init {
-        detector = FirebaseVisionBarcodeDetectorOptions.Builder()
-                .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
+        detector = BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
                 .build()
                 .run {
-                    FirebaseVision.getInstance()
-                            .getVisionBarcodeDetector(this)
+                    BarcodeScanning.getClient(this)
                 }
     }
 
@@ -74,13 +72,13 @@ class ScanAnalyzer(
     override fun analyze(image: ImageProxy) {
         image.image?.let { scanned ->
             lifecycleScope.launch {
-                val rotation = image.imageInfo.rotationDegrees.toFirebaseRotation()
-                val isPortrait = rotation.isOrientationPortrait()
+                val rotation = image.imageInfo.rotationDegrees
+                val isPortrait = rotation.isPortrait()
                 val width = if (isPortrait) scanned.height else scanned.width
                 val height = if (isPortrait) scanned.width else scanned.height
 
                 try {
-                    detector.detectInImage(FirebaseVisionImage.fromMediaImage(scanned, rotation)).await()
+                    detector.process(InputImage.fromMediaImage(scanned, rotation)).await()
                             .run {
                                 val barcode = firstOrNull() ?: return@run
                                 val barcodeBox = barcode.boundingBox
@@ -115,25 +113,11 @@ class ScanAnalyzer(
     }
 
     /**
-     * Convert the rotation from the camera to a rotation Firebase understands.
-     */
-    private fun Int.toFirebaseRotation(): Int {
-        return when (this) {
-            0 -> FirebaseVisionImageMetadata.ROTATION_0
-            90 -> FirebaseVisionImageMetadata.ROTATION_90
-            180 -> FirebaseVisionImageMetadata.ROTATION_180
-            270 -> FirebaseVisionImageMetadata.ROTATION_270
-            else -> FirebaseVisionImageMetadata.ROTATION_0
-        }
-    }
-
-    /**
      * Detect if the orientation is portrait.
      */
-    private fun Int.isOrientationPortrait(): Boolean {
+    private fun Int.isPortrait(): Boolean {
         return when (this) {
-            FirebaseVisionImageMetadata.ROTATION_90,
-            FirebaseVisionImageMetadata.ROTATION_270 -> true
+            90, 270 -> true
             else -> false
         }
     }

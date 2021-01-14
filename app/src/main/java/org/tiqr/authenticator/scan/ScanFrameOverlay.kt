@@ -41,7 +41,7 @@ import org.tiqr.authenticator.R
 /**
  * Overlay view for displaying a scan-frame.
  */
-class ScanOverlay : View {
+class ScanFrameOverlay : View {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)

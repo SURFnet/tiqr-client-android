@@ -27,18 +27,18 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.util.extension
+package org.tiqr.authenticator.base
 
-import com.squareup.moshi.JsonReader
+import androidx.databinding.ViewDataBinding
 
-/**
- * Runs this [JsonReader] in [JsonReader.lenient] mode while processing this [block]
- */
-inline fun <T> JsonReader.inLenient(block: JsonReader.() -> T): T {
-    try {
-        isLenient = true
-        return block()
-    } finally {
-        isLenient = false
-    }
+interface BindingProvider<B : ViewDataBinding> {
+    @Suppress("PropertyName")
+    val _binding: B?
+
+    /**
+     * Get the generated binding.
+     *
+     * @throws IllegalStateException if this class doesn't have a generated binding attached.
+     */
+    val binding: B get() = _binding ?: throw IllegalStateException("$this does not have a binding attached")
 }

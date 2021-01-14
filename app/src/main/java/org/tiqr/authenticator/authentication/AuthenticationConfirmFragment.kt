@@ -36,7 +36,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.base.BindingFragment
+import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
 import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.viewmodel.AuthenticationViewModel
@@ -44,7 +44,7 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
 /**
  * Fragment to review and confirm the authentication
  */
-class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfirmBinding>() {
+class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmBinding>() {
     private val args by navArgs<AuthenticationConfirmFragmentArgs>()
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) {
         component.challengeViewModel(args.challenge)
@@ -56,10 +56,7 @@ class AuthenticationConfirmFragment: BindingFragment<FragmentAuthenticationConfi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
-        with(viewModel) {
-            binding.viewModel = this
-        }
+        binding.viewModel = viewModel
 
         binding.buttonCancel.setOnClickListener {
             findNavController().popBackStack()
