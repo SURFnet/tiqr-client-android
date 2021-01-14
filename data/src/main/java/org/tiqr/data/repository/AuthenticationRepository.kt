@@ -179,7 +179,7 @@ class AuthenticationRepository(
                         ChallengeCompleteResult.failure(this)
                     }
 
-                    if (!BuildConfig.PROTOCOL_COMPATIBILTY_MODE) {
+                    if (!BuildConfig.PROTOCOL_COMPATIBILITY_MODE) {
                         val protocol = headers()[HeaderInjector.HEADER_PROTOCOL]?.toIntOrNull() ?: 0
                         if (protocol <= BuildConfig.PROTOCOL_VERSION) {
                             return AuthenticationCompleteFailure(

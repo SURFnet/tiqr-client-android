@@ -163,7 +163,7 @@ internal object NetworkModule {
         return retrofit.newBuilder()
                 .callFactory { client.get().newCall(it) }
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(if (BuildConfig.PROTOCOL_COMPATIBILTY_MODE) MoshiConverterFactory.create(moshi).asLenient() else MoshiConverterFactory.create(moshi))
+                .addConverterFactory(if (BuildConfig.PROTOCOL_COMPATIBILITY_MODE) MoshiConverterFactory.create(moshi).asLenient() else MoshiConverterFactory.create(moshi))
                 .baseUrl(BuildConfig.BASE_URL) //Dummy base URL, since each api call uses its own url
                 .build()
     }
