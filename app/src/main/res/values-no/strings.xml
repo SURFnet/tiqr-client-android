@@ -75,6 +75,7 @@
     <string name="auth_confirm_title">Sikker på du vil logge inn?</string>
     <string name="auth_confirm_subtitle">Du blir logget inn som:</string>
     <string name="auth_confirm_to">til:</string>
+    <string name="auth_confirm_select_identity">Velg identitet</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Vennligst angi pinkode</string>

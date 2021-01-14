@@ -74,6 +74,7 @@
     <string name="auth_confirm_title">Skutočne sa chcete prihlásiť?</string>
     <string name="auth_confirm_subtitle">Budete prihlásený/á ako:</string>
     <string name="auth_confirm_to">k:</string>
+    <string name="auth_confirm_select_identity">Vyberte identitu</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Zadajte, prosím, váš PIN</string>

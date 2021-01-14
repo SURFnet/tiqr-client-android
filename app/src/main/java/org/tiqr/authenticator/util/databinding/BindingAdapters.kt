@@ -37,6 +37,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.text.parseAsHtml
 import androidx.databinding.BindingAdapter
 import androidx.navigation.Navigation
@@ -122,7 +123,8 @@ fun View.openBrowser(url: String) {
 @BindingAdapter(value = ["dividers", "topDivider"], requireAll = false)
 fun RecyclerView.dividers(enable: Boolean, topDivider: Boolean = true) {
     if (enable) {
-        addItemDecoration(DividerDecoration(context, topDivider))
+        // Requires ContextThemeWrapper because in Dialogs android.R.attr.dividerHorizontal is null
+        addItemDecoration(DividerDecoration(ContextThemeWrapper(context, R.style.AppTheme), topDivider))
     }
 }
 
@@ -131,8 +133,8 @@ fun RecyclerView.dividers(enable: Boolean, topDivider: Boolean = true) {
  */
 @BindingAdapter(value = ["header"])
 fun RecyclerView.header(@LayoutRes view: Int) {
-    LayoutInflater.from(context).inflate(view, null).apply {
-        addItemDecoration(HeaderViewDecoration(this))
+    LayoutInflater.from(context).inflate(view, this, false).also {
+        addItemDecoration(HeaderViewDecoration(it, this))
     }
 }
 

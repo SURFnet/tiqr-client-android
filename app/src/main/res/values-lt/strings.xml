@@ -71,6 +71,7 @@
     <string name="auth_confirm_title">Ar tikrai norite prisijungti?</string>
     <string name="auth_confirm_subtitle">Jūs būsite prisijungęs kaip:</string>
     <string name="auth_confirm_to">iki:</string>
+    <string name="auth_confirm_select_identity">Pasirinkite tapatybę</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Įveskite savo PIN</string>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Código QR desconocido</string>
-    <string name="error_qr_unknown">Código QR desconocido</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Vaya casque</string>
     <string name="error_security_standards">El dispositivo no es compatible con los requisitos de seguridad.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Código QR desconocido</string>
+    <string name="error_qr_unknown">Código QR desconocido</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registro fallido</string>

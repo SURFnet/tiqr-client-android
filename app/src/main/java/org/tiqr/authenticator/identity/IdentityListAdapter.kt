@@ -35,7 +35,6 @@ import android.graphics.drawable.ColorDrawable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
@@ -43,6 +42,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.databinding.ListItemIdentityBinding
 import org.tiqr.authenticator.util.extensions.getThemeColor
@@ -113,7 +113,7 @@ class IdentityListAdapter(
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.adapterPosition
 
-            AlertDialog.Builder(viewHolder.itemView.context)
+            MaterialAlertDialogBuilder(viewHolder.itemView.context)
                     .setTitle(R.string.identity_delete_title)
                     .setMessage(R.string.identity_delete_message)
                     .setNegativeButton(R.string.button_cancel) { dialog, _ ->

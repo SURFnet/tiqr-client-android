@@ -32,17 +32,16 @@ package org.tiqr.authenticator.identity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
-import androidx.biometric.BiometricManager
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.databinding.FragmentIdentityDetailBinding
 import org.tiqr.data.viewmodel.IdentityViewModel
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.base.BaseFragment
+import org.tiqr.authenticator.util.extensions.biometricUsable
 import org.tiqr.data.model.Identity
-import org.tiqr.data.model.IdentityWithProvider
 
 /**
  * Fragment to display the [Identity] details
@@ -64,9 +63,7 @@ class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
             it?.let { identity ->
                 binding.model = identity
                 binding.executePendingBindings()
-                binding.hasBiometric = BiometricManager.from(requireContext()).run {
-                    canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
-                }
+                binding.hasBiometric = requireContext().biometricUsable()
                 binding.hasBiometricSecret = viewModel.hasBiometricSecret(identity.identity)
             } ?: findNavController().popBackStack()
         }
@@ -80,17 +77,12 @@ class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
         }
 
         binding.buttonDelete.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.identity_delete_title)
                     .setMessage(R.string.identity_delete_message)
                     .setNegativeButton(R.string.button_cancel) { dialog, _ -> dialog.dismiss() }
                     .setPositiveButton(R.string.button_delete) { _, _ -> viewModel.deleteIdentity(args.identity.identity) }
                     .show()
         }
-    }
-
-    private fun bind(binding: FragmentIdentityDetailBinding, identity: IdentityWithProvider) {
-        binding.model = identity
-        binding.executePendingBindings()
     }
 }

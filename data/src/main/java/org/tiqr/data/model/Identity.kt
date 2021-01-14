@@ -38,7 +38,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Entity(tableName = "identity",
         indices = [
-                Index(value = ["_id"], name = "index_identity__id", unique = true),
+                Index(value = ["_id"], name = "index_identity_id", unique = true),
                 Index(value = ["identifier"], name = "index_identity_identifier"),
                 Index(value = ["identityProvider"], name = "index_identity_identityProvider")
         ],
@@ -47,7 +47,7 @@ import kotlinx.parcelize.Parcelize
                     entity = IdentityProvider::class,
                     childColumns = ["identityProvider"],
                     parentColumns = ["_id"],
-                    onDelete = ForeignKey.CASCADE
+                    onDelete = ForeignKey.RESTRICT
                 )
         ]
 )

@@ -75,6 +75,7 @@
     <string name="auth_confirm_title">Sunteti sigur ca vreti sa va autentificati?</string>
     <string name="auth_confirm_subtitle">Veti fi autentificat drept:</string>
     <string name="auth_confirm_to">catre:</string>
+    <string name="auth_confirm_select_identity">Selectați identitatea</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Va rugam introduceti codul PIN</string>

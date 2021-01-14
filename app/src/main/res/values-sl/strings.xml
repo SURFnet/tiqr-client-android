@@ -73,6 +73,7 @@
     <string name="auth_confirm_title">Se zares želite prijaviti?</string>
     <string name="auth_confirm_subtitle">Prijavili se boste kot:</string>
     <string name="auth_confirm_to">za:</string>
+    <string name="auth_confirm_select_identity">Izberite identiteto</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Vpišite svoj PIN</string>

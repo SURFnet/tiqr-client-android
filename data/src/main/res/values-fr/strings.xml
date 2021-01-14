@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Code QR inconnu</string>
-    <string name="error_qr_unknown">Ce code QR ne peut pas être traité.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Erreur inconnue</string>
     <string name="error_security_standards">Le périphérique n\'est pas compatible avec les standards de sécurité requis.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Code QR inconnu</string>
+    <string name="error_qr_unknown">Ce code QR ne peut pas être traité.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Enregistrement échoué</string>

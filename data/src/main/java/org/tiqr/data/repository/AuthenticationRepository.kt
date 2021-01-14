@@ -55,11 +55,11 @@ import javax.crypto.SecretKey
  * Repository to handle authentication challenges.
  */
 class AuthenticationRepository(
-        private val api: TiqrApi,
-        private val resources: Resources,
-        private val database: DatabaseService,
-        private val secretService: SecretService,
-        private val preferences: PreferenceService
+        override val api: TiqrApi,
+        override val resources: Resources,
+        override val database: DatabaseService,
+        override val secretService: SecretService,
+        override val preferences: PreferenceService
 ) : ChallengeRepository<AuthenticationChallenge>() {
     override val challengeScheme: String = BuildConfig.TIQR_AUTH_SCHEME
 
@@ -116,10 +116,18 @@ class AuthenticationRepository(
                     }
         }
 
+        // Check if there are multiple identities
+        val identities = database.getIdentities(identityProvider.identifier)
+        val multipleIdentities = identities.size > 1
+        if (multipleIdentities) {
+            Timber.d("Found ${identities.size} identities for ${identityProvider.identifier}")
+        }
+
         return AuthenticationChallenge(
-                protocolVersion = url.pathSegments.getOrElse(3) { "1" } ,
+                protocolVersion = url.pathSegments.getOrNull(3)?.toInt() ?: 0 ,
                 identityProvider = identityProvider,
-                identity = identity,
+                identity = if (multipleIdentities) null else identity,
+                identities = if (multipleIdentities) identities else emptyList(),
                 returnUrl = url.query?.toHttpUrlOrNull()?.toString(),
                 sessionKey = url.pathSegments[0],
                 challenge = url.pathSegments[1],

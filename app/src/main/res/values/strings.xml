@@ -74,6 +74,7 @@
     <string name="auth_confirm_title">Are you sure you want to log in?</string>
     <string name="auth_confirm_subtitle">You will be logged in as:</string>
     <string name="auth_confirm_to">to:</string>
+    <string name="auth_confirm_select_identity">Select identity</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Enter your PIN for tiqr</string>
@@ -89,11 +90,7 @@
     <string name="identity_blocked_message">Warning: this account is blocked\nand needs to be reactivated.</string>
     <string name="identity_delete_title">Are you sure?</string>
     <string name="identity_delete_message">This account can no longer be used when deleted.</string>
-    <string name="identity_biometric_usage">Use biometry</string>
-    <string name="identity_biometric_upgrade">Upgrade to biometry usage</string>
+    <string name="identity_biometric_usage">Use biometrics</string>
+    <string name="identity_biometric_upgrade">Upgrade to biometrics usage</string>
 
-
-
-
-    <string name="authentication_title">Login</string>
 </resources>

@@ -29,12 +29,23 @@
 
 package org.tiqr.data.repository.base
 
+import android.content.res.Resources
+import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.model.*
+import org.tiqr.data.service.DatabaseService
+import org.tiqr.data.service.PreferenceService
+import org.tiqr.data.service.SecretService
 
 /**
  * Base Repository for handling [Challenge]'s
  */
 abstract class ChallengeRepository<T: Challenge> {
+    protected abstract val api: TiqrApi
+    protected abstract val resources: Resources
+    protected abstract val database: DatabaseService
+    protected abstract val secretService: SecretService
+    protected abstract val preferences: PreferenceService
+
     /**
      * The scheme to distinguish between challenge types.
      */

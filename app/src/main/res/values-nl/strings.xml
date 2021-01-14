@@ -75,6 +75,7 @@
     <string name="auth_confirm_title">Weet je zeker dat je wilt inloggen?</string>
     <string name="auth_confirm_subtitle">Je wordt ingelogd als:</string>
     <string name="auth_confirm_to">voor:</string>
+    <string name="auth_confirm_select_identity">Selecteer identiteit</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Voer uw PIN voor tiqr in</string>

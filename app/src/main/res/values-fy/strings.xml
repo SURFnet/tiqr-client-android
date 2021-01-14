@@ -68,13 +68,15 @@
     <string name="account_full_name">Komplete namme</string>
     <string name="account_id">ID</string>
     <string name="account_information">Ynformaasje</string>
-
     <string name="account_activated">Jo akkount is aktiveart!</string>
+    <string name="account_upgrade_biometric_title">Upgrade-akkount</string>
+    <string name="account_upgrade_biometric_message">Wolle jo biometrie brûke ynstee fan PIN om oan te melden mei dit akkount?</string>
 
     <!-- Authentication (Confirm) -->
     <string name="auth_confirm_title">Binne jo wis dat jo ynloche wolle?</string>
     <string name="auth_confirm_subtitle">Jo wurde ynlocht as:</string>
     <string name="auth_confirm_to">foar:</string>
+    <string name="auth_confirm_select_identity">Identiteit selektearje</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Fier jo PIN yn</string>

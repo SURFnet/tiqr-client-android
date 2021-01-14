@@ -14,12 +14,14 @@
         <action
             android:id="@+id/action_scan"
             app:destination="@id/scan"
+            app:launchSingleTop="true"
             app:popUpTo="@id/start"
             app:popUpToInclusive="false" />
 
         <action
             android:id="@+id/action_identity"
             app:destination="@id/identity_nav"
+            app:launchSingleTop="true"
             app:popUpTo="@id/start"
             app:popUpToInclusive="false" />
     </fragment>
@@ -32,6 +34,7 @@
         <action
             android:id="@+id/action_enroll"
             app:destination="@id/enrollment_nav"
+            app:launchSingleTop="true"
             app:popUpTo="@id/start"
             app:popUpToInclusive="false">
 
@@ -44,6 +47,7 @@
         <action
             android:id="@+id/action_authenticate"
             app:destination="@id/authentication_nav"
+            app:launchSingleTop="true"
             app:popUpTo="@id/start"
             app:popUpToInclusive="false">
 
@@ -56,7 +60,8 @@
 
     <action
         android:id="@+id/open_browser"
-        app:destination="@id/browser">
+        app:destination="@id/browser"
+        app:launchSingleTop="true">
 
         <argument
             android:name="url"
@@ -70,7 +75,8 @@
 
     <action
         android:id="@+id/open_about"
-        app:destination="@id/about" />
+        app:destination="@id/about"
+        app:launchSingleTop="true" />
 
     <fragment
         android:id="@+id/about"
@@ -84,7 +90,6 @@
         <fragment
             android:id="@+id/authentication_confirm"
             android:name="org.tiqr.authenticator.authentication.AuthenticationConfirmFragment"
-            android:label="AuthenticationConfirmFragment"
             tools:layout="@layout/fragment_authentication_confirm">
 
             <argument
@@ -93,9 +98,34 @@
                 app:nullable="false" />
 
             <action
+                android:id="@+id/action_identity"
+                app:destination="@id/authentication_identity" />
+
+            <action
                 android:id="@+id/action_pin"
-                app:destination="@id/authentication_pin" />
+                app:destination="@id/authentication_pin"
+                app:launchSingleTop="true" />
+
+            <action
+                android:id="@+id/action_summary"
+                app:destination="@id/authentication_summary"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/authentication_confirm"
+                app:popUpToInclusive="true" />
         </fragment>
+
+        <dialog
+            android:id="@+id/authentication_identity"
+            android:name="org.tiqr.authenticator.authentication.AuthenticationIdentityFragment"
+            tools:layout="@layout/fragment_authentication_identity">
+
+            <argument
+                android:name="cancellable"
+                android:defaultValue="false"
+                app:argType="boolean"
+                />
+
+        </dialog>
 
         <fragment
             android:id="@+id/authentication_pin"
@@ -117,6 +147,7 @@
             <argument
                 android:name="pin"
                 app:argType="string"
+                android:defaultValue="@null"
                 app:nullable="true" />
         </fragment>
     </navigation>
@@ -138,7 +169,8 @@
 
             <action
                 android:id="@+id/action_pin"
-                app:destination="@id/enrollment_pin" />
+                app:destination="@id/enrollment_pin"
+                app:launchSingleTop="true" />
         </fragment>
 
         <fragment
@@ -149,6 +181,7 @@
             <action
                 android:id="@+id/action_pin_verify"
                 app:destination="@id/enrollment_pin_verify"
+                app:launchSingleTop="true"
                 app:popUpTo="@id/enrollment_confirm" />
         </fragment>
 
@@ -165,6 +198,7 @@
             <action
                 android:id="@+id/action_summary"
                 app:destination="@id/enrollment_summary"
+                app:launchSingleTop="true"
                 app:popUpTo="@id/enrollment_confirm"
                 app:popUpToInclusive="true" />
         </fragment>
@@ -187,11 +221,13 @@
             <action
                 android:id="@+id/action_identity_add"
                 app:destination="@id/scan"
+                app:launchSingleTop="true"
                 app:popUpTo="@id/identity_list" />
 
             <action
                 android:id="@+id/action_identity_detail"
                 app:destination="@id/identity_detail"
+                app:launchSingleTop="true"
                 app:popUpTo="@id/identity_list" />
         </fragment>
 
