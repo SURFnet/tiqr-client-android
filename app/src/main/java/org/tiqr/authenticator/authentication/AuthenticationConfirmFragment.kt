@@ -30,6 +30,9 @@
 package org.tiqr.authenticator.authentication
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
@@ -53,6 +56,23 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
     @LayoutRes
     override val layout = R.layout.fragment_authentication_confirm
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.challenge.value?.let {
+            if (it.hasMultipleIdentities) {
+                setHasOptionsMenu(true)
+                findNavController().navigate(
+                        AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = false)
+                )
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_identity_select, menu)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -68,6 +88,18 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
             } else {
                 findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.identity_pick -> {
+                findNavController().navigate(
+                        AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = true)
+                )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

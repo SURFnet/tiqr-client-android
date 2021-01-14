@@ -68,6 +68,11 @@
         <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
 
+    <style name="AppTheme.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
+
     <style name="AppTheme.Widget.Pin" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@drawable/pin_input_background</item>
         <item name="android:clickable">false</item>

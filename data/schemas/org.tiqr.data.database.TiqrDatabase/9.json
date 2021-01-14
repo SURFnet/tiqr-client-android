@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "58f96e0651e0e6b10c61d472cfaf4839",
+    "identityHash": "91c9ba0b406e6f00ad2d01d03fb3a7e8",
     "entities": [
       {
         "tableName": "identity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `displayName` TEXT NOT NULL, `identifier` TEXT NOT NULL, `identityProvider` INTEGER NOT NULL, `blocked` INTEGER NOT NULL DEFAULT 0, `sortIndex` INTEGER NOT NULL, `biometricInUse` INTEGER NOT NULL DEFAULT 0, `biometricOfferUpgrade` INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(`identityProvider`) REFERENCES `identityprovider`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `displayName` TEXT NOT NULL, `identifier` TEXT NOT NULL, `identityProvider` INTEGER NOT NULL, `blocked` INTEGER NOT NULL DEFAULT 0, `sortIndex` INTEGER NOT NULL, `biometricInUse` INTEGER NOT NULL DEFAULT 0, `biometricOfferUpgrade` INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(`identityProvider`) REFERENCES `identityprovider`(`_id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "id",
@@ -76,26 +76,26 @@
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_identity_id` ON `${TABLE_NAME}` (`_id`)"
           },
           {
-            "name": "index_identity_identityprovider_id",
-            "unique": false,
-            "columnNames": [
-              "identityProvider"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_identity_identityprovider_id` ON `${TABLE_NAME}` (`identityProvider`)"
-          },
-          {
             "name": "index_identity_identifier",
             "unique": false,
             "columnNames": [
               "identifier"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_identity_identifier` ON `${TABLE_NAME}` (`identifier`)"
+          },
+          {
+            "name": "index_identity_identityProvider",
+            "unique": false,
+            "columnNames": [
+              "identityProvider"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_identity_identityProvider` ON `${TABLE_NAME}` (`identityProvider`)"
           }
         ],
         "foreignKeys": [
           {
             "table": "identityprovider",
-            "onDelete": "CASCADE",
+            "onDelete": "RESTRICT",
             "onUpdate": "NO ACTION",
             "columns": [
               "identityProvider"
@@ -162,11 +162,11 @@
         "indices": [
           {
             "name": "index_identityprovider_identifier",
-            "unique": false,
+            "unique": true,
             "columnNames": [
               "identifier"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_identityprovider_identifier` ON `${TABLE_NAME}` (`identifier`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_identityprovider_identifier` ON `${TABLE_NAME}` (`identifier`)"
           }
         ],
         "foreignKeys": []
@@ -175,7 +175,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '58f96e0651e0e6b10c61d472cfaf4839')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '91c9ba0b406e6f00ad2d01d03fb3a7e8')"
     ]
   }
 }

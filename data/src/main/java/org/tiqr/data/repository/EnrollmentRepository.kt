@@ -56,11 +56,11 @@ import java.util.*
  * Repository to handle enrollment challenges.
  */
 class EnrollmentRepository(
-        private val api: TiqrApi,
-        private val resources: Resources,
-        private val database: DatabaseService,
-        private val secretService: SecretService,
-        private val preferences: PreferenceService
+        override val api: TiqrApi,
+        override val resources: Resources,
+        override val database: DatabaseService,
+        override val secretService: SecretService,
+        override val preferences: PreferenceService
 ) : ChallengeRepository<EnrollmentChallenge>() {
     override val challengeScheme: String = BuildConfig.TIQR_ENROLL_SCHEME
 
@@ -173,7 +173,7 @@ class EnrollmentRepository(
     }
 
     /**
-     * Complete the [challenge] and store the Identity.
+     * Complete the [Challenge] and store the Identity.
      */
     override suspend fun completeChallenge(request: ChallengeCompleteRequest<EnrollmentChallenge>): ChallengeCompleteResult<ChallengeCompleteFailure> {
         return try {
@@ -197,7 +197,7 @@ class EnrollmentRepository(
                                 ChallengeCompleteResult.failure(this)
                             }
 
-                    if (!BuildConfig.PROTOCOL_COMPATIBILTY_MODE) {
+                    if (!BuildConfig.PROTOCOL_COMPATIBILITY_MODE) {
                         val protocol = headers()[HEADER_PROTOCOL]?.toIntOrNull() ?: 0
                         if (protocol <= BuildConfig.PROTOCOL_VERSION) {
                             return EnrollmentCompleteFailure(

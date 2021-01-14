@@ -24,7 +24,7 @@ android {
 
         buildConfigField "String", "BASE_URL", "\"https://demo.tiqr.org\""
         buildConfigField "int", "PROTOCOL_VERSION", "2"
-        buildConfigField "boolean", "PROTOCOL_COMPATIBILTY_MODE", "true"
+        buildConfigField "boolean", "PROTOCOL_COMPATIBILITY_MODE", "true"
 
         buildConfigField "String", "TIQR_ENROLL_SCHEME", "\"${project.schemeEnroll}://\""
         buildConfigField "String", "TIQR_AUTH_SCHEME", "\"${project.schemeAuth}://\""

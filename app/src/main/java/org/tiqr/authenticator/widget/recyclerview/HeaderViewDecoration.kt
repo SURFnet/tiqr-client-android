@@ -38,7 +38,14 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Draw [headerView] as a [RecyclerView.ItemDecoration] as first item
  */
-class HeaderViewDecoration(private val headerView: View) : RecyclerView.ItemDecoration() {
+class HeaderViewDecoration(private val headerView: View, parent: RecyclerView) : RecyclerView.ItemDecoration() {
+    init {
+        headerView.measure(
+                View.MeasureSpec.makeMeasureSpec(parent.measuredWidth, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(parent.measuredHeight, View.MeasureSpec.UNSPECIFIED)
+        )
+    }
+
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
 
@@ -61,10 +68,6 @@ class HeaderViewDecoration(private val headerView: View) : RecyclerView.ItemDeco
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if (parent.getChildAdapterPosition(view) == 0) {
-            headerView.measure(
-                    View.MeasureSpec.makeMeasureSpec(parent.measuredWidth, View.MeasureSpec.AT_MOST),
-                    View.MeasureSpec.makeMeasureSpec(parent.measuredHeight, View.MeasureSpec.AT_MOST)
-            )
             outRect.set(0, headerView.measuredHeight, 0, 0)
         } else {
             outRect.setEmpty()

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Nežinomas QR kodas</string>
-    <string name="error_qr_unknown">Šis QR kodas negali būti apdorotas.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Nežinoma klaida</string>
     <string name="error_security_standards">Įrenginys nesuderinamas su reikiamais saugumo standartais.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Nežinomas QR kodas</string>
+    <string name="error_qr_unknown">Šis QR kodas negali būti apdorotas.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registracija nepavyko</string>

@@ -75,6 +75,7 @@
     <string name="auth_confirm_title">Etes-vous certain de vouloir vous connecter?</string>
     <string name="auth_confirm_subtitle">Vous serez connecté en tant que:</string>
     <string name="auth_confirm_to">vers:</string>
+    <string name="auth_confirm_select_identity">Sélectionnez l\'identité</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Veuillez entrer votre code PIN</string>
@@ -92,9 +93,5 @@
     <string name="identity_delete_message">Ce compte ne peut plus être utilisé lorsqu\'il est supprimé.</string>
     <string name="identity_biometric_usage">Utiliser la biométrie</string>
     <string name="identity_biometric_upgrade">Mise à niveau vers l\'utilisation de la biométrie</string>
-
-
-
-
 
 </resources>

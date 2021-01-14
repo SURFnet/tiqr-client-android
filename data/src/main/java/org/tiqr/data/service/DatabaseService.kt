@@ -31,7 +31,6 @@ package org.tiqr.data.service
 
 import kotlinx.coroutines.flow.Flow
 import org.tiqr.data.database.TiqrDao
-import org.tiqr.data.database.TiqrDatabase
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityProvider
 import org.tiqr.data.model.IdentityWithProvider
@@ -67,6 +66,11 @@ class DatabaseService(private val dao: TiqrDao) {
     suspend fun getAllIdentities(): List<Identity> = dao.getIdentities()
 
     /**
+     * Get all identities by identity provider identifier.
+     */
+    suspend fun getIdentities(identityProviderId: String): List<Identity> = dao.getIdentities(identityProviderId)
+
+    /**
      * Insert the [identity] and return the row ID of the newly inserted [identity].
      */
     suspend fun insertIdentity(identity: Identity): Long = dao.insertIdentity(identity)
@@ -79,7 +83,7 @@ class DatabaseService(private val dao: TiqrDao) {
     /**
      * Delete the [identity].
      */
-    suspend fun deleteIdentity(identity: Identity) = dao.deleteIdentity(identity)
+    suspend fun deleteIdentity(identity: Identity) = dao.deleteIdentityAndCleanup(identity)
 
     /**
      * Check if all identities are blocked.
@@ -111,7 +115,7 @@ class DatabaseService(private val dao: TiqrDao) {
     /**
      * Insert the [identityProvider] and return the row ID of the newly inserted [identityProvider].
      */
-    suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long = dao.insertIdentityProvider(identityProvider)
+    suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long = dao.insertOrUpdateIdentityProvider(identityProvider)
     //endregion
 
     /**

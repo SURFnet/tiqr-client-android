@@ -32,10 +32,10 @@ package org.tiqr.authenticator.enrollment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinVerifyBinding
@@ -57,7 +57,7 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
 
         binding.pin.setConfirmListener { pin ->
             if (pin != args.pin) {
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.enroll_pin_verify_no_match_title)
                         .setMessage(R.string.enroll_pin_verify_no_match_message)
                         .setCancelable(false)
@@ -80,7 +80,7 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                     findNavController().navigate(EnrollmentPinVerifyFragmentDirections.actionSummary())
                 }
                 is ChallengeCompleteResult.Failure -> {
-                    AlertDialog.Builder(requireContext())
+                    MaterialAlertDialogBuilder(requireContext())
                             .setTitle(it.failure.title)
                             .setMessage(it.failure.message)
                             .show()

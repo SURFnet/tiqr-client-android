@@ -29,8 +29,6 @@
 
 package org.tiqr.data.model
 
-import android.os.Bundle
-
 /**
  * Base Failure for [Challenge]
  */

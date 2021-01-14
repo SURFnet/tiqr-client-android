@@ -75,6 +75,7 @@
     <string name="auth_confirm_title">¿Está seguro que quiere acceder?</string>
     <string name="auth_confirm_subtitle">Accederá como:</string>
     <string name="auth_confirm_to">a:</string>
+    <string name="auth_confirm_select_identity">Seleccionar identidad</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Por favor, introduzca su PIN</string>
@@ -90,8 +91,7 @@
     <string name="identity_blocked_message">Atención: esta cuenta está bloqueada y debe reactivarla</string>
     <string name="identity_delete_title">¿Estás seguro?</string>
     <string name="identity_delete_message">Esta cuenta ya no se puede usar cuando se elimina.</string>
-    <string name="identity_biometric_usage">Usar biometría </string>
+    <string name="identity_biometric_usage">Usar biometría</string>
     <string name="identity_biometric_upgrade">Actualizar al uso de biometría</string>
-
 
 </resources>

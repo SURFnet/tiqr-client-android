@@ -47,6 +47,15 @@ interface TiqrDao {
     @Delete
     suspend fun deleteIdentity(identity: Identity)
 
+    @Transaction
+    suspend fun deleteIdentityAndCleanup(identity: Identity) {
+        val identityProviderId = identity.identityProvider
+        deleteIdentity(identity)
+        if (getIdentities(identityProviderId).isEmpty()) {
+            deleteIdentityProvider(identityProviderId)
+        }
+    }
+
     @Query(value = "SELECT * FROM identity ORDER BY sortIndex;")
     suspend fun getIdentities(): List<Identity>
 
@@ -67,6 +76,20 @@ interface TiqrDao {
         """)
     suspend fun getIdentity(identityId: String, identityProviderId: String): Identity?
 
+    @Query(value = """
+        SELECT identity.* FROM identity 
+        INNER JOIN identityprovider ON identityprovider._id = identity.identityProvider 
+        WHERE identityprovider._id = :identityProviderId;
+        """)
+    suspend fun getIdentities(identityProviderId: Long): List<Identity>
+
+    @Query(value = """
+        SELECT identity.* FROM identity 
+        INNER JOIN identityprovider ON identityprovider._id = identity.identityProvider 
+        WHERE identityprovider.identifier = :identifier;
+        """)
+    suspend fun getIdentities(identifier: String): List<Identity>
+
     @Query(value = "UPDATE identity SET blocked = 1 WHERE _id = :id;")
     suspend fun blockIdentity(id: Long): Int
 
@@ -81,8 +104,25 @@ interface TiqrDao {
     //endregion
 
     //region IdentityProvider
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIdentityProvider(identityProvider: IdentityProvider): Long
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateIdentityProvider(identityProvider: IdentityProvider)
+
+    @Query(value = "DELETE FROM identityprovider WHERE _id = :identityProviderId;")
+    suspend fun deleteIdentityProvider(identityProviderId: Long)
+
+    @Transaction
+    suspend fun insertOrUpdateIdentityProvider(identityProvider: IdentityProvider): Long {
+        val id = insertIdentityProvider(identityProvider)
+        return if (id == -1L) {
+            updateIdentityProvider(identityProvider)
+            getIdentityProvider(identityProvider.identifier)?.id ?: -1L
+        } else {
+            id
+        }
+    }
 
     @Query("SELECT * FROM identityprovider")
     fun getIdentityProviders(): Flow<List<IdentityProvider>>

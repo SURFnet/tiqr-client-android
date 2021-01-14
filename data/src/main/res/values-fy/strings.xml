@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Unbekende QR-koade</string>
-    <string name="error_qr_unknown">Dizze QR-koade kin net ferwurke wurde.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Ûnbekende fout</string>
     <string name="error_security_standards">Telefoan foldocht net oan ‘e fereaske befeiligingsstandert.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Unbekende QR-koade</string>
+    <string name="error_qr_unknown">Dizze QR-koade kin net ferwurke wurde.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registraasje mislearre</string>

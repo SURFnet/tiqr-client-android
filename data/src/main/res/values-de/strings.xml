@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Unbekannter QR-Code</string>
-    <string name="error_qr_unknown">Dieser QR-Code kann nicht verarbeitet werden.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Unbekannter Fehler</string>
     <string name="error_security_standards">Das Gerät funktioniert nicht gemäß Sicherheitsanforderungen.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Unbekannter QR-Code</string>
+    <string name="error_qr_unknown">Dieser QR-Code kann nicht verarbeitet werden.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Anmeldefehler</string>

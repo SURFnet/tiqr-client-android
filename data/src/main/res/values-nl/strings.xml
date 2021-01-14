@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Onbekende QR-code</string>
-    <string name="error_qr_unknown">Deze QR-code kan niet worden verwerkt.</string>
-
     <!-- Errors -->
     <string name="error_title_unknown">Onbekende fout</string>
     <string name="error_security_standards">Telefoon is niet compatible met de vereiste beveiligingsstandaarden.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Onbekende QR-code</string>
+    <string name="error_qr_unknown">Deze QR-code kan niet worden verwerkt.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registratie mislukt</string>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Neznana QR koda</string>
-    <string name="error_qr_unknown">Te kode QR ni mogoče obdelati.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Neznana napaka</string>
     <string name="error_security_standards">Vaša naprava ni združljiva z zahtevanimi varnostnimi standardi.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Neznana QR koda</string>
+    <string name="error_qr_unknown">Te kode QR ni mogoče obdelati.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Registracija je spodletela</string>

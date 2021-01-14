@@ -72,6 +72,7 @@
     <string name="auth_confirm_title">本当にログインしますか？</string>
     <string name="auth_confirm_subtitle">次のユーザとしてログインします：</string>
     <string name="auth_confirm_to">ログイン先：</string>
+    <string name="auth_confirm_select_identity">IDを選択</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">PINコードを入力してください</string>

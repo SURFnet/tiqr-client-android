@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Ukjent QR kode</string>
-    <string name="error_qr_unknown">Denne QR koden kan ikke behandles.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Ukjent feil</string>
     <string name="error_security_standards">Enheten er inkompatibel med påkrevde sikkerhetsstandarder.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Ukjent QR kode</string>
+    <string name="error_qr_unknown">Denne QR koden kan ikke behandles.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Mislykket påmelding</string>

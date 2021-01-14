@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">不明なQRコード</string>
-    <string name="error_qr_unknown">このQRコードは処理できません。</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">不明なエラー</string>
     <string name="error_security_standards">デバイスは必要なセキュリティ基準を備えた互換性がありません。</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">不明なQRコード</string>
+    <string name="error_qr_unknown">このQRコードは処理できません。</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">登録に失敗しました</string>

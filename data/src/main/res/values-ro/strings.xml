@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Errors Scan -->
-    <string name="error_qr_unknown_title">Cod QR necunoscut</string>
-    <string name="error_qr_unknown">Acest cod QR nu poate fi procesat.</string>
 
     <!-- Errors -->
     <string name="error_title_unknown">Eroare necunoscuta</string>
     <string name="error_security_standards">Dispozitivul nu este compatibil cu standardele de securitate necesare.</string>
 
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Cod QR necunoscut</string>
+    <string name="error_qr_unknown">Acest cod QR nu poate fi procesat.</string>
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Inregistrare esuata</string>

@@ -39,7 +39,7 @@ import org.tiqr.data.BuildConfig
 sealed class Challenge {
     abstract val protocolVersion: Int
     abstract val identityProvider: IdentityProvider
-    abstract val identity: Identity
+    abstract val identity: Identity?
     abstract val returnUrl: String?
 }
 
@@ -48,9 +48,9 @@ sealed class Challenge {
  */
 @Parcelize
 data class EnrollmentChallenge(
-        override val identityProvider: IdentityProvider,
-        override val identity: Identity,
         override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
+        override var identityProvider: IdentityProvider,
+        override var identity: Identity,
         override val returnUrl: String?,
         val enrollmentUrl: String,
         val enrollmentHost: String
@@ -63,11 +63,17 @@ data class EnrollmentChallenge(
 data class AuthenticationChallenge(
         override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
-        override val identity: Identity,
+        override var identity: Identity?,
         override val returnUrl: String?,
+        val identities: List<Identity> = emptyList(),
         val sessionKey: String,
         val challenge: String,
         val isStepUpChallenge: Boolean = false,
         val serviceProviderDisplayName: String,
         val serviceProviderIdentifier: String
-) : Challenge(), Parcelable
+) : Challenge(), Parcelable {
+    /**
+     * Property to indicate if this [Challenge] contains multiple identities.
+     */
+    val hasMultipleIdentities: Boolean get() = identities.isNotEmpty()
+}
