@@ -35,6 +35,7 @@ import org.tiqr.data.model.*
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
+import timber.log.Timber
 
 /**
  * Base Repository for handling [Challenge]'s
@@ -65,4 +66,33 @@ abstract class ChallengeRepository<T: Challenge> {
      * Complete the challenge.
      */
     abstract suspend fun completeChallenge(request: ChallengeCompleteRequest<T>) : ChallengeCompleteResult<ChallengeCompleteFailure>
+
+    /**
+     * Upgrade [identity] to use biometric authentication
+     */
+    suspend fun upgradeBiometric(identity: Identity, identityProvider: IdentityProvider, pin: String) {
+        val identity = database.getIdentity(identity.identifier, identityProvider.identifier) ?: identity
+
+        secretService.encryption.keyFromPassword(pin).apply {
+            // Check if session is valid
+            secretService.getSecret(identity, SecretService.Type.PIN_CODE, sessionKey = this)
+        }
+
+        val sessionKey = secretService.encryption.keyFromPassword(SecretService.Type.BIOMETRIC.key)
+        val secret = secretService.encryption.randomSecretKey()
+
+        secretService.createSecret(identity, secret, SecretService.Type.BIOMETRIC)
+        secretService.save(identity, sessionKey, SecretService.Type.BIOMETRIC)
+
+        database.updateIdentity(identity.copy(biometricInUse = true, biometricOfferUpgrade = false))
+    }
+
+    /**
+     * Upgrade [identity] to not use biometric
+     */
+    suspend fun stopOfferBiometric(identity: Identity) {
+        identity.copy(biometricOfferUpgrade = false).run {
+            database.updateIdentity(this)
+        }
+    }
 }

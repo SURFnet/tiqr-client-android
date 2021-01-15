@@ -106,3 +106,45 @@ sealed class ChallengeCompleteResult<out F : ChallengeCompleteFailure> {
      */
     data class Failure<out F : ChallengeCompleteFailure>(val failure: F) : ChallengeCompleteResult<F>()
 }
+
+/**
+ * Result for completing OneTimePassword
+ */
+sealed class ChallengeCompleteOtpResult<out F : ChallengeCompleteFailure> {
+    companion object {
+        /**
+         * Create a _success_ result
+         */
+        fun success(otp: String) = Success(otp)
+
+        /**
+         * Create a _failure_ result
+         */
+        fun <F : ChallengeCompleteFailure> failure(f: F) = Failure(f)
+    }
+
+    /**
+     * Is this result a _success_?
+     */
+    val isSuccess
+        get() = this is Success
+
+    /**
+     * Is this result a _failure_?
+     */
+    val isFailure
+        get() = this is Failure
+
+    val value
+        get() = if (this is Success) this.otp else ""
+
+    /**
+     * Completing a [Challenge] was successful
+     */
+    data class Success(val otp: String) : ChallengeCompleteOtpResult<Nothing>()
+
+    /**
+     * Completing a [Challenge] failed
+     */
+    data class Failure<out F : ChallengeCompleteFailure>(val failure: F) : ChallengeCompleteOtpResult<F>()
+}

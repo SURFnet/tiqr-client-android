@@ -69,6 +69,8 @@
     <string name="account_id">Identifikator</string>
     <string name="account_information">Informacije</string>
     <string name="account_activated">Korisnički račun je aktiviran!</string>
+    <string name="account_upgrade_biometric_title">Nadogradite račun</string>
+    <string name="account_upgrade_biometric_message">Želite li koristiti biometrijske podatke umjesto PIN-a za prijavu s ovim računom?</string>
 
     <!-- Authentication (Confirm) -->
     <string name="auth_confirm_title">Jeste li sigurni da se želite prijaviti?</string>
@@ -76,9 +78,21 @@
     <string name="auth_confirm_to">za:</string>
     <string name="auth_confirm_select_identity">Odaberite identitet</string>
 
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Želite li koristiti biometrijske podatke za prijavu?</string>
+    <string name="auth_biometric_cancel">Koristite PIN</string>
+
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Molimo unesite PIN</string>
     <string name="auth_pin_subtitle">Za prijavu je potrebno unijeti 4-znamenkasti PIN kod:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">Nemate vezu na Internet</string>
+    <string name="auth_fallback_subtitle">Ne brinite! Kliknite na QR kod prikazan na web stranici. Bit ćete upitani da unesete sljedeće jednokratne vjerodajnice:</string>
+    <string name="auth_fallback_id">Vaš identifikator je:</string>
+    <string name="auth_fallback_otp">Jednokratna lozinka:</string>
+    <string name="auth_fallback_pin_unverified_title">Napomena: Vaš PIN još nije potvrđen.</string>
+    <string name="auth_fallback_pin_unverified">Ukoliko se ne možete prijavit sa navedenim vjerodajnicama, skenirajte ponovno i unesite ispravan PIN kod.</string>
 
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Uspješna prijava!</string>
@@ -92,6 +106,5 @@
     <string name="identity_delete_message">Ovaj se račun više ne može koristiti ako se briše.</string>
     <string name="identity_biometric_usage">Koristite biometriju</string>
     <string name="identity_biometric_upgrade">Nadogradnja na upotrebu biometrije</string>
-
 
 </resources>

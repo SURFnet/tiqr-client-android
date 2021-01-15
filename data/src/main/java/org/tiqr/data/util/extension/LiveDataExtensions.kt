@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2020 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,14 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.viewmodel
+package org.tiqr.data.util.extension
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import org.tiqr.data.model.EnrollmentChallenge
-import org.tiqr.data.model.EnrollmentCompleteRequest
-import org.tiqr.data.repository.EnrollmentRepository
-import timber.log.Timber
 
 /**
- * ViewModel for Enrollment
+ * Mutate the [MutableLiveData]'s object fields directly and notify listeners
  */
-class EnrollmentViewModel @AssistedInject constructor(
-        @Assisted override val _challenge: MutableLiveData<EnrollmentChallenge>,
-        override val repository: EnrollmentRepository
-) : ChallengeViewModel<EnrollmentChallenge, EnrollmentRepository>() {
-    private val enrollmentComplete = MutableLiveData<EnrollmentCompleteRequest<EnrollmentChallenge>>()
-    val enrollment = enrollmentComplete.switchMap {
-        liveData {
-            emit(repository.completeChallenge(it))
-        }
-    }
-
-    /**
-     * Perform enroll
-     */
-    fun enroll(password: String) {
-        challenge.value?.let {
-            enrollmentComplete.value = EnrollmentCompleteRequest(it, password)
-        } ?: Timber.e("Cannot enroll, challenge is null")
-    }
-
-    /**
-     * Factory to inject the [EnrollmentChallenge] at runtime
-     */
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(_challenge: MutableLiveData<EnrollmentChallenge>): EnrollmentViewModel
-    }
+fun <T> MutableLiveData<T>.mutate(actions: MutableLiveData<T>.() -> Unit) {
+    actions(this)
+    this.value = this.value
 }

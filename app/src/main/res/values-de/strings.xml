@@ -70,6 +70,8 @@
     <string name="account_id">ID</string>
     <string name="account_information">Information</string>
     <string name="account_activated">Benutzerkonto aktiviert!</string>
+    <string name="account_upgrade_biometric_title">Konto aktualisieren</string>
+    <string name="account_upgrade_biometric_message">Möchten Sie Biometrie anstelle der PIN verwenden, um sich mit diesem Konto anzumelden?</string>
 
     <!-- Authentication (Confirm) -->
     <string name="auth_confirm_title">Möchten Sie sich wirklich anmelden?</string>
@@ -77,9 +79,21 @@
     <string name="auth_confirm_to">zu:</string>
     <string name="auth_confirm_select_identity">Identität auswählen</string>
 
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Möchten Sie sich biometrisch anmelden?</string>
+    <string name="auth_biometric_cancel">Verwenden Sie die PIN </string>
+
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Bitte geben Sie ihre PIN ein</string>
     <string name="auth_pin_subtitle">Sie müssen zum Anmelden Ihre vierstellige PIN eingeben:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">Sie scheinen offline zu sein</string>
+    <string name="auth_fallback_subtitle">Keine Panik! Klicken Sie auf den QR Code auf der Webseite. Daraufhin werden Sie aufgefordert, die folgenden nur einmalig gültigen Daten einzugeben:</string>
+    <string name="auth_fallback_id">Ihre ID ist:</string>
+    <string name="auth_fallback_otp">Einmalig gültiges Passwort:</string>
+    <string name="auth_fallback_pin_unverified_title">Hinweis: Ihre PIN wurde noch nicht verifiziert.</string>
+    <string name="auth_fallback_pin_unverified">Wenn Sie sich mit den oben angezeigten Daten nicht anmelden können, scannen Sie noch einmal und geben Sie den korrekten PIN Code ein.</string>
 
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Sie haben sich erfolgreich angemeldet!</string>

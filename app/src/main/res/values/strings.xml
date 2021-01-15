@@ -69,6 +69,8 @@
     <string name="account_id">Tiqr account id</string>
     <string name="account_information">Information</string>
     <string name="account_activated">Account activated!</string>
+    <string name="account_upgrade_biometric_title">Upgrade account</string>
+    <string name="account_upgrade_biometric_message">Do you want to use biometrics instead of PIN to log in with this account?</string>
 
     <!-- Authentication (Confirm) -->
     <string name="auth_confirm_title">Are you sure you want to log in?</string>
@@ -76,9 +78,21 @@
     <string name="auth_confirm_to">to:</string>
     <string name="auth_confirm_select_identity">Select identity</string>
 
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Do you want to use biometric to log in?</string>
+    <string name="auth_biometric_cancel">Use PIN</string>
+
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Enter your PIN for tiqr</string>
     <string name="auth_pin_subtitle">Enter the PIN and press OK:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">You appear to be offline</string>
+    <string name="auth_fallback_subtitle">Don\'t worry! Click the QR code on the website. You will be asked to enter the following one-time credentials:</string>
+    <string name="auth_fallback_id">Your ID is:</string>
+    <string name="auth_fallback_otp">One-time password:</string>
+    <string name="auth_fallback_pin_unverified_title">Note: your PIN has not been verified yet.</string>
+    <string name="auth_fallback_pin_unverified">If you can\'t login with the credentials above, scan again and enter the correct PIN code.</string>
 
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">You have successfully logged in!</string>

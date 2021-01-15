@@ -78,9 +78,21 @@
     <string name="auth_confirm_to">foar:</string>
     <string name="auth_confirm_select_identity">Identiteit selektearje</string>
 
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Wolle jo biometrysk brûke om yn te loggen?</string>
+    <string name="auth_biometric_cancel">PIN brûke</string>
+
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Fier jo PIN yn</string>
     <string name="auth_pin_subtitle">Jo moatte jo fjouwer-siferiche PIN ynjaan om yn te loche:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">Jo lykje offline te wêze</string>
+    <string name="auth_fallback_subtitle">Gjin panyk! Klik op de QR koade op de ynternetside. Jo wurde dan frege om de folgjende gegevens yn te fiere:</string>
+    <string name="auth_fallback_id">Jo brûkers ID is:</string>
+    <string name="auth_fallback_otp">Tydlik wachtwurd:</string>
+    <string name="auth_fallback_pin_unverified_title">Opmerking: jo PIN is noch net ferifieart.</string>
+    <string name="auth_fallback_pin_unverified">Wannear’t jo net ynloche kinne mei boppesteande gegevens, scan dan op ‘e nij en jou de korrekte PIN koade yn.</string>
 
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Ynloch slagge!</string>
@@ -94,8 +106,5 @@
     <string name="identity_delete_message">Dit akkount kin net mear brûkt wurde as it wurdt wiske.</string>
     <string name="identity_biometric_usage">Brûk biometrie</string>
     <string name="identity_biometric_upgrade">Upgrade nei gebrûk fan biometrie</string>
-
-
-
 
 </resources>
