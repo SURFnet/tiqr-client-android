@@ -105,7 +105,7 @@ data class AuthenticationCompleteFailure(
         val duration: Int? = null
 ) : ChallengeCompleteFailure() {
     enum class Reason {
-        UNKNOWN, CONNECTION, INVALID_CHALLENGE, INVALID_REQUEST, INVALID_RESPONSE,
+        UNKNOWN, CONNECTION, DEVICE_INCOMPATIBLE, INVALID_CHALLENGE, INVALID_REQUEST, INVALID_RESPONSE,
         INVALID_USER, ACCOUNT_BLOCKED, ACCOUNT_TEMPORARY_BLOCKED
     }
 }

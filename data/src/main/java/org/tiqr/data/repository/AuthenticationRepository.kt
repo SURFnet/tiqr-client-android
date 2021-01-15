@@ -32,10 +32,13 @@ package org.tiqr.data.repository
 import android.content.res.Resources
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.R
 import org.tiqr.data.algorithm.Ocra
+import org.tiqr.data.algorithm.Ocra.OcraException
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.api.interceptor.HeaderInjector
 import org.tiqr.data.model.*
@@ -45,11 +48,11 @@ import org.tiqr.data.security.SecurityFeaturesException
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
+import org.tiqr.data.util.extension.toHexString
 import timber.log.Timber
 import java.io.IOException
 import java.security.InvalidKeyException
 import java.util.*
-import javax.crypto.SecretKey
 
 /**
  * Repository to handle authentication challenges.
@@ -148,23 +151,20 @@ class AuthenticationRepository(
             ))
         }
 
-        try {
-            val secret: SecretKey = secretService.getSecret(
-                    identity = request.challenge.identity,
-                    sessionKey = secretService.encryption.keyFromPassword(request.password)
-            )
+        val identity = request.challenge.identity
+                ?: return ChallengeCompleteResult.failure(AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
+                        title = resources.getString(R.string.error_auth_title),
+                        message = resources.getString(R.string.error_auth_invalid_challenge)
+                ))
 
-            val otp: String = Ocra.generate(
-                    suite = request.challenge.identityProvider.ocraSuite,
-                    key = secret.encoded,
-                    question = request.challenge.challenge,
-                    session = request.challenge.sessionKey
-            )
+        try {
+            val otp = generateOtp(request.password, identity, request.challenge)
 
             api.authenticate(
                     url = request.challenge.identityProvider.authenticationUrl,
                     sessionKey = request.challenge.sessionKey,
-                    userId = request.challenge.identity.identifier,
+                    userId = identity.identifier,
                     response = otp,
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
@@ -318,15 +318,9 @@ class AuthenticationRepository(
                     )
                 is SecurityFeaturesException ->
                     AuthenticationCompleteFailure(
-                            reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
+                            reason = AuthenticationCompleteFailure.Reason.DEVICE_INCOMPATIBLE,
                             title = resources.getString(R.string.error_auth_title),
                             message = resources.getString(R.string.error_security_standards)
-                    )
-                is IOException ->
-                    AuthenticationCompleteFailure(
-                            reason = AuthenticationCompleteFailure.Reason.CONNECTION,
-                            title = resources.getString(R.string.error_auth_title),
-                            message = resources.getString(R.string.error_auth_connect_error)
                     )
                 is JsonDataException,
                 is JsonEncodingException ->
@@ -338,6 +332,12 @@ class AuthenticationRepository(
                             title = resources.getString(R.string.error_title_unknown),
                             message = resources.getString(R.string.error_auth_unknown_error)
                     )
+                is IOException ->
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.CONNECTION,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_connect_error)
+                    )
                 else ->
                     AuthenticationCompleteFailure(
                             reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
@@ -347,6 +347,69 @@ class AuthenticationRepository(
             }.run {
                 ChallengeCompleteResult.failure(this)
             }
+        }
+    }
+
+    /**
+     * Complete the OTP generation
+     */
+    suspend fun completeOtp(password: String, identity: Identity, challenge: AuthenticationChallenge) : ChallengeCompleteOtpResult<ChallengeCompleteFailure> {
+        return try {
+            val otp = generateOtp(password, identity, challenge)
+            ChallengeCompleteOtpResult.success(otp)
+        } catch (e: Exception) {
+            Timber.e(e, "Authentication failed")
+            return when (e) {
+                is OcraException ->
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_invalid_challenge)
+                    )
+                is SecurityFeaturesException ->
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.DEVICE_INCOMPATIBLE,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_security_standards)
+                    )
+                is InvalidKeyException ->
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_invalid_key)
+                    )
+                else ->
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
+                            title = resources.getString(R.string.error_auth_title),
+                            message = resources.getString(R.string.error_auth_unknown_error)
+                    )
+            }.run {
+                ChallengeCompleteOtpResult.failure(this)
+            }
+        }
+    }
+
+    /**
+     * Generate an OTP
+     *
+     * @throws InvalidKeyException
+     * @throws SecurityFeaturesException
+     * @throws OcraException
+     */
+    private suspend fun generateOtp(password: String, identity: Identity, challenge: AuthenticationChallenge) : String {
+        return withContext(Dispatchers.IO) {
+            val secret = secretService.getSecret(
+                    identity = identity,
+                    sessionKey = secretService.encryption.keyFromPassword(password)
+            )
+
+            Ocra.generate(
+                    suite = challenge.identityProvider.ocraSuite,
+                    key = secret.value.encoded.toHexString(),
+                    question = challenge.challenge,
+                    session = challenge.sessionKey
+            )
         }
     }
 }

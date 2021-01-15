@@ -39,6 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinVerifyBinding
+import org.tiqr.authenticator.util.extensions.biometricUsable
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.EnrollmentViewModel
 
@@ -69,15 +70,15 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                         .show()
             } else {
                 viewModel.enroll(pin)
-
-                // TODO: show upgrade PIN to biometric
             }
         }
 
         viewModel.enrollment.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 ChallengeCompleteResult.Success -> {
-                    findNavController().navigate(EnrollmentPinVerifyFragmentDirections.actionSummary())
+                    showBiometricUpgrade {
+                        findNavController().navigate(EnrollmentPinVerifyFragmentDirections.actionSummary())
+                    }
                 }
                 is ChallengeCompleteResult.Failure -> {
                     MaterialAlertDialogBuilder(requireContext())
@@ -86,6 +87,30 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                             .show()
                 }
             }
+        }
+    }
+
+    /**
+     * Show biometric upgrade if supported and invoke [onDone] if handled or unsupported.
+     */
+    private fun showBiometricUpgrade(onDone: () -> Unit) {
+        if (requireContext().biometricUsable() && viewModel.challenge.value?.identity?.biometricOfferUpgrade == true) {
+            MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.account_upgrade_biometric_title)
+                    .setMessage(R.string.account_upgrade_biometric_message)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.button_cancel) { _, _ ->
+                        viewModel.stopOfferBiometric()
+                    }
+                    .setPositiveButton(R.string.button_ok) { _, _ ->
+                        viewModel.upgradeBiometric(args.pin)
+                    }
+                    .setOnDismissListener {
+                        onDone.invoke()
+                    }
+                    .show()
+        } else {
+            onDone.invoke()
         }
     }
 }

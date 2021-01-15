@@ -29,6 +29,7 @@
 
 package org.tiqr.authenticator.util.extensions
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.tiqr.authenticator.di.TiqrComponent
@@ -44,8 +45,8 @@ fun <C : Challenge> TiqrComponent.challengeViewModel(challenge: C) : ViewModelPr
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return when (challenge) {
-                is AuthenticationChallenge -> authenticationViewModelFactory.create(challenge) as T
-                is EnrollmentChallenge -> enrollmentViewModelFactory.create(challenge) as T
+                is AuthenticationChallenge -> authenticationViewModelFactory.create(MutableLiveData(challenge)) as T
+                is EnrollmentChallenge -> enrollmentViewModelFactory.create(MutableLiveData(challenge)) as T
                 else -> throw IllegalArgumentException("Sealed class should not require an else block")
             }
         }

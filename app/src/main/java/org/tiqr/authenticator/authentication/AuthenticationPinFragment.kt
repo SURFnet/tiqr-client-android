@@ -32,12 +32,13 @@ package org.tiqr.authenticator.authentication
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationPinBinding
+import org.tiqr.data.model.AuthenticationCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
@@ -59,13 +60,38 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
 
         viewModel.authenticate.observe(viewLifecycleOwner) {
             when (it) {
-                is ChallengeCompleteResult.Success -> findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(null)) // TODO: pass PIN to upgrade to biometric
+                is ChallengeCompleteResult.Success -> {
+                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(binding.pin.currentPin))
+                }
                 is ChallengeCompleteResult.Failure -> {
-                    AlertDialog.Builder(requireContext())
-                            .setTitle(it.failure.title)
-                            .setMessage(it.failure.message)
-                            .show()
-                    // TODO: handle errors
+                    val failure = it.failure
+                    if (failure is AuthenticationCompleteFailure) {
+                        when (failure.reason) {
+                            AuthenticationCompleteFailure.Reason.UNKNOWN,
+                            AuthenticationCompleteFailure.Reason.CONNECTION -> {
+                                findNavController().navigate(
+                                        AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
+                                )
+                            }
+                            AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
+                                val remaining = failure.remainingAttempts
+                                if (remaining == null || remaining > 0) {
+                                    binding.pin.clear(showKeyboard = true)
+                                }
+
+                                MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle(failure.title)
+                                        .setMessage(failure.message)
+                                        .show()
+                            }
+                            else -> {
+                                MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle(failure.title)
+                                        .setMessage(failure.message)
+                                        .show()
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -25,7 +25,7 @@ android {
         manifestPlaceholders.schemeAuth = project.schemeAuth
 
         // only package supported languages
-        resConfigs "en", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr"
+        resConfigs "en", "da", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr", "tr"
     }
 
     buildTypes {

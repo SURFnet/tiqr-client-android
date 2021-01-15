@@ -31,12 +31,10 @@ package org.tiqr.data.util.extension
 
 import java.util.*
 
-private const val REPLACEMENT_CHAR = 0xfffd.toChar()
-
 /**
  * Convert this [ByteArray] into a hexadecimal string representation
  */
-fun ByteArray.toHexString(uppercase: Boolean = false): String = joinToString("") { (if (uppercase) "%02X" else "%02x").format(it) }
+fun ByteArray.toHexString(): String = joinToString("") { "%02x".format(it) }
 
 /**
  * Convert this [String] in hexadecimal representation into a [ByteArray]
@@ -53,9 +51,8 @@ fun ByteArray.toCharArray(): CharArray = String(this).toCharArray()
  * TODO: add proper tests
  */
 fun ByteArray.toCharArrayFallback(): CharArray {
-    val value: CharArray
-    val offset = 0
-    val byteCount: Int = size
+    return JavaByteArray.byteArrayToCharArray(this)
+}
 
     val v = CharArray(byteCount)
     var idx = offset

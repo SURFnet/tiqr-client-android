@@ -38,10 +38,15 @@ import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
+import org.tiqr.authenticator.authentication.AuthenticationBiometricComponent.BiometricResult
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
 import org.tiqr.authenticator.util.extensions.challengeViewModel
+import org.tiqr.data.model.AuthenticationCompleteFailure
+import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.service.SecretService
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
@@ -83,10 +88,49 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
         }
 
         binding.buttonOk.setOnClickListener {
-            if (args.challenge.identity.biometricInUse) {
-                // TODO: open biometric
+            if (viewModel.challenge.value?.identity?.biometricInUse == true) {
+                showBiometric()
             } else {
                 findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+            }
+        }
+
+        // Authenticate using biometrcis
+        viewModel.authenticate.observe(viewLifecycleOwner) {
+            when (it) {
+                is ChallengeCompleteResult.Success -> {
+                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary())
+                }
+                is ChallengeCompleteResult.Failure -> {
+                    val failure = it.failure
+                    if (failure is AuthenticationCompleteFailure) {
+                        when (failure.reason) {
+                            AuthenticationCompleteFailure.Reason.UNKNOWN,
+                            AuthenticationCompleteFailure.Reason.CONNECTION -> {
+                                findNavController().navigate(
+                                        AuthenticationPinFragmentDirections.actionFallback(SecretService.Type.BIOMETRIC.key)
+                                )
+                            }
+                            AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
+                                val remaining = failure.remainingAttempts
+                                if (remaining == null || remaining > 0) {
+                                    // TODO
+                                }
+
+                                MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle(failure.title)
+                                        .setMessage(failure.message)
+                                        .show()
+                            }
+                            else -> {
+                                MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle(failure.title)
+                                        .setMessage(failure.message)
+                                        .show()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -100,6 +144,21 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showBiometric() {
+        AuthenticationBiometricComponent(this, requireContext()) { result ->
+            when (result) {
+                is BiometricResult.Success -> viewModel.authenticate(SecretService.Type.BIOMETRIC.key)
+                is BiometricResult.Cancel -> findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+                is BiometricResult.Fail -> {
+                    // TODO: show dialog?
+                    findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+                }
+            }
+        }.run {
+            authenticate()
         }
     }
 }

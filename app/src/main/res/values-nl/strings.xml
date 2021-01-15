@@ -70,6 +70,8 @@
     <string name="account_id">ID</string>
     <string name="account_information">Informatie</string>
     <string name="account_activated">Je account is geactiveerd!</string>
+    <string name="account_upgrade_biometric_title">Account upgraden</string>
+    <string name="account_upgrade_biometric_message">Wil je biometrie gebruiken in plaats van een pincode om in te loggen met dit account?</string>
 
     <!-- Authentication (Confirm) -->
     <string name="auth_confirm_title">Weet je zeker dat je wilt inloggen?</string>
@@ -77,9 +79,21 @@
     <string name="auth_confirm_to">voor:</string>
     <string name="auth_confirm_select_identity">Selecteer identiteit</string>
 
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Wil je biometrie gebruiken om in te loggen?</string>
+    <string name="auth_biometric_cancel">Gebruik pincode</string>
+
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Voer uw PIN voor tiqr in</string>
     <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">U lijkt offline te zijn</string>
+    <string name="auth_fallback_subtitle">Geen paniek! Klik op de QR code op de website. U zult gevraagd worden om de volgende eenmalige gegevens in te geven:</string>
+    <string name="auth_fallback_id">Uw gebruikers ID is:</string>
+    <string name="auth_fallback_otp">Eénmalig wachtwoord:</string>
+    <string name="auth_fallback_pin_unverified_title">Opmerking: uw PIN is nog niet geverifieerd.</string>
+    <string name="auth_fallback_pin_unverified">Als u niet kunt inloggen met bovenstaande gegevens, scan dan opnieuw en geef de correcte PIN code in.</string>
 
     <!-- Authentication (Summary) -->
     <string name="auth_summary_title">Inloggen geslaagd!</string>
@@ -93,6 +107,5 @@
     <string name="identity_delete_message">Dit account kan niet meer gebruikt worden nadat deze verwijderd is.</string>
     <string name="identity_biometric_usage">Gebruik biometrie</string>
     <string name="identity_biometric_upgrade">Upgrade naar biometriegebruik</string>
-
 
 </resources>

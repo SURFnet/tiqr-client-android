@@ -59,7 +59,7 @@ object Ocra {
      */
     fun generate(
             suite: String,
-            key: ByteArray,
+            key: String,
             counter: String? = null,
             question: String,
             password: String? = null,
@@ -165,7 +165,7 @@ object Ocra {
 
         return with(
                 try {
-                    computeHMAC(crypto, key, message)
+                    computeHMAC(crypto, key.hexAsByteArray(), message)
                 } catch (e: Exception) {
                     throw OcraException("Failed to calculate HMAC hash")
                 }) {

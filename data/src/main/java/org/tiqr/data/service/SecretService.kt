@@ -33,10 +33,15 @@ import android.content.Context
 import android.util.Base64
 import androidx.collection.SimpleArrayMap
 import org.tiqr.data.model.Identity
+import org.tiqr.data.model.Secret
+import org.tiqr.data.model.SessionKey
+import org.tiqr.data.model.asSecret
+import org.tiqr.data.model.asSessionKey
 import org.tiqr.data.security.CipherPayload
 import org.tiqr.data.security.SecurityFeaturesException
 import org.tiqr.data.util.extension.toCharArray
 import org.tiqr.data.util.extension.toCharArrayFallback
+import org.tiqr.data.util.extension.toHexString
 import timber.log.Timber
 import java.io.IOException
 import java.security.*
@@ -56,7 +61,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
     internal val encryption = Encryption(preferenceService)
     private val store = Store(context, encryption)
 
-    private val secrets = SimpleArrayMap<String, SecretKey>()
+    private val secrets = SimpleArrayMap<String, Secret>()
 
     enum class Type(val key: String) {
         PIN_CODE(key = "org.tiqr.authentication.pincode"),
@@ -65,16 +70,16 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
 
     /**
      * Create a new secret and add it to the [secrets] collection.
-     * Only to be used for enrollment.
+     * Only to be used from enrollment (or upgrade to biometric).
      */
-    internal fun createSecret(identity: Identity, secret: SecretKey, type: Type = Type.PIN_CODE) {
+    internal fun createSecret(identity: Identity, secret: Secret, type: Type = Type.PIN_CODE) {
         addSecret(identity.toId(type), secret)
     }
 
     /**
      * Add this new [secret] to the [secrets] collection.
      */
-    private fun addSecret(id: String, secret: SecretKey) {
+    private fun addSecret(id: String, secret: Secret) {
         secrets.put(id, secret)
     }
 
@@ -84,17 +89,18 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
      * @throws InvalidKeyException when key cannot be found
      * @throws SecurityFeaturesException when upgrading to new key fails
      */
-    internal fun getSecret(identity: Identity, type: Type = Type.PIN_CODE, sessionKey: SecretKey): SecretKey {
-        return secrets[identity.toId(type)] ?: load(identity, type, sessionKey)
+    internal fun getSecret(identity: Identity, type: Type = Type.PIN_CODE, sessionKey: SessionKey): Secret {
+        val id: String = identity.toId(type)
+        return secrets[id] ?: load(identity, type, sessionKey)
     }
 
     /**
      * Save the key
      */
-    internal fun save(identity: Identity, sessionKey: SecretKey, type: Type = Type.PIN_CODE) {
+    internal fun save(identity: Identity, sessionKey: SessionKey, type: Type = Type.PIN_CODE) {
         val secret = getSecret(identity, type, sessionKey)
-        val civ = encryption.encrypt(secret.encoded, sessionKey)
-        store.setSecretKey(identity.toId(type), civ, encryption.deviceKey())
+        val civ = encryption.encrypt(secret.value.encoded, sessionKey.value)
+        store.setSecretKey(identity.toId(type), civ, encryption.deviceKey().asSessionKey())
     }
 
     /**
@@ -103,12 +109,12 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
      * @throws InvalidKeyException when key cannot be found
      * @throws SecurityFeaturesException when upgrading to new key fails
      */
-    private fun load(identity: Identity, type: Type, sessionKey: SecretKey): SecretKey {
+    private fun load(identity: Identity, type: Type, sessionKey: SessionKey): Secret {
         val id: String = identity.toId(type)
-        val civ: CipherPayload = store.getSecretKey(id, encryption.deviceKey())
+        val civ: CipherPayload = store.getSecretKey(id, encryption.deviceKey().asSessionKey())
                 ?: throw InvalidKeyException("Requested key not found.")
 
-        return SecretKeySpec(encryption.decrypt(civ, sessionKey), "RAW").apply {
+        return Secret(SecretKeySpec(encryption.decrypt(civ, sessionKey.value), "RAW")).apply {
             addSecret(id, this)
 
             if (civ.iv == null) {
@@ -169,10 +175,10 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        private fun saveSecretKey(sessionKey: SecretKey) {
+        private fun saveSecretKey(sessionKey: SessionKey) {
             context.openFileOutput(KEYSTORE_FILENAME, Context.MODE_PRIVATE).use {
                 try {
-                    keyStore.store(it, sessionKey.toCharArray())
+                    keyStore.store(it, sessionKey.value.toCharArray())
                 } catch (e: Exception) {
                     Timber.e(e)
                     throw SecurityFeaturesException(message = "Saving the secret key failed", cause = e)
@@ -185,17 +191,17 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        internal fun getSecretKey(identity: String, sessionKey: SecretKey): CipherPayload? {
+        internal fun getSecretKey(identity: String, sessionKey: SessionKey): CipherPayload? {
             var ctEntry: KeyStore.SecretKeyEntry?
             var ivEntry: KeyStore.SecretKeyEntry?
             var migrateKeys = false
 
             try {
-                val protection = KeyStore.PasswordProtection(sessionKey.toCharArray())
+                val protection = KeyStore.PasswordProtection(sessionKey.value.toCharArray())
                 ctEntry = keyStore.getEntry(identity, protection) as? KeyStore.SecretKeyEntry
                 ivEntry = keyStore.getEntry(identity + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
             } catch (e: UnrecoverableKeyException) {
-                val protection = KeyStore.PasswordProtection(sessionKey.toCharArray(fallback = true))
+                val protection = KeyStore.PasswordProtection(sessionKey.value.toCharArray(fallback = true))
                 ctEntry = keyStore.getEntry(identity, protection) as? KeyStore.SecretKeyEntry
                 ivEntry = keyStore.getEntry(identity + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
                 migrateKeys = true
@@ -217,11 +223,11 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        internal fun setSecretKey(identity: String, payload: CipherPayload, sessionKey: SecretKey) {
+        internal fun setSecretKey(identity: String, payload: CipherPayload, sessionKey: SessionKey) {
             val ctEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.cipherText, "RAW"))
             val ivEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.iv, "RAW"))
 
-            with(KeyStore.PasswordProtection(sessionKey.toCharArray())) {
+            with(KeyStore.PasswordProtection(sessionKey.value.toCharArray())) {
                 keyStore.setEntry(identity, ctEntry, this)
                 keyStore.setEntry(identity + IV_SUFFIX, ivEntry, this)
             }
@@ -246,6 +252,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
             private const val ALGORITHM_MASTER_KEY = "HMACSHA256"
             private const val ALGORITHM_RANDOM = "SHA1PRNG"
             private const val ALGORITHM_PASSWORD_KEY = "PBEWithSHA256And256BitAES-CBC-BC"
+            private const val SALT_BYTES_SIZE = 20
             private const val IV_LENGTH = 16
             private const val CIPHER_TRANSFORMATION = "AES/CBC/NoPadding"
             private const val CIPHER_KEY_ITERATIONS = 1500
@@ -289,24 +296,31 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         /**
          * Convert a password to an encryption compatible [SecretKey]
          */
-        internal fun keyFromPassword(password: String): SecretKey =
-                factory.generateSecret(
-                        PBEKeySpec(
-                                password.toCharArray(),
-                                salt(),
-                                CIPHER_KEY_ITERATIONS,
-                                CIPHER_KEY_SIZE)
-                )
+        internal fun keyFromPassword(password: String, salt: ByteArray = salt()): SessionKey =
+                PBEKeySpec(
+                        password.toCharArray(),
+                        salt,
+                        CIPHER_KEY_ITERATIONS,
+                        CIPHER_KEY_SIZE).run {
+                    factory.generateSecret(
+                            this
+                    )
+                }.run { SessionKey(this) }
+
 
         /**
          * Generate a random byte
          */
-        private fun randomBytes(size: Int = 20): ByteArray = ByteArray(size).also { random.nextBytes(it) }
+        private fun randomBytes(size: Int = SALT_BYTES_SIZE): ByteArray = ByteArray(size).apply {
+            random.nextBytes(this)
+        }
 
         /**
          * Generate a random secret key
          */
-        internal fun randomSecretKey(): SecretKey = SecretKeySpec(randomKey().encoded, ALGORITHM_MASTER_KEY)
+        internal fun randomSecretKey(): Secret {
+            return SecretKeySpec(randomKey().encoded, ALGORITHM_MASTER_KEY).asSecret()
+        }
 
         /**
          * Generate a random key

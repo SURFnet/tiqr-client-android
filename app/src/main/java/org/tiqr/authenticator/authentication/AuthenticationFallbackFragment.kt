@@ -31,26 +31,24 @@ package org.tiqr.authenticator.authentication
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
-import org.tiqr.authenticator.databinding.FragmentAuthenticationSummaryBinding
-import org.tiqr.authenticator.util.extensions.biometricUsable
+import org.tiqr.authenticator.databinding.FragmentAuthenticationFallbackBinding
+import org.tiqr.data.model.ChallengeCompleteOtpResult
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
- * Fragment to summarize the authentication
+ * Fragment to authenticate while offline.
  */
-class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummaryBinding>() {
+class AuthenticationFallbackFragment : BaseFragment<FragmentAuthenticationFallbackBinding>() {
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
-    private val args by navArgs<AuthenticationSummaryFragmentArgs>()
+    private val args by navArgs<AuthenticationFallbackFragmentArgs>()
 
-    @LayoutRes
-    override val layout = R.layout.fragment_authentication_summary
+    override val layout = R.layout.fragment_authentication_fallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,25 +59,19 @@ class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummary
             findNavController().popBackStack()
         }
 
-        showBiometricUpgrade(args.pin)
-    }
-
-    /**
-     * Show biometric upgrade if supported & required
-     */
-    private fun showBiometricUpgrade(pin: String?) {
-        if (requireContext().biometricUsable() && viewModel.challenge.value?.identity?.biometricOfferUpgrade == true && pin != null) {
-            MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.account_upgrade_biometric_title)
-                    .setMessage(R.string.account_upgrade_biometric_message)
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.button_cancel) { _, _ ->
-                        viewModel.stopOfferBiometric()
-                    }
-                    .setPositiveButton(R.string.button_ok) { _, _ ->
-                        viewModel.upgradeBiometric(pin)
-                    }
-                    .show()
+        viewModel.generateOTP(args.pin)
+        viewModel.otp.observe(viewLifecycleOwner) {
+            when (it) {
+                is ChallengeCompleteOtpResult.Failure -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(it.failure.title)
+                            .setMessage(it.failure.message)
+                            .show()
+                }
+                else -> {
+                    // Handled inside binding
+                }
+            }
         }
     }
 }

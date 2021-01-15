@@ -137,6 +137,22 @@
                 app:destination="@id/authentication_summary"
                 app:popUpTo="@id/authentication_confirm"
                 app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_fallback"
+                app:destination="@id/authentication_fallback"
+                app:popUpTo="@id/authentication_confirm"
+                app:popUpToInclusive="true"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/authentication_fallback"
+            android:name="org.tiqr.authenticator.authentication.AuthenticationFallbackFragment"
+            tools:layout="@layout/fragment_authentication_fallback">
+
+            <argument
+                android:name="pin"
+                app:argType="string" />
         </fragment>
 
         <fragment

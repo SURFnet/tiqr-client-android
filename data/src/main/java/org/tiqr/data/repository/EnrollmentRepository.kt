@@ -182,7 +182,7 @@ class EnrollmentRepository(
             // Perform API call and return result
             api.enroll(
                     url = request.challenge.enrollmentUrl,
-                    secret = secret.encoded.toHexString(),
+                    secret = secret.value.encoded.toHexString(),
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
             ).run {
