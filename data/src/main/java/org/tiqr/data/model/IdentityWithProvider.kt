@@ -32,7 +32,7 @@ package org.tiqr.data.model
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Relation
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * [Identity] with its associated [IdentityProvider]

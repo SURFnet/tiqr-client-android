@@ -159,7 +159,7 @@ class AuthenticationRepository(
                 ))
 
         try {
-            val otp = generateOtp(request.password, identity, request.challenge)
+            val otp = generateOtp(request.password, request.type, identity, request.challenge)
 
             api.authenticate(
                     url = request.challenge.identityProvider.authenticationUrl,
@@ -199,7 +199,7 @@ class AuthenticationRepository(
                             val remainingAttempts = result.attemptsLeft ?: 0
                             when {
                                 remainingAttempts > 1 -> {
-                                    if (request.type == SecretService.Type.BIOMETRIC) {
+                                    if (request.type == SecretType.BIOMETRIC) {
                                         AuthenticationCompleteFailure(
                                                 AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
                                                 title = resources.getString(R.string.error_auth_title_biometric),
@@ -216,7 +216,7 @@ class AuthenticationRepository(
                                     }
                                 }
                                 remainingAttempts == 1 -> {
-                                    if (request.type == SecretService.Type.BIOMETRIC) {
+                                    if (request.type == SecretType.BIOMETRIC) {
                                         AuthenticationCompleteFailure(
                                                 AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
                                                 title = resources.getString(R.string.error_auth_title_biometric),
@@ -353,9 +353,9 @@ class AuthenticationRepository(
     /**
      * Complete the OTP generation
      */
-    suspend fun completeOtp(password: String, identity: Identity, challenge: AuthenticationChallenge) : ChallengeCompleteOtpResult<ChallengeCompleteFailure> {
+    suspend fun completeOtp(credential: SecretCredential, identity: Identity, challenge: AuthenticationChallenge) : ChallengeCompleteOtpResult<ChallengeCompleteFailure> {
         return try {
-            val otp = generateOtp(password, identity, challenge)
+            val otp = generateOtp(password = credential.password, type = credential.type, identity = identity, challenge = challenge)
             ChallengeCompleteOtpResult.success(otp)
         } catch (e: Exception) {
             Timber.e(e, "Authentication failed")
@@ -397,12 +397,11 @@ class AuthenticationRepository(
      * @throws SecurityFeaturesException
      * @throws OcraException
      */
-    private suspend fun generateOtp(password: String, identity: Identity, challenge: AuthenticationChallenge) : String {
+    private suspend fun generateOtp(password: String, type: SecretType, identity: Identity, challenge: AuthenticationChallenge) : String {
         return withContext(Dispatchers.IO) {
-            val secret = secretService.getSecret(
-                    identity = identity,
-                    sessionKey = secretService.encryption.keyFromPassword(password)
-            )
+            val sessionKey = secretService.createSessionKey(password)
+            val secretId = secretService.createSecretIdentity(identity, type)
+            val secret = secretService.load(secretId, sessionKey)
 
             Ocra.generate(
                     suite = challenge.identityProvider.ocraSuite,

@@ -40,6 +40,7 @@ import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationPinBinding
 import org.tiqr.data.model.AuthenticationCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.model.SecretCredential
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
@@ -55,7 +56,7 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
         super.onViewCreated(view, savedInstanceState)
 
         binding.pin.setConfirmListener { pin ->
-            viewModel.authenticate(pin)
+            viewModel.authenticate(SecretCredential.pin(pin))
         }
 
         viewModel.authenticate.observe(viewLifecycleOwner) {

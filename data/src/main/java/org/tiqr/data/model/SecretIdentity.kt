@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,20 +30,11 @@
 package org.tiqr.data.model
 
 /**
- * Sealed class for passing parameters to complete the [Challenge]
+ * Wrapper for a [Identity] and [SecretType] combination
  */
-sealed class ChallengeCompleteRequest<T : Challenge> {
-    abstract val challenge: T
-    abstract val password: String
+data class SecretIdentity(
+        val identity: Identity,
+        val type: SecretType = SecretType.PIN
+) {
+    val id = identity.toId(type)
 }
-
-class EnrollmentCompleteRequest<T : Challenge>(
-        override val challenge: T,
-        override val password: String
-) : ChallengeCompleteRequest<T>()
-
-class AuthenticationCompleteRequest<T : Challenge>(
-        override val challenge: T,
-        override val password: String,
-        val type: SecretType
-) : ChallengeCompleteRequest<T>()

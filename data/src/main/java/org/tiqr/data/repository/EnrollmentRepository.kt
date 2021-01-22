@@ -177,7 +177,7 @@ class EnrollmentRepository(
      */
     override suspend fun completeChallenge(request: ChallengeCompleteRequest<EnrollmentChallenge>): ChallengeCompleteResult<ChallengeCompleteFailure> {
         return try {
-            val secret = secretService.encryption.randomSecretKey()
+            val secret = secretService.createSecret()
 
             // Perform API call and return result
             api.enroll(
@@ -248,9 +248,9 @@ class EnrollmentRepository(
                     val identity = request.challenge.identity.copy(id = identityId, identityProvider = identityProviderId)
 
                     // Save secrets
-                    val sessionKey = secretService.encryption.keyFromPassword(request.password)
-                    secretService.createSecret(identity, secret)
-                    secretService.save(identity, sessionKey)
+                    val sessionKey = secretService.createSessionKey(request.password)
+                    val secretId = secretService.createSecretIdentity(identity, SecretType.PIN)
+                    secretService.save(secretId, secret, sessionKey)
 
                     ChallengeCompleteResult.success()
                 } else {

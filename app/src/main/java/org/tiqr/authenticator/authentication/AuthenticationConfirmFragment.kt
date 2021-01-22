@@ -46,7 +46,8 @@ import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
 import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.model.AuthenticationCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
-import org.tiqr.data.service.SecretService
+import org.tiqr.data.model.SecretCredential
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 /**
@@ -95,7 +96,7 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
             }
         }
 
-        // Authenticate using biometrcis
+        // Authenticate using biometrics
         viewModel.authenticate.observe(viewLifecycleOwner) {
             when (it) {
                 is ChallengeCompleteResult.Success -> {
@@ -108,7 +109,7 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
                                 findNavController().navigate(
-                                        AuthenticationConfirmFragmentDirections.actionFallback(SecretService.Type.BIOMETRIC.key)
+                                        AuthenticationConfirmFragmentDirections.actionFallback(SecretType.BIOMETRIC.key)
                                 )
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
@@ -150,7 +151,7 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
     private fun showBiometric() {
         AuthenticationBiometricComponent(this, requireContext()) { result ->
             when (result) {
-                is BiometricResult.Success -> viewModel.authenticate(SecretService.Type.BIOMETRIC.key)
+                is BiometricResult.Success -> viewModel.authenticate(SecretCredential.biometric())
                 is BiometricResult.Cancel -> findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
                 is BiometricResult.Fail -> {
                     // TODO: show dialog?
