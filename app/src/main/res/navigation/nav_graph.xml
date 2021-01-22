@@ -107,6 +107,13 @@
                 app:launchSingleTop="true" />
 
             <action
+                android:id="@+id/action_fallback"
+                app:destination="@id/authentication_fallback"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/authentication_confirm"
+                app:popUpToInclusive="true" />
+
+            <action
                 android:id="@+id/action_summary"
                 app:destination="@id/authentication_summary"
                 app:launchSingleTop="true"

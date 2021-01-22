@@ -108,7 +108,7 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
                                 findNavController().navigate(
-                                        AuthenticationPinFragmentDirections.actionFallback(SecretService.Type.BIOMETRIC.key)
+                                        AuthenticationConfirmFragmentDirections.actionFallback(SecretService.Type.BIOMETRIC.key)
                                 )
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
