@@ -35,7 +35,6 @@ import org.tiqr.data.model.*
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
-import timber.log.Timber
 
 /**
  * Base Repository for handling [Challenge]'s
@@ -71,20 +70,21 @@ abstract class ChallengeRepository<T: Challenge> {
      * Upgrade [identity] to use biometric authentication
      */
     suspend fun upgradeBiometric(identity: Identity, identityProvider: IdentityProvider, pin: String) {
-        val identity = database.getIdentity(identity.identifier, identityProvider.identifier) ?: identity
-
-        secretService.encryption.keyFromPassword(pin).apply {
-            // Check if session is valid
-            secretService.getSecret(identity, SecretService.Type.PIN_CODE, sessionKey = this)
+        // Get the identity from db, so we are sure it has a valid id
+        database.getIdentity(identity.identifier, identityProvider.identifier)?.let {
+            // Check secret for pin
+            val pinSession = secretService.encryption.keyFromPassword(pin)
+            val pinSecretId = secretService.createSecretIdentity(it, SecretType.PIN)
+            val pinSecret = secretService.load(pinSecretId, sessionKey = pinSession)
+            // Create biometric
+            val secretId = secretService.createSecretIdentity(it, SecretType.BIOMETRIC)
+            val sessionKey = secretService.createSessionKey(SecretType.BIOMETRIC.key)
+            secretService.save(secretId, pinSecret, sessionKey)
+            // Do not offer to upgrade biometric anymore
+            it.copy(biometricInUse = true, biometricOfferUpgrade = false).run {
+                database.updateIdentity(this)
+            }
         }
-
-        val sessionKey = secretService.encryption.keyFromPassword(SecretService.Type.BIOMETRIC.key)
-        val secret = secretService.encryption.randomSecretKey()
-
-        secretService.createSecret(identity, secret, SecretService.Type.BIOMETRIC)
-        secretService.save(identity, sessionKey, SecretService.Type.BIOMETRIC)
-
-        database.updateIdentity(identity.copy(biometricInUse = true, biometricOfferUpgrade = false))
     }
 
     /**

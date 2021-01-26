@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,20 @@
 
 package org.tiqr.data.model
 
+private const val BIOMETRIC_SUFFIX = "org.tiqr.FP"
+
 /**
- * Sealed class for passing parameters to complete the [Challenge]
+ * The possible types to use for secrets.
  */
-sealed class ChallengeCompleteRequest<T : Challenge> {
-    abstract val challenge: T
-    abstract val password: String
+enum class SecretType(val key: String) {
+    PIN(key = "org.tiqr.authentication.pincode"),
+    BIOMETRIC(key = "org.tiqr.authentication.fingerprint")
 }
 
-class EnrollmentCompleteRequest<T : Challenge>(
-        override val challenge: T,
-        override val password: String
-) : ChallengeCompleteRequest<T>()
-
-class AuthenticationCompleteRequest<T : Challenge>(
-        override val challenge: T,
-        override val password: String,
-        val type: SecretType
-) : ChallengeCompleteRequest<T>()
+/**
+ * Convert the [Identity] to an Id [String]
+ */
+fun Identity.toId(type: SecretType): String = when (type) {
+    SecretType.PIN -> id.toString()
+    SecretType.BIOMETRIC -> id.toString() + BIOMETRIC_SUFFIX
+}

@@ -116,6 +116,9 @@ class IdentityListAdapter(
             MaterialAlertDialogBuilder(viewHolder.itemView.context)
                     .setTitle(R.string.identity_delete_title)
                     .setMessage(R.string.identity_delete_message)
+                    .setOnCancelListener {
+                        onCancel(viewHolder)
+                    }
                     .setNegativeButton(R.string.button_cancel) { dialog, _ ->
                         onCancel(viewHolder)
                         dialog.dismiss()

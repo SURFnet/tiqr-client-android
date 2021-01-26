@@ -36,6 +36,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
@@ -60,10 +61,14 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
         if (destination.isChromeCustomTabSupported) {
             CustomTabsIntent.Builder()
                     .setShowTitle(true)
-                    .setToolbarColor(ContextCompat.getColor(context, R.color.primaryColor))
+                    .setDefaultColorSchemeParams(
+                            CustomTabColorSchemeParams.Builder()
+                                    .setToolbarColor(ContextCompat.getColor(context, R.color.primaryColor))
+                                    .build()
+                    )
                     .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
                     .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
-                    .addDefaultShareMenuItem()
+                    .setShareState(CustomTabsIntent.SHARE_STATE_ON)
                     .build()
                     .run {
                         intent.putExtra(Intent.EXTRA_REFERRER, referrer)

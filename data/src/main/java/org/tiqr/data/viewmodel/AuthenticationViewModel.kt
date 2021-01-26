@@ -32,11 +32,12 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import org.tiqr.data.model.SecretCredential
 import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.AuthenticationCompleteRequest
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.AuthenticationRepository
-import org.tiqr.data.service.SecretService
 import org.tiqr.data.util.extension.mutate
 import timber.log.Timber
 
@@ -54,12 +55,12 @@ class AuthenticationViewModel @AssistedInject constructor(
         }
     }
 
-    private val otpGenerate = MutableLiveData<String>()
-    val otp = otpGenerate.switchMap { password ->
+    private val otpGenerate = MutableLiveData<SecretCredential>()
+    val otp = otpGenerate.switchMap { credential ->
         liveData {
             challenge.value?.let { challenge ->
                 challenge.identity?.let {
-                    emit(repository.completeOtp(password, it, challenge))
+                    emit(repository.completeOtp(credential, it, challenge))
                 }
             }
         }
@@ -77,18 +78,18 @@ class AuthenticationViewModel @AssistedInject constructor(
     /**
      * Perform authenticate
      */
-    fun authenticate(password: String, type: SecretService.Type = SecretService.Type.PIN_CODE) {
+    fun authenticate(credential: SecretCredential) {
         challenge.value?.let {
-            authenticationComplete.value = AuthenticationCompleteRequest(it, password, type)
+            authenticationComplete.value = AuthenticationCompleteRequest(it, credential.password, credential.type)
         } ?: Timber.e("Cannot authenticate, challenge is null")
     }
 
     /**
      * Perform OTP generation
      */
-    fun generateOTP(password: String) {
+    fun generateOTP(password: String, type: SecretType = SecretType.PIN) {
         otpGenerate.mutate {
-            value = password
+            value = SecretCredential(password = password, type = type)
         }
     }
 

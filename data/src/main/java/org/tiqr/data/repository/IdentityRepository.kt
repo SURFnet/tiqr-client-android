@@ -30,6 +30,7 @@
 package org.tiqr.data.repository
 
 import kotlinx.coroutines.flow.Flow
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityWithProvider
 import org.tiqr.data.service.DatabaseService
@@ -70,16 +71,19 @@ class IdentityRepository(private val database: DatabaseService, private val secr
     /**
      * Delete [identity]
      */
-    suspend fun delete(identity: Identity) = database.deleteIdentity(identity)
+    suspend fun delete(identity: Identity) {
+        database.deleteIdentity(identity)
+        secret.delete(identity)
+    }
 
     /**
      * Check if there is a biometric secret for [identity]
      */
     fun hasBiometricSecret(identity: Identity): Boolean {
         return try {
-            secret.encryption.keyFromPassword(password = SecretService.Type.BIOMETRIC.key).apply {
-                secret.getSecret(identity = identity, type = SecretService.Type.BIOMETRIC, sessionKey = this)
-            }
+            val sessionKey = secret.encryption.keyFromPassword(password = SecretType.BIOMETRIC.key)
+            val secretId = secret.createSecretIdentity(identity, SecretType.BIOMETRIC)
+            secret.load(secretId, sessionKey)
             true
         } catch (e: Exception) {
             false
