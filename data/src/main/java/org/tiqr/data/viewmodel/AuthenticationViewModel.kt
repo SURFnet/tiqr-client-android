@@ -30,11 +30,13 @@
 package org.tiqr.data.viewmodel
 
 import androidx.lifecycle.*
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import org.tiqr.data.model.SecretCredential
 import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.AuthenticationCompleteRequest
+import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.AuthenticationRepository
@@ -96,8 +98,8 @@ class AuthenticationViewModel @AssistedInject constructor(
     /**
      * Factory to inject the [AuthenticationChallenge] at runtime
      */
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(_challenge: MutableLiveData<AuthenticationChallenge>): AuthenticationViewModel
+    @AssistedFactory
+    interface Factory : ChallengeViewModelFactory<AuthenticationChallenge> {
+        override fun create(challenge: MutableLiveData<AuthenticationChallenge>): AuthenticationViewModel
     }
 }

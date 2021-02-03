@@ -30,18 +30,16 @@
 package org.tiqr.authenticator.base
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.CheckResult
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import dagger.hilt.android.EntryPointAccessors
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.di.TiqrComponent
 import org.tiqr.data.viewmodel.ViewModelFactory
 
 abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment(), BindingProvider<B> {
@@ -51,20 +49,8 @@ abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment(), Bindi
     @get:LayoutRes
     protected abstract val layout: Int
 
-    /**
-     * Get the Dagger App Component.
-     */
-    protected val component: TiqrComponent
-        @CheckResult
-        get() = requireContext()
-                .applicationContext
-                .getSystemService(TiqrComponent::class.java.name) as TiqrComponent
-
-    /**
-     * Get the ViewModelFactory
-     */
     protected val factory: ViewModelFactory
-        get() = component.viewModeFactory
+        get() = EntryPointAccessors.fromFragment(this, ViewModelFactory::class.java)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, R.style.AppTheme_Dialog)

@@ -33,6 +33,8 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.database.TiqrDatabase
 import javax.inject.Singleton
@@ -42,6 +44,7 @@ import javax.inject.Singleton
  * such as the database and shared preferences.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 internal object PersistenceModule {
     @Provides
     @Singleton

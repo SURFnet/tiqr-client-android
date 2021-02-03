@@ -45,14 +45,16 @@ import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionListenerAdapter
 import androidx.transition.TransitionManager
-import org.tiqr.authenticator.base.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
+import org.tiqr.authenticator.base.BaseActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
 import org.tiqr.authenticator.scan.ScanKeyEventsReceiver
 import org.tiqr.authenticator.scan.ScanFragment
 import org.tiqr.authenticator.util.extensions.currentNavigationFragment
 import org.tiqr.authenticator.util.extensions.getNavController
 
-class MainActivity : BindingActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+@AndroidEntryPoint
+class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
     private lateinit var navController: NavController
 
     @LayoutRes

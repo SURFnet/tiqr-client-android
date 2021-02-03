@@ -34,14 +34,13 @@ import coil.Coil
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.util.CoilUtils
+import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
-import org.tiqr.authenticator.di.DaggerTiqrComponent
-import org.tiqr.authenticator.di.TiqrComponent
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltAndroidApp
 class TiqrApplication : Application(), ImageLoaderFactory {
-    private lateinit var component: TiqrComponent
     @Inject
     internal lateinit var imageOkHttpClient: OkHttpClient.Builder
 
@@ -53,19 +52,8 @@ class TiqrApplication : Application(), ImageLoaderFactory {
             Timber.plant(Timber.DebugTree())
         }
 
-        component = DaggerTiqrComponent.factory().create(this)
-        component.inject(this)
-
         // Set the Coil's singleton instance
         Coil.setImageLoader(this)
-    }
-
-    override fun getSystemService(name: String): Any? {
-        return if (TiqrComponent::class.java.name == name) {
-            component
-        } else {
-            super.getSystemService(name)
-        }
     }
 
     /**

@@ -36,6 +36,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
@@ -46,10 +47,11 @@ import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.viewmodel.ScanViewModel
 
+@AndroidEntryPoint
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
     override val layout = R.layout.fragment_scan
 
-    private val viewModel by viewModels<ScanViewModel> { factory }
+    private val viewModel by viewModels<ScanViewModel>()
 
     private lateinit var scanComponent: ScanComponent
 

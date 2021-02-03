@@ -35,6 +35,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationFallbackBinding
@@ -44,8 +45,9 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
 /**
  * Fragment to authenticate while offline.
  */
+@AndroidEntryPoint
 class AuthenticationFallbackFragment : BaseFragment<FragmentAuthenticationFallbackBinding>() {
-    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
+    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
     private val args by navArgs<AuthenticationFallbackFragmentArgs>()
 
     override val layout = R.layout.fragment_authentication_fallback

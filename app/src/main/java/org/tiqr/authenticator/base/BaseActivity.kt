@@ -30,30 +30,15 @@
 package org.tiqr.authenticator.base
 
 import android.os.Bundle
-import androidx.annotation.CheckResult
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import org.tiqr.authenticator.di.TiqrComponent
-
-/**
- * Base Activity.
- */
-abstract class BaseActivity : AppCompatActivity() {
-    /**
-     * Get the Dagger Component.
-     */
-    protected val component: TiqrComponent
-        @CheckResult
-        get() = applicationContext
-                .getSystemService(TiqrComponent::class.java.name) as TiqrComponent
-}
 
 /**
  * Base Activity for DataBinding.
  */
-abstract class BindingActivity<B : ViewDataBinding> : BaseActivity() {
+abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var binding: B
 
     @get:LayoutRes

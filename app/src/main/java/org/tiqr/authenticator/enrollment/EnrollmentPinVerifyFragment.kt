@@ -32,10 +32,11 @@ package org.tiqr.authenticator.enrollment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentPinVerifyBinding
@@ -46,8 +47,9 @@ import org.tiqr.data.viewmodel.EnrollmentViewModel
 /**
  * Fragment to confirm the PIN for the enrollment
  */
+@AndroidEntryPoint
 class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBinding>() {
-    private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) { factory }
+    private val viewModel by hiltNavGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav)
     private val args by navArgs<EnrollmentPinVerifyFragmentArgs>()
 
     @LayoutRes

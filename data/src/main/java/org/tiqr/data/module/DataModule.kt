@@ -34,13 +34,16 @@ import android.content.Context
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
  * Module to pass the [Context] and [Resources] to the dependent modules.
  */
-@Module(includes = [NetworkModule::class, RepositoryModule::class, ServiceModule::class, ViewModelModule::class])
-object DataModule {
+@Module
+@InstallIn(SingletonComponent::class)
+internal object DataModule {
     @Provides
     @Singleton
     fun provideApplicationContext(application: Application): Context = application.applicationContext

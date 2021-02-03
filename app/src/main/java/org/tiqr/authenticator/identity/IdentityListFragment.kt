@@ -32,9 +32,11 @@ package org.tiqr.authenticator.identity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentIdentityListBinding
@@ -45,8 +47,9 @@ import org.tiqr.data.viewmodel.IdentityViewModel
 /**
  * Fragment to displays the list of identities.
  */
+@AndroidEntryPoint
 class IdentityListFragment : BaseFragment<FragmentIdentityListBinding>() {
-    private val viewModel by navGraphViewModels<IdentityViewModel>(R.id.identity_nav) { factory }
+    private val viewModel by hiltNavGraphViewModels<IdentityViewModel>(R.id.identity_nav)
     private val listAdapter = IdentityListAdapter(::onItemClick, ::onItemDelete)
 
     private lateinit var itemTouchHelper: ItemTouchHelper

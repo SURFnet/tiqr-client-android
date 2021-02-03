@@ -5,6 +5,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
@@ -13,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.tiqr.authenticator"
-        versionCode 21 // TODO: check latest version and bump
+        versionCode 30 // TODO: check latest version and bump
         versionName "4.0.0"  // TODO: check versions, probably 4.0.0
 
         minSdkVersion Versions.minSdkVersion
@@ -90,8 +91,9 @@ dependencies {
 
     implementation project(':data')
 
-    implementation Libs.Dagger.android
-    kapt Libs.Dagger.compiler
+    implementation Libs.Hilt.android
+    implementation Libs.Hilt.fragment
+    kapt Libs.Hilt.compiler
 
     implementation Libs.Permission.kPermissions
     implementation Libs.Image.coil

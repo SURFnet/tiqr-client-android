@@ -39,24 +39,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.authentication.AuthenticationBiometricComponent.BiometricResult
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
-import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.model.AuthenticationCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.model.SecretCredential
 import org.tiqr.data.model.SecretType
 import org.tiqr.data.viewmodel.AuthenticationViewModel
+import org.tiqr.data.viewmodel.challengeViewModel
 
 /**
  * Fragment to review and confirm the authentication
  */
+@AndroidEntryPoint
 class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmBinding>() {
     private val args by navArgs<AuthenticationConfirmFragmentArgs>()
     private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) {
-        component.challengeViewModel(args.challenge)
+        factory.challengeViewModel(args.challenge)
     }
 
     @LayoutRes

@@ -33,12 +33,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.CheckResult
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import org.tiqr.authenticator.di.TiqrComponent
+import dagger.hilt.android.EntryPointAccessors
 import org.tiqr.data.viewmodel.ViewModelFactory
 
 /**
@@ -51,20 +50,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment(), BindingProvider<B
     @get:LayoutRes
     protected abstract val layout: Int
 
-    /**
-     * Get the Dagger App Component.
-     */
-    protected val component: TiqrComponent
-        @CheckResult
-        get() = requireContext()
-                .applicationContext
-                .getSystemService(TiqrComponent::class.java.name) as TiqrComponent
-
-    /**
-     * Get the ViewModelFactory
-     */
     protected val factory: ViewModelFactory
-        get() = component.viewModeFactory
+        get() = EntryPointAccessors.fromFragment(this, ViewModelFactory::class.java)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return DataBindingUtil.inflate<B>(inflater, layout, container, false)

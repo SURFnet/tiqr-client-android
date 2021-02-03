@@ -34,6 +34,8 @@ import com.squareup.moshi.Moshi
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tiqr.data.BuildConfig
@@ -47,7 +49,6 @@ import org.tiqr.data.di.ApiScope
 import org.tiqr.data.di.BaseScope
 import org.tiqr.data.di.TokenScope
 import org.tiqr.data.model.AuthenticationResponse
-import org.tiqr.data.model.EnrollmentRequestJsonAdapter
 import org.tiqr.data.model.EnrollmentResponse
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -60,6 +61,7 @@ import javax.inject.Singleton
  * such as the HTTP client or API connector.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 internal object NetworkModule {
     //region OkHttp
     @Provides

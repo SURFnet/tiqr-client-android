@@ -33,7 +33,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import org.tiqr.data.R
 import org.tiqr.data.service.DatabaseService
@@ -42,13 +42,12 @@ import javax.inject.Inject
 /**
  * ViewModel for the start screen.
  */
+@HiltViewModel
 class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
-    @ExperimentalCoroutinesApi
     private val _identityCount: Flow<Int> = db.identityCount()
             .onStart { emit(value = 0) }
             .catch { emit(value = 0) }
 
-    @ExperimentalCoroutinesApi
     private val _allIdentitiesBlocked: Flow<Boolean> = db.allIdentitiesBlocked()
             .onStart { emit(value = false) }
             .catch { emit(value = false) }
@@ -56,20 +55,17 @@ class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
     /**
      * Current number of identities.
      */
-    @ExperimentalCoroutinesApi
     val identityCount: LiveData<Int> = _identityCount.asLiveData(viewModelScope.coroutineContext)
 
     /**
      * Are there any identities?
      */
-    @ExperimentalCoroutinesApi
     val hasIdentities
         get() = (identityCount.value ?: 0) > 0
 
     /**
      * What content text to show based on identity blocked state and identity count.
      */
-    @ExperimentalCoroutinesApi
     val contentType: LiveData<Int> = _allIdentitiesBlocked
             .zip(_identityCount) { blocked, count ->
                 when {

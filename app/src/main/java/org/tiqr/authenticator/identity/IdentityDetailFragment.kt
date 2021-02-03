@@ -32,13 +32,14 @@ package org.tiqr.authenticator.identity
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.databinding.FragmentIdentityDetailBinding
 import org.tiqr.data.viewmodel.IdentityViewModel
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.util.extensions.biometricUsable
 import org.tiqr.data.model.Identity
@@ -46,8 +47,9 @@ import org.tiqr.data.model.Identity
 /**
  * Fragment to display the [Identity] details
  */
+@AndroidEntryPoint
 class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
-    private val viewModel by navGraphViewModels<IdentityViewModel>(R.id.identity_nav) { factory }
+    private val viewModel by hiltNavGraphViewModels<IdentityViewModel>(R.id.identity_nav)
     private val args by navArgs<IdentityDetailFragmentArgs>()
 
     @LayoutRes
