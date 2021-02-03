@@ -32,6 +32,8 @@ package org.tiqr.data.module
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
@@ -42,7 +44,8 @@ import javax.inject.Singleton
 /**
  * Module which serves the services.
  */
-@Module(includes = [PersistenceModule::class])
+@Module
+@InstallIn(SingletonComponent::class)
 internal object ServiceModule {
     @Provides
     @Singleton

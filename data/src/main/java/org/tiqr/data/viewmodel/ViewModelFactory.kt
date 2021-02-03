@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -14,7 +14,7 @@
  *    may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -29,28 +29,46 @@
 
 package org.tiqr.data.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import javax.inject.Inject
-import javax.inject.Provider
+import dagger.assisted.AssistedFactory
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
+import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.Challenge
+import org.tiqr.data.model.EnrollmentChallenge
 
 /**
- * Factory for [ViewModel]'s
+ * Accessor for the [ChallengeViewModel.ChallengeViewModelFactory]'s
  */
-class ViewModelFactory @Inject constructor(
-        private val viewModelsMap: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val creator = viewModelsMap[modelClass]
-                ?: viewModelsMap.entries.firstOrNull {
-                    modelClass.isAssignableFrom(it.key)
-                }?.value ?: throw IllegalArgumentException("Unknown ViewModel class $modelClass")
+@EntryPoint
+@InstallIn(FragmentComponent::class)
+interface ViewModelFactory {
+    /**
+     * The [AssistedFactory] for [EnrollmentViewModel]
+     */
+    val enrollmentFactory: EnrollmentViewModel.Factory
 
-        return try {
-            @Suppress("UNCHECKED_CAST")
-            creator.get() as T
-        } catch (e: Exception) {
-            throw RuntimeException(e)
+    /**
+     * The [AssistedFactory] for [AuthenticationViewModel]
+     */
+    val authenticationFactory: AuthenticationViewModel.Factory
+}
+
+/**
+ * Provide the [ViewModelProvider.Factory] to allow the platform to create instances
+ */
+fun <C : Challenge> ViewModelFactory.challengeViewModel(challenge: C): ViewModelProvider.Factory {
+    return object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return when (challenge) {
+                is EnrollmentChallenge -> enrollmentFactory.create(MutableLiveData(challenge)) as T
+                is AuthenticationChallenge -> authenticationFactory.create(MutableLiveData(challenge)) as T
+                else -> throw IllegalArgumentException("Sealed class should not require an else block")
+            }
         }
     }
 }

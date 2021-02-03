@@ -35,9 +35,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentStartBinding
@@ -47,9 +47,9 @@ import org.tiqr.data.viewmodel.StartViewModel
 /**
  * Fragment to handle main screen and button to qr-scanner.
  */
-@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class StartFragment : BaseFragment<FragmentStartBinding>() {
-    private val viewModel by activityViewModels<StartViewModel> { component.viewModeFactory }
+    private val viewModel by viewModels<StartViewModel>()
 
     @LayoutRes
     override val layout: Int = R.layout.fragment_start

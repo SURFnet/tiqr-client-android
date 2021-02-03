@@ -35,19 +35,21 @@ import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentEnrollmentConfirmBinding
-import org.tiqr.authenticator.util.extensions.challengeViewModel
 import org.tiqr.data.viewmodel.EnrollmentViewModel
+import org.tiqr.data.viewmodel.challengeViewModel
 
 /**
  * Fragment to review and confirm the enrollment
  */
+@AndroidEntryPoint
 class EnrollmentConfirmFragment : BaseFragment<FragmentEnrollmentConfirmBinding>() {
     private val args by navArgs<EnrollmentConfirmFragmentArgs>()
     private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) {
-        component.challengeViewModel(args.challenge)
+        factory.challengeViewModel(args.challenge)
     }
 
     @LayoutRes

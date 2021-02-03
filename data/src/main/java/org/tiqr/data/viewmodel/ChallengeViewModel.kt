@@ -32,16 +32,21 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.Challenge
+import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.base.ChallengeRepository
 
 /**
  * Base ViewModel for [Challenge]
  */
-abstract class ChallengeViewModel<C : Challenge, R: ChallengeRepository<*>> : ViewModel() {
+abstract class ChallengeViewModel<C : Challenge, R : ChallengeRepository<*>> : ViewModel() {
     @Suppress("PropertyName")
     protected abstract val _challenge: MutableLiveData<C>
     val challenge: LiveData<C> get() = _challenge
@@ -70,5 +75,15 @@ abstract class ChallengeViewModel<C : Challenge, R: ChallengeRepository<*>> : Vi
                 repository.stopOfferBiometric(it)
             }
         }
+    }
+
+    /**
+     * Factory to use assisted injection.
+     */
+    interface ChallengeViewModelFactory<C : Challenge> {
+        /**
+         * Create the [ChallengeViewModel] instance
+         */
+        fun create(challenge: MutableLiveData<C>): ChallengeViewModel<C, *>
     }
 }

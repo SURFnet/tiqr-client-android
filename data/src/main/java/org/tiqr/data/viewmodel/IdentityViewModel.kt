@@ -30,6 +30,7 @@
 package org.tiqr.data.viewmodel
 
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityWithProvider
@@ -39,6 +40,7 @@ import javax.inject.Inject
 /**
  * ViewModel for the identity screens (list & detail).
  */
+@HiltViewModel
 class IdentityViewModel @Inject constructor(private val repository: IdentityRepository) : ViewModel() {
     private val identifier = MutableLiveData<String>()
     val identities = repository.allIdentities().asLiveData(viewModelScope.coroutineContext)

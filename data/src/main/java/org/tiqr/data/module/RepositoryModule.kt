@@ -32,6 +32,8 @@ package org.tiqr.data.module
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
@@ -46,6 +48,7 @@ import javax.inject.Singleton
  * Module which serves the repositories.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 internal object RepositoryModule {
     @Provides
     @Singleton

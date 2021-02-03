@@ -32,10 +32,11 @@ package org.tiqr.authenticator.authentication
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationSummaryBinding
@@ -45,8 +46,9 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
 /**
  * Fragment to summarize the authentication
  */
+@AndroidEntryPoint
 class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummaryBinding>() {
-    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) { factory }
+    private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
     private val args by navArgs<AuthenticationSummaryFragmentArgs>()
 
     @LayoutRes

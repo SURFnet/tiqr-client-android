@@ -5,6 +5,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion Versions.compileSdkVersion
@@ -75,11 +76,8 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.viewmodel
     implementation Libs.Google.material
 
-    api Libs.Dagger.dagger
-    kapt Libs.Dagger.compiler
-
-    implementation Libs.Assisted.inject
-    kapt Libs.Assisted.compiler
+    implementation Libs.Hilt.android
+    kapt Libs.Hilt.compiler
 
     api Libs.OkHttp.okhttp
     api Libs.OkHttp.logging

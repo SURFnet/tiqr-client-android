@@ -1,7 +1,8 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.4.20"
-private const val navigationVersion = "2.3.2"
+private const val kotlinVersion = "1.4.21"
+private const val navigationVersion = "2.3.3"
+private const val hiltVersion = "2.31.2-alpha"
 
 object Versions {
     // Android
@@ -17,10 +18,11 @@ object Versions {
 
 object Plugins {
     private val gradleAndroidVersion
-        get() = Properties.gradleAndroidPluginVersion ?: "4.1.1"
+        get() = Properties.gradleAndroidPluginVersion ?: "4.1.2"
 
     val android = "com.android.tools.build:gradle:$gradleAndroidVersion"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    const val hilt = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
     const val googleServices = "com.google.gms:google-services:4.3.3"
 
     object Navigation {
@@ -48,10 +50,10 @@ object Libs {
         const val core = "androidx.core:core-ktx:1.3.2"
         const val browser = "androidx.browser:browser:1.3.0"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha01" //contains important changes
+        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha02" //contains important changes
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
-        const val autofill = "androidx.autofill:autofill:1.0.0"
+        const val autofill = "androidx.autofill:autofill:1.1.0"
         const val localBroadcastManager = "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 
         object Room {
@@ -77,12 +79,12 @@ object Libs {
         }
 
         object Camera {
-            private const val version = "1.0.0-rc01"
+            private const val version = "1.0.0-rc02"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha20"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha20"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha21"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha21"
         }
     }
 
@@ -90,7 +92,7 @@ object Libs {
         const val material = "com.google.android.material:material:1.2.1"
 
         object MlKit {
-            const val barcode = "com.google.mlkit:barcode-scanning:16.1.0"
+            const val barcode = "com.google.mlkit:barcode-scanning:16.1.1"
         }
     }
 
@@ -101,7 +103,7 @@ object Libs {
     }
 
     object OkHttp {
-        private const val version = "4.9.0"
+        private const val version = "4.9.1"
         const val okhttp = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
     }
@@ -120,20 +122,10 @@ object Libs {
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
     }
 
-    object Dagger {
-        private const val version = "2.30.1"
-        const val dagger = "com.google.dagger:dagger:$version"
-        const val android = "com.google.dagger:dagger-android:$version"
-        const val androidSupport = "com.google.dagger:dagger-android-support:$version"
-
-        const val compiler = "com.google.dagger:dagger-compiler:$version"
-        const val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
-    }
-
-    object Assisted {
-        private const val version = "0.6.0"
-        const val inject = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
-        const val compiler = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
+    object Hilt {
+        const val android = "com.google.dagger:hilt-android:$hiltVersion"
+        const val compiler = "com.google.dagger:hilt-compiler:$hiltVersion"
+        const val fragment = "androidx.hilt:hilt-navigation-fragment:1.0.0-alpha03"
     }
 
     object Timber {

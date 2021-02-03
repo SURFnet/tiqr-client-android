@@ -34,6 +34,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.tiqr.data.R
 import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.ParseFailure
@@ -44,6 +45,7 @@ import javax.inject.Inject
 /**
  * ViewModel for Scanning QR codes
  */
+@HiltViewModel
 class ScanViewModel @Inject constructor(
         private val resources: Resources,
         private val enroll: EnrollmentRepository,

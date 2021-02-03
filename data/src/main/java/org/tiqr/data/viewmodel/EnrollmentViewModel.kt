@@ -32,8 +32,9 @@ package org.tiqr.data.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.model.EnrollmentCompleteRequest
 import org.tiqr.data.repository.EnrollmentRepository
@@ -65,8 +66,8 @@ class EnrollmentViewModel @AssistedInject constructor(
     /**
      * Factory to inject the [EnrollmentChallenge] at runtime
      */
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(_challenge: MutableLiveData<EnrollmentChallenge>): EnrollmentViewModel
+    @AssistedFactory
+    interface Factory : ChallengeViewModelFactory<EnrollmentChallenge> {
+        override fun create(challenge: MutableLiveData<EnrollmentChallenge>): EnrollmentViewModel
     }
 }
