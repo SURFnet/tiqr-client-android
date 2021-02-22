@@ -35,12 +35,14 @@ import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tiqr.data.BuildConfig
 import org.tiqr.data.api.interceptor.HeaderInjector
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.TokenApi
 import org.tiqr.data.api.adapter.AuthenticationResponseAdapter
 import org.tiqr.data.api.adapter.EnrollmentResponseAdapter
 import org.tiqr.data.api.adapter.addValueEnum
@@ -125,7 +127,7 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideUserAgentInjector(context: Context): UserAgentInjector = UserAgentInjector(context)
+    internal fun provideUserAgentInjector(@ApplicationContext context: Context): UserAgentInjector = UserAgentInjector(context)
 
     @Provides
     @Singleton
@@ -187,5 +189,9 @@ internal object NetworkModule {
     @Provides
     @Singleton
     internal fun provideTiqrApi(@ApiScope retrofit: Retrofit): TiqrApi = retrofit.create(TiqrApi::class.java)
+
+    @Provides
+    @Singleton
+    internal fun provideTokenApi(@TokenScope retrofit: Retrofit): TokenApi = retrofit.create(TokenApi::class.java)
     //endregion
 }

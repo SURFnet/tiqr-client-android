@@ -35,6 +35,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.tiqr.data.api.TiqrApi
+import org.tiqr.data.api.TokenApi
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
 import org.tiqr.data.repository.IdentityRepository
@@ -79,5 +80,8 @@ internal object RepositoryModule {
 
     @Provides
     @Singleton
-    internal fun provideTokenRepository() = TokenRepository()
+    internal fun provideTokenRepository(
+            api: TokenApi,
+            preferences: PreferenceService
+    ) = TokenRepository(api, preferences)
 }

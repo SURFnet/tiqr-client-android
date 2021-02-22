@@ -105,4 +105,7 @@
     <string name="identity_biometric_usage">バイオメトリを使用する</string>
     <string name="identity_biometric_upgrade">バイオメトリ使用にアップグレード</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">メッセージ</string>
+    <string name="notification_channel_description">tiqrからのメッセージの通知</string>
 </resources>

@@ -103,4 +103,8 @@
     <string name="identity_delete_message">Kontoen her kan altså ikke bruges længere hvis den slettes.</string>
     <string name="identity_biometric_usage">Brug biometri</string>
     <string name="identity_biometric_upgrade">Opgrader til brug af biometri</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Meddelelser</string>
+    <string name="notification_channel_description">Underretninger om meddelelser fra tiqr</string>
 </resources>

@@ -103,4 +103,8 @@
     <string name="identity_delete_message">Bu hesap silindiğinde artık kullanılamaz.</string>
     <string name="identity_biometric_usage">Biyometri kullan</string>
     <string name="identity_biometric_upgrade">Biyometri kullanımına yükselt</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Mesajlar</string>
+    <string name="notification_channel_description">Tiqr\'den gelen mesajlar için bildirimler</string>
 </resources>

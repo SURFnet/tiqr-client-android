@@ -1,8 +1,8 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.4.21"
+private const val kotlinVersion = "1.4.30"
 private const val navigationVersion = "2.3.3"
-private const val hiltVersion = "2.31.2-alpha"
+private const val hiltVersion = "2.32-alpha"
 
 object Versions {
     // Android
@@ -23,7 +23,7 @@ object Plugins {
     val android = "com.android.tools.build:gradle:$gradleAndroidVersion"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val hilt = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
-    const val googleServices = "com.google.gms:google-services:4.3.3"
+    const val googleServices = "com.google.gms:google-services:4.3.5"
 
     object Navigation {
         const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
@@ -44,9 +44,9 @@ object Libs {
     }
 
     object AndroidX {
-        const val activity = "androidx.activity:activity-ktx:1.1.0"
+        const val activity = "androidx.activity:activity-ktx:1.2.0"
         const val appcompat = "androidx.appcompat:appcompat:1.2.0"
-        const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val core = "androidx.core:core-ktx:1.3.2"
         const val browser = "androidx.browser:browser:1.3.0"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
@@ -65,7 +65,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.2.0"
+            private const val version = "2.3.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val commonJ8 = "androidx.lifecycle:lifecycle-common-java8:$version"
             const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -89,11 +89,15 @@ object Libs {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.2.1"
+        const val material = "com.google.android.material:material:1.3.0"
 
         object MlKit {
             const val barcode = "com.google.mlkit:barcode-scanning:16.1.1"
         }
+    }
+
+    object Firebase {
+        const val messaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
     }
 
     object Testing {

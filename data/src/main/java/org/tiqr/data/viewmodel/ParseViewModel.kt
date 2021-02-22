@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,36 +27,42 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.module
+package org.tiqr.data.viewmodel
 
-import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import org.tiqr.data.database.TiqrDao
-import org.tiqr.data.service.DatabaseService
-import org.tiqr.data.service.PreferenceService
-import org.tiqr.data.service.SecretService
-
-import javax.inject.Singleton
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
+import dagger.hilt.android.lifecycle.HiltViewModel
+import org.tiqr.data.repository.AuthenticationRepository
+import org.tiqr.data.repository.EnrollmentRepository
+import javax.inject.Inject
 
 /**
- * Module which serves the services.
+ * ViewModel for parsing raw challenges.
  */
-@Module
-@InstallIn(SingletonComponent::class)
-internal object ServiceModule {
-    @Provides
-    @Singleton
-    internal fun provideDatabaseService(dao: TiqrDao): DatabaseService = DatabaseService(dao)
+@HiltViewModel
+class ParseViewModel @Inject constructor(
+        private val enroll: EnrollmentRepository,
+        private val auth: AuthenticationRepository
+) : ViewModel() {
+    private val rawChallengeObserver = MutableLiveData<String>()
+    val challenge = rawChallengeObserver.switchMap { rawChallenge ->
+        liveData {
+            when {
+                enroll.isValidChallenge(rawChallenge) -> enroll.parseChallenge(rawChallenge)
+                auth.isValidChallenge(rawChallenge) -> auth.parseChallenge(rawChallenge)
+                else -> null
+            }.run {
+                emit(this)
+            }
+        }
+    }
 
-    @Provides
-    @Singleton
-    internal fun providePreferenceService(@ApplicationContext context: Context): PreferenceService = PreferenceService(context)
-
-    @Provides
-    @Singleton
-    internal fun provideSecretService(@ApplicationContext context: Context, preferenceService: PreferenceService) = SecretService(context, preferenceService)
+    /**
+     * Parse the [rawChallenge]
+     */
+    fun parseChallenge(rawChallenge: String) {
+        rawChallengeObserver.value = rawChallenge
+    }
 }

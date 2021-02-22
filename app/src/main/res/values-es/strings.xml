@@ -108,4 +108,7 @@
     <string name="identity_biometric_usage">Usar biometría</string>
     <string name="identity_biometric_upgrade">Actualizar al uso de biometría</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Mensajes</string>
+    <string name="notification_channel_description">Notificaciones de mensajes de tiqr</string>
 </resources>

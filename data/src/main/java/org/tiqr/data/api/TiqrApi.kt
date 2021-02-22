@@ -29,7 +29,6 @@
 
 package org.tiqr.data.api
 
-import org.tiqr.data.BuildConfig
 import org.tiqr.data.model.AuthenticationResponse
 import org.tiqr.data.model.EnrollmentRequest
 import org.tiqr.data.model.EnrollmentResponse
@@ -41,10 +40,6 @@ import retrofit2.http.*
  */
 interface TiqrApi {
     companion object {
-        private const val FIELD_APP_ID_KEY = "appId"
-        private const val FIELD_DEVICE_TOKEN_KEY = "deviceToken"
-        private const val FIELD_NOTIFICATION_TOKEN_KEY = "notificationToken"
-
         private const val FIELD_SECRET_KEY = "secret"
         private const val FIELD_LANGUAGE_KEY = "language"
         private const val FIELD_NOTIFICATION_TYPE_KEY = "notificationType"
@@ -59,16 +54,10 @@ interface TiqrApi {
         private const val FIELD_RESPONSE = "response"
     }
 
-    @POST("tokenexchange/")
-    @FormUrlEncoded
-    suspend fun registerDeviceToken(
-            @Query(FIELD_APP_ID_KEY) appId: String = BuildConfig.TOKEN_EXCHANGE_APP_ID,
-            @Query(FIELD_DEVICE_TOKEN_KEY) deviceToken: String,
-            @Query(FIELD_NOTIFICATION_TOKEN_KEY) notificationToken: String? = null
-    ): String
-
     @GET
-    suspend fun requestEnroll(@Url url: String): Response<EnrollmentRequest>
+    suspend fun requestEnroll(
+            @Url url: String
+    ): Response<EnrollmentRequest>
 
     @POST
     @FormUrlEncoded

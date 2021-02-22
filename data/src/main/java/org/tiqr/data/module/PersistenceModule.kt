@@ -34,6 +34,7 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.tiqr.data.database.TiqrDao
 import org.tiqr.data.database.TiqrDatabase
@@ -48,7 +49,7 @@ import javax.inject.Singleton
 internal object PersistenceModule {
     @Provides
     @Singleton
-    internal fun provideTiqrDatabase(context: Context): TiqrDatabase =
+    internal fun provideTiqrDatabase(@ApplicationContext context: Context): TiqrDatabase =
             Room.databaseBuilder(context, TiqrDatabase::class.java, TiqrDatabase.DB_NAME)
                     .addMigrations(
                             TiqrDatabase.FROM_4_TO_5,

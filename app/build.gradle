@@ -88,6 +88,7 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.commonJ8
     implementation Libs.Google.material
     implementation Libs.Google.MlKit.barcode
+    implementation Libs.Firebase.messaging
 
     implementation project(':data')
 
