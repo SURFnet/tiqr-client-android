@@ -29,6 +29,7 @@
 
 package org.tiqr.authenticator.base
 
+import android.annotation.SuppressLint
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.plusAssign
@@ -38,6 +39,7 @@ import org.tiqr.authenticator.browser.BrowserNavigator
  * NavHostFragment with added support for browser destinations from [BrowserNavigator].
  */
 class TiqrNavHostFragment : NavHostFragment() {
+    @SuppressLint("RestrictedApi")
     override fun onCreateNavController(navController: NavController) {
         super.onCreateNavController(navController)
 
