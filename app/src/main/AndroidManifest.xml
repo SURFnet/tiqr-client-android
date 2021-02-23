@@ -31,6 +31,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleInstance"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +48,14 @@
                 <data android:scheme="${schemeAuth}" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".messaging.TiqrMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <!-- Disable analytics -->
         <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />

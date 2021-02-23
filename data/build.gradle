@@ -18,10 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
 
-        buildConfigField "String", "TOKENEXCHANGE_URL", "\"https://tx.tiqr.org/tokenexchange/?appId=tiqr\""
-
         buildConfigField "String", "TOKEN_EXCHANGE_BASE_URL", "\"https://tx.tiqr.org/\""
-        buildConfigField "String", "TOKEN_EXCHANGE_APP_ID", "\"tiqr\""
 
         buildConfigField "String", "BASE_URL", "\"https://demo.tiqr.org\""
         buildConfigField "int", "PROTOCOL_VERSION", "2"

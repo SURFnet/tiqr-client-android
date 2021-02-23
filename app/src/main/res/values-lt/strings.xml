@@ -104,4 +104,7 @@
     <string name="identity_biometric_usage">Naudokite biometriją</string>
     <string name="identity_biometric_upgrade">Atnaujinkite į biometrijos naudojimą</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Pranešimas</string>
+    <string name="notification_channel_description">Pranešimai apie žinutes iš tiqr</string>
 </resources>

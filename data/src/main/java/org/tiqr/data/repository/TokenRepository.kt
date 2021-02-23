@@ -29,9 +29,35 @@
 
 package org.tiqr.data.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.tiqr.data.api.TokenApi
+import org.tiqr.data.service.PreferenceService
+import timber.log.Timber
+
 /**
  * Repository to handle token exchange.
  */
-class TokenRepository {
-    // TODO
+class TokenRepository(private val api: TokenApi, private val preferences: PreferenceService) {
+    companion object {
+        private const val NOT_FOUND = "NOT FOUND"
+    }
+
+    /**
+     * Register the device token (received from Firebase) and save the resulting notification token.
+     */
+    suspend fun registerDeviceToken(deviceToken: String) {
+        try {
+            val newToken = api.registerDeviceToken(deviceToken = deviceToken, notificationToken = preferences.notificationToken)
+            if (newToken != NOT_FOUND) {
+                withContext(Dispatchers.Main) {
+                    preferences.notificationToken = newToken
+                }
+            } else {
+                Timber.w("Token from exchange is invalid")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to register deviceToken")
+        }
+    }
 }

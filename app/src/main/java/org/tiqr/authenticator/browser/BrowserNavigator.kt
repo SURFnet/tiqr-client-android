@@ -42,8 +42,10 @@ import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.ClassType
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import androidx.navigation.Navigator.Name
 import org.tiqr.authenticator.R
 import timber.log.Timber
 
@@ -51,29 +53,30 @@ import timber.log.Timber
  * [Navigator] to add a browser [NavDestination]
  * which opens the link in Chrome Custom Tabs, or fallbacks to the default browser.
  */
-@Navigator.Name("browser")
+@Name("browser")
 class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigator.Destination>() {
+    private val customTabsIntent = CustomTabsIntent.Builder()
+            .setShowTitle(true)
+            .setDefaultColorSchemeParams(
+                    CustomTabColorSchemeParams.Builder()
+                            .setToolbarColor(ContextCompat.getColor(context, R.color.primaryColor))
+                            .build()
+            )
+            .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
+            .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
+            .setShareState(CustomTabsIntent.SHARE_STATE_ON)
+            .build()
+
     override fun navigate(destination: Destination, args: Bundle?, navOptions: NavOptions?, navigatorExtras: Extras?): NavDestination? {
         val url = args?.getString("url") ?: return null
         val link = url.toUri()
         val referrer = "android-app://${context.packageName}".toUri()
 
         if (destination.isChromeCustomTabSupported) {
-            CustomTabsIntent.Builder()
-                    .setShowTitle(true)
-                    .setDefaultColorSchemeParams(
-                            CustomTabColorSchemeParams.Builder()
-                                    .setToolbarColor(ContextCompat.getColor(context, R.color.primaryColor))
-                                    .build()
-                    )
-                    .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
-                    .setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
-                    .setShareState(CustomTabsIntent.SHARE_STATE_ON)
-                    .build()
-                    .run {
-                        intent.putExtra(Intent.EXTRA_REFERRER, referrer)
-                        launchUrl(context, link)
-                    }
+            customTabsIntent.apply {
+                intent.putExtra(Intent.EXTRA_REFERRER, referrer)
+                launchUrl(context, link)
+            }
         } else {
             // Open with the default browser
             Intent(Intent.ACTION_VIEW, link).apply {
@@ -97,7 +100,7 @@ class BrowserNavigator(private val context: Context) : Navigator<BrowserNavigato
 
     override fun popBackStack() = true // Managed by Chrome Custom Tabs
 
-    @NavDestination.ClassType(Activity::class)
+    @ClassType(Activity::class)
     class Destination(context: Context, navigator: Navigator<out NavDestination>) : NavDestination(navigator) {
         val isChromeCustomTabSupported = context.isChromeCustomTabSupported()
 

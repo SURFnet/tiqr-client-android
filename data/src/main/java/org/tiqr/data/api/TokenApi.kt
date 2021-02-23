@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,36 +27,29 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.module
+package org.tiqr.data.api
 
-import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import org.tiqr.data.database.TiqrDao
-import org.tiqr.data.service.DatabaseService
-import org.tiqr.data.service.PreferenceService
-import org.tiqr.data.service.SecretService
-
-import javax.inject.Singleton
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
- * Module which serves the services.
+ * Retrofit API endpoints for token exchange.
  */
-@Module
-@InstallIn(SingletonComponent::class)
-internal object ServiceModule {
-    @Provides
-    @Singleton
-    internal fun provideDatabaseService(dao: TiqrDao): DatabaseService = DatabaseService(dao)
+interface TokenApi {
+    companion object {
+        private const val FIELD_APP_ID_KEY = "appId"
+        private const val FIELD_APP_ID_VALUE = "tiqr"
+        private const val FIELD_DEVICE_TOKEN_KEY = "deviceToken"
+        private const val FIELD_NOTIFICATION_TOKEN_KEY = "notificationToken"
+    }
 
-    @Provides
-    @Singleton
-    internal fun providePreferenceService(@ApplicationContext context: Context): PreferenceService = PreferenceService(context)
-
-    @Provides
-    @Singleton
-    internal fun provideSecretService(@ApplicationContext context: Context, preferenceService: PreferenceService) = SecretService(context, preferenceService)
+    @POST("tokenexchange/")
+    @FormUrlEncoded
+    suspend fun registerDeviceToken(
+            @Query(FIELD_APP_ID_KEY) appId: String = FIELD_APP_ID_VALUE,
+            @Field(FIELD_DEVICE_TOKEN_KEY) deviceToken: String,
+            @Field(FIELD_NOTIFICATION_TOKEN_KEY) notificationToken: String? = null
+    ): String
 }

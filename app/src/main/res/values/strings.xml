@@ -107,4 +107,7 @@
     <string name="identity_biometric_usage">Use biometrics</string>
     <string name="identity_biometric_upgrade">Upgrade to biometrics usage</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Messages</string>
+    <string name="notification_channel_description">Notifications for messages from tiqr</string>
 </resources>

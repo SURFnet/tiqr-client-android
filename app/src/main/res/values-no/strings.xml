@@ -108,4 +108,7 @@
     <string name="identity_biometric_usage">Bruk biometri</string>
     <string name="identity_biometric_upgrade">Oppgradering til bruk av biometri</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Meldinger</string>
+    <string name="notification_channel_description">Varsler for meldinger fra tiqr</string>
 </resources>

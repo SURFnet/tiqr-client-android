@@ -29,12 +29,12 @@
 
 package org.tiqr.data.module
 
-import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -46,9 +46,5 @@ import javax.inject.Singleton
 internal object DataModule {
     @Provides
     @Singleton
-    fun provideApplicationContext(application: Application): Context = application.applicationContext
-
-    @Provides
-    @Singleton
-    fun provideResources(context: Context): Resources = context.resources
+    fun provideResources(@ApplicationContext context: Context): Resources = context.resources
 }

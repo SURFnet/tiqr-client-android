@@ -29,9 +29,11 @@
 
 package org.tiqr.authenticator
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.children
@@ -45,16 +47,23 @@ import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionListenerAdapter
 import androidx.transition.TransitionManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.base.BaseActivity
 import org.tiqr.authenticator.databinding.ActivityMainBinding
-import org.tiqr.authenticator.scan.ScanKeyEventsReceiver
 import org.tiqr.authenticator.scan.ScanFragment
+import org.tiqr.authenticator.scan.ScanKeyEventsReceiver
 import org.tiqr.authenticator.util.extensions.currentNavigationFragment
 import org.tiqr.authenticator.util.extensions.getNavController
+import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.ChallengeParseResult
+import org.tiqr.data.model.EnrollmentChallenge
+import org.tiqr.data.viewmodel.ParseViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+    private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController
 
     @LayoutRes
@@ -66,8 +75,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
         super.onCreate(savedInstanceState)
 
-        navController = getNavController(R.id.nav_host_fragment)
-        with(navController) {
+        navController = getNavController(R.id.nav_host_fragment).apply {
             setSupportActionBar(binding.toolbar)
             setupActionBarWithNavController(this,
                     AppBarConfiguration.Builder(
@@ -79,6 +87,44 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
             addOnDestinationChangedListener(this@MainActivity)
 
             Navigation.setViewNavController(binding.bottombar, this)
+        }
+
+        parseViewModel.challenge.observe(this) { result ->
+            when (result) {
+                is ChallengeParseResult.Success -> {
+                    when (result.value) {
+                        is EnrollmentChallenge -> {
+                            val challenge = result.value as EnrollmentChallenge
+                            navController.navigate(EnrollmentNavDirections.actionEnroll(challenge))
+                        }
+                        is AuthenticationChallenge -> {
+                            val challenge = result.value as AuthenticationChallenge
+                            navController.navigate(AuthenticationNavDirections.actionAuthenticate(challenge))
+                        }
+                    }
+                }
+                is ChallengeParseResult.Failure -> {
+                    MaterialAlertDialogBuilder(this)
+                            .setTitle(result.failure.title)
+                            .setMessage(result.failure.message)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
+                            .show()
+                }
+                else -> Timber.w("Could not parse the raw challenge")
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent != null && intent.action == Intent.ACTION_VIEW) {
+            intent.dataString?.let { rawChallenge ->
+                Timber.i("Received raw challenge: $rawChallenge")
+
+                parseViewModel.parseChallenge(rawChallenge)
+            }
         }
     }
 

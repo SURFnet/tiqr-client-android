@@ -107,4 +107,7 @@
     <string name="identity_biometric_usage">Koristite biometriju</string>
     <string name="identity_biometric_upgrade">Nadogradnja na upotrebu biometrije</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Poruke</string>
+    <string name="notification_channel_description">Obaveštenja za poruke od tikr</string>
 </resources>

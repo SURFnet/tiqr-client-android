@@ -4,7 +4,8 @@ import org.tiqr.authenticator.buildsrc.Plugins
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // should be removed eventually, but not possible yet
     }
 
     dependencies {
@@ -20,7 +21,6 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 }
 
