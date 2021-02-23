@@ -40,8 +40,9 @@ import org.tiqr.data.model.asSecret
 import org.tiqr.data.model.asSessionKey
 import org.tiqr.data.security.CipherPayload
 import org.tiqr.data.security.SecurityFeaturesException
+import org.tiqr.data.util.extension.CompatType
 import org.tiqr.data.util.extension.toCharArray
-import org.tiqr.data.util.extension.toCharArrayFallback
+import org.tiqr.data.util.extension.toCharArrayCompat
 import timber.log.Timber
 import java.io.IOException
 import java.security.*
@@ -126,35 +127,56 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
                 context.openFileOutput(KEYSTORE_FILENAME, Context.MODE_PRIVATE).use {
                     // We just created the KeyStore file, initialize the default.
                     keyStore.load(null, null)
+                    // And save
+                    saveKeystore(encryption.deviceKey().asSessionKey())
                 }
             } else {
+                var migrateKeystore = false
+
                 // Load keystore from the file
                 context.openFileInput(KEYSTORE_FILENAME).use {
-                    // TODO: use compat version to convert to charArray
                     try {
-                        keyStore.load(it, encryption.deviceKey().toCharArray())
+                        keyStore.load(it, encryption.deviceKey().encoded.toCharArray())
                     } catch (e: IOException) {
-                        Timber.e(e, "Loading keystore failed")
-                        if (e.cause is UnrecoverableKeyException) {
-                            Timber.e(e, "Loading keystore failed, retrying with old style password")
-                            // Load KeyStore from the file with old style password
-                            keyStore.load(it, encryption.deviceKey().toCharArray(fallback = true))
+                        Timber.e(e, "Loading keystore failed, retrying with fallback")
+                        try {
+                            keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.Fallback))
+                            migrateKeystore = true
+                        } catch (e: IOException) {
+                            Timber.e(e, "Loading keystore failed, retrying with fallback pre pie")
+                            try {
+                                keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.FallbackPrePie))
+                                migrateKeystore = true
+                            } catch (e: IOException) {
+                                Timber.e(e, "Loading keystore failed, retrying with fallback of version 3.0.6")
+                                try {
+                                    keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.FallbackVersion306))
+                                    migrateKeystore = true
+                                } catch (e: IOException) {
+                                    Timber.e("Loading keystore failed and is unusable now")
+                                }
+                            }
                         }
                     }
                 }
-                //FIXME: 'KeyStore integrity check failed' when using data from older versions.
+
+                // Save keystore to use the default [CharArray] conversion
+                if (migrateKeystore) {
+                    saveKeystore(encryption.deviceKey().asSessionKey())
+                }
             }
         }
 
         /**
-         * Save the session key in the keystore
+         * Save the keystore with the [sessionKey] as password
          *
          * @throws SecurityFeaturesException if saving fails
          */
-        private fun saveSecretKey(sessionKey: SessionKey) {
+        private fun saveKeystore(sessionKey: SessionKey) {
             context.openFileOutput(KEYSTORE_FILENAME, Context.MODE_PRIVATE).use {
                 try {
-                    keyStore.store(it, sessionKey.value.toCharArray())
+                    sessionKey.value.encoded.toCharArray()
+                    keyStore.store(it, sessionKey.value.encoded.toCharArray())
                 } catch (e: Exception) {
                     Timber.e(e)
                     throw SecurityFeaturesException(message = "Saving the secret key failed", cause = e)
@@ -172,16 +194,37 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
             var ivEntry: KeyStore.SecretKeyEntry?
             var migrateKeys = false
 
-            // TODO: use compat version to convert to charArray
             try {
-                val protection = KeyStore.PasswordProtection(sessionKey.value.toCharArray())
+                val protection = KeyStore.PasswordProtection(sessionKey.value.encoded.toCharArray())
                 ctEntry = keyStore.getEntry(id, protection) as? KeyStore.SecretKeyEntry
                 ivEntry = keyStore.getEntry(id + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
             } catch (e: UnrecoverableKeyException) {
-                val protection = KeyStore.PasswordProtection(sessionKey.value.toCharArray(fallback = true))
-                ctEntry = keyStore.getEntry(id, protection) as? KeyStore.SecretKeyEntry
-                ivEntry = keyStore.getEntry(id + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
-                migrateKeys = true
+                Timber.e(e, "Getting secretkey failed, retrying with fallback")
+                try {
+                    val protection = KeyStore.PasswordProtection(sessionKey.value.encoded.toCharArrayCompat(CompatType.Fallback))
+                    ctEntry = keyStore.getEntry(id, protection) as? KeyStore.SecretKeyEntry
+                    ivEntry = keyStore.getEntry(id + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
+                    migrateKeys = true
+                } catch (e: UnrecoverableKeyException) {
+                    Timber.e(e, "Getting secretkey failed, retrying with fallback pre pie")
+                    try {
+                        val protection = KeyStore.PasswordProtection(sessionKey.value.encoded.toCharArrayCompat(CompatType.FallbackPrePie))
+                        ctEntry = keyStore.getEntry(id, protection) as? KeyStore.SecretKeyEntry
+                        ivEntry = keyStore.getEntry(id + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
+                        migrateKeys = true
+                    } catch (e: UnrecoverableKeyException) {
+                        Timber.e(e, "Getting secretkey failed, retrying with fallback of version 3.0.6")
+                        try {
+                            val protection = KeyStore.PasswordProtection(sessionKey.value.encoded.toCharArrayCompat(CompatType.FallbackVersion306))
+                            ctEntry = keyStore.getEntry(id, protection) as? KeyStore.SecretKeyEntry
+                            ivEntry = keyStore.getEntry(id + IV_SUFFIX, protection) as? KeyStore.SecretKeyEntry
+                            migrateKeys = true
+                        } catch (e: UnrecoverableKeyException) {
+                            ctEntry = null
+                            ivEntry = null
+                        }
+                    }
+                }
             }
 
             if (ctEntry == null || ctEntry.secretKey == null) {
@@ -204,11 +247,11 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
             val ctEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.cipherText, "RAW"))
             val ivEntry = KeyStore.SecretKeyEntry(SecretKeySpec(payload.iv, "RAW"))
 
-            with(KeyStore.PasswordProtection(sessionKey.value.toCharArray())) {
+            with(KeyStore.PasswordProtection(sessionKey.value.encoded.toCharArray())) {
                 keyStore.setEntry(id, ctEntry, this)
                 keyStore.setEntry(id + IV_SUFFIX, ivEntry, this)
             }
-            saveSecretKey(sessionKey)
+            saveKeystore(sessionKey)
         }
 
         /**
@@ -222,16 +265,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
                     }
                 }
             }
-            saveSecretKey(encryption.deviceKey().asSessionKey())
-        }
-
-        /**
-         * Convert this [SecretKey.getEncoded] to a [CharArray]
-         */
-        private fun SecretKey.toCharArray(fallback: Boolean = false) = if (fallback) {
-            encoded.toCharArrayFallback()
-        } else {
-            encoded.toCharArray()
+            saveKeystore(encryption.deviceKey().asSessionKey())
         }
     }
 
