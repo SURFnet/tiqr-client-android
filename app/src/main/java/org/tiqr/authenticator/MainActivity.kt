@@ -95,11 +95,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                     when (result.value) {
                         is EnrollmentChallenge -> {
                             val challenge = result.value as EnrollmentChallenge
-                            navController.navigate(EnrollmentNavDirections.actionEnroll(challenge))
+                            navController.navigate(MainNavDirections.actionEnroll(challenge))
                         }
                         is AuthenticationChallenge -> {
                             val challenge = result.value as AuthenticationChallenge
-                            navController.navigate(AuthenticationNavDirections.actionAuthenticate(challenge))
+                            navController.navigate(MainNavDirections.actionAuthenticate(challenge))
                         }
                     }
                 }
