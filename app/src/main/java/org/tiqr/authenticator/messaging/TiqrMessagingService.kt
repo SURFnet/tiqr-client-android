@@ -37,8 +37,10 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,8 +72,6 @@ class TiqrMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
-        Timber.i("Received token: $token")
 
         scope.launch {
             repository.registerDeviceToken(token)
@@ -110,8 +110,8 @@ class TiqrMessagingService : FirebaseMessagingService() {
             }
 
             NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0))
-                    .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification_large))
+                    .setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setLargeIcon(AppCompatResources.getDrawable(this, R.drawable.ic_notification_large)?.toBitmap())
                     .setSmallIcon(R.drawable.ic_notification)
                     .setAutoCancel(true)
                     .setWhen(System.currentTimeMillis())

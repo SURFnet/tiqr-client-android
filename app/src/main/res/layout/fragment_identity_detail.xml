@@ -28,18 +28,20 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="@{model.identityProvider.displayName}"
             android:textAppearance="@style/AppTheme.TextAppearance.Title"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="&lt;identityprovider displayname&gt;" />
+            tools:text="&lt;identityprovider name&gt;" />
 
         <TextView
             android:id="@+id/subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="@{model.identityProvider.identifier}"
             app:layout_constraintEnd_toStartOf="@+id/logo"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,8 +56,7 @@
             android:src="@drawable/logo_tiqr_small"
             app:layout_constraintBottom_toBottomOf="@+id/subtitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toTopOf="@id/title"
             app:loadImage="@{model.identityProvider.logo}"
             tools:ignore="ContentDescription" />
 

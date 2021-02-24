@@ -95,11 +95,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                     when (result.value) {
                         is EnrollmentChallenge -> {
                             val challenge = result.value as EnrollmentChallenge
-                            navController.navigate(EnrollmentNavDirections.actionEnroll(challenge))
+                            navController.navigate(MainNavDirections.actionEnroll(challenge))
                         }
                         is AuthenticationChallenge -> {
                             val challenge = result.value as AuthenticationChallenge
-                            navController.navigate(AuthenticationNavDirections.actionAuthenticate(challenge))
+                            navController.navigate(MainNavDirections.actionAuthenticate(challenge))
                         }
                     }
                 }
@@ -118,12 +118,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         if (intent != null && intent.action == Intent.ACTION_VIEW) {
             intent.dataString?.let { rawChallenge ->
-                Timber.i("Received raw challenge: $rawChallenge")
-
                 parseViewModel.parseChallenge(rawChallenge)
+                // clear the intent since we have handled it
+                intent.data = null
             }
         }
     }

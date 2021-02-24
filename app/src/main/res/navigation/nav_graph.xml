@@ -30,32 +30,6 @@
         android:id="@+id/scan"
         android:name="org.tiqr.authenticator.scan.ScanFragment"
         tools:layout="@layout/fragment_scan">
-
-        <action
-            android:id="@+id/action_enroll"
-            app:destination="@id/enrollment_nav"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/start"
-            app:popUpToInclusive="false">
-
-            <argument
-                android:name="challenge"
-                app:argType="org.tiqr.data.model.EnrollmentChallenge"
-                app:nullable="false" />
-        </action>
-
-        <action
-            android:id="@+id/action_authenticate"
-            app:destination="@id/authentication_nav"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/start"
-            app:popUpToInclusive="false">
-
-            <argument
-                android:name="challenge"
-                app:argType="org.tiqr.data.model.AuthenticationChallenge"
-                app:nullable="false" />
-        </action>
     </fragment>
 
     <action
@@ -86,19 +60,6 @@
     <navigation
         android:id="@+id/authentication_nav"
         app:startDestination="@id/authentication_confirm">
-
-        <action
-            android:id="@+id/action_authenticate"
-            app:destination="@id/authentication_nav"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/start"
-            app:popUpToInclusive="false">
-
-            <argument
-                android:name="challenge"
-                app:argType="org.tiqr.data.model.AuthenticationChallenge"
-                app:nullable="false" />
-        </action>
 
         <fragment
             android:id="@+id/authentication_confirm"
@@ -193,19 +154,6 @@
         android:label="Enrollment"
         app:startDestination="@id/enrollment_confirm">
 
-        <action
-            android:id="@+id/action_enroll"
-            app:destination="@id/enrollment_nav"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/start"
-            app:popUpToInclusive="false">
-
-            <argument
-                android:name="challenge"
-                app:argType="org.tiqr.data.model.EnrollmentChallenge"
-                app:nullable="false" />
-        </action>
-
         <fragment
             android:id="@+id/enrollment_confirm"
             android:name="org.tiqr.authenticator.enrollment.EnrollmentConfirmFragment"
@@ -290,4 +238,30 @@
                 app:argType="org.tiqr.data.model.IdentityWithProvider" />
         </fragment>
     </navigation>
+
+    <action
+        android:id="@+id/action_enroll"
+        app:destination="@id/enrollment_nav"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/start"
+        app:popUpToInclusive="false">
+
+        <argument
+            android:name="challenge"
+            app:argType="org.tiqr.data.model.EnrollmentChallenge"
+            app:nullable="false" />
+    </action>
+
+    <action
+        android:id="@+id/action_authenticate"
+        app:destination="@id/authentication_nav"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/start"
+        app:popUpToInclusive="false">
+
+        <argument
+            android:name="challenge"
+            app:argType="org.tiqr.data.model.AuthenticationChallenge"
+            app:nullable="false" />
+    </action>
 </navigation>
