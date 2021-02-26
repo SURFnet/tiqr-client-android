@@ -17,13 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress"
-            android:theme="@style/AppTheme.Progress"
-            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:indeterminate="true"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </FrameLayout>
 </layout>

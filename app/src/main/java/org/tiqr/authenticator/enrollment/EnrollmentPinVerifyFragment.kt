@@ -71,11 +71,14 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                         }
                         .show()
             } else {
+                binding.progress.show()
                 viewModel.enroll(pin)
             }
         }
 
         viewModel.enrollment.observe(viewLifecycleOwner) {
+            binding.progress.hide()
+
             when (it) {
                 ChallengeCompleteResult.Success -> {
                     showBiometricUpgrade {
@@ -86,6 +89,7 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                     MaterialAlertDialogBuilder(requireContext())
                             .setTitle(it.failure.title)
                             .setMessage(it.failure.message)
+                            .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                             .show()
                 }
             }

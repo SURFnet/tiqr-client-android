@@ -63,6 +63,8 @@ class AuthenticationFallbackFragment : BaseFragment<FragmentAuthenticationFallba
 
         viewModel.generateOTP(args.pin)
         viewModel.otp.observe(viewLifecycleOwner) {
+            binding.progress.hide() // already visible from layout
+
             when (it) {
                 is ChallengeCompleteOtpResult.Failure -> {
                     MaterialAlertDialogBuilder(requireContext())

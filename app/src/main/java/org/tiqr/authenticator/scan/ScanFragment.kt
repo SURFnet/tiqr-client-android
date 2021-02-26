@@ -65,7 +65,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                     viewFinder = binding.viewFinder,
                     viewFinderRatio = it.height.toFloat() / it.width.toFloat()
             ) { result ->
-                //TODO: show progress
+                binding.progress.show()
                 viewModel.parseChallenge(result)
             }
         }
@@ -77,7 +77,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
      * Parse the result after scanning the QR code.
      */
     private fun handleParse(result: ChallengeParseResult<*, *>) {
-        //TODO: hide progress
+        binding.progress.hide()
         when (result) {
             is ChallengeParseResult.Success -> {
                 viewLifecycleOwner.lifecycleScope.launchWhenResumed {

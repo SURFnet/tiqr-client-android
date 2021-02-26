@@ -123,7 +123,7 @@ class EnrollmentRepository(
                         EnrollmentChallenge(
                                 identityProvider = identityProvider,
                                 identity = identity,
-                                returnUrl = url.query?.toDecodedUrlStringOrNull(), //TODO: check if this should be set
+                                returnUrl = url.query?.toDecodedUrlStringOrNull(),
                                 enrollmentUrl = enroll.service.enrollmentUrl,
                                 enrollmentHost = enroll.service.enrollmentUrl.toUrlOrNull()?.host ?: enroll.service.enrollmentUrl
                         ).run {
