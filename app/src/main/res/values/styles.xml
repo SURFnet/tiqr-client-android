@@ -59,11 +59,6 @@
         <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
-    <style name="AppTheme.Progress">
-        <!-- TODO: check if we need a pinkish color from old code -->
-        <item name="colorSecondary">@color/primaryDarkColor</item>
-    </style>
-
     <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
@@ -84,5 +79,4 @@
         <item name="android:maxLength">1</item>
         <item name="android:maxLines">1</item>
     </style>
-
 </resources>

@@ -58,10 +58,13 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
         super.onViewCreated(view, savedInstanceState)
 
         binding.pin.setConfirmListener { pin ->
+            binding.progress.show()
             viewModel.authenticate(SecretCredential.pin(pin))
         }
 
         viewModel.authenticate.observe(viewLifecycleOwner) {
+            binding.progress.hide()
+
             when (it) {
                 is ChallengeCompleteResult.Success -> {
                     findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(binding.pin.currentPin))
@@ -85,12 +88,20 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
+                                        .setPositiveButton(R.string.button_ok) { dialog , _ ->
+                                            if (remaining != null && remaining == 0) {
+                                                // Blocked. Pop back to start.
+                                                findNavController().popBackStack()
+                                            }
+                                            dialog.dismiss()
+                                        }
                                         .show()
                             }
                             else -> {
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
+                                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                                         .show()
                             }
                         }

@@ -100,6 +100,8 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
 
         // Authenticate using biometrics
         viewModel.authenticate.observe(viewLifecycleOwner) {
+            binding.progress.hide()
+
             when (it) {
                 is ChallengeCompleteResult.Success -> {
                     findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary())
@@ -116,19 +118,23 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts
-                                if (remaining == null || remaining > 0) {
-                                    // TODO
-                                }
-
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
+                                        .setPositiveButton(R.string.button_ok) { dialog , _ ->
+                                            if (remaining != null && remaining == 0) {
+                                                // Blocked. Pop back to start.
+                                                findNavController().popBackStack()
+                                            }
+                                            dialog.dismiss()
+                                        }
                                         .show()
                             }
                             else -> {
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
+                                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                                         .show()
                             }
                         }
@@ -154,13 +160,17 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
         AuthenticationBiometricComponent(this, requireContext()) { result ->
             when (result) {
                 is BiometricResult.Success -> viewModel.authenticate(SecretCredential.biometric())
-                is BiometricResult.Cancel -> findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+                is BiometricResult.Cancel -> {
+                    binding.progress.hide()
+                    findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+                }
                 is BiometricResult.Fail -> {
-                    // TODO: show dialog?
+                    binding.progress.hide()
                     findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
                 }
             }
         }.run {
+            binding.progress.show()
             authenticate()
         }
     }

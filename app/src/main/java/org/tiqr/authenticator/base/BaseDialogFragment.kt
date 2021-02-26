@@ -42,6 +42,9 @@ import dagger.hilt.android.EntryPointAccessors
 import org.tiqr.authenticator.R
 import org.tiqr.data.viewmodel.ViewModelFactory
 
+/**
+ * Base Dialog Fragment
+ */
 abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment(), BindingProvider<B> {
     final override var _binding: B? = null
         private set
