@@ -48,7 +48,7 @@ private const val CODE_ACCOUNT_BLOCKED = "ACCOUNT_BLOCKED"
 private const val CODE_INVALID_CHALLENGE = "INVALID_CHALLENGE"
 private const val CODE_INVALID_REQUEST = "INVALID_REQUEST"
 private const val CODE_INVALID_USERID = "INVALID_USERID"
-private const val CODE_INVALID_RESPONSE = "INVALID_RESPONSE:"
+private const val CODE_INVALID_RESPONSE = "INVALID_RESPONSE"
 
 /**
  * Custom Moshi adapter to parse [EnrollmentResponse] in ascii & json format
@@ -112,8 +112,8 @@ class AuthenticationResponseAdapter private constructor() {
                             this == CODE_INVALID_REQUEST -> AuthenticationResponse(code = AUTH_RESULT_INVALID_REQUEST)
                             this == CODE_INVALID_USERID -> AuthenticationResponse(code = AUTH_RESULT_INVALID_USER_ID)
                             startsWith(CODE_INVALID_RESPONSE) -> {
-                                val remainingAttempts = substringAfter(':').toIntOrNull() ?: 0
-                                AuthenticationResponse(code = AUTH_RESULT_INVALID_RESPONSE, attemptsLeft = remainingAttempts)
+                                val remainingAttempts = substringAfter('|').toIntOrNull() ?: 0
+                                return AuthenticationResponse(code = AUTH_RESULT_INVALID_RESPONSE, attemptsLeft = remainingAttempts)
                             }
                             else -> AuthenticationResponse(code = AUTH_RESULT_INVALID_RESPONSE)
                         }

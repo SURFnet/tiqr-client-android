@@ -40,14 +40,32 @@ import org.tiqr.data.R
 import org.tiqr.data.algorithm.Ocra
 import org.tiqr.data.algorithm.Ocra.OcraException
 import org.tiqr.data.api.TiqrApi
-import org.tiqr.data.api.interceptor.HeaderInjector
-import org.tiqr.data.model.*
-import org.tiqr.data.model.AuthenticationResponse.Code.*
+import org.tiqr.data.api.response.ApiResponse
+import org.tiqr.data.model.AuthenticationChallenge
+import org.tiqr.data.model.AuthenticationCompleteFailure
+import org.tiqr.data.model.AuthenticationCompleteRequest
+import org.tiqr.data.model.AuthenticationParseFailure
+import org.tiqr.data.model.AuthenticationResponse
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_ACCOUNT_BLOCKED
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_CHALLENGE
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_REQUEST
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_RESPONSE
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_USER_ID
+import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_SUCCESS
+import org.tiqr.data.model.ChallengeCompleteFailure
+import org.tiqr.data.model.ChallengeCompleteOtpResult
+import org.tiqr.data.model.ChallengeCompleteRequest
+import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.model.ChallengeParseResult
+import org.tiqr.data.model.Identity
+import org.tiqr.data.model.SecretCredential
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.repository.base.ChallengeRepository
 import org.tiqr.data.security.SecurityFeaturesException
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
+import org.tiqr.data.util.extension.tiqrProtocol
 import org.tiqr.data.util.extension.toHexString
 import timber.log.Timber
 import java.io.IOException
@@ -169,130 +187,19 @@ class AuthenticationRepository(
                     language = Locale.getDefault().language,
                     notificationAddress = preferences.notificationToken
             ).run {
-                if (isSuccessful) {
-                    val result = body() ?: return AuthenticationCompleteFailure(
-                            reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                return when (this) {
+                    is ApiResponse.Success -> handleResponse(request, body, headers.tiqrProtocol())
+                    is ApiResponse.Failure -> handleResponse(request, body, headers.tiqrProtocol())
+                    is ApiResponse.NetworkError -> AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.CONNECTION,
                             title = resources.getString(R.string.error_auth_title),
-                            message = resources.getString(R.string.error_auth_invalid_response)
+                            message = resources.getString(R.string.error_auth_connect_error)
                     ).run {
-                        Timber.e("Error completing authentication, API response is empty")
+                        Timber.e("Error completing authentication, API response failed")
                         ChallengeCompleteResult.failure(this)
                     }
-
-                    if (!BuildConfig.PROTOCOL_COMPATIBILITY_MODE) {
-                        val protocol = headers()[HeaderInjector.HEADER_PROTOCOL]?.toIntOrNull() ?: 0
-                        if (protocol <= BuildConfig.PROTOCOL_VERSION) {
-                            return AuthenticationCompleteFailure(
-                                    reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                    title = resources.getString(R.string.error_auth_title),
-                                    message = resources.getString(R.string.error_auth_invalid_protocol, "v$protocol")
-                            ).run {
-                                Timber.e("Error completing authentication, unsupported protocol version: v$protocol")
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                    }
-
-                    return when (result.code) {
-                        AUTH_RESULT_SUCCESS -> ChallengeCompleteResult.success()
-                        AUTH_RESULT_INVALID_RESPONSE -> {
-                            val remainingAttempts = result.attemptsLeft ?: 0
-                            when {
-                                remainingAttempts > 1 -> {
-                                    if (request.type == SecretType.BIOMETRIC) {
-                                        AuthenticationCompleteFailure(
-                                                AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                                title = resources.getString(R.string.error_auth_title_biometric),
-                                                message = resources.getString(R.string.error_auth_biometric_x_attempts_left, remainingAttempts),
-                                                remainingAttempts = remainingAttempts
-                                        )
-                                    } else {
-                                        AuthenticationCompleteFailure(
-                                                AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                                title = resources.getString(R.string.error_auth_title_pin),
-                                                message = resources.getString(R.string.error_auth_pin_x_attempts_left, remainingAttempts),
-                                                remainingAttempts = remainingAttempts
-                                        )
-                                    }
-                                }
-                                remainingAttempts == 1 -> {
-                                    if (request.type == SecretType.BIOMETRIC) {
-                                        AuthenticationCompleteFailure(
-                                                AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                                title = resources.getString(R.string.error_auth_title_biometric),
-                                                message = resources.getString(R.string.error_auth_biometric_one_attempt_left),
-                                                remainingAttempts = remainingAttempts
-                                        )
-                                    } else {
-                                        AuthenticationCompleteFailure(
-                                                AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                                title = resources.getString(R.string.error_auth_title_pin),
-                                                message = resources.getString(R.string.error_auth_pin_one_attempt_left),
-                                                remainingAttempts = remainingAttempts
-                                        )
-                                    }
-                                }
-                                else -> {
-                                    AuthenticationCompleteFailure(
-                                            AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
-                                            title = resources.getString(R.string.error_auth_title_blocked),
-                                            message = resources.getString(R.string.error_auth_blocked),
-                                            remainingAttempts = remainingAttempts
-                                    )
-                                }
-                            }.run {
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                        AUTH_RESULT_INVALID_REQUEST -> {
-                            AuthenticationCompleteFailure(
-                                    reason = AuthenticationCompleteFailure.Reason.INVALID_REQUEST,
-                                    title = resources.getString(R.string.error_auth_title_request),
-                                    message = resources.getString(R.string.error_auth_request_invalid)
-                            ).run {
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                        AUTH_RESULT_INVALID_CHALLENGE -> {
-                            AuthenticationCompleteFailure(
-                                    reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
-                                    title = resources.getString(R.string.error_auth_title_challenge),
-                                    message = resources.getString(R.string.error_auth_challenge_invalid)
-                            ).run {
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                        AUTH_RESULT_ACCOUNT_BLOCKED -> {
-                            if (result.duration != null) {
-                                AuthenticationCompleteFailure(
-                                        reason = AuthenticationCompleteFailure.Reason.ACCOUNT_TEMPORARY_BLOCKED,
-                                        title = resources.getString(R.string.error_auth_title_blocked_temporary),
-                                        message = resources.getString(R.string.error_auth_blocked_temporary, result.duration),
-                                        duration = result.duration
-                                )
-                            } else {
-                                AuthenticationCompleteFailure(
-                                        reason = AuthenticationCompleteFailure.Reason.ACCOUNT_BLOCKED,
-                                        title = resources.getString(R.string.error_auth_title_blocked),
-                                        message = resources.getString(R.string.error_auth_blocked)
-                                )
-                            }.run {
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                        AUTH_RESULT_INVALID_USER_ID -> {
-                            AuthenticationCompleteFailure(
-                                    reason = AuthenticationCompleteFailure.Reason.INVALID_USER,
-                                    title = resources.getString(R.string.error_auth_title_account),
-                                    message = resources.getString(R.string.error_auth_account_invalid)
-                            ).run {
-                                ChallengeCompleteResult.failure(this)
-                            }
-                        }
-                    }
-                } else {
-                    return AuthenticationCompleteFailure(
-                            reason = AuthenticationCompleteFailure.Reason.CONNECTION,
+                    is ApiResponse.Error -> AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
                             title = resources.getString(R.string.error_title_unknown),
                             message = resources.getString(R.string.error_auth_unknown_error)
                     ).run {
@@ -324,9 +231,6 @@ class AuthenticationRepository(
                     )
                 is JsonDataException,
                 is JsonEncodingException ->
-                    //FIXME: when server responds with just text 'false' with http 200 instead of http 4xx.
-                    // this means the server cannot handle this challenge because it is invalid (?).
-                    // Ideally the server should respond with an error http 4xx.
                     AuthenticationCompleteFailure(
                             reason = AuthenticationCompleteFailure.Reason.UNKNOWN,
                             title = resources.getString(R.string.error_title_unknown),
@@ -346,6 +250,131 @@ class AuthenticationRepository(
                     )
             }.run {
                 ChallengeCompleteResult.failure(this)
+            }
+        }
+    }
+
+    /**
+     * Handle the authenticate response
+     */
+    private fun handleResponse(request: AuthenticationCompleteRequest<AuthenticationChallenge>, response: AuthenticationResponse?, protocolVersion: Int) : ChallengeCompleteResult<ChallengeCompleteFailure> {
+        val result = response ?: return AuthenticationCompleteFailure(
+                reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                title = resources.getString(R.string.error_auth_title),
+                message = resources.getString(R.string.error_auth_invalid_response)
+        ).run {
+            Timber.e("Error completing authentication, API response is empty")
+            ChallengeCompleteResult.failure(this)
+        }
+
+        if (!BuildConfig.PROTOCOL_COMPATIBILITY_MODE) {
+            if (protocolVersion <= BuildConfig.PROTOCOL_VERSION) {
+                return AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                        title = resources.getString(R.string.error_auth_title),
+                        message = resources.getString(R.string.error_auth_invalid_protocol, "v$protocolVersion")
+                ).run {
+                    Timber.e("Error completing authentication, unsupported protocol version: v$protocolVersion")
+                    ChallengeCompleteResult.failure(this)
+                }
+            }
+        }
+
+        return when (result.code) {
+            AUTH_RESULT_SUCCESS -> ChallengeCompleteResult.success()
+            AUTH_RESULT_INVALID_RESPONSE -> {
+                val remainingAttempts = result.attemptsLeft ?: 0
+                when {
+                    remainingAttempts > 1 -> {
+                        if (request.type == SecretType.BIOMETRIC) {
+                            AuthenticationCompleteFailure(
+                                    AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                                    title = resources.getString(R.string.error_auth_title_biometric),
+                                    message = resources.getString(R.string.error_auth_biometric_x_attempts_left, remainingAttempts),
+                                    remainingAttempts = remainingAttempts
+                            )
+                        } else {
+                            AuthenticationCompleteFailure(
+                                    AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                                    title = resources.getString(R.string.error_auth_title_pin),
+                                    message = resources.getString(R.string.error_auth_pin_x_attempts_left, remainingAttempts),
+                                    remainingAttempts = remainingAttempts
+                            )
+                        }
+                    }
+                    remainingAttempts == 1 -> {
+                        if (request.type == SecretType.BIOMETRIC) {
+                            AuthenticationCompleteFailure(
+                                    AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                                    title = resources.getString(R.string.error_auth_title_biometric),
+                                    message = resources.getString(R.string.error_auth_biometric_one_attempt_left),
+                                    remainingAttempts = remainingAttempts
+                            )
+                        } else {
+                            AuthenticationCompleteFailure(
+                                    AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                                    title = resources.getString(R.string.error_auth_title_pin),
+                                    message = resources.getString(R.string.error_auth_pin_one_attempt_left),
+                                    remainingAttempts = remainingAttempts
+                            )
+                        }
+                    }
+                    else -> {
+                        AuthenticationCompleteFailure(
+                                AuthenticationCompleteFailure.Reason.INVALID_RESPONSE,
+                                title = resources.getString(R.string.error_auth_title_blocked),
+                                message = resources.getString(R.string.error_auth_blocked),
+                                remainingAttempts = remainingAttempts
+                        )
+                    }
+                }.run {
+                    ChallengeCompleteResult.failure(this)
+                }
+            }
+            AUTH_RESULT_INVALID_REQUEST -> {
+                AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.INVALID_REQUEST,
+                        title = resources.getString(R.string.error_auth_title_request),
+                        message = resources.getString(R.string.error_auth_request_invalid)
+                ).run {
+                    ChallengeCompleteResult.failure(this)
+                }
+            }
+            AUTH_RESULT_INVALID_CHALLENGE -> {
+                AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
+                        title = resources.getString(R.string.error_auth_title_challenge),
+                        message = resources.getString(R.string.error_auth_challenge_invalid)
+                ).run {
+                    ChallengeCompleteResult.failure(this)
+                }
+            }
+            AUTH_RESULT_ACCOUNT_BLOCKED -> {
+                if (result.duration != null) {
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.ACCOUNT_TEMPORARY_BLOCKED,
+                            title = resources.getString(R.string.error_auth_title_blocked_temporary),
+                            message = resources.getString(R.string.error_auth_blocked_temporary, result.duration),
+                            duration = result.duration
+                    )
+                } else {
+                    AuthenticationCompleteFailure(
+                            reason = AuthenticationCompleteFailure.Reason.ACCOUNT_BLOCKED,
+                            title = resources.getString(R.string.error_auth_title_blocked),
+                            message = resources.getString(R.string.error_auth_blocked)
+                    )
+                }.run {
+                    ChallengeCompleteResult.failure(this)
+                }
+            }
+            AUTH_RESULT_INVALID_USER_ID -> {
+                AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.INVALID_USER,
+                        title = resources.getString(R.string.error_auth_title_account),
+                        message = resources.getString(R.string.error_auth_account_invalid)
+                ).run {
+                    ChallengeCompleteResult.failure(this)
+                }
             }
         }
     }

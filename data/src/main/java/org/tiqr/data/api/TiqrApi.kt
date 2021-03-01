@@ -29,6 +29,7 @@
 
 package org.tiqr.data.api
 
+import org.tiqr.data.api.response.ApiResponse
 import org.tiqr.data.model.AuthenticationResponse
 import org.tiqr.data.model.EnrollmentRequest
 import org.tiqr.data.model.EnrollmentResponse
@@ -68,7 +69,7 @@ interface TiqrApi {
             @Field(FIELD_NOTIFICATION_ADDRESS_KEY) notificationAddress: String? = null,
             @Field(FIELD_NOTIFICATION_TYPE_KEY) notificationType: String? = if (notificationAddress == null) null else FIELD_NOTIFICATION_TYPE_VALUE,
             @Field(FIELD_OPERATION_KEY) operation: String = FIELD_OPERATION_VALUE_REGISTER
-    ): Response<EnrollmentResponse>
+    ): ApiResponse<EnrollmentResponse>
 
     @POST
     @FormUrlEncoded
@@ -81,5 +82,5 @@ interface TiqrApi {
             @Field(FIELD_NOTIFICATION_ADDRESS_KEY) notificationAddress: String?,
             @Field(FIELD_NOTIFICATION_TYPE_KEY) notificationType: String? = if (notificationAddress == null) null else FIELD_NOTIFICATION_TYPE_VALUE,
             @Field(FIELD_OPERATION_KEY) operation: String = FIELD_OPERATION_VALUE_LOGIN
-    ): Response<AuthenticationResponse>
+    ): ApiResponse<AuthenticationResponse>
 }
