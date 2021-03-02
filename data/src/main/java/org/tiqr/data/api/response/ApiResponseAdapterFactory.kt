@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,39 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.util.extension
+package org.tiqr.data.api.response
 
-import okhttp3.Headers
-import okhttp3.HttpUrl
-import org.tiqr.data.api.interceptor.HeaderInjector
-import java.net.MalformedURLException
-import java.net.URL
-import java.net.URLDecoder
-
-/**
- * Check if url is valid
- */
-internal fun HttpUrl.isHttpOrHttps() = scheme.equals("http", ignoreCase = true) || scheme.equals("https", ignoreCase = true)
+import retrofit2.Call
+import retrofit2.CallAdapter
+import retrofit2.Retrofit
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 /**
- * Extract the Tiqr Protocol from the [Headers]
+ * Factory to [create] an [ApiResponseAdapter] instance
  */
-internal fun Headers.tiqrProtocol() = this[HeaderInjector.HEADER_PROTOCOL]?.toIntOrNull() ?: 0
+class ApiResponseAdapterFactory private constructor(): CallAdapter.Factory() {
+    companion object {
+        fun create() = ApiResponseAdapterFactory()
+    }
 
-/**
- * Convert a url from a [String] representation into a [URL]
- */
-internal fun String.toUrlOrNull(): URL? =
-        try {
-            URL(this)
-        } catch (e: MalformedURLException) {
-            null
+    override fun get(returnType: Type, annotations: Array<out Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
+        check(returnType is ParameterizedType) { "$returnType must be parameterized. Raw types are not supported" }
+
+        val responseType = getParameterUpperBound(0, returnType)
+        if (getRawType(responseType) != ApiResponse::class.java) {
+            return null
         }
 
-/**
- * Decode the url
- */
-internal fun String.toDecodedUrlStringOrNull(): String? {
-    return try {
-        if (this.isNotEmpty()) {
-            URLDecoder.decode(this, Charsets.UTF_8.name())
+        check(responseType is ParameterizedType) { "$responseType must be parameterized. Raw types are not supported" }
+
+        val bodyType = getParameterUpperBound(0, responseType)
+        val errorBodyConverter = retrofit.nextResponseBodyConverter<Any>(null, bodyType, annotations)
+
+        return if (Call::class.java != getRawType(returnType)) {
+            null
         } else {
-            null
+            ApiResponseAdapter(bodyType, errorBodyConverter)
         }
-    } catch (e: Exception) {
-        null
     }
 }

@@ -43,9 +43,11 @@ import org.tiqr.data.BuildConfig
 import org.tiqr.data.api.interceptor.HeaderInjector
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.api.TokenApi
+import org.tiqr.data.api.response.ApiResponseAdapterFactory
 import org.tiqr.data.api.adapter.AuthenticationResponseAdapter
 import org.tiqr.data.api.adapter.EnrollmentResponseAdapter
 import org.tiqr.data.api.adapter.addValueEnum
+import org.tiqr.data.api.interceptor.ResponseInterceptor
 import org.tiqr.data.api.interceptor.UserAgentInjector
 import org.tiqr.data.di.ApiScope
 import org.tiqr.data.di.BaseScope
@@ -88,6 +90,7 @@ internal object NetworkModule {
                 .newBuilder()
                 .addInterceptor(headerInjector)
                 .addInterceptor(userAgentInjector)
+                .addInterceptor(ResponseInterceptor())
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
@@ -166,6 +169,7 @@ internal object NetworkModule {
     ): Retrofit {
         return retrofit.newBuilder()
                 .callFactory { client.get().newCall(it) }
+                .addCallAdapterFactory(ApiResponseAdapterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(if (BuildConfig.PROTOCOL_COMPATIBILITY_MODE) MoshiConverterFactory.create(moshi).asLenient() else MoshiConverterFactory.create(moshi))
                 .baseUrl(BuildConfig.BASE_URL) //Dummy base URL, since each api call uses its own url

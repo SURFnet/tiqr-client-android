@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,46 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.util.extension
+package org.tiqr.data.api.response
 
 import okhttp3.Headers
-import okhttp3.HttpUrl
-import org.tiqr.data.api.interceptor.HeaderInjector
-import java.net.MalformedURLException
-import java.net.URL
-import java.net.URLDecoder
+import java.io.IOException
+import retrofit2.Retrofit
 
 /**
- * Check if url is valid
+ * Wrapper for [Retrofit] responses to parse an error body with the success body type.
  */
-internal fun HttpUrl.isHttpOrHttps() = scheme.equals("http", ignoreCase = true) || scheme.equals("https", ignoreCase = true)
+sealed class ApiResponse<out S : Any> {
+    /**
+     * Success response (2xx status code) with body
+     */
+    data class Success<S : Any>(
+            val body: S,
+            val code: Int,
+            val headers: Headers
+    ) : ApiResponse<S>()
 
-/**
- * Extract the Tiqr Protocol from the [Headers]
- */
-internal fun Headers.tiqrProtocol() = this[HeaderInjector.HEADER_PROTOCOL]?.toIntOrNull() ?: 0
+    /**
+     * Failure response (non-2xx status code) with a optional body
+     */
+    data class Failure<S : Any>(
+            val body: S?,
+            val code: Int,
+            val headers: Headers
+    ) : ApiResponse<S>()
 
-/**
- * Convert a url from a [String] representation into a [URL]
- */
-internal fun String.toUrlOrNull(): URL? =
-        try {
-            URL(this)
-        } catch (e: MalformedURLException) {
-            null
-        }
+    /**
+     * Network error
+     */
+    data class NetworkError(
+            val error: IOException
+    ) : ApiResponse<Nothing>()
 
-/**
- * Decode the url
- */
-internal fun String.toDecodedUrlStringOrNull(): String? {
-    return try {
-        if (this.isNotEmpty()) {
-            URLDecoder.decode(this, Charsets.UTF_8.name())
-        } else {
-            null
-        }
-    } catch (e: Exception) {
-        null
-    }
+    /**
+     * Any other non-network error
+     */
+    data class Error(
+            val error: Throwable,
+            val code: Int? = null
+    ) : ApiResponse<Nothing>()
 }

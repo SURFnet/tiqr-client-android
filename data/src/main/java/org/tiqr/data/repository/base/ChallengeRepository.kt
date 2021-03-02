@@ -31,7 +31,15 @@ package org.tiqr.data.repository.base
 
 import android.content.res.Resources
 import org.tiqr.data.api.TiqrApi
-import org.tiqr.data.model.*
+import org.tiqr.data.model.Challenge
+import org.tiqr.data.model.ChallengeCompleteFailure
+import org.tiqr.data.model.ChallengeCompleteRequest
+import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.model.ChallengeParseFailure
+import org.tiqr.data.model.ChallengeParseResult
+import org.tiqr.data.model.Identity
+import org.tiqr.data.model.IdentityProvider
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
