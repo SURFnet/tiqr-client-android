@@ -134,27 +134,33 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
                 var migrateKeystore = false
 
                 // Load keystore from the file
-                context.openFileInput(KEYSTORE_FILENAME).use {
-                    try {
+                try {
+                    context.openFileInput(KEYSTORE_FILENAME).use {
                         keyStore.load(it, encryption.deviceKey().encoded.toCharArray())
-                    } catch (e: IOException) {
+                    }
+                } catch (e: IOException) {
+                    try {
                         Timber.e(e, "Loading keystore failed, retrying with fallback")
-                        try {
+                        context.openFileInput(KEYSTORE_FILENAME).use {
                             keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.Fallback))
                             migrateKeystore = true
-                        } catch (e: IOException) {
+                        }
+                    } catch (e: IOException) {
+                        try {
                             Timber.e(e, "Loading keystore failed, retrying with fallback pre pie")
-                            try {
+                            context.openFileInput(KEYSTORE_FILENAME).use {
                                 keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.FallbackPrePie))
                                 migrateKeystore = true
-                            } catch (e: IOException) {
+                            }
+                        } catch (e: IOException) {
+                            try {
                                 Timber.e(e, "Loading keystore failed, retrying with fallback of version 3.0.6")
-                                try {
+                                context.openFileInput(KEYSTORE_FILENAME).use {
                                     keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.FallbackVersion306))
                                     migrateKeystore = true
-                                } catch (e: IOException) {
-                                    Timber.e("Loading keystore failed and is unusable now")
                                 }
+                            } catch (e: IOException) {
+                                Timber.e("Loading keystore failed and is unusable now")
                             }
                         }
                     }
