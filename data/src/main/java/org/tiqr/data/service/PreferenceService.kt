@@ -30,6 +30,7 @@
 package org.tiqr.data.service
 
 import android.content.Context
+import android.os.Build
 import androidx.core.content.edit
 import timber.log.Timber
 import java.io.File
@@ -39,8 +40,8 @@ import java.io.File
  */
 class PreferenceService(private val context: Context) {
     companion object {
-        private const val PREFERENCE_SETTINGS = ":preferences"
-        private const val PREFERENCE_SECURITY = ":settings"
+        private const val PREFERENCE_NOTIFICATION = ":notification"
+        private const val PREFERENCE_SECURITY = ":security"
         private const val PREFERENCE_VERSION = ":version"
 
         private const val PREFS_KEY_VERSION = "version"
@@ -51,13 +52,13 @@ class PreferenceService(private val context: Context) {
         private const val PREFERENCE_CURRENT_VERSION = 2 // bump to migrate
     }
 
-    private val settingsSharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SETTINGS, Context.MODE_PRIVATE)
+    private val notificationSharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_NOTIFICATION, Context.MODE_PRIVATE)
     private val securitySharedPreferences = context.getSharedPreferences(context.packageName + PREFERENCE_SECURITY, Context.MODE_PRIVATE)
     private val versionSharedPreference = context.getSharedPreferences(context.packageName + PREFERENCE_VERSION, Context.MODE_PRIVATE)
 
     var notificationToken: String?
-        get() = settingsSharedPreferences.getString(PREFS_KEY_TOKEN, null)
-        set(value) = settingsSharedPreferences.edit { putString(PREFS_KEY_TOKEN, value) }
+        get() = notificationSharedPreferences.getString(PREFS_KEY_TOKEN, null)
+        set(value) = notificationSharedPreferences.edit { putString(PREFS_KEY_TOKEN, value) }
 
     var salt: String?
         get() = securitySharedPreferences.getString(PREFS_KEY_SALT, null)
@@ -101,11 +102,9 @@ class PreferenceService(private val context: Context) {
     }
 
     private fun migratePreferencesToV2() {
-        val fileRoot = context.filesDir.parent
-
         fun migrateSetting() {
             val oldTokenKey = "sa_notificationToken"
-            val oldFile = File("$fileRoot/shared_prefs/SA_PREFS.xml")
+            val oldFile = getSharedPrefsFile("SA_PREFS")
             if (oldFile.exists()) {
                 val oldPreferences = context.getSharedPreferences(oldFile.nameWithoutExtension, Context.MODE_PRIVATE)
                 if (oldPreferences.contains(oldTokenKey)) {
@@ -127,7 +126,7 @@ class PreferenceService(private val context: Context) {
         fun migrateSecurity() {
             val oldSaltKey = "salt"
             val oldDeviceKey = "deviceKey"
-            val oldFile = File("$fileRoot/shared_prefs/securitySettings.xml")
+            val oldFile = getSharedPrefsFile("securitySettings")
             if (oldFile.exists()) {
                 val oldPreferences = context.getSharedPreferences(oldFile.nameWithoutExtension, Context.MODE_PRIVATE)
                 if (oldPreferences.contains(oldSaltKey)) {
@@ -168,21 +167,42 @@ class PreferenceService(private val context: Context) {
      * Cleanup the old dangling files.
      */
     private fun cleanupOldFiles() {
-        fun deleteFile(file: File) {
-            if (file.exists()) {
-                val name = file.name
-                val deleteResult = file.delete()
-                Timber.d("File $name deleted: $deleteResult")
-            }
-        }
-
         // Migrated preference files
-        listOf(
-                File("${context.filesDir.parent}/shared_prefs/SA_PREFS.xml"),
-                File("${context.filesDir.parent}/shared_prefs/securitySettings.xml")
-        ).forEach {
-            deleteFile(it)
+        listOf("SA_PREFS", "securitySettings").forEach {
+            deletePrefsFile(it)
         }
     }
+
+    /**
+     * Delete the preference file with given [name]
+     */
+    private fun deletePrefsFile(name: String) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            val deleteResult = context.deleteSharedPreferences(name)
+            Timber.d("File $name deleted: $deleteResult")
+            return
+        }
+
+        val prefsFile = getSharedPrefsFile(name)
+        val prefsBackup = getSharedPrefsBackup(prefsFile)
+
+        val fileDeleteResult = prefsFile.delete()
+        Timber.d("File $name deleted: $fileDeleteResult")
+        val backupDeleteResult = prefsBackup.delete()
+        Timber.d("File $name deleted: $backupDeleteResult")
+    }
+
+    /**
+     * Get the shared preferences file with given [name]
+     */
+    private fun getSharedPrefsFile(name: String): File {
+        val prefsDir = File(context.applicationInfo.dataDir, "shared_prefs")
+        return File(prefsDir, "$name.xml")
+    }
+
+    /**
+     * Get the backup file for given shared preferences file
+     */
+    private fun getSharedPrefsBackup(prefsFile: File) = File(prefsFile.path + ".bak")
     //endregion
 }
