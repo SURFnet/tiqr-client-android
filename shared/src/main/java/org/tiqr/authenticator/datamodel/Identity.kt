@@ -1,7 +1,7 @@
 package org.tiqr.authenticator.datamodel
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Identity wrapper class for identities.

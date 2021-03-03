@@ -16,7 +16,7 @@ import org.tiqr.authenticator.databinding.ActivityMainBinding
 import org.tiqr.authenticator.datamodel.DbAdapter
 import org.tiqr.authenticator.dialog.ActivityDialog
 import org.tiqr.authenticator.enrollment.EnrollmentActivityGroup
-import org.tiqr.authenticator.qr.CaptureActivity
+import org.tiqr.authenticator.scan.ScanActivity
 import org.tiqr.service.authentication.AuthenticationService
 import org.tiqr.service.authentication.ParseAuthenticationChallengeError
 import org.tiqr.service.enrollment.EnrollmentService
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun startScanning() {
-        val scanIntent = Intent(this@MainActivity, CaptureActivity::class.java)
+        val scanIntent = Intent(this@MainActivity, ScanActivity::class.java)
         startActivity(scanIntent)
     }
 
