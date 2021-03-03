@@ -77,8 +77,9 @@
     <string name="auth_confirm_select_identity">IDを選択</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">生体認証を使用してログインしますか？</string>
-    <string name="auth_biometric_cancel">PINを使用</string>
+    <string name="auth_biometric_title">生体認証を使用する</string>
+    <string name="auth_biometric_dialog_title">生体認証を使用してログインしますか？</string>
+    <string name="auth_biometric_dialog_cancel">PINを使用</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">PINコードを入力してください</string>

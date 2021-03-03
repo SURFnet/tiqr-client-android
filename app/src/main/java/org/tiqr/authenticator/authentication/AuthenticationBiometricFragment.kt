@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,36 +38,29 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
 import org.tiqr.authenticator.base.BaseFragment
-import org.tiqr.authenticator.databinding.FragmentAuthenticationPinBinding
+import org.tiqr.authenticator.databinding.FragmentAuthenticationBiometricBinding
 import org.tiqr.data.model.AuthenticationCompleteFailure
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.model.SecretCredential
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
-/**
- * Fragment to enter the PIN code for the authentication
- */
 @AndroidEntryPoint
-class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>() {
+class AuthenticationBiometricFragment: BaseFragment<FragmentAuthenticationBiometricBinding>() {
     private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
 
     @LayoutRes
-    override val layout = R.layout.fragment_authentication_pin
+    override val layout = R.layout.fragment_authentication_biometric
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.pin.setConfirmListener { pin ->
-            binding.progress.show()
-            viewModel.authenticate(SecretCredential.pin(pin))
-        }
 
         viewModel.authenticate.observe(viewLifecycleOwner) {
             binding.progress.hide()
 
             when (it) {
                 is ChallengeCompleteResult.Success -> {
-                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(binding.pin.currentPin))
+                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary())
                 }
                 is ChallengeCompleteResult.Failure -> {
                     val failure = it.failure
@@ -76,15 +69,11 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
                                 findNavController().navigate(
-                                        AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
+                                        AuthenticationBiometricFragmentDirections.actionFallback(SecretType.BIOMETRIC.key)
                                 )
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts
-                                if (remaining == null || remaining > 0) {
-                                    binding.pin.clear(showKeyboard = true)
-                                }
-
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
@@ -101,16 +90,37 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                                 MaterialAlertDialogBuilder(requireContext())
                                         .setTitle(failure.title)
                                         .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog, _ ->
-                                            dialog.dismiss()
-                                            findNavController().popBackStack()
-                                        }
+                                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                                         .show()
                             }
                         }
                     }
                 }
             }
+        }
+
+        showBiometric()
+    }
+
+    /**
+     * Show biometric dialog
+     */
+    private fun showBiometric() {
+        AuthenticationBiometricComponent(this, requireContext()) { result ->
+            when (result) {
+                is AuthenticationBiometricComponent.BiometricResult.Success -> viewModel.authenticate(SecretCredential.biometric())
+                is AuthenticationBiometricComponent.BiometricResult.Cancel -> {
+                    binding.progress.hide()
+                    findNavController().navigate(AuthenticationBiometricFragmentDirections.actionPin())
+                }
+                is AuthenticationBiometricComponent.BiometricResult.Fail -> {
+                    binding.progress.hide()
+                    findNavController().navigate(AuthenticationBiometricFragmentDirections.actionPin())
+                }
+            }
+        }.run {
+            binding.progress.show()
+            authenticate()
         }
     }
 }

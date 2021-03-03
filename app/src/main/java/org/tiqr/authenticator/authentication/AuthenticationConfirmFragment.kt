@@ -38,16 +38,10 @@ import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.authenticator.R
-import org.tiqr.authenticator.authentication.AuthenticationBiometricComponent.BiometricResult
 import org.tiqr.authenticator.base.BaseFragment
 import org.tiqr.authenticator.databinding.FragmentAuthenticationConfirmBinding
-import org.tiqr.data.model.AuthenticationCompleteFailure
-import org.tiqr.data.model.ChallengeCompleteResult
-import org.tiqr.data.model.SecretCredential
-import org.tiqr.data.model.SecretType
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 import org.tiqr.data.viewmodel.challengeViewModel
 
@@ -92,54 +86,9 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
 
         binding.buttonOk.setOnClickListener {
             if (viewModel.challenge.value?.identity?.biometricInUse == true) {
-                showBiometric()
+                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionBiometric())
             } else {
                 findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
-            }
-        }
-
-        // Authenticate using biometrics
-        viewModel.authenticate.observe(viewLifecycleOwner) {
-            binding.progress.hide()
-
-            when (it) {
-                is ChallengeCompleteResult.Success -> {
-                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary())
-                }
-                is ChallengeCompleteResult.Failure -> {
-                    val failure = it.failure
-                    if (failure is AuthenticationCompleteFailure) {
-                        when (failure.reason) {
-                            AuthenticationCompleteFailure.Reason.UNKNOWN,
-                            AuthenticationCompleteFailure.Reason.CONNECTION -> {
-                                findNavController().navigate(
-                                        AuthenticationConfirmFragmentDirections.actionFallback(SecretType.BIOMETRIC.key)
-                                )
-                            }
-                            AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
-                                val remaining = failure.remainingAttempts
-                                MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog , _ ->
-                                            if (remaining != null && remaining == 0) {
-                                                // Blocked. Pop back to start.
-                                                findNavController().popBackStack()
-                                            }
-                                            dialog.dismiss()
-                                        }
-                                        .show()
-                            }
-                            else -> {
-                                MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
-                                        .show()
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -147,31 +96,10 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.identity_pick -> {
-                findNavController().navigate(
-                        AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = true)
-                )
+                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = true))
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun showBiometric() {
-        AuthenticationBiometricComponent(this, requireContext()) { result ->
-            when (result) {
-                is BiometricResult.Success -> viewModel.authenticate(SecretCredential.biometric())
-                is BiometricResult.Cancel -> {
-                    binding.progress.hide()
-                    findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
-                }
-                is BiometricResult.Fail -> {
-                    binding.progress.hide()
-                    findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
-                }
-            }
-        }.run {
-            binding.progress.show()
-            authenticate()
         }
     }
 }

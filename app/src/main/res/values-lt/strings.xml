@@ -76,8 +76,9 @@
     <string name="auth_confirm_select_identity">Pasirinkite tapatybę</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">Ar norite prisijungti naudodami biometrinius duomenis?</string>
-    <string name="auth_biometric_cancel">Naudoti PIN kodą</string>
+    <string name="auth_biometric_title">Naudokite biometrinę informaciją</string>
+    <string name="auth_biometric_dialog_title">Ar norite prisijungti naudodami biometrinius duomenis?</string>
+    <string name="auth_biometric_dialog_cancel">Naudoti PIN kodą</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Įveskite savo PIN</string>

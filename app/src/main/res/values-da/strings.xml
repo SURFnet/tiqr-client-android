@@ -76,8 +76,9 @@
     <string name="auth_confirm_select_identity">Vælg identitet</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">Vil du bruge biometrisk til at logge ind?</string>
-    <string name="auth_biometric_cancel">Brug PIN</string>
+    <string name="auth_biometric_title">Brug biometrisk</string>
+    <string name="auth_biometric_dialog_title">Vil du bruge biometrisk til at logge ind?</string>
+    <string name="auth_biometric_dialog_cancel">Brug PIN</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Angiv din PIN-kode til tiqr</string>
