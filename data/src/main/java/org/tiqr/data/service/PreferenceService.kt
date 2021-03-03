@@ -118,7 +118,7 @@ class PreferenceService(private val context: Context) {
                 }
 
                 Timber.d("Preference file %s migrated", oldFile.name)
-                val deleteResult = oldFile.delete()
+                val deleteResult = deletePrefsFile(oldFile.nameWithoutExtension)
                 Timber.d("Preference file deleted $deleteResult")
             }
         }
@@ -150,7 +150,7 @@ class PreferenceService(private val context: Context) {
                 }
 
                 Timber.d("Preference file %s migrated", oldFile.name)
-                val deleteResult = oldFile.delete()
+                val deleteResult = deletePrefsFile(oldFile.nameWithoutExtension)
                 Timber.d("Preference file deleted $deleteResult")
             }
         }
