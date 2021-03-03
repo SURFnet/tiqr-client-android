@@ -303,7 +303,7 @@ class EnrollmentRepository(
             Timber.e("Error completing enrollment, saving identity failed")
             return EnrollmentCompleteFailure(
                     title = resources.getString(R.string.error_enroll_title),
-                    message = resources.getString(R.string.error_enroll_saving_identity_provider)
+                    message = resources.getString(R.string.error_enroll_saving_identity)
             ).run {
                 ChallengeCompleteResult.failure(this)
             }

@@ -80,8 +80,9 @@
     <string name="auth_confirm_select_identity">Selecteer identiteit</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">Wil je biometrie gebruiken om in te loggen?</string>
-    <string name="auth_biometric_cancel">Gebruik pincode</string>
+    <string name="auth_biometric_title">Gebruik biometrie</string>
+    <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
+    <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Voer uw PIN voor tiqr in</string>

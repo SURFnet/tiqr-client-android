@@ -52,8 +52,8 @@ class AuthenticationBiometricComponent(
     init {
         prompt = BiometricPrompt(fragment, executor, this)
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle(context.getString(R.string.auth_biometric_title))
-                .setNegativeButtonText(context.getString(R.string.auth_biometric_cancel))
+                .setTitle(context.getString(R.string.auth_biometric_dialog_title))
+                .setNegativeButtonText(context.getString(R.string.auth_biometric_dialog_cancel))
                 .build()
     }
 

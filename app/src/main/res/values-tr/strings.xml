@@ -76,8 +76,9 @@
     <string name="auth_confirm_select_identity">Kimlik seçin</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">Giriş yapmak için biyometri kullanmak istiyor musunuz?</string>
-    <string name="auth_biometric_cancel">PIN kullan</string>
+    <string name="auth_biometric_title">Biyometrik kullan</string>
+    <string name="auth_biometric_dialog_title">Giriş yapmak için biyometri kullanmak istiyor musunuz?</string>
+    <string name="auth_biometric_dialog_cancel">PIN kullan</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Tiqr için PIN kodunuzu girin</string>

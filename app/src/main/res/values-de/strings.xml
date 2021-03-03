@@ -80,8 +80,9 @@
     <string name="auth_confirm_select_identity">Identität auswählen</string>
 
     <!-- Authentication (Biometric) -->
-    <string name="auth_biometric_title">Möchten Sie sich biometrisch anmelden?</string>
-    <string name="auth_biometric_cancel">Verwenden Sie die PIN </string>
+    <string name="auth_biometric_title">Verwenden Sie Biometrie</string>
+    <string name="auth_biometric_dialog_title">Möchten Sie sich biometrisch anmelden?</string>
+    <string name="auth_biometric_dialog_cancel">Verwenden Sie die PIN </string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Bitte geben Sie ihre PIN ein</string>

@@ -36,7 +36,6 @@ import dagger.assisted.AssistedInject
 import org.tiqr.data.model.SecretCredential
 import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.AuthenticationCompleteRequest
-import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.AuthenticationRepository
