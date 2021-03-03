@@ -97,14 +97,7 @@ private object CharArrayConverter {
             } else if (b0 and 0xe0.toByte() == 0xc0.toByte() || b0 and 0xf0.toByte() == 0xe0.toByte() ||
                     b0 and 0xf8.toByte() == 0xf0.toByte() || b0 and 0xfc.toByte() == 0xf8.toByte() || b0 and 0xfe.toByte() == 0xfc.toByte()) {
                 var utfCount = 1
-                if (b0 and 0xf0.toByte() == 0xe0.toByte())
-                    utfCount = 2
-                else if (b0 and 0xf8.toByte() == 0xf0.toByte())
-                    utfCount = 3
-                else if (b0 and 0xfc.toByte() == 0xf8.toByte())
-                    utfCount = 4
-                else if (b0 and 0xfe.toByte() == 0xfc.toByte())
-                    utfCount = 5
+                if (b0 and 0xf0.toByte() == 0xe0.toByte()) utfCount = 2 else if (b0 and 0xf8.toByte() == 0xf0.toByte()) utfCount = 3 else if (b0 and 0xfc.toByte() == 0xf8.toByte()) utfCount = 4 else if (b0 and 0xfe.toByte() == 0xfc.toByte()) utfCount = 5
                 // 110xxxxx (10xxxxxx)+
                 // Range:  U-00000080 - U-000007FF (count == 1)
                 // Range:  U-00000800 - U-0000FFFF (count == 2)

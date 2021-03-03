@@ -72,21 +72,24 @@ interface TiqrDao {
     @Query(value = """
         SELECT identity.* FROM identity 
         INNER JOIN identityprovider ON identityprovider._id = identity.identityProvider 
-        WHERE identity.identifier = :identityId AND identityprovider.identifier = :identityProviderId LIMIT 1;
+        WHERE identity.identifier = :identityId AND identityprovider.identifier = :identityProviderId 
+        LIMIT 1;
         """)
     suspend fun getIdentity(identityId: String, identityProviderId: String): Identity?
 
     @Query(value = """
         SELECT identity.* FROM identity 
         INNER JOIN identityprovider ON identityprovider._id = identity.identityProvider 
-        WHERE identityprovider._id = :identityProviderId;
+        WHERE identityprovider._id = :identityProviderId 
+        ORDER BY sortIndex;
         """)
     suspend fun getIdentities(identityProviderId: Long): List<Identity>
 
     @Query(value = """
         SELECT identity.* FROM identity 
         INNER JOIN identityprovider ON identityprovider._id = identity.identityProvider 
-        WHERE identityprovider.identifier = :identifier;
+        WHERE identityprovider.identifier = :identifier 
+        ORDER BY sortIndex;
         """)
     suspend fun getIdentities(identifier: String): List<Identity>
 

@@ -82,8 +82,8 @@ abstract class TiqrDatabase : RoomDatabase() {
                     execSQL("DROP TABLE identity;")
                     execSQL("ALTER TABLE new_identity RENAME TO identity;")
                     execSQL("CREATE UNIQUE INDEX id_idx ON identity(_id);")
-                    execSQL("CREATE INDEX identity_provider_idx ON identity(identityProvider);")
                     execSQL("CREATE INDEX identifier_idx ON identity(identifier);")
+                    execSQL("CREATE INDEX identity_provider_idx ON identity(identityProvider);")
 
                     execSQL("CREATE TABLE new_identityprovider (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, authenticationUrl TEXT NOT NULL, ocraSuite TEXT NOT NULL, infoUrl TEXT, logo TEXT);")
                     execSQL("INSERT INTO new_identityprovider (_id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo) SELECT _id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo FROM identityprovider;")
@@ -100,19 +100,19 @@ abstract class TiqrDatabase : RoomDatabase() {
                 Timber.d("Renames fingerprint to biometric. Renames indexes.")
 
                 database.transaction {
-                    execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                    execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE RESTRICT)")
                     execSQL("INSERT INTO new_identity (_id, displayName, identifier, identityProvider, blocked, sortIndex, biometricInUse, biometricOfferUpgrade) SELECT _id, displayName, identifier, identityProvider, blocked, sortIndex, useFingerPrint, showFingerPrintUpgrade FROM identity;")
                     execSQL("DROP TABLE identity;")
                     execSQL("ALTER TABLE new_identity RENAME TO identity;")
-                    execSQL("CREATE UNIQUE INDEX index_identity__id ON identity(_id);")
-                    execSQL("CREATE INDEX index_identity_identityProvider on identity(identityProvider);")
-                    execSQL("CREATE INDEX index_identity_identifier ON identity(identifier);")
+                    execSQL("CREATE UNIQUE INDEX index_identity_id ON identity(_id)")
+                    execSQL("CREATE INDEX index_identity_identifier ON identity(identifier)")
+                    execSQL("CREATE INDEX index_identity_identityProvider ON identity(identityProvider)")
 
                     execSQL("CREATE TABLE new_identityprovider (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, authenticationUrl TEXT NOT NULL, ocraSuite TEXT NOT NULL, infoUrl TEXT, logo TEXT);")
                     execSQL("INSERT INTO new_identityprovider (_id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo) SELECT _id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo FROM identityprovider;")
                     execSQL("DROP TABLE identityprovider;")
                     execSQL("ALTER TABLE new_identityprovider RENAME TO identityprovider;")
-                    execSQL("CREATE INDEX index_identityprovider_identifier on identityprovider(identifier);")
+                    execSQL("CREATE UNIQUE INDEX index_identityprovider_identifier ON identityprovider(identifier);")
                 }
             }
         }
