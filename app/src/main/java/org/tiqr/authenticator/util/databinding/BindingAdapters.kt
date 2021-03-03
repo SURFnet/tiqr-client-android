@@ -30,6 +30,7 @@
 package org.tiqr.authenticator.util.databinding
 
 import android.annotation.SuppressLint
+import android.text.Spanned
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,7 @@ import coil.load
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.tiqr.authenticator.MainNavDirections
 import org.tiqr.authenticator.R
+import org.tiqr.authenticator.util.extensions.toHtmlLink
 import org.tiqr.authenticator.widget.recyclerview.HeaderViewDecoration
 import org.tiqr.authenticator.widget.recyclerview.DividerDecoration
 import timber.log.Timber
@@ -88,14 +90,19 @@ fun TextView.linkifyWeb(enable: Boolean) {
  */
 @BindingAdapter(value = ["linkifyWebWith"])
 fun TextView.linkifyWebWith(text: String?) {
-    setText(text)
+    val link = text?.toHtmlLink()
+    setText(link)
 
-    BetterLinkMovementMethod
-            .linkify(Linkify.WEB_URLS, this)
-            .setOnLinkClickListener { _, url ->
-                findNavController().navigate(MainNavDirections.openBrowser(url))
-                true
-            }
+    if (link is Spanned) {
+        BetterLinkMovementMethod.linkifyHtml(this)
+    } else {
+        BetterLinkMovementMethod.linkify(Linkify.WEB_URLS, this)
+    }.run {
+        setOnLinkClickListener { _, url ->
+            findNavController().navigate(MainNavDirections.openBrowser(url))
+            true
+        }
+    }
 }
 
 /**
