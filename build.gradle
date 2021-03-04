@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter() // should be removed eventually, but not possible yet
+        jcenter() // should be removed eventually, but not possible yet, required by 'com.android.tools.build:gradle:4.1.2'
     }
 
     dependencies {
@@ -21,6 +21,7 @@ subprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter() // should be removed eventually, but not possible yet, required by 'com.android.tools.lint:lint-gradle:27.1.2'
     }
 }
 
