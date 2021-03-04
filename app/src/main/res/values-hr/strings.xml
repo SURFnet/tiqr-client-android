@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">U redu</string>
+    <string name="button_retry">Opet</string>
+    <string name="button_delete">Izbriši</string>
+    <string name="button_cancel">Odustani</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>tiqr omogućava jednostavan i siguran način prijave na web usluge, korištenjem Vašeg pametnog telefona.</b><br/>
+    <br/>
+    Trenutno ne postoji aktivan korisnički račun koji je potreban za korištenje aplikacije, kreirajte ga.
+    Lista davatelja identiteta dostupna je na <a href=\"https://tiqr.org\">tiqr.org</a>.<br/>
+    <br/>
+    Nakon registracije, zaprimit ćete aktivacijski kod zajedno sa uputama za aktivaciju korisničkog računa.
+    Tijekom aktivacije potrebno je skenirati QR kod.
+    Pritisnite <b>Skeniranje</b> kada bude zatraženo.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Posjetite stranice usluge u koju se želite prijaviti i slijedite korake:</b><br/>
+    <br/>
+    1. Skenirajte QR kod na stranici za prijavu.<br/>
+    <br/>
+    <i>Ukoliko imate više identiteta, odaberite onaj s kojim se želite prijaviti.</i><br/>
+    <br/>
+    2. Potvrdite Vaš identitet (morat ćete unijeti PIN kod).<br/>
+    <br/>
+    3. Potvrđen identitet!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Što sad?</b><br/>
+    <br/>
+    Zatražite novi aktivacijski kod od Vašeg davatelja identiteta.
+    Poveznicu do traženog davatelja identiteta možete pronaći u listi identiteta (dostupnoj u gornjem desnom kutu).<br/>
+    <br/>
+    Zajedno sa novim aktivacijskim kodom bit će poslane upute za ponovnu aktivaciju Vašeg korisničkog računa.
+    Pritisnite <b>Skeniranje</b> kada bude zatraženo.]]></string>
+
+    <!-- Scan -->         
+    <string name="scan_button">Skeniranje</string>
+    <string name="scan_permission_required_title">Potrebna je dozvola kamere</string>
+    <string name="scan_permission_required_message">Za skeniranje QR koda tiqr treba pristup fotoaparatu.</string>
+    <string name="scan_permission_required_settings">Postavke</string>
+    <string name="scan_permission_required_dismiss">Odustani</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Pokretanje zadanog preglednika nije uspjelo</string>
+
+    <!-- About -->
+    <string name="about_label_provided_by">Omogućio:</string>
+    <string name="about_label_developed_by">Razvili:</string>
+    <string name="about_label_interaction_by">Dizajn sučelja:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Potvrdite aktivaciju korisničkog računa</string>
+    <string name="enroll_confirm_subtitle">Da li želite aktivirati sljedeći korisnički račun?</string>
+    <string name="enroll_confirm_details">Detalji korisničkog računa</string>
+    <string name="enroll_confirm_domain">Upisat ćete se na sljedeću domenu:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Odaberite PIN</string>
+    <string name="enroll_pin_subtitle">Molimo unesite PIN:</string>
+    <string name="enroll_pin_notice">PIN ne može biti naknadno promijenjen, upamtite ga!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Molimo potvrdite PIN</string>
+    <string name="enroll_pin_verify_subtitle">Ponovno unesite PIN kako biste ga potvrdili:</string>
+    <string name="enroll_pin_verify_no_match_title">PIN kodovi se ne poklapaju</string>
+    <string name="enroll_pin_verify_no_match_message">Uneseni PIN kodovi se ne poklapaju. Pokušajte ponovno. Odaberite PIN koji možete upamtiti.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Puno ime</string>
+    <string name="account_id">Identifikator</string>
+    <string name="account_information">Informacije</string>
+    <string name="account_activated">Korisnički račun je aktiviran!</string>
+    <string name="account_upgrade_biometric_title">Nadogradite račun</string>
+    <string name="account_upgrade_biometric_message">Želite li koristiti biometrijske podatke umjesto PIN-a za prijavu s ovim računom?</string>
+
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Jeste li sigurni da se želite prijaviti?</string>
+    <string name="auth_confirm_subtitle">Bit ćete prijavljeni kao:</string>
+    <string name="auth_confirm_to">za:</string>
+    <string name="auth_confirm_select_identity">Odaberite identitet</string>
+
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Koristite biometrijske</string>
+    <string name="auth_biometric_dialog_title">Želite li koristiti biometrijske podatke za prijavu?</string>
+    <string name="auth_biometric_dialog_cancel">Koristite PIN</string>
+
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Molimo unesite PIN</string>
+    <string name="auth_pin_subtitle">Za prijavu je potrebno unijeti 4-znamenkasti PIN kod:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">Nemate vezu na Internet</string>
+    <string name="auth_fallback_subtitle">Ne brinite! Kliknite na QR kod prikazan na web stranici. Bit ćete upitani da unesete sljedeće jednokratne vjerodajnice:</string>
+    <string name="auth_fallback_id">Vaš identifikator je:</string>
+    <string name="auth_fallback_otp">Jednokratna lozinka:</string>
+    <string name="auth_fallback_pin_unverified_title">Napomena: Vaš PIN još nije potvrđen.</string>
+    <string name="auth_fallback_pin_unverified">Ukoliko se ne možete prijavit sa navedenim vjerodajnicama, skenirajte ponovno i unesite ispravan PIN kod.</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Uspješna prijava!</string>
+    <string name="auth_summary_to">za:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identiteti</string>
+    <string name="identity_blocked">Blokiran</string>
+    <string name="identity_blocked_message">Upozorenje: ovaj korisnički račun je blokiran, potrebna je ponovna aktivacija.</string>
+    <string name="identity_delete_title">Jesi li siguran?</string>
+    <string name="identity_delete_message">Ovaj se račun više ne može koristiti ako se briše.</string>
+    <string name="identity_biometric_usage">Koristite biometriju</string>
+    <string name="identity_biometric_upgrade">Nadogradnja na upotrebu biometrije</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Poruke</string>
+    <string name="notification_channel_description">Obavijesti o porukama iz tiqr-a</string>
+</resources>

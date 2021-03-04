@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Prøv igen</string>
+    <string name="button_delete">Slet</string>
+    <string name="button_cancel">Fortryd</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b><b>Brug tiqr på din smartphone til at logge ind nemt og sikkert.</b><br/>
+    <br/>
+    Registrer din nye tiqr-konto og følg aktiveringsvejledningen.<br/>
+    <br/>
+    Tryk på <b>Skan</b> når du bliver bedt om det.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Brug tiqr på din smartphone til at logge ind</b><br/>
+    <br/>
+    1. Tryk på <b>Skan</b> og skan QR-koden på websitet<br/>
+    <br/>
+    <i>Mere end ét ID? Vælg det relevante ID</i><br/>
+    <br/>
+    2. Skan dit fingeraftryk eller angiv din PIN-kode til tiqr og tryk <b>OK</b><br/>
+    <br/>
+    3. Du er logget ind!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Hvad nu?</b><br/>
+    <br/>
+    Bed din identitetsudbyder om en ny aktiveringskode.
+    For et link til din identitetsudbyder skal du kontrollere dine identiteter (tilgængelig øverst til højre).<br/>
+    <br />
+    Sammen med din nye aktiveringskode modtager du instruktioner til genaktivering af din konto.
+    Tryk på <b>Skan</b>, hvis du bliver bedt om det.]]></string>
+
+    <!-- Scan -->
+    <string name="scan_button">Skan</string>
+    <string name="scan_permission_required_title">Tilladelse til kamera kræves</string>
+    <string name="scan_permission_required_message">For at scanne en QR-kode skal tiqr have adgang til kameraet.</string>
+    <string name="scan_permission_required_settings">Indstillinger</string>
+    <string name="scan_permission_required_dismiss">Fortryd</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Kunne ikke starte standardbrowseren</string>
+
+    <!-- About -->
+    <string name="about_label_provided_by">Leveres af:</string>
+    <string name="about_label_developed_by">Udviklet af:</string>
+    <string name="about_label_interaction_by">Interaktionsdesign:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Bekræft kontoaktivering</string>
+    <string name="enroll_confirm_subtitle">Vil du aktivere kontoen herunder?</string>
+    <string name="enroll_confirm_details">Kontooplysninger</string>
+    <string name="enroll_confirm_domain">Vil du oprette en konto til domænet her:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Vælg en unik PIN-kode til tiqr</string>
+    <string name="enroll_pin_subtitle">Indtast PIN-koden:</string>
+    <string name="enroll_pin_notice">Husk denne PIN-kode, den kan ikke ændres!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Bekræft den unikke PIN-kode</string>
+    <string name="enroll_pin_verify_subtitle">Indtast PIN-koden igen:</string>
+    <string name="enroll_pin_verify_no_match_title">PIN-koder stemmer ikke overens</string>
+    <string name="enroll_pin_verify_no_match_message">De indtastede pinkoder stemmer ikke overens. Prøv igen.\nVælg en pinkode, du kan huske.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Fulde navn</string>
+    <string name="account_id">Tiqr konto id</string>
+    <string name="account_information">Oplysninger</string>
+    <string name="account_activated">Konto aktiveret!</string>
+    <string name="account_upgrade_biometric_title">Opgrader konto</string>
+    <string name="account_upgrade_biometric_message">Vil du bruge biometri i stedet for pinkode til at logge ind med denne konto?</string>
+
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Sikker på du vil logge ind?</string>
+    <string name="auth_confirm_subtitle">Du vil blive logget ind som:</string>
+    <string name="auth_confirm_to">til:</string>
+    <string name="auth_confirm_select_identity">Vælg identitet</string>
+
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Brug biometrisk</string>
+    <string name="auth_biometric_dialog_title">Vil du bruge biometrisk til at logge ind?</string>
+    <string name="auth_biometric_dialog_cancel">Brug PIN</string>
+
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Angiv din PIN-kode til tiqr</string>
+    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">Det ser ud til du er offline</string>
+    <string name="auth_fallback_subtitle">Bare rolig! Klik på QR-koden på websitet. Du vil blive bedt om at angive følgende engangsakkreditiver:</string>
+    <string name="auth_fallback_id">Dit ID er:</string>
+    <string name="auth_fallback_otp">Engangskode:</string>
+    <string name="auth_fallback_pin_unverified_title">Bemærk: Din PIN-kode er ikke blevet bekræftet endnu.</string>
+    <string name="auth_fallback_pin_unverified">Hvis du ikke får adgang med akkreditiverne herover, skal du skanne på ny og angive den rigtige PIN-kode.</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Din indlogning lykkedes!</string>
+    <string name="auth_summary_to">til:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Identiteter</string>
+    <string name="identity_blocked">Spærret</string>
+    <string name="identity_blocked_message">Advarsel: Kontoen her er spærret\nog skal genaktiveres.</string>
+    <string name="identity_delete_title">Er du sikker?</string>
+    <string name="identity_delete_message">Kontoen her kan altså ikke bruges længere hvis den slettes.</string>
+    <string name="identity_biometric_usage">Brug biometri</string>
+    <string name="identity_biometric_upgrade">Opgrader til brug af biometri</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Meddelelser</string>
+    <string name="notification_channel_description">Underretninger om meddelelser fra tiqr</string>
+</resources>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_retry">Nogmaals</string>
+    <string name="button_delete">Verwijder</string>
+    <string name="button_cancel">Annuleren</string>
+
+    <!-- Start -->
+    <string name="start_welcome"><![CDATA[<b>Met tiqr kunt u met uw smartphone veilig en vertrouwd inloggen bij verschillende webdiensten.</b><br/>
+    <br/>
+    Deze applicatie bevat nog geen actief account.
+    Om gebruik te maken van tiqr hebt u een geactiveerd account nodig.
+    Op <a href=\"https://tiqr.org\">tiqr.org</a> vindt u een lijst met identiteitsverstrekkers.<br/>
+    <br/>
+    Na registratie ontvangt u een activatiecode en instructies voor de activatie.
+    Tijdens het activatieproces moet u een QR code scannen.
+    Druk op <b>Scan</> als u hier om gevraagd wordt.]]></string>
+    <string name="start_instructions"><![CDATA[<b>Gebruik tiqr op uw smartphone om in te loggen</b> <br/>
+    <br/>
+    1. Druk op <b>Scan</b> en scan de QR-code op de website <br/>
+    <br/>
+    <i>Meer dan één ID? Selecteer het relevante ID.</i> <br/>
+    <br/>
+    2. Scan uw biometrie of vul uw PIN voor tiqr in en druk op <b>OK</b> <br/>
+    <br/>
+    3. U bent ingelogd!]]></string>
+    <string name="start_blocked"><![CDATA[<b>Wat nu?</b><br/>
+    <br/>
+    Vraag bij uw identeitverstrekker(s) om een nieuwe activatiecode.
+    Een link naar uw identiteitverstrekker(s) is beschikbaar vanuit het account overzicht (rechtsboven).<br/>
+    <br/>
+    Bij uw nieuwe activatiecode ontvangt u instructies.
+    Zodra u daar om gevraagd wordt drukt u op <b>Scan</b>.]]></string>
+
+    <!-- Scan -->
+    <string name="scan_button">Scannen</string>
+    <string name="scan_permission_required_title">Camera permissie benodigd</string>
+    <string name="scan_permission_required_message">Voor het scannen van een QR code, heeft tiqr toegang nodig tot de camera.</string>
+    <string name="scan_permission_required_settings">Instellingen</string>
+    <string name="scan_permission_required_dismiss">Annuleren</string>
+
+    <!-- Browser -->
+    <string name="browser_error_launch">Kan de standaardbrowser niet starten</string>
+
+    <!-- About -->
+    <string name="about_label_provided_by">Aangeboden door:</string>
+    <string name="about_label_developed_by">Ontwikkeld door:</string>
+    <string name="about_label_interaction_by">Interactieontwerp:</string>
+
+    <!-- Enroll (Confirm) -->
+    <string name="enroll_confirm_title">Bevestig account activatie</string>
+    <string name="enroll_confirm_subtitle">Wilt u het volgende account activeren?</string>
+    <string name="enroll_confirm_details">Account details</string>
+    <string name="enroll_confirm_domain">U gaat zich aanmelden bij het volgende domein:</string>
+
+    <!-- Enroll (PIN) -->
+    <string name="enroll_pin_title">Kies een unieke PIN voor tiqr</string>
+    <string name="enroll_pin_subtitle">Voer je PIN in:</string>
+    <string name="enroll_pin_notice">Onthoud je PIN, deze kan niet veranderd worden!</string>
+
+    <!-- Enroll (PIN Verify) -->
+    <string name="enroll_pin_verify_title">Bevestig de unieke PIN</string>
+    <string name="enroll_pin_verify_subtitle">Voer uw PIN nogmaals in:</string>
+    <string name="enroll_pin_verify_no_match_title">PINs komen niet overeen.</string>
+    <string name="enroll_pin_verify_no_match_message">De 2 PIN codes komen niet met elkaar overeen, probeer het opnieuw. Kies een PIN code die je kunt onthouden.</string>
+
+    <!-- Account -->
+    <string name="account_full_name">Volledige naam</string>
+    <string name="account_id">ID</string>
+    <string name="account_information">Informatie</string>
+    <string name="account_activated">Je account is geactiveerd!</string>
+    <string name="account_upgrade_biometric_title">Account upgraden</string>
+    <string name="account_upgrade_biometric_message">Wil je biometrie gebruiken in plaats van een pincode om in te loggen met dit account?</string>
+
+    <!-- Authentication (Confirm) -->
+    <string name="auth_confirm_title">Weet je zeker dat je wilt inloggen?</string>
+    <string name="auth_confirm_subtitle">Je wordt ingelogd als:</string>
+    <string name="auth_confirm_to">voor:</string>
+    <string name="auth_confirm_select_identity">Selecteer identiteit</string>
+
+    <!-- Authentication (Biometric) -->
+    <string name="auth_biometric_title">Gebruik biometrie</string>
+    <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
+    <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
+
+    <!-- Authentication (Pin) -->
+    <string name="auth_pin_title">Voer uw PIN voor tiqr in</string>
+    <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
+
+    <!-- Authentication (Fallback) -->
+    <string name="auth_fallback_title">U lijkt offline te zijn</string>
+    <string name="auth_fallback_subtitle">Geen paniek! Klik op de QR code op de website. U zult gevraagd worden om de volgende eenmalige gegevens in te geven:</string>
+    <string name="auth_fallback_id">Uw gebruikers ID is:</string>
+    <string name="auth_fallback_otp">Eénmalig wachtwoord:</string>
+    <string name="auth_fallback_pin_unverified_title">Opmerking: uw PIN is nog niet geverifieerd.</string>
+    <string name="auth_fallback_pin_unverified">Als u niet kunt inloggen met bovenstaande gegevens, scan dan opnieuw en geef de correcte PIN code in.</string>
+
+    <!-- Authentication (Summary) -->
+    <string name="auth_summary_title">Inloggen geslaagd!</string>
+    <string name="auth_summary_to">voor:</string>
+
+    <!-- Identity -->
+    <string name="identity_title">Accounts</string>
+    <string name="identity_blocked">Geblokkeerd</string>
+    <string name="identity_blocked_message">Waarschuwing: dit account is geblokkeerd\nen moet opnieuw geactiveerd worden.</string>
+    <string name="identity_delete_title">Weet u het zeker?</string>
+    <string name="identity_delete_message">Dit account kan niet meer gebruikt worden nadat deze verwijderd is.</string>
+    <string name="identity_biometric_usage">Gebruik biometrie</string>
+    <string name="identity_biometric_upgrade">Upgrade naar biometriegebruik</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">Berichten</string>
+    <string name="notification_channel_description">Notificaties voor berichten van tiqr</string>
+</resources>

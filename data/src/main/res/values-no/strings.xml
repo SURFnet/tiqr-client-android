@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Errors -->
+    <string name="error_title_unknown">Ukjent feil</string>
+    <string name="error_security_standards">Enheten er inkompatibel med påkrevde sikkerhetsstandarder.</string>
+
+    <!-- Errors Scan -->
+    <string name="error_qr_unknown_title">Ukjent QR kode</string>
+    <string name="error_qr_unknown">Denne QR koden kan ikke behandles.</string>
+
+    <!-- Errors Enrollment -->
+    <string name="error_enroll_title">Mislykket påmelding</string>
+    <string name="error_enroll_connection">Ingen forbindelse til påloggingstjener. Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_qr">Ugyldig QR kode.</string>
+    <string name="error_enroll_invalid_response">Ugyldig påloggingstjener respons. Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_response_code">Ugyldig påloggingstjener respons kode (%s). Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_invalid_protocol">Ugyldig påloggingstjener respons protokoll (%s). Vennligst kontakt web administrator.</string>
+    <string name="error_enroll_duplicate_identity">Du er allerede påmeldt med identitet %s for tjenesten %s.</string>
+    <string name="error_enroll_saving_identity_provider">Kunne ikke lagre identitetstilbyder. Vennligst kontakt brukerstøtte.</string>
+    <string name="error_enroll_saving_identity">Kunne ikke lagre identitet. Vennligst kontakt brukerstøtte.</string>
+
+    <!-- Errors Authentication -->
+    <string name="error_auth_title">Mislykket pålogging</string>
+    <string name="error_auth_empty_service_provider">Ukjent</string>
+    <string name="error_auth_invalid_qr">Ugyldig autentiserings QR kode.</string>
+    <string name="error_auth_invalid_response">Ugyldig autentiseringsrespons. Feil pinkode? Prøv igjen.</string>
+    <string name="error_auth_unknown_error">Ukjent feil. Vennligst kontakt brukerstøtte.</string>
+    <string name="error_auth_connect_error">Ingen forbindelse til autentiserings tjener.</string>
+
+    <string name="error_auth_invalid_key">Kan ikke logge inn. Ugyldig nøkkel.</string>
+    <string name="error_auth_invalid_challenge">Kan ikke logge inn. Ugyldig utfordring.</string>
+
+    <string name="error_auth_invalid_protocol">Ugyldig påloggingstjener respons protokoll (%s). Vennligst kontakt web administrator.</string>
+    <string name="error_auth_unknown_identity_provider">Ukjent identitetstilbyder, vennligst registrer først.</string>
+    <string name="error_auth_unknown_identity">Ukjent identitet for tjenesten, vennligst registrer først.</string>
+    <string name="error_auth_no_identities">Ingen identiteter for denne leverandør, vennligst registrer først.</string>
+
+    <string name="error_auth_title_pin">Feil pinkode</string>
+    <string name="error_auth_pin_x_attempts_left">Du oppga feil pinkode. Du har %d forsøk igjen. Oppgi pinkode igjen. Se verifikasjonsikon for det siste sifferet.</string>
+    <string name="error_auth_pin_one_attempt_left">Du har ett siste forsøk igjen. Om du angir feil pinkode igjen vil alle konti på denne enheten bli blokkert.</string>
+    <string name="error_auth_title_biometric">Feil biometrisk</string>
+    <string name="error_auth_biometric_x_attempts_left">Du oppga en feil biometrisk. Du har %d forsøk igjen. Bekreft din biometriske igjen.</string>
+    <string name="error_auth_biometric_one_attempt_left">Du har ett siste forsøk igjen. Hvis du oppgir en feil biometri igjen, vil alle konti på denne enheten bli blokkert.</string>
+
+    <string name="error_auth_title_blocked">Konto blokkert</string>
+    <string name="error_auth_blocked">Konto kan ikke lenger brukes.</string>
+    <string name="error_auth_title_blocked_temporary">This account has been blocked temporarily.</string>
+    <string name="error_auth_blocked_temporary">This account has been blocked for %d minutes.</string>
+
+    <string name="error_auth_title_challenge">Ugyldig utfordring</string>
+    <string name="error_auth_challenge_invalid">Den skannede QR koden er ugyldig eller utløpt. Vennligst forsøk igjen.</string>
+    <string name="error_auth_title_request">Ugyldig forespørsel</string>
+    <string name="error_auth_request_invalid">Tjeneren gjenkjenner ikke påloggingsforespørsel. Vennligst kontakt brukerstøtte.</string>
+
+    <string name="error_auth_title_account">Ugyldig konto</string>
+    <string name="error_auth_account_invalid">Du forsøkte å logge inn med en ukjent eller ugyldig konto. Vennligst (re)aktiver konto først.</string>
+
+</resources>

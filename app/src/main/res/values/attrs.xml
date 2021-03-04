@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomBarView">
+        <!-- Show the info icon. (<b>false</b> by default) -->
+        <attr name="showInfo" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="PinView">
+        <!-- Specify if this pin input is for creating a (new) pin or for an existing pin.
+             Defaults to <b>existing</b>. -->
+        <attr name="pinInputType" format="enum">
+            <enum name="existing" value="0"/>
+            <enum name="creating" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

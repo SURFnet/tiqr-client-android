@@ -40,7 +40,9 @@ Thumbs.db
 
 # IDEA/Android Studio project files, because
 # the project can be imported from settings.gradle
-.idea
+.idea/*
 *.iml
-
-
+# whitelist copyright
+!.idea/copyright/
+# whitelist dictionaries
+!.idea/dictionaries/
