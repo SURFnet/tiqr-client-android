@@ -165,9 +165,6 @@ class EnrollmentRepository(
                     )
                 is JsonDataException,
                 is JsonEncodingException ->
-                    //FIXME: when server responds with just text 'false' with http 200 instead of http 4xx.
-                    // this means the server cannot handle this challenge because it is invalid (?).
-                    // Ideally the server should respond with an error http 4xx.
                     EnrollmentParseFailure(
                             reason = EnrollmentParseFailure.Reason.INVALID_CHALLENGE,
                             title = resources.getString(R.string.error_enroll_title),

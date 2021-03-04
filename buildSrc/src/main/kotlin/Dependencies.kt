@@ -1,8 +1,8 @@
 package org.tiqr.authenticator.buildsrc
 
-private const val kotlinVersion = "1.4.30"
+private const val kotlinVersion = "1.4.31"
 private const val navigationVersion = "2.3.3"
-private const val hiltVersion = "2.32-alpha"
+private const val hiltVersion = "2.33-beta"
 
 object Versions {
     // Android
@@ -10,10 +10,6 @@ object Versions {
     const val targetSdkVersion = 30
     const val minSdkVersion = 21
     const val buildToolsVersion = "30.0.3"
-
-    // Libs
-    const val firebaseCore = "17.2.0"
-    const val firebaseMessaging = "20.0.0"
 }
 
 object Plugins {
@@ -35,7 +31,7 @@ object Libs {
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
         object Coroutines {
-            private const val version = "1.4.2"
+            private const val version = "1.4.3"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$version"
@@ -50,7 +46,7 @@ object Libs {
         const val core = "androidx.core:core-ktx:1.3.2"
         const val browser = "androidx.browser:browser:1.3.0"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha02" //contains important changes
+        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha03" //contains important changes
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val futures = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
         const val autofill = "androidx.autofill:autofill:1.1.0"
@@ -79,12 +75,12 @@ object Libs {
         }
 
         object Camera {
-            private const val version = "1.0.0-rc02"
+            private const val version = "1.0.0-rc03"
             const val core = "androidx.camera:camera-core:$version"
             const val camera2 = "androidx.camera:camera-camera2:$version"
             const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-            const val view = "androidx.camera:camera-view:1.0.0-alpha21"
-            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha21"
+            const val view = "androidx.camera:camera-view:1.0.0-alpha22"
+            const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha22"
         }
     }
 
