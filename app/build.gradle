@@ -60,6 +60,14 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    defaultConfig {
+        testInstrumentationRunner "org.tiqr.authenticator.runner.HiltAndroidTestRunner"
+    }
+
+    hilt {
+        enableTransformForLocalTests = true
+    }
 }
 
 dependencies {
@@ -105,6 +113,9 @@ dependencies {
     androidTestImplementation Libs.Testing.junitExt
     androidTestImplementation Libs.Testing.epsresso
     androidTestImplementation Libs.Testing.uiAutomator
+
+    androidTestImplementation Libs.Hilt.testing
+    kaptAndroidTest Libs.Hilt.compiler
 }
 
 // Disable analytics

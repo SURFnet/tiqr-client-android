@@ -128,6 +128,7 @@ object Libs {
     object Hilt {
         const val android = "com.google.dagger:hilt-android:$hiltVersion"
         const val compiler = "com.google.dagger:hilt-compiler:$hiltVersion"
+        const val testing = "com.google.dagger:hilt-android-testing:$hiltVersion"
         const val fragment = "androidx.hilt:hilt-navigation-fragment:1.0.0-alpha03"
     }
 

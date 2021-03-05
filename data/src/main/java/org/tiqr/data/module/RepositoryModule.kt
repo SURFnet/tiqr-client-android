@@ -40,6 +40,7 @@ import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
 import org.tiqr.data.repository.IdentityRepository
 import org.tiqr.data.repository.TokenRepository
+import org.tiqr.data.repository.base.TokenRegistrarRepository
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.PreferenceService
 import org.tiqr.data.service.SecretService
@@ -77,11 +78,18 @@ internal object RepositoryModule {
             database: DatabaseService,
             secret: SecretService
     ) = IdentityRepository(database, secret)
+}
 
+/**
+ * Module which serves the token repository.
+ */
+@Module
+@InstallIn(SingletonComponent::class)
+object TokenRepositoryModule {
     @Provides
     @Singleton
     internal fun provideTokenRepository(
             api: TokenApi,
             preferences: PreferenceService
-    ) = TokenRepository(api, preferences)
+    ): TokenRegistrarRepository = TokenRepository(api, preferences)
 }

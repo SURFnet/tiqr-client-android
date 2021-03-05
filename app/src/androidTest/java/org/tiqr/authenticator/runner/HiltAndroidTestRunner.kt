@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,18 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository
+package org.tiqr.authenticator.runner
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.tiqr.data.api.TokenApi
-import org.tiqr.data.repository.base.TokenRegistrarRepository
-import org.tiqr.data.service.PreferenceService
-import timber.log.Timber
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
 /**
- * Repository to handle token exchange.
+ * Custom [AndroidJUnitRunner] to enable Hilt in tests.
  */
-class TokenRepository(private val api: TokenApi, private val preferences: PreferenceService): TokenRegistrarRepository {
-    companion object {
-        private const val NOT_FOUND = "NOT FOUND"
-    }
-
-    /**
-     * Register the device token (received from Firebase) and save the resulting notification token.
-     */
-    override suspend fun registerDeviceToken(deviceToken: String) {
-        try {
-            val newToken = api.registerDeviceToken(deviceToken = deviceToken, notificationToken = preferences.notificationToken)
-            if (newToken != NOT_FOUND) {
-                withContext(Dispatchers.Main) {
-                    preferences.notificationToken = newToken
-                }
-            } else {
-                Timber.w("Token from exchange is invalid")
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to register deviceToken")
-        }
+class HiltAndroidTestRunner : AndroidJUnitRunner() {
+    override fun newApplication(cl: ClassLoader?, className: String?, context: Context?): Application {
+        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
     }
 }

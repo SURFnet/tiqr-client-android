@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,46 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository
+package org.tiqr.authenticator
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.tiqr.data.api.TokenApi
-import org.tiqr.data.repository.base.TokenRegistrarRepository
-import org.tiqr.data.service.PreferenceService
-import timber.log.Timber
+import android.content.Intent
+import android.net.Uri
+import androidx.test.core.app.launchActivity
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.tiqr.authenticator.util.AnimationsRule
 
-/**
- * Repository to handle token exchange.
- */
-class TokenRepository(private val api: TokenApi, private val preferences: PreferenceService): TokenRegistrarRepository {
-    companion object {
-        private const val NOT_FOUND = "NOT FOUND"
+@LargeTest
+@HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
+class AuthenticateTest {
+    private lateinit var url: String
+
+    @Rule(order = 0)
+    @JvmField
+    val animationsRule = AnimationsRule()
+
+    @Rule(order = 1)
+    @JvmField
+    var hiltRule = HiltAndroidRule(this)
+
+    @Before
+    fun setup() {
+        url = "tiqrauth://debug.tiqr.org/f1bdfc0808520bff758f301cb15a26e13a526f1eafdd6da5a5b738bdb8746cb2/d4f84c9b74/debug.tiqr.org/2"
+        // TODO: should be retrieved from hosted tiqr-cli
     }
 
-    /**
-     * Register the device token (received from Firebase) and save the resulting notification token.
-     */
-    override suspend fun registerDeviceToken(deviceToken: String) {
-        try {
-            val newToken = api.registerDeviceToken(deviceToken = deviceToken, notificationToken = preferences.notificationToken)
-            if (newToken != NOT_FOUND) {
-                withContext(Dispatchers.Main) {
-                    preferences.notificationToken = newToken
-                }
-            } else {
-                Timber.w("Token from exchange is invalid")
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to register deviceToken")
+    @Test
+    fun enroll() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        launchActivity<MainActivity>(intent).use {
+            // TODO
         }
     }
 }

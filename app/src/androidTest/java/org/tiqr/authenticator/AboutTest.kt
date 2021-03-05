@@ -42,6 +42,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.startsWith
 import org.junit.Rule
@@ -51,6 +53,7 @@ import org.tiqr.authenticator.util.AnimationsRule
 import org.tiqr.authenticator.util.matchNavHost
 
 @LargeTest
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class AboutTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
@@ -60,6 +63,10 @@ class AboutTest {
     val animationsRule = AnimationsRule()
 
     @Rule(order = 1)
+    @JvmField
+    var hiltRule = HiltAndroidRule(this)
+
+    @Rule(order = 2)
     @JvmField
     val activityScenarioRule = activityScenarioRule<MainActivity>()
 

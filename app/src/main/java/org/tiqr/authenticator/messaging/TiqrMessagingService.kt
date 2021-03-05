@@ -34,7 +34,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.content.res.AppCompatResources
@@ -49,8 +48,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.tiqr.authenticator.R
-import org.tiqr.data.repository.TokenRepository
-import timber.log.Timber
+import org.tiqr.data.repository.base.TokenRegistrarRepository
 import javax.inject.Inject
 
 /**
@@ -68,7 +66,7 @@ class TiqrMessagingService : FirebaseMessagingService() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
     @Inject
-    internal lateinit var repository: TokenRepository
+    internal lateinit var repository: TokenRegistrarRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
