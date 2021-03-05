@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/surfnet"
-        android:title=""
+        android:title="@string/button_surfnet"
         app:actionLayout="@layout/view_bottombar_icon"
-        app:showAsAction="always|withText"
+        app:showAsAction="always"
         tools:ignore="HardcodedText" />
 </menu>

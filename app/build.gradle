@@ -98,9 +98,13 @@ dependencies {
     implementation Libs.Image.coil
     implementation Libs.betterLink
 
-    testImplementation Libs.Testing.jUnit
-    androidTestImplementation Libs.Testing.jUnitAndroidx
+    testImplementation Libs.Testing.junit
+    androidTestImplementation Libs.Testing.core
+    androidTestImplementation Libs.Testing.rules
+    androidTestImplementation Libs.Testing.junit
+    androidTestImplementation Libs.Testing.junitExt
     androidTestImplementation Libs.Testing.epsresso
+    androidTestImplementation Libs.Testing.uiAutomator
 }
 
 // Disable analytics

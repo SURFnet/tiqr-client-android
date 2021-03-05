@@ -97,9 +97,12 @@ object Libs {
     }
 
     object Testing {
-        const val jUnit = "junit:junit:4.12"
-        const val jUnitAndroidx = "androidx.test.ext:junit:1.1.1"
-        const val epsresso = "androidx.test.espresso:espresso-core:3.2.0"
+        const val junit = "junit:junit:4.13.2"
+        const val core = "androidx.test:core-ktx:1.4.0-alpha04"
+        const val rules = "androidx.test:rules:1.4.0-alpha04"
+        const val junitExt = "androidx.test.ext:junit-ktx:1.1.3-alpha04"
+        const val epsresso = "androidx.test.espresso:espresso-core:3.4.0-alpha04"
+        const val uiAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
     }
 
     object OkHttp {

@@ -6,6 +6,10 @@
     <string name="button_delete">Sil</string>
     <string name="button_cancel">İptal</string>
 
+    <!-- Main -->
+    <string name="button_info">Hakkında</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Web sitelerinde kolayca ve güvenli bir şekilde oturum açmak için akıllı telefonunuzda tiqr kullanın.</b><br/>
     <br/>

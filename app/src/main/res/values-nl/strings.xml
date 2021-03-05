@@ -6,6 +6,10 @@
     <string name="button_delete">Verwijder</string>
     <string name="button_cancel">Annuleren</string>
 
+    <!-- Main -->
+    <string name="button_info">Over</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Met tiqr kunt u met uw smartphone veilig en vertrouwd inloggen bij verschillende webdiensten.</b><br/>
     <br/>

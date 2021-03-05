@@ -6,6 +6,10 @@
     <string name="button_delete">Ištrinti</string>
     <string name="button_cancel">Atšaukti</string>
 
+    <!-- Main -->
+    <string name="button_info">Apie</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Naudokite "tiqr" savo išmaniajame telefone, kad prisijungtumėte prie svetainių lengvai ir saugiai.</b><br/>
     <br/>

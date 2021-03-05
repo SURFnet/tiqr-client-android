@@ -6,6 +6,10 @@
     <string name="button_delete">Löschen</string>
     <string name="button_cancel">Abbrechen</string>
 
+    <!-- Main -->
+    <string name="button_info">Über</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Mit Hilfe von tiqr können Sie sich mit Ihrem Smartphone einfach und sicher bei Onlinediensten anmelden.</b><br/>
     <br/>
