@@ -93,8 +93,8 @@ dependencies {
 
     api Libs.Timber.timber
 
-    androidTestImplementation Libs.Kotlin.Coroutines.test
-    testImplementation Libs.Testing.jUnit
-    androidTestImplementation Libs.Testing.jUnitAndroidx
+    testImplementation Libs.Testing.junit
+    androidTestImplementation Libs.Testing.junitExt
     androidTestImplementation Libs.Testing.epsresso
+    androidTestImplementation Libs.Kotlin.Coroutines.test
 }

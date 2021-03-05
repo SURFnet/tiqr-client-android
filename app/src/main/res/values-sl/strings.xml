@@ -6,6 +6,10 @@
     <string name="button_delete">Izbriši</string>
     <string name="button_cancel">Prekliči</string>
 
+    <!-- Main -->
+    <string name="button_info">O tem</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>tiqr na vašem pametnem telefonu lahko uporabite za enostavno in varno prijavo v številne spletne storitve.</b><br/>
     <br/>

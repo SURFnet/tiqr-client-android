@@ -6,6 +6,10 @@
     <string name="button_delete">Odstrániť</string>
     <string name="button_cancel">Zrušiť</string>
 
+    <!-- Main -->
+    <string name="button_info">O</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>S tiqr možete použiť váš mobilný telefón na jednoduché a bezpečné prihlásenie k webovým službám.</b><br/>
     <br/>

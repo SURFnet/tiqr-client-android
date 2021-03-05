@@ -6,6 +6,10 @@
     <string name="button_delete">Slet</string>
     <string name="button_cancel">Fortryd</string>
 
+    <!-- Main -->
+    <string name="button_info">Om</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b><b>Brug tiqr på din smartphone til at logge ind nemt og sikkert.</b><br/>
     <br/>

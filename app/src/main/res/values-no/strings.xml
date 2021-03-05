@@ -6,6 +6,10 @@
     <string name="button_delete">Slett</string>
     <string name="button_cancel">Annuller</string>
 
+    <!-- Main -->
+    <string name="button_info">Om</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Med tiqr kan du med en smarttelefon enkelt og sikkert logge inn på mange nettsteder.</b><br/>
     <br/>

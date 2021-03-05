@@ -6,6 +6,10 @@
     <string name="button_delete">Sterge</string>
     <string name="button_cancel">Anuleaza</string>
 
+    <!-- Main -->
+    <string name="button_info">Despre</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Folosind tiqr, puteti folosi smartphone-ul dumneavoastra pentru a va autentifica usor si in siguranta pe mai multe site-uri web.</b><br/>
     <br/>

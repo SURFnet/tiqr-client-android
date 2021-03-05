@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,27 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.data.repository
+package org.tiqr.authenticator.util
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.tiqr.data.api.TokenApi
-import org.tiqr.data.repository.base.TokenRegistrarRepository
-import org.tiqr.data.service.PreferenceService
-import timber.log.Timber
+import android.view.View
+import android.app.Activity
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavHost
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.core.IsInstanceOf
+import org.tiqr.authenticator.R
 
 /**
- * Repository to handle token exchange.
+ * Match the [NavHost], which basically is the view where
+ * the [Fragment] is hosted, from an [Activity] perspective.
  */
-class TokenRepository(private val api: TokenApi, private val preferences: PreferenceService): TokenRegistrarRepository {
-    companion object {
-        private const val NOT_FOUND = "NOT FOUND"
-    }
-
-    /**
-     * Register the device token (received from Firebase) and save the resulting notification token.
-     */
-    override suspend fun registerDeviceToken(deviceToken: String) {
-        try {
-            val newToken = api.registerDeviceToken(deviceToken = deviceToken, notificationToken = preferences.notificationToken)
-            if (newToken != NOT_FOUND) {
-                withContext(Dispatchers.Main) {
-                    preferences.notificationToken = newToken
-                }
-            } else {
-                Timber.w("Token from exchange is invalid")
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to register deviceToken")
-        }
-    }
+internal fun matchNavHost(): Matcher<View> {
+    return allOf(
+            withId(R.id.nav_host_fragment),
+            withParent(IsInstanceOf.instanceOf(FragmentContainerView::class.java))
+    )
 }

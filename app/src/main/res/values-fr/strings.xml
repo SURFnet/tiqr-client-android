@@ -6,6 +6,10 @@
     <string name="button_delete">Supprimer</string>
     <string name="button_cancel">Cancelar</string>
 
+    <!-- Main -->
+    <string name="button_info">À propos de</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Grâce à tiqr vous pouvez utilisez votre mobile pour vous connecter simplement et en sécurité à des service en ligne.<b><br/>
     <br/>

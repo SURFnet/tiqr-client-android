@@ -68,6 +68,7 @@ class BottomBarView : BottomAppBar {
     init {
         layoutTransition = LayoutTransition() // = animateLayoutChanges
 
+        setNavigationContentDescription(R.string.button_info)
         setNavigationOnClickListener {
             findNavController().navigate(MainNavDirections.openAbout())
         }

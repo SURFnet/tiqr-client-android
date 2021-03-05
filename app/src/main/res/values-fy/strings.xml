@@ -6,6 +6,10 @@
     <string name="button_delete">Fuortsmite</string>
     <string name="button_cancel">Annulearje</string>
 
+    <!-- Main -->
+    <string name="button_info">Oer</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Mei tiqr kinne jo mei jo mobile telefoan maklik en feilich ynloche by ferskillende Ynternetsides.</b> <br/>
     <br/>

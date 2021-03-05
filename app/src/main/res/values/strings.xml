@@ -8,6 +8,10 @@
     <string name="button_delete">Delete</string>
     <string name="button_cancel">Cancel</string>
 
+    <!-- Main -->
+    <string name="button_info">About</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>Use tiqr on your smartphone to log in to websites easily and secure.</b><br/>
     <br/>

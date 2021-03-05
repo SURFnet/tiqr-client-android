@@ -6,6 +6,10 @@
     <string name="button_delete">削除</string>
     <string name="button_cancel">キャンセル</string>
 
+    <!-- Main -->
+    <string name="button_info">約</string>
+    <string name="button_surfnet">Surfnet</string>
+
     <!-- Start -->
     <string name="start_welcome"><![CDATA[<b>tiqrを利用すれば、スマートフォンで簡単かつ安全に、オンラインサービスにログインすることができます。</b><br/>
     <br/>
