@@ -65,8 +65,8 @@ platform :android do
           firebase_app_distribution(
               app: ENV["FIREBASE_APP_ID_ANDROID"],
               firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-              groups: "egeniq", "surf"
-              release_notes: `printf 'Build #%s [%s]' $BUILD_NUMBER $GIT_COMMIT` + "\n\nChanges:\n" + `git log --pretty=format:"* %b [%h]" --merges --first-parent develop --max-count 50`
+              groups: "egeniq", "surf",
+              release_notes: `printf 'Build #%s [%s]' $BUILD_NUMBER $GIT_COMMIT` + "\n\nChanges:\n" + `git log --pretty=format:"* %b [%h]" --merges --first-parent develop --max-count 50`,
           )
       end
    end
