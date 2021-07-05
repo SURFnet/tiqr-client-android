@@ -48,30 +48,25 @@ platform :android do
   end
 
 
-   desc "Build app and upload to Firebase App Distribution"
-      lane :bundle_for_distribution  do
-          ENV["BADGE_TITLE"] = `printf '$BUILD_NUMBER`
-          add_badge(shield: ENV["BADGE_TITLE"], shield_gravity: "South", no_badge: true, glob: "/app/src/main/res/**/ic_launcher.{png,PNG}")
-          gradle(task: "clean assembleRelease",
-            properties: {
-              "android.injected.signing.store.file" => 'app_distribution_keystore.jks',
-              "android.injected.signing.store.password" => 'tiqrtiqr',
-              "android.injected.signing.key.alias" => 'tiqr',
-              "android.injected.signing.key.password" => 'tiqrtiqr',
-              "commit" => ENV["GIT_COMMIT"],
-            }
+  desc "Build app and upload to Firebase App Distribution"
+  lane :bundle_for_distribution  do
+      ENV["BADGE_TITLE"] = `printf '$BUILD_NUMBER`
+      add_badge(shield: ENV["BADGE_TITLE"], shield_gravity: "South", no_badge: true, glob: "/app/src/main/res/**/ic_launcher.{png,PNG}")
+      gradle(task: "clean assembleRelease",
+        properties: {
+          "android.injected.signing.store.file" => 'app_distribution_keystore.jks',
+          "android.injected.signing.store.password" => 'tiqrtiqr',
+          "android.injected.signing.key.alias" => 'tiqr',
+          "android.injected.signing.key.password" => 'tiqrtiqr',
+          "commit" => ENV["GIT_COMMIT"],
+        }
 
-          )
-          firebase_app_distribution(
-              app: ENV["FIREBASE_APP_ID_ANDROID"],
-              firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-              groups: ["egeniq", "surf"],
-              release_notes: `printf 'Build #%s [%s]' $BUILD_NUMBER $GIT_COMMIT` + "\n\nChanges:\n" + `git log --pretty=format:"* %b [%h]" --merges --first-parent develop --max-count 50`,
-          )
-      end
-   end
-
-
-
-
+      )
+      firebase_app_distribution(
+          app: ENV["FIREBASE_APP_ID_ANDROID"],
+          firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+          groups: ["egeniq", "surf"],
+          release_notes: `printf 'Build #%s [%s]' $BUILD_NUMBER $GIT_COMMIT` + "\n\nChanges:\n" + `git log --pretty=format:"* %b [%h]" --merges --first-parent develop --max-count 50`,
+      )
+  end
 end
