@@ -15,8 +15,6 @@ jobs:
         with:
           fetch-depth: 0
         if: git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} # If there are changes since the last run
-      - name: Install ImageMagick
-        run: brew install imagemagick
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
       - uses: actions/setup-ruby@v1
