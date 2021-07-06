@@ -50,8 +50,6 @@ platform :android do
 
   desc "Build app and upload to Firebase App Distribution"
   lane :bundle_for_distribution  do
-      ENV["BADGE_TITLE"] = `printf '$BUILD_NUMBER`
-      add_badge(shield: ENV["BADGE_TITLE"], shield_gravity: "South", no_badge: true, glob: "/app/src/main/res/**/ic_launcher.{png,PNG}")
       gradle(task: "clean assembleRelease",
         properties: {
           "android.injected.signing.store.file" => 'app_distribution_keystore.jks',
