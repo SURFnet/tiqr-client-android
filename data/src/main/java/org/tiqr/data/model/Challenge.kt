@@ -49,8 +49,8 @@ sealed class Challenge {
 @Parcelize
 data class EnrollmentChallenge(
         override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
-        override var identityProvider: IdentityProvider,
-        override var identity: Identity,
+        override val identityProvider: IdentityProvider,
+        override val identity: Identity,
         override val returnUrl: String?,
         val enrollmentUrl: String,
         val enrollmentHost: String
@@ -63,7 +63,7 @@ data class EnrollmentChallenge(
 data class AuthenticationChallenge(
         override val protocolVersion: Int = BuildConfig.PROTOCOL_VERSION,
         override val identityProvider: IdentityProvider,
-        override var identity: Identity?,
+        override val identity: Identity?,
         override val returnUrl: String?,
         val identities: List<Identity> = emptyList(),
         val sessionKey: String,

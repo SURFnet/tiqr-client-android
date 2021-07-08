@@ -39,7 +39,6 @@ import org.tiqr.data.model.AuthenticationCompleteRequest
 import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.AuthenticationRepository
-import org.tiqr.data.util.extension.mutate
 import timber.log.Timber
 
 /**
@@ -56,8 +55,8 @@ class AuthenticationViewModel @AssistedInject constructor(
         }
     }
 
-    private val otpGenerate = MutableLiveData<SecretCredential>()
-    val otp = otpGenerate.switchMap { credential ->
+    private val _otpGenerate = MutableLiveData<SecretCredential>()
+    val otp = _otpGenerate.switchMap { credential ->
         liveData {
             challenge.value?.let { challenge ->
                 challenge.identity?.let {
@@ -71,9 +70,7 @@ class AuthenticationViewModel @AssistedInject constructor(
      * Update the [Identity] for this [AuthenticationChallenge]
      */
     fun updateIdentity(identity: Identity) {
-        _challenge.mutate {
-            value?.identity = identity
-        }
+        _challenge.value = _challenge.value?.copy(identity = identity)
     }
 
     /**
@@ -89,9 +86,7 @@ class AuthenticationViewModel @AssistedInject constructor(
      * Perform OTP generation
      */
     fun generateOTP(password: String, type: SecretType = SecretType.PIN) {
-        otpGenerate.mutate {
-            value = SecretCredential(password = password, type = type)
-        }
+        _otpGenerate.value = SecretCredential(password = password, type = type)
     }
 
     /**
