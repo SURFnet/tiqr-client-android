@@ -139,9 +139,10 @@ class AuthenticationRepository(
 
         // Check if there are multiple identities
         val identities = database.getIdentities(identityProvider.identifier)
-        val multipleIdentities = identities.size > 1
+        val multipleIdentities = url.username.isBlank() && identities.size > 1
         if (multipleIdentities) {
-            Timber.d("Found ${identities.size} identities for ${identityProvider.identifier}")
+            Timber.d("Found ${identities.size} identities for ${identityProvider.identifier}," +
+                    " and the challenge did not contain a specific username.")
         }
 
         return AuthenticationChallenge(
