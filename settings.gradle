@@ -1,4 +1,0 @@
-rootProject.name='tiqr client android'
-
-include ':app'
-include ':data'
