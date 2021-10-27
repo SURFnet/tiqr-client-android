@@ -43,6 +43,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
@@ -64,7 +65,11 @@ class EnrollTest {
 
     @Rule(order = 1)
     @JvmField
-    var hiltRule = HiltAndroidRule(this)
+    val hiltRule = HiltAndroidRule(this)
+
+    @Rule(order = 2)
+    @JvmField
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
 
     @Before
     fun setup() {
@@ -75,8 +80,34 @@ class EnrollTest {
     @Test
     fun enroll() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        launchActivity<MainActivity>(intent).use {
-            // TODO
-        }
+        activityRule.launchActivity(intent)
+
+        // Check if enroll url had errors
+        onView(withId(androidx.appcompat.R.id.alertTitle))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+
+        onView(withId(android.R.id.button1))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click())
+
+        // Otherwise continue
+
+        // Check if screen is now on EnrollConfirm
+        // Click OK
+
+        // Check if screen is now on EnrollPin
+        // Enter new pin
+        // Click OK
+
+        // Check if screen is now on EnrollPinConfirm
+        // Enter confirm pin
+        // Click OK
+
+        // Check if screen is now on EnrollSummary
+        // Click OK
+
+        // Done
     }
 }
