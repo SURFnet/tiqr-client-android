@@ -32,10 +32,7 @@ package org.tiqr.authenticator.widget
 import android.animation.LayoutTransition
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.widget.ImageButton
 import androidx.core.content.withStyledAttributes
-import androidx.core.view.MenuItemCompat
 import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import org.tiqr.authenticator.MainNavDirections

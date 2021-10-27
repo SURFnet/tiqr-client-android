@@ -157,9 +157,17 @@ fun ImageView.loadImage(url: String?) {
 }
 
 /**
- * Show or hide this [View]
+ * Show this [View]
  */
 @BindingAdapter(value = ["showIf"])
 fun View.showIf(predicate: Boolean) {
     visibility = if (predicate) View.VISIBLE else View.GONE
+}
+
+/**
+ * Hide this [View]
+ */
+@BindingAdapter(value = ["hideIf"])
+fun View.hideIf(predicate: Boolean) {
+    visibility = if (predicate) View.GONE else View.VISIBLE
 }

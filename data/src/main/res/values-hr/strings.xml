@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Pogrešan odgovor za upis zaprimljen od poslužitelja. Kontaktirajte administratora web stranice.</string>
     <string name="error_enroll_invalid_response_code">Nevažeći kod odgovora (%s). Kontaktirajte administratora web stranice.</string>
     <string name="error_enroll_invalid_protocol">Nevažeći protokol odgovora (%s). Kontaktirajte administratora web stranice.</string>
-    <string name="error_enroll_duplicate_identity">Prethodno ste upisani sa identitetom %s za uslugu %s</string>
+    <string name="error_enroll_duplicate_identity">Prethodno ste upisani sa identitetom %1$s za uslugu %2$s</string>
     <string name="error_enroll_saving_identity_provider">Nije moguće pohraniti davatelja identiteta. Kontaktirajte podršku.</string>
     <string name="error_enroll_saving_identity">Nije moguće pohraniti identitet. Kontaktirajte podršku.</string>
 

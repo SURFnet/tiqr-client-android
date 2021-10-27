@@ -36,6 +36,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.children
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
@@ -70,8 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
     override val layout = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Switch from launch theme to regular theme
-        setTheme(R.style.AppTheme)
+        installSplashScreen()
 
         super.onCreate(savedInstanceState)
 

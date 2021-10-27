@@ -34,12 +34,19 @@ import android.app.Activity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavHost
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.core.IsInstanceOf
 import org.tiqr.authenticator.R
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Match the [NavHost], which basically is the view where

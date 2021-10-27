@@ -62,6 +62,7 @@
             android:textAppearance="@style/AppTheme.TextAppearance.Label"
             app:layout_constrainedWidth="true"
             app:layout_constraintHeight_default="spread"
+            app:hideIf="@{viewModel.challenge.stepUpChallenge}"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -72,6 +73,7 @@
             android:text="@{viewModel.challenge.identity.identifier}"
             app:layout_constraintHeight_default="spread"
             app:layout_constraintWidth_default="spread"
+            app:hideIf="@{viewModel.challenge.stepUpChallenge}"
             tools:ignore="MissingConstraints,UnusedAttribute"
             tools:text="&lt;identity&gt;" />
 

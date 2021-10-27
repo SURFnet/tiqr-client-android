@@ -15,7 +15,7 @@
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Enrollment failed</string>
-    <string name="error_enroll_duplicate_identity">You already enrolled with the identity %s for the service %s.</string>
+    <string name="error_enroll_duplicate_identity">You already enrolled with the identity %1$s for the service %2$s.</string>
     <string name="error_enroll_connection">Cannot connect to the enrollment server. Please contact the website administrator.</string>
     <string name="error_enroll_invalid_qr">Invalid enrollment QR code.</string>
     <string name="error_enroll_invalid_response">Invalid enrollment server response. Please contact the website administrator.</string>

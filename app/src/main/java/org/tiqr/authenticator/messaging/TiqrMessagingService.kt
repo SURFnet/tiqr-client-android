@@ -106,23 +106,28 @@ class TiqrMessagingService : FirebaseMessagingService() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(challenge)).also { intent ->
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
 
             NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
-                    .setLargeIcon(AppCompatResources.getDrawable(this, R.drawable.ic_notification_large)?.toBitmap())
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setAutoCancel(true)
-                    .setWhen(System.currentTimeMillis())
-                    .setTimeoutAfter(180_000) // 3 minutes
-                    .setContentTitle(title)
-                    .setTicker(text)
-                    .setContentText(text)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .build()
-                    .apply {
-                        notificationManager.notify(0, this)
-                    }
+                .setContentIntent(PendingIntent.getActivity(this, 0, intent, flags))
+                .setLargeIcon(AppCompatResources.getDrawable(this, R.drawable.ic_notification_large)?.toBitmap())
+                .setSmallIcon(R.drawable.ic_notification)
+                .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setTimeoutAfter(180_000) // 3 minutes
+                .setContentTitle(title)
+                .setTicker(text)
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+                .setDefaults(Notification.DEFAULT_ALL)
+                .build()
+                .apply {
+                    notificationManager.notify(0, this)
+                }
         }
     }
 

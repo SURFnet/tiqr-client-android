@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">登録サーバからの応答が不正です。ウェブサイトの管理者に連絡してください。</string>
     <string name="error_enroll_invalid_response_code">無効な応答コード (%s)。ウェブサイトの管理者に連絡してください。</string>
     <string name="error_enroll_invalid_protocol">無効な応答プロトコル (%s)。ウェブサイトの管理者に連絡してください。</string>
-    <string name="error_enroll_duplicate_identity">すでに %s というIDでサービス %s に登録されています</string>
+    <string name="error_enroll_duplicate_identity">すでに %1$s というIDでサービス %2$s に登録されています</string>
     <string name="error_enroll_saving_identity_provider">IDの登録に失敗しました。サポートに相談してください。</string>
     <string name="error_enroll_saving_identity">IDの登録に失敗しました。サポートに相談してください。</string>
 

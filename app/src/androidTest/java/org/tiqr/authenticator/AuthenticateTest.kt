@@ -31,9 +31,15 @@ package org.tiqr.authenticator
 
 import android.content.Intent
 import android.net.Uri
-import androidx.test.core.app.launchActivity
+import androidx.appcompat.R
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -56,6 +62,11 @@ class AuthenticateTest {
     @JvmField
     var hiltRule = HiltAndroidRule(this)
 
+    @Rule(order = 2)
+    @JvmField
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
+
+
     @Before
     fun setup() {
         url = "tiqrauth://debug.tiqr.org/f1bdfc0808520bff758f301cb15a26e13a526f1eafdd6da5a5b738bdb8746cb2/d4f84c9b74/debug.tiqr.org/2"
@@ -65,8 +76,30 @@ class AuthenticateTest {
     @Test
     fun enroll() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        launchActivity<MainActivity>(intent).use {
-            // TODO
-        }
+        activityRule.launchActivity(intent)
+
+        // Check if authenticate url had errors
+        Espresso.onView(ViewMatchers.withId(R.id.alertTitle))
+                .inRoot(RootMatchers.isDialog())
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        Espresso.onView(ViewMatchers.withId(android.R.id.button1))
+                .inRoot(RootMatchers.isDialog())
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+                .perform(ViewActions.click())
+
+        // Otherwise continue
+
+        // Check if screen is now on AuthenticationConfirm
+        // Click OK
+
+        // Check if screen is now on AuthenticationPin
+        // Enter correct pin
+        // Click OK
+
+        // Check if screen is now on AuthenticationSummary
+        // Click OK
+
+        // Done
     }
 }

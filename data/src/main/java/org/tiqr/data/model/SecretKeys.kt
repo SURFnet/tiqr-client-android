@@ -34,12 +34,14 @@ import javax.crypto.SecretKey
 /**
  * The [SecretKey] to use as a [SessionKey]
  */
-inline class SessionKey(val value: SecretKey)
+@JvmInline
+value class SessionKey(val value: SecretKey)
 
 /**
  * The [SecretKey] to use as a [Secret]
  */
-inline class Secret(val value: SecretKey)
+@JvmInline
+value class Secret(val value: SecretKey)
 
 /**
  * Wrap this [SecretKey] into a [SessionKey]

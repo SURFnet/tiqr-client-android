@@ -153,7 +153,7 @@ class AuthenticationRepository(
                 returnUrl = url.query?.toHttpUrlOrNull()?.toString(),
                 sessionKey = url.pathSegments[0],
                 challenge = url.pathSegments[1],
-                isStepUpChallenge = url.username.isNotEmpty(),
+                isStepUpChallenge = url.username.isNotEmpty(), // what does this mean? to be used to check if raw-challenge already has an identity
                 serviceProviderDisplayName = url.pathSegments.getOrElse(2) { resources.getString(R.string.error_auth_empty_service_provider) },
                 serviceProviderIdentifier = ""
         ).run {
@@ -212,7 +212,7 @@ class AuthenticationRepository(
         } catch (e: Exception) {
             Timber.e(e, "Authentication failed")
             return when (e) {
-                is Ocra.OcraException ->
+                is OcraException ->
                     AuthenticationCompleteFailure(
                             reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
                             title = resources.getString(R.string.error_auth_title),

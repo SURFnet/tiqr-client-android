@@ -8,4 +8,4 @@
     android:paddingHorizontal="8dp"
     android:scaleType="fitCenter"
     app:srcCompat="@drawable/ic_surfnet"
-    tools:ignore="ContentDescription" />
+    tools:ignore="ContentDescription,Overdraw" />
