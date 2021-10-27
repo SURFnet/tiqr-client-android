@@ -29,8 +29,6 @@
 
 package org.tiqr.data.util.extension
 
-import java.util.*
-
 /**
  * Convert this [ByteArray] into a hexadecimal string representation
  */
@@ -39,4 +37,4 @@ fun ByteArray.toHexString(): String = joinToString("") { "%02x".format(it) }
 /**
  * Convert this [String] in hexadecimal representation into a [ByteArray]
  */
-fun String.hexAsByteArray(): ByteArray = chunked(2).map { it.toLowerCase(Locale.ROOT).toInt(16).toByte() }.toByteArray()
+fun String.hexAsByteArray(): ByteArray = chunked(2).map { it.lowercase().toInt(16).toByte() }.toByteArray()

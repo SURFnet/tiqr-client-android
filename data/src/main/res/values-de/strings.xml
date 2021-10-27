@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Ungültiges Registrierungsantwort. Bitte kontaktieren Sie den Webmaster.</string>
     <string name="error_enroll_invalid_response_code">Ungültiger Antwortcode (%s). Bitte kontaktieren Sie den Webmaster.</string>
     <string name="error_enroll_invalid_protocol">Ungültiges Antwortprotokoll (%s). Bitte kontaktieren Sie den Webmaster.</string>
-    <string name="error_enroll_duplicate_identity">Sie haben sich mit der Identität %s bereits beim Dienst %s registriert.</string>
+    <string name="error_enroll_duplicate_identity">Sie haben sich mit der Identität %1$s bereits beim Dienst %%2$s registriert.</string>
     <string name="error_enroll_saving_identity_provider">Identitätsprovider konnte nicht gespeichert werden. Bitte wenden Sie sich an den Support.</string>
     <string name="error_enroll_saving_identity">Identität konnte nicht gespeichert werden. Bitte wenden Sie sich an den Support.</string>
 

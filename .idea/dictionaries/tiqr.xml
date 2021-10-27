@@ -1,18 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="tiqr">
     <words>
-      <w>constraintlayout</w>
-      <w>coroutines</w>
       <w>hotp</w>
       <w>identityprovider</w>
-      <w>kotlinx</w>
-      <w>livedata</w>
-      <w>moshi</w>
       <w>ocra</w>
-      <w>okhttp</w>
+      <w>surfnet</w>
       <w>tiqr</w>
-      <w>verhoeff</w>
-      <w>viewmodel</w>
     </words>
   </dictionary>
 </component>

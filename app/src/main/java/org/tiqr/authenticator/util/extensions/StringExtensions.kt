@@ -35,7 +35,7 @@ import androidx.core.text.parseAsHtml
 
 /**
  * Convert this string into a html link
- * where the link text is thr url'a host.
+ * where the link text is the urls host.
  */
 fun String.toHtmlLink(): CharSequence {
     return if (URLUtil.isNetworkUrl(this)) {

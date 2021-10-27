@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Neplatná reakcia registračného servera. Kontaktujte, prosím, správcu web servera.</string>
     <string name="error_enroll_invalid_response_code">Neplatný kód odpovede (%s). Neplatná reakcia . Kontaktujte, prosím, správcu web servera.</string>
     <string name="error_enroll_invalid_protocol">Neplatný protokol odozvy (%s). Kontaktujte, prosím, správcu web servera.</string>
-    <string name="error_enroll_duplicate_identity">Už ste registrovaný/á ako %s k službe %s.</string>
+    <string name="error_enroll_duplicate_identity">Už ste registrovaný/á ako %1$s k službe %2$s.</string>
     <string name="error_enroll_saving_identity_provider">Zlyhalo uloženie poskytovateľa identity. Kotaktujte, prosím, používateľskú podporu.</string>
     <string name="error_enroll_saving_identity">Zlyhalo uloženie identity. Kotaktujte, prosím, používateľskú podporu.</string>
 

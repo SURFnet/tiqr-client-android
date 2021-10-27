@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Ûnjildich antwurd fan de registraasjeserver. Nim kontakt op mei de ynternetside behearder.</string>
     <string name="error_enroll_invalid_response_code">Ûnjildiche antwurdskoade (%s). Nim kontakt op mei de ynternetside behearder.</string>
     <string name="error_enroll_invalid_protocol">Ûnjildich antwurdprotokol (%s). Nim kontakt op mei de ynternetside behearder.</string>
-    <string name="error_enroll_duplicate_identity">Jo hawwe de identiteit %s al ris registreart foar de tsjinst %s.</string>
+    <string name="error_enroll_duplicate_identity">Jo hawwe de identiteit %1$s al ris registreart foar de tsjinst %2$s.</string>
     <string name="error_enroll_saving_identity_provider">Opslaan tsjinst mislearre. Nim kontakt op mei support.</string>
     <string name="error_enroll_saving_identity">Opslaan identeit mislearre. Nim kontakt op mei support.</string>
 

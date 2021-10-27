@@ -29,8 +29,8 @@
 
 package org.tiqr.authenticator.scan
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.core.graphics.toRect
@@ -68,7 +68,7 @@ class ScanAnalyzer(
                 }
     }
 
-    @SuppressLint("UnsafeExperimentalUsageError")
+    @ExperimentalGetImage
     override fun analyze(image: ImageProxy) {
         image.image?.let { scanned ->
             lifecycleScope.launch {

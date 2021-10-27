@@ -53,7 +53,6 @@ private const val CODE_INVALID_RESPONSE = "INVALID_RESPONSE"
 /**
  * Custom Moshi adapter to parse [EnrollmentResponse] in ascii & json format
  */
-@Deprecated("Protocol version 1 (ascii) is not supported anymore")
 class EnrollmentResponseAdapter private constructor() {
     companion object {
         fun create() = EnrollmentResponseAdapter()
@@ -89,7 +88,6 @@ class EnrollmentResponseAdapter private constructor() {
 /**
  * Custom Moshi adapter to parse [AuthenticationResponse] in ascii & json format
  */
-@Deprecated("Protocol version 1 (ascii) is not supported anymore")
 class AuthenticationResponseAdapter private constructor() {
     companion object {
         fun create() = AuthenticationResponseAdapter()

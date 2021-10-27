@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Netinkamas registracijos serverio atsakymas. Praneškite tinklapio administratoriui.</string>
     <string name="error_enroll_invalid_response_code">Neteisingas atsakymas kodas (%s). Praneškite tinklapio administratoriui.</string>
     <string name="error_enroll_invalid_protocol">Netinkamas atsakymas protokolas (%s). Praneškite tinklapio administratoriui.</string>
-    <string name="error_enroll_duplicate_identity">Jūs jau užsiregistravote su tapatybe %s prie paslaugos %s.</string>
+    <string name="error_enroll_duplicate_identity">Jūs jau užsiregistravote su tapatybe %1$s prie paslaugos %2$s.</string>
     <string name="error_enroll_saving_identity_provider">Nepavyko išsaugoti tapatybės teikėjo. Praneškite administratoriui.</string>
     <string name="error_enroll_saving_identity">Nepavyko išsaugoti tapatybės. Praneškite administratoriui.</string>
 

@@ -64,9 +64,7 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
         viewModel.challenge.value?.let { challenge ->
             if (challenge.hasMultipleIdentities && challenge.identity == null) {
                 setHasOptionsMenu(true)
-                findNavController().navigate(
-                        AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = false)
-                )
+                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = false))
             } else if (challenge.identity != null) {
                 viewModel.updateIdentity(challenge.identity!!)
             }

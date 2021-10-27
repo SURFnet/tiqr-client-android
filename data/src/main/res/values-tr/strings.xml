@@ -11,7 +11,7 @@
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Kayıt başarısız oldu</string>
-    <string name="error_enroll_duplicate_identity">%s hizmeti için %s kimliğiyle zaten kayıtlısınız.</string>
+    <string name="error_enroll_duplicate_identity">%2$s kimlik sağlayıcısı için %1$s kimliğiyle zaten kayıtlısınız.</string>
     <string name="error_enroll_connection">Kayıt sunucusuna bağlanılamıyor. Lütfen web sitesi yöneticisiyle iletişime geçin.</string>
     <string name="error_enroll_invalid_qr">Geçersiz kayıt QR kodu.</string>
     <string name="error_enroll_invalid_response">Geçersiz kayıt sunucusu yanıtı. Lütfen web sitesi yöneticisiyle iletişime geçin.</string>
@@ -33,7 +33,7 @@
 
     <string name="error_auth_invalid_protocol">Geçersiz yanıt protokolü (%s). Lütfen web sitesi yöneticisiyle iletişime geçin.</string>
     <string name="error_auth_unknown_identity_provider">Bilinmeyen kimlik sağlayıcı, lütfen önce kaydolun.</string>
-    <string name="error_auth_unknown_identity">Hizmet için bilinmeyen kimlik, lütfen önce kaydolun.</string>
+    <string name="error_auth_unknown_identity">Kimlik sağlayıcı için bilinmeyen kimlik, lütfen önce kaydolun.</string>
     <string name="error_auth_no_identities">Kimlik sağlayıcı için kimlik bulunamadı, lütfen önce kaydolun.</string>
     <string name="error_auth_empty_service_provider">Bilinmiyor </string>
 

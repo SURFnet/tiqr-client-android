@@ -10,7 +10,7 @@
 
     <!-- Errors Enrollment -->
     <string name="error_enroll_title">Tilmelding mislykkedes</string>
-    <string name="error_enroll_duplicate_identity">Du har allerede tilmeldt dig identiteten %s for tjenesten %s.</string>
+    <string name="error_enroll_duplicate_identity">Du har allerede tilmeldt dig identiteten %1$s for tjenesten %2$s.</string>
     <string name="error_enroll_connection">Kan ikke oprette forbindelse til tilmeldingsserveren. Kontakt webstedsadministratoren.</string>
     <string name="error_enroll_invalid_qr">Ugyldig tilmeldings-QR-kode.</string>
     <string name="error_enroll_invalid_response">Ugyldigt tilmeldingsserversvar. Kontakt webstedsadministratoren.</string>

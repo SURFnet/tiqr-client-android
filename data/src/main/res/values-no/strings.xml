@@ -16,7 +16,7 @@
     <string name="error_enroll_invalid_response">Ugyldig påloggingstjener respons. Vennligst kontakt web administrator.</string>
     <string name="error_enroll_invalid_response_code">Ugyldig påloggingstjener respons kode (%s). Vennligst kontakt web administrator.</string>
     <string name="error_enroll_invalid_protocol">Ugyldig påloggingstjener respons protokoll (%s). Vennligst kontakt web administrator.</string>
-    <string name="error_enroll_duplicate_identity">Du er allerede påmeldt med identitet %s for tjenesten %s.</string>
+    <string name="error_enroll_duplicate_identity">Du er allerede påmeldt med identitet %1$s for tjenesten %2$s.</string>
     <string name="error_enroll_saving_identity_provider">Kunne ikke lagre identitetstilbyder. Vennligst kontakt brukerstøtte.</string>
     <string name="error_enroll_saving_identity">Kunne ikke lagre identitet. Vennligst kontakt brukerstøtte.</string>
 

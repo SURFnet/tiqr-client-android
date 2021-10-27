@@ -30,7 +30,6 @@
 package org.tiqr.data.algorithm
 
 import org.tiqr.data.util.extension.hexAsByteArray
-import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
@@ -67,7 +66,7 @@ object Ocra {
             timestamp: String? = null
     ): String {
         // The suite components
-        val (algo: String, crypt: String, input: String) = with(suite.toUpperCase(Locale.ROOT).split(":")) {
+        val (algo: String, crypt: String, input: String) = with(suite.uppercase().split(":")) {
             if (size != 3) throw OcraException("Invalid OCRA suite provided")
             this
         }

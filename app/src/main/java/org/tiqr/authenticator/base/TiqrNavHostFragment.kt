@@ -38,6 +38,7 @@ import org.tiqr.authenticator.browser.BrowserNavigator
 /**
  * NavHostFragment with added support for browser destinations from [BrowserNavigator].
  */
+@Suppress("unused")
 class TiqrNavHostFragment : NavHostFragment() {
     @SuppressLint("RestrictedApi")
     override fun onCreateNavController(navController: NavController) {

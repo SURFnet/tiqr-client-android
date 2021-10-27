@@ -178,6 +178,7 @@ private object CharArrayConverter {
      * This implementation was shipped with version 3.0.6 which lead to
      * data corruption. This should never be used, but is kept around for compatibility reasons.
      */
+    @Suppress("DEPRECATION", "RemoveRedundantCallsOfConversionMethods")
     @Deprecated("Never to be used. Only kept for backwards compatibility.")
     val fallbackVersion306: (ByteArray) -> CharArray = { data ->
         val value: CharArray
