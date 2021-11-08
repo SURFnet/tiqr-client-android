@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    android:label="Main"
+    app:startDestination="@id/start">
+
+    <fragment
+        android:id="@+id/start"
+        android:name="org.tiqr.core.start.StartFragment"
+        tools:layout="@layout/fragment_start">
+
+        <action
+            android:id="@+id/action_scan"
+            app:destination="@id/scan"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/start"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_identity"
+            app:destination="@id/identity_nav"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/start"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scan"
+        android:name="org.tiqr.core.scan.ScanFragment"
+        tools:layout="@layout/fragment_scan">
+    </fragment>
+
+    <action
+        android:id="@+id/open_browser"
+        app:destination="@id/browser"
+        app:launchSingleTop="true">
+
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false" />
+    </action>
+
+    <browser
+        android:id="@+id/browser"
+        tools:layout="@layout/destination_browser" />
+
+    <action
+        android:id="@+id/open_about"
+        app:destination="@id/about"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/about"
+        android:name="org.tiqr.core.about.AboutFragment"
+        tools:layout="@layout/fragment_about" />
+
+    <navigation
+        android:id="@+id/authentication_nav"
+        app:startDestination="@id/authentication_confirm">
+
+        <fragment
+            android:id="@+id/authentication_confirm"
+            android:name="org.tiqr.core.authentication.AuthenticationConfirmFragment"
+            tools:layout="@layout/fragment_authentication_confirm">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
+
+            <action
+                android:id="@+id/action_identity"
+                app:destination="@id/authentication_identity" />
+
+            <action
+                android:id="@+id/action_biometric"
+                app:destination="@id/authentication_biometric"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/authentication_confirm"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_pin"
+                app:destination="@id/authentication_pin"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/authentication_confirm"
+                app:popUpToInclusive="true" />
+        </fragment>
+
+        <dialog
+            android:id="@+id/authentication_identity"
+            android:name="org.tiqr.core.authentication.AuthenticationIdentityFragment"
+            tools:layout="@layout/fragment_authentication_identity">
+
+            <argument
+                android:name="cancellable"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </dialog>
+
+        <fragment
+            android:id="@+id/authentication_biometric"
+            android:name="org.tiqr.core.authentication.AuthenticationBiometricFragment"
+            tools:layout="@layout/fragment_authentication_biometric">
+
+            <action
+                android:id="@+id/action_summary"
+                app:destination="@id/authentication_summary"
+                app:popUpTo="@id/authentication_biometric"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_pin"
+                app:destination="@id/authentication_pin"
+                app:popUpTo="@id/authentication_biometric"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_fallback"
+                app:destination="@id/authentication_fallback"
+                app:popUpTo="@id/authentication_biometric"
+                app:popUpToInclusive="true"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/authentication_pin"
+            android:name="org.tiqr.core.authentication.AuthenticationPinFragment"
+            tools:layout="@layout/fragment_authentication_pin">
+
+            <action
+                android:id="@+id/action_summary"
+                app:destination="@id/authentication_summary"
+                app:popUpTo="@id/authentication_pin"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_fallback"
+                app:destination="@id/authentication_fallback"
+                app:popUpTo="@id/authentication_pin"
+                app:popUpToInclusive="true"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/authentication_fallback"
+            android:name="org.tiqr.core.authentication.AuthenticationFallbackFragment"
+            tools:layout="@layout/fragment_authentication_fallback">
+
+            <argument
+                android:name="pin"
+                app:argType="string" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/authentication_summary"
+            android:name="org.tiqr.core.authentication.AuthenticationSummaryFragment"
+            tools:layout="@layout/fragment_authentication_summary">
+
+            <argument
+                android:name="pin"
+                app:argType="string"
+                android:defaultValue="@null"
+                app:nullable="true" />
+        </fragment>
+    </navigation>
+
+    <navigation
+        android:id="@+id/enrollment_nav"
+        android:label="Enrollment"
+        app:startDestination="@id/enrollment_confirm">
+
+        <fragment
+            android:id="@+id/enrollment_confirm"
+            android:name="org.tiqr.core.enrollment.EnrollmentConfirmFragment"
+            tools:layout="@layout/fragment_enrollment_confirm">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
+
+            <action
+                android:id="@+id/action_pin"
+                app:destination="@id/enrollment_pin"
+                app:launchSingleTop="true" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_pin"
+            android:name="org.tiqr.core.enrollment.EnrollmentPinFragment"
+            tools:layout="@layout/fragment_enrollment_pin">
+
+            <action
+                android:id="@+id/action_pin_verify"
+                app:destination="@id/enrollment_pin_verify"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/enrollment_confirm" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_pin_verify"
+            android:name="org.tiqr.core.enrollment.EnrollmentPinVerifyFragment"
+            tools:layout="@layout/fragment_enrollment_pin_verify">
+
+            <argument
+                android:name="pin"
+                app:argType="string"
+                app:nullable="false" />
+
+            <action
+                android:id="@+id/action_summary"
+                app:destination="@id/enrollment_summary"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/enrollment_confirm"
+                app:popUpToInclusive="true" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/enrollment_summary"
+            android:name="org.tiqr.core.enrollment.EnrollmentSummaryFragment"
+            tools:layout="@layout/fragment_enrollment_summary" />
+    </navigation>
+
+    <navigation
+        android:id="@+id/identity_nav"
+        app:startDestination="@id/identity_list">
+
+        <fragment
+            android:id="@+id/identity_list"
+            android:name="org.tiqr.core.identity.IdentityListFragment"
+            tools:layout="@layout/fragment_identity_list">
+
+            <action
+                android:id="@+id/action_identity_add"
+                app:destination="@id/scan"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/identity_list" />
+
+            <action
+                android:id="@+id/action_identity_detail"
+                app:destination="@id/identity_detail"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/identity_list" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/identity_detail"
+            android:name="org.tiqr.core.identity.IdentityDetailFragment"
+            tools:layout="@layout/fragment_identity_detail" >
+
+            <argument
+                android:name="identity"
+                app:argType="org.tiqr.data.model.IdentityWithProvider" />
+        </fragment>
+    </navigation>
+
+    <action
+        android:id="@+id/action_enroll"
+        app:destination="@id/enrollment_nav"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/start"
+        app:popUpToInclusive="false">
+
+        <argument
+            android:name="challenge"
+            app:argType="org.tiqr.data.model.EnrollmentChallenge"
+            app:nullable="false" />
+    </action>
+
+    <action
+        android:id="@+id/action_authenticate"
+        app:destination="@id/authentication_nav"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/start"
+        app:popUpToInclusive="false">
+
+        <argument
+            android:name="challenge"
+            app:argType="org.tiqr.data.model.AuthenticationChallenge"
+            app:nullable="false" />
+    </action>
+</navigation>

@@ -17,7 +17,7 @@
     </queries>
 
     <application
-        android:name=".TiqrApplication"
+        android:name="org.tiqr.core.TiqrApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:dataExtractionRules="@xml/backup_descriptor_v31"
@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="org.tiqr.core.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash"
             android:windowSoftInputMode="adjustResize"
@@ -51,7 +51,7 @@
         </activity>
 
         <service
-            android:name=".messaging.TiqrMessagingService"
+            android:name="org.tiqr.core.messaging.TiqrMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
