@@ -91,6 +91,8 @@ dependencies {
 
     implementation(project(":data"))
 
+    implementation(project(":core"))
+
     implementation(libs.dagger.hilt.android)
     implementation(libs.dagger.hilt.fragment)
     kapt(libs.dagger.hilt.compiler)
