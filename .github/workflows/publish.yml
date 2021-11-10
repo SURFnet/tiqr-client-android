@@ -1,6 +1,7 @@
 name: Publish
 
 on:
+  workflow_dispatch: # Allow manually triggering this workflow
   release:
     # We'll run this workflow when a new GitHub release is created
     types: [released]
