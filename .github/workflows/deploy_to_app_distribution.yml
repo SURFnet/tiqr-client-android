@@ -19,7 +19,7 @@ jobs:
         id: short-sha
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '2.6.8'
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
