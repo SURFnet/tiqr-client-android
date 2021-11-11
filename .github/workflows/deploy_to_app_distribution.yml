@@ -18,14 +18,18 @@ jobs:
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
       - uses: actions/setup-ruby@v1
-          with:
-            ruby-version: '2.6.x'
+        with:
+          ruby-version: '2.7'
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
           echo "$(yarn global bin)" >> $GITHUB_PATH
       - name: Install Dependencies
         run: gem install bundler && bundle install
+      - name: Install bundle
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: distribute to Firebase App Distribution
         run: bundle exec fastlane bundle_for_distribution
         env:
