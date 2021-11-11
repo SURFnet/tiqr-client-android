@@ -17,7 +17,7 @@
     </queries>
 
     <application
-        android:name="org.tiqr.core.TiqrApplication"
+        android:name="org.tiqr.TiqrApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:dataExtractionRules="@xml/backup_descriptor_v31"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.core
+package org.tiqr
 
 import android.app.Application
 import coil.Coil
@@ -36,6 +36,7 @@ import coil.ImageLoaderFactory
 import coil.util.CoilUtils
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
+import org.tiqr.authenticator.BuildConfig
 import timber.log.Timber
 import javax.inject.Inject
 
