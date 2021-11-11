@@ -17,16 +17,19 @@ jobs:
         if: git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} # If there are changes since the last run
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
-    - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
+      - uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
+          ruby-version: '2.7'
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
           echo "$(yarn global bin)" >> $GITHUB_PATH
       - name: Install Dependencies
         run: gem install bundler && bundle install
+      - name: Install bundle
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: distribute to Firebase App Distribution
         run: bundle exec fastlane bundle_for_distribution
         env:
