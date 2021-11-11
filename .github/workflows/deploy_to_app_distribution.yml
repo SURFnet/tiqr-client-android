@@ -17,9 +17,10 @@ jobs:
         if: git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} # If there are changes since the last run
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
-      - uses: actions/setup-ruby@v1
+     - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6.8'
+          ruby-version: 2.6.x
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
