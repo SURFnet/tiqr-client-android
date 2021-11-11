@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -5,6 +7,8 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    `maven-publish`
+    signing
 }
 
 android {
@@ -47,6 +51,17 @@ android {
             jvmTarget = "1.8"
         }
     }
+}
+
+fun loadCustomProperties(file: File): java.util.Properties {
+    val properties = Properties()
+    if (file.isFile) {
+        properties.load(file.inputStream())
+    }
+    return properties
+}
+
+val secureProperties = loadCustomProperties(file("../local.properties"))
 
     dependencies {
         implementation(libs.kotlin.stdlib)
@@ -96,7 +111,93 @@ android {
         androidTestImplementation(libs.androidx.testing.uiautomator)
         androidTestImplementation(libs.kotlinx.coroutines.test)
 
-        androidTestImplementation(libs.dagger.hilt.testing)
-        kaptAndroidTest(libs.dagger.hilt.compiler)
+    androidTestImplementation(libs.dagger.hilt.testing)
+    kaptAndroidTest(libs.dagger.hilt.compiler)
+}
+
+group = "org.tiqr"
+version = "0.0.7-SNAPSHOT"
+
+tasks {
+    register("sourcesJar", Jar::class) {
+        archiveClassifier.set("sources")
+        from(android.sourceSets.getByName("main").java.srcDirs)
+    }
+}
+publishing {
+    publications {
+        register<MavenPublication>("mavenAndroid") {
+            artifactId = "core"
+
+            afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            artifact(tasks.getByName("sourcesJar"))
+
+            pom {
+                name.set("core")
+                url.set("https://github.com/SURFnet/tiqr-app-core-android")
+                description.set("refactoring original tiqr project")
+                developers {
+                    developer {
+                        name.set("sara hachem")
+                        email.set("sara@egeniq.com")
+                    }
+                    developer {
+                        name.set("Dmitry Kovalenko")
+                        email.set("dima@egeniq.com")
+                    }
+                }
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                scm {
+                    connection.set("https://github.com/SURFnet/tiqr-app-core-android.git")
+                    url.set("https://github.com/SURFnet/tiqr-app-core-android")
+                }
+
+                withXml {
+                    fun groovy.util.Node.addDependency(dependency: Dependency, scope: String) {
+                        appendNode("dependency").apply {
+                            appendNode("groupId", dependency.group)
+                            appendNode("artifactId", dependency.name)
+                            appendNode("version", dependency.version)
+                            appendNode("scope", scope)
+                        }
+                    }
+
+                    asNode().appendNode("dependencies").let { dependencies ->
+                        // List all "api" dependencies as "compile" dependencies
+                        configurations.api.get().allDependencies.forEach {
+                            dependencies.addDependency(it, "compile")
+                        }
+                        // List all "implementation" dependencies as "runtime" dependencies
+                        configurations.implementation.get().allDependencies.forEach {
+                            dependencies.addDependency(it, "runtime")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "sonatype"
+            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotRepo = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotRepo else releasesRepoUrl)
+            credentials {
+                username = secureProperties.getProperty("USERNAME")
+                password =secureProperties.getProperty("PASSWORD")
+            }
+        }
+    }
+
+
+    signing {
+        useGpgCmd()
+        sign(publishing.publications["mavenAndroid"])
     }
 }

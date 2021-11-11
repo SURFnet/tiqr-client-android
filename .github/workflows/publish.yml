@@ -1,9 +1,33 @@
 name: Publish
+
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allow manually triggering this workflow
+  release:
+    # We'll run this workflow when a new GitHub release is created
+    types: [released]
+
 jobs:
-  my-job:
+  publish:
+    name: Release build and publish
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+      - name: Check out code
+        uses: actions/checkout@v2
+
+        # Builds the release artifacts of the library
+      - name: Release build
+        run: ./gradlew :tiqr-client-android:assembleRelease
+
+        # Generates other artifacts
+      - name: Source jar
+        run: ./gradlew androidSourcesJar
+
+        # Runs upload, and then closes & releases the repository
+      - name: Publish to MavenCentral
+        run: ./gradlew publishMavenAndroidPublicationToSonatypeRepository --max-workers 1
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
