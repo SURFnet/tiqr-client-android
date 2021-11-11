@@ -19,7 +19,8 @@ jobs:
         run: brew install imagemagick
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
-      - uses: actions/setup-ruby@v1
+     - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6.x'
       - name: install firebase tool
