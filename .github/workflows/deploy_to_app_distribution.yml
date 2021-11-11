@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop
+      - TIQR-0000_test_distribution_action
 
 jobs:
   distribute:
@@ -19,7 +19,7 @@ jobs:
         id: short-sha
       - uses: actions/setup-ruby@v1
           with:
-            ruby-version: '2.6.x'
+            ruby-version: '2.6'
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
