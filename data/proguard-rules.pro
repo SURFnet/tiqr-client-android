@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn org.conscrypt.ConscryptHostnameVerifier
+-keepnames class ** { *; }
+-keep class ** { *; }
