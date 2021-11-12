@@ -34,8 +34,11 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
+import org.tiqr.core.MainNavDirections
 import org.tiqr.core.databinding.ViewBottombarBinding
+import org.tiqr.core.util.Urls
 
 /**
  * Custom [BottomAppBar] to display and handle the Info and Surfnet actions.
@@ -62,11 +65,15 @@ class BottomBarView @JvmOverloads constructor(
 
     private fun setRightIconAndEnableListener(value: Drawable?) {
         binding.rightIconView.setImageDrawable(value)
-        binding.rightIconView.setOnClickListener {  }
+        binding.rightIconView.setOnClickListener {
+            findNavController().navigate(MainNavDirections.openBrowser(Urls.URL_SURFNET))
+        }
     }
 
     private fun setLeftIconAndEnableListener(value: Drawable?) {
         binding.leftIconView.setImageDrawable(value)
-        binding.leftIconView.setOnClickListener {  }
+        binding.leftIconView.setOnClickListener {
+            findNavController().navigate(MainNavDirections.openAbout())
+        }
     }
 }

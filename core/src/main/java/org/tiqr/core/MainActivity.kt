@@ -89,7 +89,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
             addOnDestinationChangedListener(this@MainActivity)
-            uiSpecs.bottomBarIconRight?.let { binding.bottombar.rightIcon = it }
             Navigation.setViewNavController(binding.bottombar, this)
         }
         uiSpecs.toolbarBackground?.let { binding.appbarLayout.background = it }
