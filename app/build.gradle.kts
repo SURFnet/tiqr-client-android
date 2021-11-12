@@ -70,6 +70,7 @@ dependencies {
             setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         }
     }
+
     implementation(project(":core"))
     implementation(project(":data"))
     implementation(libs.kotlin.stdlib)
