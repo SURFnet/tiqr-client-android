@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -62,8 +63,68 @@ android {
 
 dependencies {
 
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        }
+    }
     implementation(project(":core"))
+    implementation(project(":data"))
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.core)
+    implementation(libs.kotlinx.coroutines.playServices)
 
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.autofill)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.concurrent)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.localBroadcastManager)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.google.android.material)
+    implementation(libs.google.mlkit.barcode)
+    implementation(libs.google.firebase.messaging)
+
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.dagger.hilt.fragment)
+    kapt(libs.dagger.hilt.compiler)
+
+    implementation(libs.permission)
+    implementation(libs.coil)
+    implementation(libs.betterLink)
+
+    api(libs.moshi.moshi)
+    kapt(libs.moshi.codegen)
+
+    api(libs.okhttp.okhttp)
+    api(libs.okhttp.logging)
+
+    api(libs.retrofit.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.retrofit.converter.scalars)
+
+    api(libs.timber)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.testing.core)
+    androidTestImplementation(libs.androidx.testing.junit)
+    androidTestImplementation(libs.androidx.testing.rules)
+    androidTestImplementation(libs.androidx.testing.epsresso)
+    androidTestImplementation(libs.androidx.testing.uiautomator)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    androidTestImplementation(libs.dagger.hilt.testing)
+    kaptAndroidTest(libs.dagger.hilt.compiler)
 }
 
 // Disable analytics
