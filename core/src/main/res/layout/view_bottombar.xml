@@ -11,7 +11,7 @@
             android:id="@+id/right_icon_view"
             android:layout_width="80dp"
             android:layout_height="48dp"
-            android:paddingRight="8dp"
+            android:paddingRight="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

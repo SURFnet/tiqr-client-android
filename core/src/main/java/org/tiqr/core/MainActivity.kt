@@ -64,7 +64,8 @@ import org.tiqr.data.viewmodel.ParseViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
-open class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+open class MainActivity : BaseActivity<ActivityMainBinding>(),
+    NavController.OnDestinationChangedListener {
 
     private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController

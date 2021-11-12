@@ -4,6 +4,8 @@
     <color name="primaryLightColor">#E0EF5C</color>
     <color name="primaryDarkColor">#788d00</color>
     <color name="primaryTextColor">#000000</color>
+    <color name="scanColor">#000000</color>
+    <color name="basicColor">#000000</color>
 
     <color name="linkColor">#0288D1</color>
     <color name="errorColor">#F44336</color>
