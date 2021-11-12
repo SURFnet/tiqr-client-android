@@ -34,9 +34,12 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.withStyledAttributes
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import org.tiqr.core.MainNavDirections
+import org.tiqr.core.R
 import org.tiqr.core.databinding.ViewBottombarBinding
 import org.tiqr.core.util.Urls
 
@@ -46,6 +49,12 @@ import org.tiqr.core.util.Urls
 class BottomBarView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
+    var infoVisible: Boolean = true
+        set(value) {
+            binding.leftIconView.isVisible = value
+            field = value
+        }
 
     var rightIcon: Drawable? = null
         set(value) {
@@ -61,6 +70,9 @@ class BottomBarView @JvmOverloads constructor(
     init {
         binding.leftIconView.setImageDrawable(leftIcon)
         binding.rightIconView.setImageDrawable(rightIcon)
+        context.withStyledAttributes(attrs, R.styleable.BottomBarView) {
+            infoVisible = getBoolean(R.styleable.BottomBarView_showInfo, true)
+        }
     }
 
     private fun setRightIconAndEnableListener(value: Drawable?) {

@@ -64,8 +64,7 @@ import org.tiqr.data.viewmodel.ParseViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
-open class MainActivity : BaseActivity<ActivityMainBinding>(),
-    NavController.OnDestinationChangedListener {
+open class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
 
     private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController
@@ -78,6 +77,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
         navController = getNavController(R.id.nav_host_fragment).apply {
             setSupportActionBar(binding.toolbar)
             setupActionBarWithNavController(
@@ -89,6 +89,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
             addOnDestinationChangedListener(this@MainActivity)
+
             Navigation.setViewNavController(binding.bottombar, this)
         }
         uiSpecs.toolbarBackground?.let { binding.appbarLayout.background = it }
@@ -205,11 +206,11 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
         val transition = AutoTransition()
         transition.addListener(object : TransitionListenerAdapter() {
             override fun onTransitionEnd(transition: Transition) {
-                //      if (infoVisible.not()) binding.bottombar.infoVisible = infoVisible
+                if (infoVisible.not()) binding.bottombar.infoVisible = infoVisible
             }
 
             override fun onTransitionStart(transition: Transition) {
-                //       if (infoVisible) binding.bottombar.infoVisible = infoVisible
+                if (infoVisible) binding.bottombar.infoVisible = infoVisible
             }
         })
 
