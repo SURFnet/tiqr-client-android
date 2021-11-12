@@ -30,6 +30,7 @@
 package org.tiqr.core
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -63,9 +64,12 @@ import org.tiqr.data.viewmodel.ParseViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+open class MainActivity : BaseActivity<ActivityMainBinding>(),
+    NavController.OnDestinationChangedListener {
+
     private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController
+    open var uiSpecs: UISPecs = UISPecs()
 
     @LayoutRes
     override val layout = R.layout.activity_main
@@ -74,21 +78,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-
         navController = getNavController(R.id.nav_host_fragment).apply {
             setSupportActionBar(binding.toolbar)
-            setupActionBarWithNavController(this,
-                    AppBarConfiguration.Builder(
-                            setOf(R.id.start, R.id.enrollment_summary, R.id.authentication_summary)
-                    ).build()
+            setupActionBarWithNavController(
+                this,
+                AppBarConfiguration.Builder(
+                    setOf(R.id.start, R.id.enrollment_summary, R.id.authentication_summary)
+                ).build()
             )
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
             addOnDestinationChangedListener(this@MainActivity)
-
+            uiSpecs.bottomBarIconRight?.let { binding.bottombar.rightIcon = it }
             Navigation.setViewNavController(binding.bottombar, this)
         }
-
+        uiSpecs.toolbarBackground?.let { binding.appbarLayout.background = it }
+        uiSpecs.bottomBarIconLeft?.let { binding.bottombar.leftIcon = it }
+        uiSpecs.bottomBarIconRight?.let { binding.bottombar.rightIcon = it }
         parseViewModel.challenge.observe(this) { result ->
             when (result) {
                 is ChallengeParseResult.Success -> {
@@ -105,11 +111,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                 }
                 is ChallengeParseResult.Failure -> {
                     MaterialAlertDialogBuilder(this)
-                            .setTitle(result.failure.title)
-                            .setMessage(result.failure.message)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
-                            .show()
+                        .setTitle(result.failure.title)
+                        .setMessage(result.failure.message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
+                        .show()
                 }
                 else -> Timber.w("Could not parse the raw challenge")
             }
@@ -141,7 +147,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
     override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         when (destination.id) { // Toggle FLAG_SECURE
             R.id.enrollment_pin,
             R.id.enrollment_pin_verify,
@@ -173,7 +183,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                 if (supportFragmentManager.currentNavigationFragment<ScanFragment>() != null) {
                     ScanKeyEventsReceiver.createEvent(keyCode).run {
                         LocalBroadcastManager.getInstance(this@MainActivity)
-                                .sendBroadcast(this)
+                            .sendBroadcast(this)
                     }
                     true // Mark as handled since we sent the broadcast because currently scanning
                 } else {
@@ -196,11 +206,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
         val transition = AutoTransition()
         transition.addListener(object : TransitionListenerAdapter() {
             override fun onTransitionEnd(transition: Transition) {
-                if (infoVisible.not()) binding.bottombar.infoVisible = infoVisible
+                //      if (infoVisible.not()) binding.bottombar.infoVisible = infoVisible
             }
 
             override fun onTransitionStart(transition: Transition) {
-                if (infoVisible) binding.bottombar.infoVisible = infoVisible
+                //       if (infoVisible) binding.bottombar.infoVisible = infoVisible
             }
         })
 
@@ -209,10 +219,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
             if (visible) {
                 clear(binding.bottombar.id, ConstraintSet.TOP)
-                connect(binding.bottombar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                connect(
+                    binding.bottombar.id,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
             } else {
                 clear(binding.bottombar.id, ConstraintSet.BOTTOM)
-                connect(binding.bottombar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                connect(
+                    binding.bottombar.id,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
             }
 
             applyTo(binding.container)
@@ -221,3 +241,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
         TransitionManager.beginDelayedTransition(binding.container, transition)
     }
 }
+
+data class UISPecs(
+    val toolbarBackground: Drawable? = null,
+    val bottomBarIconLeft: Drawable? = null,
+    val bottomBarIconRight: Drawable? = null
+)

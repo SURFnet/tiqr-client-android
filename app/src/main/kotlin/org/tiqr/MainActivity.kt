@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2019 SURFnet bv
+ * Copyright (c) 2010-2021 SURFnet bv
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,25 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.core.widget
+package org.tiqr
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.util.AttributeSet
-import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.bottomappbar.BottomAppBar
-import org.tiqr.core.databinding.ViewBottombarBinding
+import android.os.Bundle
+import dagger.hilt.android.AndroidEntryPoint
+import org.tiqr.authenticator.R
+import org.tiqr.core.MainActivity
+import org.tiqr.core.UISPecs
 
-/**
- * Custom [BottomAppBar] to display and handle the Info and Surfnet actions.
- */
-class BottomBarView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+@AndroidEntryPoint
+class MainActivity : MainActivity() {
 
-    var rightIcon: Drawable? = null
-        set(value) {
-            setRightIconAndEnableListener(value)
-        }
+    override lateinit var uiSpecs: UISPecs
 
-    var leftIcon: Drawable? = null
-        set(value) {
-            setLeftIconAndEnableListener(value)
-        }
-    var binding = ViewBottombarBinding.inflate(LayoutInflater.from(context), this, true)
-
-    init {
-        binding.leftIconView.setImageDrawable(leftIcon)
-        binding.rightIconView.setImageDrawable(rightIcon)
-    }
-
-    private fun setRightIconAndEnableListener(value: Drawable?) {
-        binding.rightIconView.setImageDrawable(value)
-        binding.rightIconView.setOnClickListener {  }
-    }
-
-    private fun setLeftIconAndEnableListener(value: Drawable?) {
-        binding.leftIconView.setImageDrawable(value)
-        binding.leftIconView.setOnClickListener {  }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        uiSpecs = UISPecs(
+            baseContext.getDrawable(R.drawable.appbar_background),
+            baseContext.getDrawable(R.drawable.ic_info),
+            baseContext.getDrawable(R.drawable.logo_power_by_surf)
+        )
+        super.onCreate(savedInstanceState)
     }
 }
