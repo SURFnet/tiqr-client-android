@@ -84,4 +84,8 @@
     <style name="ScanButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
         <item name="android:textColor">@color/scanColor</item>
     </style>
+
+    <style name="CoreIconSmall">
+        <item name="android:src">@drawable/logo_tiqr_small</item>
+    </style>
 </resources>

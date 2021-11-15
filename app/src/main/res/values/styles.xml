@@ -28,6 +28,7 @@
 
     <style name="AppTheme.Button.White">
         <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/basicColor</item>
     </style>
 
     <style name="AppTheme.Button.Red">
@@ -89,5 +90,9 @@
     <style name="ScanButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
         <item name="android:textColor">@color/scanColor</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+    </style>
+
+    <style name="AppIconSmall">
+        <item name="android:src">@drawable/logo_eduid_big</item>
     </style>
 </resources>
