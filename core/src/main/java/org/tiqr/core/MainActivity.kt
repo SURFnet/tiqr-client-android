@@ -30,7 +30,6 @@
 package org.tiqr.core
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -69,7 +68,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
 
     private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController
-    open var uiSpecs: UISPecs = UISPecs()
 
     @LayoutRes
     override val layout = R.layout.activity_main
@@ -93,9 +91,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
 
             Navigation.setViewNavController(binding.bottombar, this)
         }
-        uiSpecs.toolbarBackground?.let { binding.appbarLayout.background = it }
-        uiSpecs.bottomBarIconLeft?.let { binding.bottombar.leftIcon = it }
-        uiSpecs.bottomBarIconRight?.let { binding.bottombar.rightIcon = it }
         parseViewModel.challenge.observe(this) { result ->
             when (result) {
                 is ChallengeParseResult.Success -> {
@@ -243,8 +238,3 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
     }
 }
 
-data class UISPecs(
-    val toolbarBackground: Drawable? = null,
-    val bottomBarIconLeft: Drawable? = null,
-    val bottomBarIconRight: Drawable? = null
-)

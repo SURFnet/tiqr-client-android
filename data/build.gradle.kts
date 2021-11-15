@@ -112,7 +112,7 @@ android {
 }
 
 group = "org.tiqr"
-version = "0.0.3-SNAPSHOT"
+version = "0.0.4-SNAPSHOT"
 
 tasks {
     register("sourcesJar", Jar::class) {

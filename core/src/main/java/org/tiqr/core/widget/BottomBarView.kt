@@ -30,7 +30,6 @@
 package org.tiqr.core.widget
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -56,34 +55,15 @@ class BottomBarView @JvmOverloads constructor(
             field = value
         }
 
-    var rightIcon: Drawable? = null
-        set(value) {
-            setRightIconAndEnableListener(value)
-        }
-
-    var leftIcon: Drawable? = null
-        set(value) {
-            setLeftIconAndEnableListener(value)
-        }
     var binding = ViewBottombarBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
-        binding.leftIconView.setImageDrawable(leftIcon)
-        binding.rightIconView.setImageDrawable(rightIcon)
         context.withStyledAttributes(attrs, R.styleable.BottomBarView) {
             infoVisible = getBoolean(R.styleable.BottomBarView_showInfo, true)
         }
-    }
-
-    private fun setRightIconAndEnableListener(value: Drawable?) {
-        binding.rightIconView.setImageDrawable(value)
         binding.rightIconView.setOnClickListener {
             findNavController().navigate(MainNavDirections.openBrowser(Urls.URL_SURFNET))
         }
-    }
-
-    private fun setLeftIconAndEnableListener(value: Drawable?) {
-        binding.leftIconView.setImageDrawable(value)
         binding.leftIconView.setOnClickListener {
             findNavController().navigate(MainNavDirections.openAbout())
         }
