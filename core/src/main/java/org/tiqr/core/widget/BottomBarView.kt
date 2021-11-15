@@ -29,43 +29,56 @@
 
 package org.tiqr.core.widget
 
+import android.animation.LayoutTransition
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
-import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import org.tiqr.core.MainNavDirections
 import org.tiqr.core.R
-import org.tiqr.core.databinding.ViewBottombarBinding
-import org.tiqr.core.util.Urls
+import org.tiqr.core.util.Urls.URL_SURFNET
 
 /**
  * Custom [BottomAppBar] to display and handle the Info and Surfnet actions.
  */
-class BottomBarView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
-
-    var infoVisible: Boolean = true
-        set(value) {
-            binding.leftIconView.isVisible = value
-            field = value
-        }
-
-    var binding = ViewBottombarBinding.inflate(LayoutInflater.from(context), this, true)
-
-    init {
+class BottomBarView : BottomAppBar {
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         context.withStyledAttributes(attrs, R.styleable.BottomBarView) {
             infoVisible = getBoolean(R.styleable.BottomBarView_showInfo, true)
         }
-        binding.rightIconView.setOnClickListener {
-            findNavController().navigate(MainNavDirections.openBrowser(Urls.URL_SURFNET))
+    }
+
+    var infoVisible: Boolean = true
+        set(value) {
+            if (value) {
+                setNavigationIcon(R.drawable.ic_info)
+            } else {
+                navigationIcon = null
+            }
+
+            field = value
         }
-        binding.leftIconView.setOnClickListener {
+
+    init {
+        layoutTransition = LayoutTransition() // = animateLayoutChanges
+
+        setNavigationContentDescription(R.string.button_info)
+        setNavigationOnClickListener {
             findNavController().navigate(MainNavDirections.openAbout())
         }
+
+        inflateMenu(R.menu.menu_bottombar)
+        menu.findItem(R.id.surfnet)?.actionView?.setOnClickListener {
+            findNavController().navigate(MainNavDirections.openBrowser(URL_SURFNET))
+        }
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        infoVisible = infoVisible
     }
 }

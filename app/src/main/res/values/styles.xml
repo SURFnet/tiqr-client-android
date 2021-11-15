@@ -86,33 +86,4 @@
         <item name="android:maxLength">1</item>
         <item name="android:maxLines">1</item>
     </style>
-
-    <style name="ScanButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
-        <item name="android:textColor">@color/scanColor</item>
-        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
-    </style>
-
-    <style name="BottomBarIconSmallRight">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:src">@drawable/logo_power_by_surf</item>
-    </style>
-
-    <style name="BottomBarIconSmallLeft">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:src">@drawable/ic_info</item>
-    </style>
-
-    <style name="TopBarIconSmall">
-        <item name="android:background">@drawable/appbar_background</item>
-    </style>
-
-    <style name="AboutSurfIcon">
-        <item name="drawableBottomCompat">@drawable/surfent_background</item>
-        <item name="android:viewportWidth">88</item>
-        <item name="android:viewportHeight">36</item>
-        <item name="android:layout_width">88dp</item>
-        <item name="android:layout_height">36dp</item>
-    </style>
 </resources>
