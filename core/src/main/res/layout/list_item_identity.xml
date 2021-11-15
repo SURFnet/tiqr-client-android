@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:loadImage="@{model.identityProvider.logo}"
-            tools:src="@drawable/logo_tiqr_small" />
+            tools:src="@drawable/logo_app_small" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

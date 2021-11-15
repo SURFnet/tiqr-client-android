@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/primaryColor" />
     <item
-        android:drawable="@drawable/logo_tiqr_small"
+        android:drawable="@drawable/logo_app_small"
         android:gravity="center" />
 </layer-list>

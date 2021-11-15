@@ -3,6 +3,6 @@
     android:opacity="opaque">
     <item android:drawable="@color/primaryColor" />
     <item
-        android:drawable="@drawable/logo_tiqr_large"
+        android:drawable="@drawable/logo_app_large"
         android:gravity="center" />
 </layer-list>

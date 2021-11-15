@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
     <string name="app_name" translatable="false">tiqr</string>
+
+    <!--    Strings below override strings from core module that are app-specific-->
+
+    <string name="start_welcome"><![CDATA[<b>Use tiqr on your smartphone to log in to websites easily and secure.</b><br/><br/>Register your new tiqr account and follow the instructions for activation.<br/><br/>Press <b>Scan</b> when asked.]]></string>
+
+    <string name="start_instructions"><![CDATA[<b>Use tiqr on your smartphone to log in</b><br/><br/>1. Press <b>Scan</b> and scan the QR-code on the website.<br/><br/><i>More than one ID? Select the relevant ID.</i> <br/><br/>2. Scan your biometric or enter your PIN for tiqr and press <b>OK</b> <br/><br/>3. You are logged in!]]></string>
+
+    <string name="scan_permission_required_message">For scanning a QR code, tiqr needs access to the camera.</string>
+
+    <string name="enroll_pin_title">Choose a unique PIN for tiqr</string>
+
+    <string name="account_id">Tiqr account id</string>
+
+    <string name="auth_pin_title">Enter your PIN for tiqr</string>
+
+    <string name="notification_channel_description">Notifications for messages from tiqr</string>
+
 </resources>

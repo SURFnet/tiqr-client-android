@@ -42,7 +42,7 @@
                     android:padding="@dimen/default_padding"
                     android:textAppearance="@style/AppTheme.TextAppearance.Label"
                     app:appName="@{@string/app_name}"
-                    app:drawableBottomCompat="@drawable/logo_tiqr_small"
+                    app:drawableBottomCompat="@drawable/logo_app_small"
                     tools:text="tiqr &#8226; v4.0.0" />
             </com.google.android.material.card.MaterialCardView>
 

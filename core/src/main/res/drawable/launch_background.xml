@@ -5,6 +5,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/logo_tiqr_large" />
+            android:src="@drawable/logo_app_large" />
     </item>
 </layer-list>
