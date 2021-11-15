@@ -98,17 +98,11 @@
         <item name="android:src">@drawable/logo_power_by_surf</item>
     </style>
 
-    <style name="BottomBarIconSmallLeft">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:src">@drawable/ic_info</item>
-    </style>
-
     <style name="TopBarIconSmall">
-        <item name="android:background">@drawable/appbar_background</item>
+        <item name="android:background">@drawable/toolbar_background</item>
     </style>
 
     <style name="AboutSurfIcon">
-        <item name="drawableBottomCompat">@drawable/surfent_background</item>
+        <item name="drawableBottomCompat">@drawable/ic_surfnet</item>
     </style>
 </resources>
