@@ -64,7 +64,8 @@
                     android:padding="@dimen/default_padding"
                     android:text="@string/about_label_provided_by"
                     android:textAppearance="@style/AppTheme.TextAppearance.Label"
-                    app:drawableBottomCompat="@drawable/ic_surfnet" />
+                    style="@style/AboutSurfIcon"
+                  />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView

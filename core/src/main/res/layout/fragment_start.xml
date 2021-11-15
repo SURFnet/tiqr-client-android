@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/scan_button"
-            style="@style/Widget.MaterialComponents.Button.Icon"
+            style="@style/ScanButtonIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/scan_button"

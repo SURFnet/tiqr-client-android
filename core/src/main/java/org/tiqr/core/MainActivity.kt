@@ -63,7 +63,9 @@ import org.tiqr.data.viewmodel.ParseViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestinationChangedListener {
+open class MainActivity : BaseActivity<ActivityMainBinding>(),
+    NavController.OnDestinationChangedListener {
+
     private val parseViewModel by viewModels<ParseViewModel>()
     private lateinit var navController: NavController
 
@@ -77,10 +79,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
         navController = getNavController(R.id.nav_host_fragment).apply {
             setSupportActionBar(binding.toolbar)
-            setupActionBarWithNavController(this,
-                    AppBarConfiguration.Builder(
-                            setOf(R.id.start, R.id.enrollment_summary, R.id.authentication_summary)
-                    ).build()
+            setupActionBarWithNavController(
+                this,
+                AppBarConfiguration.Builder(
+                    setOf(R.id.start, R.id.enrollment_summary, R.id.authentication_summary)
+                ).build()
             )
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -88,7 +91,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
             Navigation.setViewNavController(binding.bottombar, this)
         }
-
         parseViewModel.challenge.observe(this) { result ->
             when (result) {
                 is ChallengeParseResult.Success -> {
@@ -105,11 +107,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                 }
                 is ChallengeParseResult.Failure -> {
                     MaterialAlertDialogBuilder(this)
-                            .setTitle(result.failure.title)
-                            .setMessage(result.failure.message)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
-                            .show()
+                        .setTitle(result.failure.title)
+                        .setMessage(result.failure.message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
+                        .show()
                 }
                 else -> Timber.w("Could not parse the raw challenge")
             }
@@ -141,7 +143,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
     override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         when (destination.id) { // Toggle FLAG_SECURE
             R.id.enrollment_pin,
             R.id.enrollment_pin_verify,
@@ -173,7 +179,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
                 if (supportFragmentManager.currentNavigationFragment<ScanFragment>() != null) {
                     ScanKeyEventsReceiver.createEvent(keyCode).run {
                         LocalBroadcastManager.getInstance(this@MainActivity)
-                                .sendBroadcast(this)
+                            .sendBroadcast(this)
                     }
                     true // Mark as handled since we sent the broadcast because currently scanning
                 } else {
@@ -209,10 +215,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
 
             if (visible) {
                 clear(binding.bottombar.id, ConstraintSet.TOP)
-                connect(binding.bottombar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                connect(
+                    binding.bottombar.id,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
             } else {
                 clear(binding.bottombar.id, ConstraintSet.BOTTOM)
-                connect(binding.bottombar.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                connect(
+                    binding.bottombar.id,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
             }
 
             applyTo(binding.container)
@@ -221,3 +237,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), NavController.OnDestin
         TransitionManager.beginDelayedTransition(binding.container, transition)
     }
 }
+

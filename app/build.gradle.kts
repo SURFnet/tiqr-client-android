@@ -71,8 +71,8 @@ dependencies {
         }
     }
 
-    implementation("org.tiqr:core:0.0.14-SNAPSHOT")
-    implementation("org.tiqr:data:0.0.3-SNAPSHOT")
+    implementation(project(":core"))
+    implementation(project(":data"))
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

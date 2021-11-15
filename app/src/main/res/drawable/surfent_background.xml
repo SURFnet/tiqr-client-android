@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="88dp"
+        android:height="44dp"
+        android:gravity="center"
+        android:drawable="@drawable/logo_surf_big" />
+</layer-list>
