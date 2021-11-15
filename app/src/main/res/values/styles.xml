@@ -93,8 +93,6 @@
     </style>
 
     <style name="BottomBarIconSmallRight">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">48dp</item>
         <item name="android:src">@drawable/logo_power_by_surf</item>
     </style>
 
