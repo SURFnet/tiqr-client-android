@@ -19,7 +19,7 @@
 
     <style name="AppTheme.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/primaryColor</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_surf_big</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_tiqr_splash</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 
