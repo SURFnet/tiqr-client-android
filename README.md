@@ -1,4 +1,4 @@
-# tiqr-client-android
+# tiqr-app-android
 
 tiqr client for Android
 
