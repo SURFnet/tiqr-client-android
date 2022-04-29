@@ -38,7 +38,10 @@ import timber.log.Timber
 
 /**
  * Repository to handle token exchange.
+ *
+ *
  */
+@Deprecated("Deprecated because we do not use the token exchange anymore. Instead we send the FCM token directly to the server.")
 class TokenRepository(private val api: TokenApi, private val preferences: PreferenceService): TokenRegistrarRepository {
     companion object {
         private const val NOT_FOUND = "NOT FOUND"
@@ -46,6 +49,9 @@ class TokenRepository(private val api: TokenApi, private val preferences: Prefer
 
     /**
      * Register the device token (received from Firebase) and save the resulting notification token.
+     *
+     * @param deviceToken The token received from Firebase.
+     * @return The token exchanged via the token exchange.
      */
     override suspend fun registerDeviceToken(deviceToken: String) {
         try {

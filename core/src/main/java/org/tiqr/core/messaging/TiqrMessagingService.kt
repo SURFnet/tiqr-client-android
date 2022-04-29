@@ -49,6 +49,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.tiqr.core.R
 import org.tiqr.data.repository.base.TokenRegistrarRepository
+import org.tiqr.data.service.PreferenceService
 import javax.inject.Inject
 
 /**
@@ -66,14 +67,16 @@ class TiqrMessagingService : FirebaseMessagingService() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
     @Inject
-    internal lateinit var repository: TokenRegistrarRepository
+    internal lateinit var preferenceService: PreferenceService
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        scope.launch {
-            repository.registerDeviceToken(token)
-        }
+        // In the past we used to exchange the tokens here via the TokenRegistrarRepository.
+        // Which would then call the token exchange and swap the tokens.
+        // That is not required anymore, we just save the device token, and use that one in
+        // the future.
+        preferenceService.notificationToken = token
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

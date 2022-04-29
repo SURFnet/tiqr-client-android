@@ -186,7 +186,7 @@ class AuthenticationRepository(
                     userId = identity.identifier,
                     response = otp,
                     language = Locale.getDefault().language,
-                    notificationAddress = preferences.notificationToken
+                    directNotificationAddress = preferences.notificationToken
             ).run {
                 return when (this) {
                     is ApiResponse.Success -> handleResponse(request, body, headers.tiqrProtocol())

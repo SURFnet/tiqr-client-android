@@ -194,7 +194,7 @@ class EnrollmentRepository(
                     url = request.challenge.enrollmentUrl,
                     secret = secret.value.encoded.toHexString(),
                     language = Locale.getDefault().language,
-                    notificationAddress = preferences.notificationToken
+                    directNotificationAddress = preferences.notificationToken
             ).run {
                 when (this) {
                     is ApiResponse.Success -> handleResponse(request, body, secret, headers.tiqrProtocol())

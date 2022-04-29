@@ -32,6 +32,7 @@ package org.tiqr.data.repository.base
 /**
  * Interface to be implemented by repositories for registering a device token
  */
+@Deprecated("Deprecated because we do not use the token exchange anymore. Instead we send the FCM token directly to the server.")
 interface TokenRegistrarRepository {
     suspend fun registerDeviceToken(deviceToken: String)
 }
