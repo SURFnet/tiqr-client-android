@@ -1,27 +1,5 @@
-# tiqr-client-android
+This is the old Tiqr client for Android. The Tiqr client code was refeactored to a tiqr core library [tiqr core library](https://github.com/Tiqr/tiqr-app-core-android) to make it easier to reuse implement an app that uses the Tiqr protocol.
 
-tiqr client for Android
+The tiqr related repositiries can be found in the [GitHub Tiqr Organization](https://github.com/Tiqr)
 
-# Create a store build
-
-To create a release build intented to be released on the play store, follow these steps:
-1. Bump the app version
-2. Set environment variables:
-
-Environment variables for Fastlane
-```bash
-export TIQR_FASTLANE_STORE_FILE=~/.signing/Tiqr.keystore
-export TIQR_FASTLANE_STORE_PASS=<your_keystore_pass>
-export TIQR_FASTLANE_KEY_ALIAS=<your_key_alias>
-export TIQR_FASTLANE_KEY_PASS=<your_key_pass>
-```
-*Note: adapt above to your own data*
-
-3. Run the Fastlane command:
-```bash
-cd fastlane
-fastlane android storebuild
-```
-*If you don't have fastlane, install it via the fastlane instructions.*
-
-4. The apk and mapping files are now available in the `distribution` subdir. 
+This repository has been archived.
